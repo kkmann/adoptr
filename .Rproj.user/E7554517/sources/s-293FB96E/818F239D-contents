@@ -1,0 +1,70 @@
+setClass("BSDesign",
+        representation(
+                early_stopping_for_futility = "numeric",
+                early_stopping_for_efficacy = "numeric",
+                weights_n2 = "numeric",
+                weights_c2 = "numeric",
+                knots      = "numeric",
+                degree     = "integer"
+        ),
+        contains = "Design"
+)
+
+BSDesign <- function(
+        early_stopping_for_futility,
+        early_stopping_for_efficacy,
+        knots,
+        degree = 3L,
+        weights_n2,
+        weights_c2
+) {
+
+        new("BSDesign",
+                early_stopping_for_futility = early_stopping_for_futility,
+                early_stopping_for_efficacy = early_stopping_for_efficacy,
+                knots = knots,
+                degree = degree,
+                weights_n2 = weights_n2,
+                weights_c2 = weights_c2
+        )
+
+}
+
+
+setMethod("n2",
+        signature("BSDesign", "numeric"),
+        function(d, z1, ...) {
+                tmp = splines::bs(
+                        x = z1,
+                        knots = d@knots,
+                        degree = d@degree,
+                        Boundary.knots = range(d@knots)
+                ) %*% d@weights_n2
+                tmp <- ifelse(z1 <= d@early_stopping_for_futility | z1 >= d@early_stopping_for_efficacy, 0, tmp)
+                return(tmp)
+        }
+)
+
+setMethod("c2",
+        signature("BSDesign", "numeric"),
+        function(d, z1, ...) {
+                tmp = splines::bs(
+                        x = z1,
+                        knots = d@knots,
+                        degree = d@degree,
+                        Boundary.knots = range(d@knots)
+                ) %*% d@weights_c2
+                tmp <- ifelse(z1 <= d@early_stopping_for_futility, Inf, tmp)
+                tmp <- ifelse(z1 >= d@early_stopping_for_efficacy, -Inf, tmp)
+                return(tmp)
+        }
+)
+
+setMethod("conditional_power",
+          signature("BSDesign", "numeric", "numeric"),
+          function(d, z1, delta, ...) {
+                  n2 <- n2(d, z1)
+                  c2 <- c2(d, z1)
+                  return(1 - pnorm(c2 - sqrt(n2)*delta))
+          }
+)

@@ -1,0 +1,83 @@
+---
+title: "Vignette Title"
+author: "Vignette Author"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+library(test2)
+```
+
+The core element of this package is the 'BSDesign' class (BS for basis spline,
+not bullshit!) which implements a representation of a two-stage design in terms
+of a cubic spline basis.
+
+To that end we define an abstract design $\mathcal{D}$ as a tuple 
+$\big(n_1, b_e, b_f, c_2(\cdot), n_2(\cdot)\big)$ where $n_2$ and $c_2$ map from 
+observed values of a test statistic $Z_1=z_1$ to a stage-two sample size and critical 
+value for rejcting the null hypothesis respectively ($Z_2>c(Z_1)$).
+For sake of consistency $c_2(z_1\leq b_f)=\inf$, $c_2(z_1> b_f)=\inf$ and
+$n_2(z_1\not\in(b_f, b_e]) = 0$, $b_f\leq b_e$ (if both are equal the design has
+only one stage).
+
+We will now consider a basis-function variant of the two stage design $D$ where
+both $c_2$ and $n_2$ are represented as weight vectors for a common spline basis
+with a finite number of knots.
+Assuming both a minimal interesting maximal type one error rate, and a maximal
+interesting power, as well as a minimal stage one sample size, this
+effectively limits the support of $c_2,n_2$ (i.e. the stopping boundaries).
+For any such set of boundary constraints, a class of designs with maximal
+support $[a, b]$ is given.
+This allows the specification of an equidistant set of spline knots with 
+boundary points $a,b$.
+Let $\mathcal{B}_{a,b}^k$ be the corresponding cubic spline basis, then
+$\widetilde{\mathcal{D}}_{\mathcal{B}_{a,b}^k}=(n_1, b_e, b_f, \beta_c, \beta_n)$ defines a two-stage with respect to the corresponding basis.
+
+For a fixed basis, any objective function can thus be minimized over the 2k+3
+parameters of the spline designs.
+
+[too lazy to translate reasonable assumptions back to a,b] Lets assume that
+$a, b = -1, 4$, and $k=10$. 
+
+```{r}
+x <- seq(-1, 4, length.out = 25)
+knots <- seq(-1, 4, length.out = 10)
+matplot(
+        x,
+        splines::bs(x, knots = knots[1:(length(knots) - 1)], Boundary.knots = c(knots[1], tail(knots, 1))),
+        type = c("b"), pch=1
+)
+```
+
+```{r}
+library(otsd)
+d <- BSDesign(
+  early_stopping_for_futility = 0, 
+  early_stopping_for_efficacy = 2.5, 
+  knots = seq(-1.0, 4.0, length.out = 10), 
+  weights_n2 = rep(30.0, 13),
+  weights_c2 = rep(1.5, 13),
+  degree = 3L
+)
+
+plot(seq(-1, 4, .1), n2(d, seq(-1, 4, .1)))
+plot(seq(-1, 4, .1), c2(d, seq(-1, 4, .1)))
+
+integrate(function(z1) n2(d, z1) * dnorm(z1) / (pnorm(2.5) - .5), lower = 0, upper = 2.5)
+
+p <- ConjugateNormalPrior(.3, .3)
+
+s <- ESS(p, c(0, Inf))
+
+eval(s, d)
+```
+
