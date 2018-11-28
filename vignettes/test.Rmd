@@ -49,16 +49,6 @@ parameters of the spline designs.
 $a, b = -1, 4$, and $k=10$. 
 
 ```{r}
-x <- seq(-1, 4, length.out = 50)
-knots <- seq(-1, 4, length.out = 25)
-matplot(
-        x,
-        splines::bs(x, knots = knots[1:(length(knots) - 1)], Boundary.knots = c(knots[1], tail(knots, 1))),
-        type = c("b"), pch=1
-)
-```
-
-```{r}
 p <- Prior(function(z1) dnorm(z1, .2, .3))
 
 cp <- condition(p, .3, 3)
@@ -67,42 +57,31 @@ z1 <- seq(-1, 4, .05)
 plot(z1, prior_predictive(cp, z1))
 ```
 
+
 ```{r}
-bla <- rep(30.0, 28)
-bla[12] <- 60
-bla[13] <- 0
+c1f = .0
+c1e = 3.5
+knots <- seq(c1f + .01, c1e - .01, length.out = 25)
+weights_n2 <- rep(40.0, length(knots))
+weights_n2[knots < c1f | knots > c1e] <- 1.0
+
+weights_c2 = rep(1.96, length(knots))
+weights_c2[knots < c1f] <- 100
+weights_c2[knots > c1e] <- .25
+
 d <- BSDesign(
-  n1 = 15L, 
-  early_stopping_for_futility = 0, 
-  early_stopping_for_efficacy = 2.5, 
-  knots = seq(-1.0, 4.0, length.out = 25), 
-  weights_n2 = bla,
-  weights_c2 = rep(1.5, 13),
+  n1 = 25L, 
+  early_stopping_for_futility = c1f, 
+  early_stopping_for_efficacy = c1e, 
+  knots = knots, 
+  weights_n2 = weights_n2,
+  weights_c2 = weights_c2,
   degree = 3L
 )
 
-plot(seq(-1, 4, .1), n2(d, seq(-1, 4, .1)))
-```
+plot(seq(-1, 4, .01), n2(d, seq(-1, 4, .01)))
+plot(seq(-1, 4, .01), c2(d, seq(-1, 4, .01)))
 
-```{r}
-d <- BSDesign(
-  n1 = 15L, 
-  early_stopping_for_futility = 0, 
-  early_stopping_for_efficacy = 2.5, 
-  knots = seq(-1.0, 4.0, length.out = 25), 
-  weights_n2 = rep(30.0, 28),
-  weights_c2 = rep(1.5, 28),
-  degree = 3L
-)
-
-plot(seq(-1, 4, .1), n2(d, seq(-1, 4, .1)))
-plot(seq(-1, 4, .1), c2(d, seq(-1, 4, .1)))
-
-
-
-ess <- ESS(p)
-
-eval(ess, d)
 
 ess <- ESS2(.4)
 eval(ess, d)
@@ -120,39 +99,52 @@ $CP(z_1 \mid \delta) = P[Z_2 > c_2(z_1) \mid \delta] = 1 - \Phi(c_2(z_1) - \sqrt
 
 ```{r}
 objective <- function(x) {
-  d <- BSDesign_(x[1:(3 + 2*(length(d@knots) + 3L))], d@knots, 3L)
-  eval(ess, d) + .01*sum(abs(diff(d@weights_n2)))
+  d  <- BSDesign_(c(25, c1f, c1e, x), d@knots, 3L)
+  #p1 <- (d@knots < d@early_stopping_for_futility) * (d@knots - d@early_stopping_for_futility)^2
+  #p2 <- (d@knots > d@early_stopping_for_efficacy) * (d@knots - d@early_stopping_for_efficacy)^2
+  penalty <- eval(ess, d) + .01*mean((diff(d@weights_n2))^2)
+  return(penalty)
 }
-objective(c(get_tunable_parameters(d, simplify = TRUE), 2))
+objective(tail(get_tunable_parameters(d, simplify = TRUE), -3))
 
 constraint <- function(x) {
-  d <- BSDesign_(x[1:(3 + 2*(length(d@knots) + 3L))], d@knots, 3L)
+  d  <- BSDesign_(c(25, c1f, c1e, x), d@knots, 3L)
   c(
     .8 - eval(pow, d),
     eval(alpha, d) - 0.05
   )
 }
-constraint(c(get_tunable_parameters(d, simplify = TRUE), 1.0))
+constraint(tail(get_tunable_parameters(d, simplify = TRUE), -3))
 
-lb <- numeric(length(c(get_tunable_parameters(d, simplify = TRUE), 1.0)))
+ub <- c(
+  numeric(length(knots)) + 100,
+  numeric(length(knots)) + 5
+)
+
+lb <- c(
+  numeric(length(knots)),
+  numeric(length(knots)) - 5
+)
 
 res <- nloptr::nloptr(
-  c(get_tunable_parameters(d, simplify = TRUE), 1.0),
+  tail(get_tunable_parameters(d, simplify = TRUE), -3),
   lb = lb,
+  ub = ub,
   eval_f      = objective,
   eval_g_ineq = constraint,
   opts = list(
     algorithm   = "NLOPT_LN_COBYLA",
-    xtol_rel    = 1e-4,
-    maxeval     = 1000,
+    xtol_rel    = 1e-6,
+    maxeval     = 25000,
     print_level = 2
   )
 )
 
-d2 <- BSDesign_(res$solution[1:(length(res$solution) - 1)], d@knots, 3L)
+d2 <- BSDesign_(c(25, c1f, c1e, res$solution), d@knots, 3L)
 d2
-plot(z1, n2(d2, z1) + d2@n1)
-plot(z1, c2(d2, z1))
+plot(d2@knots, d2@weights_n2 + d2@n1)
+plot(z1, n2(d2, z1) + 25, 'l')
+plot(z1, c2(d2, z1), 'l')
 
 eval(ess, d2)
 eval(pow, d2)

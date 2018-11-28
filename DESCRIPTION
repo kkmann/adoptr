@@ -19,5 +19,3 @@ Collate:
         Prior.R
         Score.R
         scores.R
-        IsoperimetricConstraint.R
-        Problem.R

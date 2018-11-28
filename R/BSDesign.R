@@ -36,11 +36,11 @@ BSDesign <- function(
 BSDesign_ <- function(
         tunable_parameters, knots, degree = 3L
 ) {
-        if (!(length(tunable_parameters) == 2*(length(knots) + degree) + 3))
+        if (!(length(tunable_parameters) == 3 + 2*(length(knots))))
                 stop("parameter length does not fit")
         # n weights
         names(tunable_parameters) <- NULL
-        n_weights <- length(knots) + degree
+        n_weights <- length(knots)
         new("BSDesign", # need to
             n1 = tunable_parameters[1],
             early_stopping_for_futility = tunable_parameters[2],
@@ -61,12 +61,13 @@ setMethod("n1",
 setMethod("n2",
         signature("BSDesign", "numeric"),
         function(d, z1, ...) {
-                tmp = splines::bs(
-                        x = z1,
-                        knots = d@knots,
-                        degree = d@degree,
-                        Boundary.knots = range(d@knots)
-                ) %*% d@weights_n2
+                # tmp = splines::bs(
+                #         x = z1,
+                #         knots = d@knots,
+                #         degree = d@degree,
+                #         Boundary.knots = range(d@knots)
+                # ) %*% d@weights_n2
+                tmp <- approx(d@knots, d@weights_n2, xout = z1, yleft = 0, yright = 0, rule = 2, method = "linear")$y
                 tmp <- ifelse(z1 <= d@early_stopping_for_futility | z1 >= d@early_stopping_for_efficacy, 0, tmp)
                 return(tmp)
         }
@@ -75,12 +76,13 @@ setMethod("n2",
 setMethod("c2",
         signature("BSDesign", "numeric"),
         function(d, z1, ...) {
-                tmp = splines::bs(
-                        x = z1,
-                        knots = d@knots,
-                        degree = d@degree,
-                        Boundary.knots = range(d@knots)
-                ) %*% d@weights_c2
+                # tmp = splines::bs(
+                #         x = z1,
+                #         knots = d@knots,
+                #         degree = d@degree,
+                #         Boundary.knots = range(d@knots)
+                # ) %*% d@weights_c2
+                tmp <- approx(d@knots, d@weights_c2, xout = z1, yleft = Inf, yright = -Inf, rule = 2, method = "linear")$y
                 tmp <- ifelse(z1 <= d@early_stopping_for_futility, Inf, tmp)
                 tmp <- ifelse(z1 >= d@early_stopping_for_efficacy, -Inf, tmp)
                 return(tmp)
@@ -107,7 +109,7 @@ setMethod("get_tunable_parameters",
                           weights_c2 = design@weights_c2
                         )
                   if (simplify) {
-                          return(do.call(c, res))
+                          return(as.numeric(do.call(c, res)))
                   } else {
                           return(res)
                   }
