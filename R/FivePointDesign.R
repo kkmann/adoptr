@@ -106,29 +106,36 @@ setMethod("as.numeric",
 # # exact for piecewise polynomials of degree 5, 3 sections -> 9 pivots
 setMethod("eval",
           signature("IntegralScore", "FivePointDesign"),
-          function(s, design, ...) {
-                  # early stopping probabilities (conditional score constant here!:
-                  poef <- predictive_cdf(s@conditional_score@prior,
-                                         design@early_stopping_for_futility, n1(design))
-                  poee <- 1 - predictive_cdf(s@conditional_score@prior,
-                                         design@early_stopping_for_efficacy, n1(design))
-                  # continuation region
-                  integrand   <- function(z1) eval(s@conditional_score, design, z1, ...) *
-                          predictive_pdf(s@conditional_score@prior, z1, n1(design), ...)
-                  weights     <- c(7, 32, 12, 32, 7)
-                  h           <- (design@early_stopping_for_efficacy - design@early_stopping_for_futility)/4
-                  mid_section <- 2/45 * h * sum(weights * integrand(get_knots(design)))
-                  # compose
-                  res <- poef * eval(
-                                s@conditional_score, design,
-                                design@early_stopping_for_futility - sqrt(.Machine$double.eps) # slightly smaller than stopping for futility
-                          ) +
-                          mid_section +
-                          poee * eval(
+          function(s, design, fast = TRUE, ...) {
+                  if (fast) {
+                          # early stopping probabilities (conditional score constant here!:
+                          poef <- predictive_cdf(s@conditional_score@prior,
+                                                 design@early_stopping_for_futility, n1(design))
+                          poee <- 1 - predictive_cdf(s@conditional_score@prior,
+                                                     design@early_stopping_for_efficacy, n1(design))
+                          # continuation region
+                          integrand   <- function(z1) eval(s@conditional_score, design, z1, ...) *
+                                  predictive_pdf(s@conditional_score@prior, z1, n1(design), ...)
+                          weights     <- c(7, 32, 12, 32, 7)
+                          h           <- (design@early_stopping_for_efficacy - design@early_stopping_for_futility)/4
+                          mid_section <- 2/45 * h * sum(weights * integrand(get_knots(design)))
+                          # compose
+                          res <- poef * eval(
                                   s@conditional_score, design,
-                                  design@early_stopping_for_efficacy + sqrt(.Machine$double.eps)
-                          )
-                 return(res)
+                                  design@early_stopping_for_futility - sqrt(.Machine$double.eps) # slightly smaller than stopping for futility
+                          ) +
+                                  mid_section +
+                                  poee * eval(
+                                          s@conditional_score, design,
+                                          design@early_stopping_for_efficacy + sqrt(.Machine$double.eps)
+                                  )
+                  } else { # !fast
+                          integrand <- function(z1) eval(s@conditional_score, design, z1, ...) *
+                                  predictive_pdf(s@conditional_score@prior, z1, n1(design), ...)
+                          z1_bounds <- get_z1_bounds(s@conditional_score@prior, mass = .99998)
+                          res <- stats::integrate(integrand, z1_bounds[1], z1_bounds[2])$value
+                  }
+                return(res)
           }
 )
 

@@ -12,7 +12,8 @@ vignette: >
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  fig.width = 8
 )
 library(otsd)
 ```
@@ -86,8 +87,8 @@ constraint <- function(x) {
 }
 constraint(as.numeric(design))
 
-ub <- c(50, 1, 4, numeric(k) + 50, numeric(k) + 5)
-lb <- c(10, -1, 1, numeric(k) + 2, numeric(k) - 5)
+ub <- c(50, 1, 4, numeric(5) + 50, numeric(5) + 5)
+lb <- c(10, -1, 1, numeric(5) + 2, numeric(5) - 5)
 
 res <- nloptr::nloptr(
   as.numeric(design),
@@ -98,21 +99,38 @@ res <- nloptr::nloptr(
   opts = list(
     algorithm   = "NLOPT_LN_COBYLA",
     xtol_rel    = 1e-4,
-    maxeval     = 2500,
-    print_level = 2
+    maxeval     = 2500
   )
 )
+```
 
+Turn optimization result into usable object and plot
+
+```{r}
 d2 <- update(design, res$solution)
-d2
 par(mfrow = c(1, 2))
 plot(z1, n(d2, z1), 'l', ylim = c(0, max(n(d2, z1))))
 plot(z1, c2(d2, z1), 'l')
+```
 
+Compute the scores using fast internal representation (5-point Newton-Cotes).
+
+```{r}
 do.call(sprintf, 
         c(
           list("ESS: %.1f, power: %.3f, maximal type one error rate: %.3f"), 
-          lapply(list(ess, pow, toer), function(s) eval(s, d2))
+          lapply(list(ess, pow, toer), function(s) eval(s, d2, fast = TRUE))
+        )
+)
+```
+
+Compute the scores using adaptive quadrature rules (increased precision but slow).
+
+```{r}
+do.call(sprintf, 
+        c(
+          list("ESS: %.1f, power: %.3f, maximal type one error rate: %.3f"), 
+          lapply(list(ess, pow, toer), function(s) eval(s, d2, fast = FALSE))
         )
 )
 ```
