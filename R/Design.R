@@ -15,5 +15,3 @@ setGeneric("c2",
 setGeneric("conditional_power",
            function(d, z1, delta, ...) standardGeneric("conditional_power")
 )
-
-setGeneric("get_tunable_parameters", function(design, simplify = FALSE, ...) standardGeneric("get_tunable_parameters"))

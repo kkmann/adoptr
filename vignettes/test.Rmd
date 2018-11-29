@@ -91,10 +91,10 @@ objective <- function(x) {
   points(get_knots(d), n2(d, get_knots(d)) + n1(d))
   return(
     eval(ess, d) + 
-      .01 * abs(diff(n2(d, get_knots(d)))) + 
-      .01 * diff(n2(d, get_knots(d)))^2 +
-      abs(diff(c2(d, get_knots(d)))) + 
-      diff(c2(d, get_knots(d)))^2
+       .1 * mean(abs(diff(n2(d, get_knots(d))))) + 
+       .1 * mean(diff(n2(d, get_knots(d)))^2) +
+      1. * mean(abs(diff(c2(d, get_knots(d))))) + 
+      1. * mean(diff(c2(d, get_knots(d)))^2)
   )
 }
 objective(as.numeric(design))
