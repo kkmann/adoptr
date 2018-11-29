@@ -6,6 +6,8 @@ setGeneric("posterior", function(dist, z1, n1, ...) standardGeneric("posterior")
 
 setGeneric("predictive_pdf", function(dist, z1, n1, ...) standardGeneric("predictive_pdf"))
 
+setGeneric("predictive_cdf", function(dist, z1, n1, ...) standardGeneric("predictive_cdf"))
+
 setGeneric("expectation", function(dist, f, ...) standardGeneric("expectation"))
 
 setGeneric("get_z1_bounds", function(dist, ...) standardGeneric("get_z1_bounds"))
@@ -59,6 +61,19 @@ setMethod("predictive_pdf",
                   return(res)
           }
 ) # predictive_pdf
+
+
+setMethod("predictive_cdf",
+          signature("PointMassDistribution", "numeric"),
+          function(dist, z1, n1, ...) {
+                  k   <- length(dist@theta)
+                  res <- numeric(length(z1))
+                  for (i in 1:k) {
+                          res <- res + dist@mass[i] * pnorm(z1, mean = sqrt(n1) * dist@theta, sd = 1)
+                  }
+                  return(res)
+          }
+) # predictive_cdf
 
 
 setMethod("posterior",

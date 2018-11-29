@@ -20,12 +20,12 @@ library(otsd)
 some initial design
 
 ```{r}
-n1     <- 20
+n1     <- 25
 c1f    <-   .0
 c1e    <-  2.5
 k      <-  5
-n2_piv <- rep(30.0, k)
-c2_piv <- rep( 2.0, k)
+n2_piv <- rep(40.0, k)
+c2_piv <- rep( 1.96, k)
 
 design <- BSDesign(
   n1 = n1, 
@@ -80,8 +80,6 @@ eval(toer, design)
 
 [ToDo: extend to continuous priors]
 
-
-
 # Define objective
 
 ```{r}
@@ -92,9 +90,7 @@ objective <- function(x) {
   return(
     eval(ess, d) + 
        .1 * mean(abs(diff(n2(d, get_knots(d))))) + 
-       .1 * mean(diff(n2(d, get_knots(d)))^2) +
-      1. * mean(abs(diff(c2(d, get_knots(d))))) + 
-      1. * mean(diff(c2(d, get_knots(d)))^2)
+       .01 * mean(diff(n2(d, get_knots(d)))^2)
   )
 }
 objective(as.numeric(design))
@@ -103,7 +99,9 @@ constraint <- function(x) {
   d  <- update(design, x)
   c(
     .8 - eval(pow, d),
-    eval(toer, d) - 0.05
+    eval(toer, d) - 0.05,
+    x[2] - x[3] + sqrt(.Machine$double.eps),
+    diff(d@weights_c2)
   )
 }
 constraint(as.numeric(design))

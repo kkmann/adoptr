@@ -1,0 +1,118 @@
+---
+title: "Sample workflow"
+author: "Kevin Kunzmann"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+library(otsd)
+```
+
+some initial design
+
+```{r}
+n1     <- 25
+c1f    <-   .0
+c1e    <-  2.0
+n2_piv <- rep(40.0, 5)
+c2_piv <- rep( 1.96, 5)
+
+design <- FivePointDesign(
+  n1 = n1, 
+  early_stopping_for_futility = c1f, 
+  early_stopping_for_efficacy = c1e, 
+  n2_pivots = n2_piv,
+  c2_pivots = c2_piv
+)
+
+z1 <- seq(-2, 4, .01)
+par(mfrow = c(1, 2))
+plot(z1, n(design, z1), 'l', ylim = c(0, max(n(design, z1))))
+plot(z1, c2(design, z1), 'l')
+```
+
+# Define scores 
+
+```{r}
+# define null and alternative as point mass distributions
+null        <- PointMassDistribution(.0, 1)
+alternative <- PointMassDistribution(.4, 1)
+
+ess  <- integrate(SampleSize(alternative))
+cp   <- ConditionalPower(alternative)
+pow  <- integrate(cp)
+toer <- integrate(ConditionalPower(null))
+
+do.call(sprintf, 
+        c(
+          list("ESS: %.1f, power: %.3f, maximal type one error rate: %.3f"), 
+          lapply(list(ess, pow, toer), function(s) eval(s, design))
+        )
+)
+```
+
+# Define objective
+
+```{r}
+objective <- function(x) {
+  d  <- update(design, x)
+  # plot(z1, n2(d, z1) + n1(d), 'l', ylim = c(0, 75))
+  # points(get_knots(d), n2(d, get_knots(d)) + n1(d))
+  return(
+    eval(ess, d) + 
+       #.1 * mean(abs(diff(n2(d, get_knots(d))))) + 
+       .001 * mean(diff(n2(d, get_knots(d)))^2)
+  )
+}
+objective(as.numeric(design))
+
+constraint <- function(x) {
+  d  <- update(design, x)
+  c(
+    .8 - eval(pow, d),
+    eval(toer, d) - 0.05,
+    x[2] - x[3] + .1,
+    diff(c2(d, get_knots(d)))
+  )
+}
+constraint(as.numeric(design))
+
+ub <- c(50, 1, 4, numeric(k) + 50, numeric(k) + 5)
+lb <- c(10, -1, 1, numeric(k) + 2, numeric(k) - 5)
+
+res <- nloptr::nloptr(
+  as.numeric(design),
+  lb = lb,
+  ub = ub,
+  eval_f      = objective,
+  eval_g_ineq = constraint,
+  opts = list(
+    algorithm   = "NLOPT_LN_COBYLA",
+    xtol_rel    = 1e-4,
+    maxeval     = 2500,
+    print_level = 2
+  )
+)
+
+d2 <- update(design, res$solution)
+d2
+par(mfrow = c(1, 2))
+plot(z1, n(d2, z1), 'l', ylim = c(0, max(n(d2, z1))))
+plot(z1, c2(d2, z1), 'l')
+
+do.call(sprintf, 
+        c(
+          list("ESS: %.1f, power: %.3f, maximal type one error rate: %.3f"), 
+          lapply(list(ess, pow, toer), function(s) eval(s, d2))
+        )
+)
+```

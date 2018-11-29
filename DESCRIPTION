@@ -17,5 +17,6 @@ Collate:
         Prior.R
         Design.R
         Score.R
-        BSDesign.R
         scores.R
+        BSDesign.R
+        FivePointDesign.R
