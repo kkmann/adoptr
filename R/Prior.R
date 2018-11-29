@@ -1,34 +1,79 @@
-setClass("Prior", representation(p = "function"))
+setClass("Distribution")
 
-Prior <- function(p) {
-        mass <- integrate(p, -3, 3)$value
-        if (mass < .99) warning(sprintf("prior mass in (-3, 3) is low (%.2f)", mass))
-        new("Prior", p = p)
+setGeneric("condition", function(dist, lower, upper, ...) standardGeneric("condition"))
+
+setGeneric("posterior", function(dist, z1, n1, ...) standardGeneric("posterior"))
+
+setGeneric("predictive_pdf", function(dist, z1, n1, ...) standardGeneric("predictive_pdf"))
+
+setGeneric("expectation", function(dist, f, ...) standardGeneric("expectation"))
+
+setGeneric("get_z1_bounds", function(dist, ...) standardGeneric("get_z1_bounds"))
+
+
+
+setClass("PointMassDistribution",
+         representation(
+                 theta = "numeric",
+                 mass  = "numeric"
+         ),
+         contains = "Distribution"
+)
+
+
+
+PointMassDistribution <- function(theta, mass) {
+        if (sum(mass) != 1)
+                stop("mass must sum to one")
+        new("PointMassDistribution", theta = theta, mass = mass)
 }
 
-setGeneric("condition", function(prior, lower, upper, ...) standardGeneric("condition"))
-
-setMethod("condition",
-          signature("Prior", "numeric", "numeric"),
-          function(prior, lower, upper, abs.error.tol = 1e-4, ...) {
-                  mass <- integrate(prior@p, lower, upper)
-                  if (mass$abs.error > abs.error.tol)
-                          warning(sprintf("absolute error of %.2e exceeds tolerance %.2e", mass$abs.error, abs.error.tol))
-                  p <- function(delta) ifelse(delta >= lower & delta < upper, 1, 0) * prior@p(delta) / mass$value
-                  new("Prior", p = p)
+setMethod("get_z1_bounds",
+          signature("PointMassDistribution"),
+          function(dist, lower, mass = .99998, ...) {
+                  return(c(
+                        min(dist@theta) + qnorm((1 - mass) / 2),
+                        max(dist@theta) - qnorm((1 - mass) / 2)
+                  ))
           }
 ) # condition
 
-setGeneric("prior_predictive", function(prior, z1, ...) standardGeneric("prior_predictive"))
-
-setMethod("prior_predictive",
-          signature("Prior", "numeric"),
-          function(prior, z1, rel.error.tol = 1e-2, lower = -Inf, upper = Inf, ...) {
-                grid <- expand.grid(z1 = z1, delta = seq(-3, 3, .01))
-                unnormalized <- rowSums(matrix(
-                        apply(grid, 1, function(x) dnorm(x[1], mean = x[2]) * prior@p(x[2])),
-                        nrow = length(z1)
-                ))
-                return(unnormalized / sum(unnormalized))
+setMethod("condition",
+          signature("PointMassDistribution", "numeric", "numeric"),
+          function(dist, lower, upper, ...) {
+                  idx  <- (dist@theta >= lower) & (dist@theta <= upper)
+                  return(PointMassDistribution(
+                          dist@theta[idx], dist@mass[idx]/sum(dist@mass[idx])
+                  ))
           }
-)
+) # condition
+
+setMethod("predictive_pdf",
+          signature("PointMassDistribution", "numeric"),
+          function(dist, z1, n1, ...) {
+                  k   <- length(dist@theta)
+                  res <- numeric(length(z1))
+                  for (i in 1:k) {
+                          res <- res + dist@mass[i] * dnorm(z1, mean = sqrt(n1) * dist@theta, sd = 1)
+                  }
+                  return(res)
+          }
+) # predictive_pdf
+
+
+setMethod("posterior",
+          signature("PointMassDistribution", "numeric"),
+          function(dist, z1, n1, ...) {
+                  mass <- dist@mass * dnorm(z1, mean = sqrt(n1) * dist@theta, sd = 1)
+                  mass <- mass / sum(mass) # normalize
+                  return(PointMassDistribution(dist@theta, mass))
+          }
+) # posterior
+
+setMethod("expectation",
+          signature("PointMassDistribution", "function"),
+          function(dist, f, ...) {
+                  ff <- sapply(dist@theta, f, ...)
+                  return(sum(dist@mass * ff))
+          }
+) # expectation

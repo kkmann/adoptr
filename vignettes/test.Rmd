@@ -1,6 +1,6 @@
 ---
-title: "Vignette Title"
-author: "Vignette Author"
+title: "Sample workflow"
+author: "Kevin Kunzmann"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -17,138 +17,129 @@ knitr::opts_chunk$set(
 library(otsd)
 ```
 
-The core element of this package is the 'BSDesign' class (BS for basis spline,
-not bullshit!) which implements a representation of a two-stage design in terms
-of a cubic spline basis.
-
-To that end we define an abstract design $\mathcal{D}$ as a tuple 
-$\big(n_1, b_e, b_f, c_2(\cdot), n_2(\cdot)\big)$ where $n_2$ and $c_2$ map from 
-observed values of a test statistic $Z_1=z_1$ to a stage-two sample size and critical 
-value for rejcting the null hypothesis respectively ($Z_2>c(Z_1)$).
-For sake of consistency $c_2(z_1\leq b_f)=\inf$, $c_2(z_1> b_f)=\inf$ and
-$n_2(z_1\not\in(b_f, b_e]) = 0$, $b_f\leq b_e$ (if both are equal the design has
-only one stage).
-
-We will now consider a basis-function variant of the two stage design $D$ where
-both $c_2$ and $n_2$ are represented as weight vectors for a common spline basis
-with a finite number of knots.
-Assuming both a minimal interesting maximal type one error rate, and a maximal
-interesting power, as well as a minimal stage one sample size, this
-effectively limits the support of $c_2,n_2$ (i.e. the stopping boundaries).
-For any such set of boundary constraints, a class of designs with maximal
-support $[a, b]$ is given.
-This allows the specification of an equidistant set of spline knots with 
-boundary points $a,b$.
-Let $\mathcal{B}_{a,b}^k$ be the corresponding cubic spline basis, then
-$\widetilde{\mathcal{D}}_{\mathcal{B}_{a,b}^k}=(n_1, b_e, b_f, \beta_c, \beta_n)$ defines a two-stage with respect to the corresponding basis.
-
-For a fixed basis, any objective function can thus be minimized over the 2k+3
-parameters of the spline designs.
-
-[too lazy to translate reasonable assumptions back to a,b] Lets assume that
-$a, b = -1, 4$, and $k=10$. 
+some initial design
 
 ```{r}
-p <- Prior(function(z1) dnorm(z1, .2, .3))
+n1     <- 20
+c1f    <-   .0
+c1e    <-  2.5
+k      <-  5
+n2_piv <- rep(30.0, k)
+c2_piv <- rep( 2.0, k)
 
-cp <- condition(p, .3, 3)
-
-z1 <- seq(-1, 4, .05)
-plot(z1, prior_predictive(cp, z1))
-```
-
-
-```{r}
-c1f = .0
-c1e = 3.5
-knots <- seq(c1f + .01, c1e - .01, length.out = 25)
-weights_n2 <- rep(40.0, length(knots))
-weights_n2[knots < c1f | knots > c1e] <- 1.0
-
-weights_c2 = rep(1.96, length(knots))
-weights_c2[knots < c1f] <- 100
-weights_c2[knots > c1e] <- .25
-
-d <- BSDesign(
-  n1 = 25L, 
+design <- BSDesign(
+  n1 = n1, 
   early_stopping_for_futility = c1f, 
   early_stopping_for_efficacy = c1e, 
-  knots = knots, 
-  weights_n2 = weights_n2,
-  weights_c2 = weights_c2,
-  degree = 3L
+  weights_n2 = n2_piv,
+  weights_c2 = c2_piv,
+  n_knots    = 5L
 )
 
-plot(seq(-1, 4, .01), n2(d, seq(-1, 4, .01)))
-plot(seq(-1, 4, .01), c2(d, seq(-1, 4, .01)))
-
-
-ess <- ESS2(.4)
-eval(ess, d)
-
-pow <- Power(.4)
-eval(pow, d)
-
-alpha <- Power(.0)
-eval(alpha, d)
+z1 <- seq(-2, 4, .01)
+plot(z1, n2(design, z1), 'l')
+plot(z1, c2(design, z1), 'l')
 ```
 
-$Z_i|\delta\sim N(\sqrt{n_i}\delta, 1)$
 
-$CP(z_1 \mid \delta) = P[Z_2 > c_2(z_1) \mid \delta] = 1 - \Phi(c_2(z_1) - \sqrt{n_2}\delta)$
+```{r}
+# define null and alternative as point mass distributions
+null        <- PointMassDistribution(.0, 1)
+alternative <- PointMassDistribution(.4, 1)
+```
+
+'SampleSize' is a conditional score returning, well, the sample size ;)
+```{r}
+ss <- SampleSize(alternative)
+plot(z1, eval(ss, design, z1))
+```
+
+We can 'integrate' any conditional score to eliminate the dependency on Z1
+(internally done via adaptive gauss quad).
+
+```{r}
+ess <- integrate(SampleSize(alternative))
+eval(ess, design)
+```
+
+Same thing works for (conditional) power
+
+```{r}
+cp  <- ConditionalPower(alternative)
+plot(z1, eval(cp, design, z1))
+pow <- integrate(cp)
+eval(pow, design)
+```
+
+type one error rate works the same
+
+```{r}
+toer <- integrate(ConditionalPower(null))
+eval(toer, design)
+```
+
+[ToDo: extend to continuous priors]
+
+
+
+# Define objective
 
 ```{r}
 objective <- function(x) {
-  d  <- BSDesign_(c(25, c1f, c1e, x), d@knots, 3L)
-  #p1 <- (d@knots < d@early_stopping_for_futility) * (d@knots - d@early_stopping_for_futility)^2
-  #p2 <- (d@knots > d@early_stopping_for_efficacy) * (d@knots - d@early_stopping_for_efficacy)^2
-  penalty <- eval(ess, d) + .01*mean((diff(d@weights_n2))^2)
-  return(penalty)
-}
-objective(tail(get_tunable_parameters(d, simplify = TRUE), -3))
-
-constraint <- function(x) {
-  d  <- BSDesign_(c(25, c1f, c1e, x), d@knots, 3L)
-  c(
-    .8 - eval(pow, d),
-    eval(alpha, d) - 0.05
+  d  <- update(design, x) # identity = update(d, as.numeric(d)) 
+  plot(z1, n2(d, z1) + n1(d), 'l', ylim = c(0, 75))
+  points(get_knots(d), n2(d, get_knots(d)) + n1(d))
+  return(
+    eval(ess, d) + 
+      .01 * abs(diff(n2(d, get_knots(d)))) + 
+      .01 * diff(n2(d, get_knots(d)))^2 +
+      abs(diff(c2(d, get_knots(d)))) + 
+      diff(c2(d, get_knots(d)))^2
   )
 }
-constraint(tail(get_tunable_parameters(d, simplify = TRUE), -3))
+objective(as.numeric(design))
+
+constraint <- function(x) {
+  d  <- update(design, x)
+  c(
+    .8 - eval(pow, d),
+    eval(toer, d) - 0.05
+  )
+}
+constraint(as.numeric(design))
 
 ub <- c(
-  numeric(length(knots)) + 100,
-  numeric(length(knots)) + 5
+  40,
+  1,
+  3.5,
+  numeric(k) + 50,
+  numeric(k) + 5
 )
 
 lb <- c(
-  numeric(length(knots)),
-  numeric(length(knots)) - 5
+  10,
+  -1,
+  1.25,
+  numeric(k) + 5,
+  numeric(k) - 5
 )
 
 res <- nloptr::nloptr(
-  tail(get_tunable_parameters(d, simplify = TRUE), -3),
+  as.numeric(design),
   lb = lb,
   ub = ub,
   eval_f      = objective,
   eval_g_ineq = constraint,
   opts = list(
     algorithm   = "NLOPT_LN_COBYLA",
-    xtol_rel    = 1e-6,
-    maxeval     = 25000,
+    xtol_rel    = 1e-4,
+    maxeval     = 250,
     print_level = 2
   )
 )
 
-d2 <- BSDesign_(c(25, c1f, c1e, res$solution), d@knots, 3L)
+d2 <- update(design, res$solution)
 d2
-plot(d2@knots, d2@weights_n2 + d2@n1)
-plot(z1, n2(d2, z1) + 25, 'l')
+plot(z1, n2(d2, z1) + n1(design), 'l')
 plot(z1, c2(d2, z1), 'l')
-
-eval(ess, d2)
-eval(pow, d2)
-eval(alpha, d2)
-
-test <- function(delta) eval(Power(delta), d2)
 ```

@@ -14,8 +14,9 @@ Suggests:
         rmarkdown
 VignetteBuilder: knitr
 Collate: 
-        Design.R
-        BSDesign.R
         Prior.R
+        Design.R
         Score.R
+        ConditionalScore.R
+        BSDesign.R
         scores.R

@@ -1,24 +1,60 @@
-setClass("ESS", representation(prior = "Prior"), contains = "Score")
+setClass("SampleSize", contains = "ConditionalScore")
 
-ESS <- function(prior) {
-        new("ESS", prior = prior)
+SampleSize <- function(prior) {
+        new("SampleSize", prior = prior)
 }
 
-setMethod("eval", signature("ESS", "Design"), function(s, design, ...) {
-        mass <- cubature::hcubature(
-                f = function(x) dnorm(x[1], mean = x[2], sd = 1) * s@prior@p(x[2]),
-                lowerLimit = c(-1, -1),
-                upperLimit = c(4, 1),
-                absError   = 1e-3
-        )
-        res <- cubature::hcubature(
-                f = function(x) n2(design, x[1]) * dnorm(x[1], mean = x[2], sd = 1) * s@prior@p(x[2]),
-                lowerLimit = c(-1, -1),
-                upperLimit = c(4, 1),
-                absError   = .1
-        )$integral / mass$integral
-        return(res + n1(design))
-})
+setMethod("eval",
+          signature("SampleSize", "Design"),
+          function(s, design, z1, ...) n2(design, z1) + n1(design)
+)
+
+
+
+
+setClass("ConditionalPower", contains = "ConditionalScore")
+
+ConditionalPower <- function(prior) {
+        new("ConditionalPower", prior = prior)
+}
+
+setMethod("eval",
+          signature("ConditionalPower", "Design"),
+          function(s, design, z1, ...) {
+                res <- sapply(z1, function(z1) expectation(
+                                posterior(s@prior, z1, n1(design), ...),
+                                function(theta) conditional_power(design, z1, theta)
+                        )
+                )
+                return(res)
+          }
+)
+
+
+
+
+
+
+
+# ESS <- function(prior) {
+#         new("ESS", prior = prior)
+# }
+#
+# setMethod("eval", signature("ESS", "Design"), function(s, design, ...) {
+#         mass <- cubature::hcubature(
+#                 f = function(x) dnorm(x[1], mean = x[2], sd = 1) * s@prior@p(x[2]),
+#                 lowerLimit = c(-1, -1),
+#                 upperLimit = c(4, 1),
+#                 absError   = 1e-3
+#         )
+#         res <- cubature::hcubature(
+#                 f = function(x) n2(design, x[1]) * dnorm(x[1], mean = x[2], sd = 1) * s@prior@p(x[2]),
+#                 lowerLimit = c(-1, -1),
+#                 upperLimit = c(4, 1),
+#                 absError   = .1
+#         )$integral / mass$integral
+#         return(res + n1(design))
+# })
 
 setClass("ESS2", representation(delta = "numeric"), contains = "Score")
 
