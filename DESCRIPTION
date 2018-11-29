@@ -17,6 +17,5 @@ Collate:
         Prior.R
         Design.R
         Score.R
-        ConditionalScore.R
         BSDesign.R
         scores.R
