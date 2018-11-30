@@ -123,6 +123,8 @@ do.call(sprintf,
 
 
 okay, so what changes when we use a continuous prior instead?
+
+
 ```{r}
 f <- function(x) dnorm(x, .5, .2)
 limits <- c(0, 1)
@@ -148,6 +150,8 @@ do.call(sprintf,
 )
 ```
 
+CP power constraints!
+
 ```{r}
 objective <- function(x) {
   d  <- update(design, x)
@@ -160,8 +164,9 @@ constraint <- function(x) {
   c(
     .8 - eval(pow, d),
     eval(toer, d) - 0.05,
-    x[2] - x[3] + .1,
-    diff(c2(d, get_knots(d)))
+    x[2] - x[3] + .25,
+    diff(c2(d, get_knots(d))),
+    .7 - eval(cp, d, get_knots(d))
   )
 }
 constraint(as.numeric(design))
@@ -183,7 +188,8 @@ res <- nloptr::nloptr(
 )
 
 d2 <- update(design, res$solution)
-par(mfrow = c(1, 2))
+par(mfrow = c(1, 3))
 plot(z1, n(d2, z1), 'l', ylim = c(0, max(n(d2, z1))))
 plot(z1, c2(d2, z1), 'l')
+plot(z1, eval(cp, d2, z1), 'l')
 ```
