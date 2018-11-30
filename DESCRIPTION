@@ -16,6 +16,8 @@ Suggests:
     rmarkdown,
     testthat,
     covr
+Depends:
+    nloptr
 VignetteBuilder: knitr
 Collate: 
         otsd.R
