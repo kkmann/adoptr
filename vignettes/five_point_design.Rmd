@@ -29,8 +29,8 @@ c2_piv <- rep( 1.96, 5)
 
 design <- FivePointDesign(
   n1 = n1, 
-  early_stopping_for_futility = c1f, 
-  early_stopping_for_efficacy = c1e, 
+  c1f = c1f, 
+  c1e = c1e, 
   n2_pivots = n2_piv,
   c2_pivots = c2_piv
 )
