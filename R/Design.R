@@ -1,6 +1,17 @@
 setClass("Design")
 
 
+setGeneric("early_stopping_bounds", function(d, ...) standardGeneric("early_stopping_bounds"))
+setMethod("early_stopping_bounds", signature("Design"),
+    function(d, ...) {
+        tryCatch(
+            c(d@c1f, d@c1e),
+            error = function(e) {
+                stop("not implemented")
+            }
+        )
+    })
+
 
 setGeneric("n1", function(d, ...) standardGeneric("n1"))
 
