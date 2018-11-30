@@ -53,6 +53,8 @@ cp   <- ConditionalPower(alternative)
 pow  <- integrate(cp)
 toer <- integrate(ConditionalPower(null))
 
+smth <- Smoothness_n2()
+
 do.call(sprintf, 
         c(
           list("ESS: %.1f, power: %.3f, maximal type one error rate: %.3f"), 
@@ -66,13 +68,7 @@ do.call(sprintf,
 ```{r}
 objective <- function(x) {
   d  <- update(design, x)
-  # plot(z1, n2(d, z1) + n1(d), 'l', ylim = c(0, 75))
-  # points(get_knots(d), n2(d, get_knots(d)) + n1(d))
-  return(
-    eval(ess, d) + 
-       #.1 * mean(abs(diff(n2(d, get_knots(d))))) + 
-       .001 * mean(diff(n2(d, get_knots(d)))^2)
-  )
+  eval(ess, d) + .001*eval(smth, d)
 }
 objective(as.numeric(design))
 
@@ -102,11 +98,7 @@ res <- nloptr::nloptr(
     maxeval     = 2500
   )
 )
-```
 
-Turn optimization result into usable object and plot
-
-```{r}
 d2 <- update(design, res$solution)
 par(mfrow = c(1, 2))
 plot(z1, n(d2, z1), 'l', ylim = c(0, max(n(d2, z1))))
@@ -119,7 +111,7 @@ Compute the scores using fast internal representation (5-point Newton-Cotes).
 do.call(sprintf, 
         c(
           list("ESS: %.1f, power: %.3f, maximal type one error rate: %.3f"), 
-          lapply(list(ess, pow, toer), function(s) eval(s, d2, fast = TRUE))
+          lapply(list(ess, pow, toer), function(s) eval(s, d2, specific = TRUE))
         )
 )
 ```
@@ -130,7 +122,7 @@ Compute the scores using adaptive quadrature rules (increased precision but slow
 do.call(sprintf, 
         c(
           list("ESS: %.1f, power: %.3f, maximal type one error rate: %.3f"), 
-          lapply(list(ess, pow, toer), function(s) eval(s, d2, fast = FALSE))
+          lapply(list(ess, pow, toer), function(s) eval(s, d2, specific = FALSE))
         )
 )
 ```

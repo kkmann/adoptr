@@ -66,4 +66,4 @@ setMethod(".eval_specific", signature("IntegralScore", "FivePointDesign"),
     })
 
 setMethod(".eval_specific", signature("Smoothness_n2", "FivePointDesign"),
-          function(s, design, ...) mean(diff(design@n2_pivots)^2) )
+          function(s, design, ...) mean((diff(design@n2_pivots) / diff(get_knots(design)))^2) )

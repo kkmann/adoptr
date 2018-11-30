@@ -32,13 +32,14 @@ setMethod("eval",
 
 
 # smoothness terms must be implemented 'by-hand' since they are independent of any
-# distributions!
+# distributions! (cannot be handeld by 'integrate')
+# TODO, this can probably be solved in a nicer way ;)
 setClass("Smoothness_n2", representation(
         h = "numeric"
     ),
     contains = "IntegralScore")
 
-Smoothness_n2 <- function(prior, h = sqrt(.Machine$double.eps)) {
+Smoothness_n2 <- function(h = sqrt(.Machine$double.eps)) {
     new("Smoothness_n2", h = h)
 }
 
@@ -49,11 +50,11 @@ setMethod("eval", signature("Smoothness_n2", "Design"),
               } else { # use generic approach
                   # integrand is the finite difference approximation of the
                   # squared derivative
-                  integrand <- function(z1) (n2(design, z1 + s@h/2) - n2(design, z1 - s@h/2))^2
-                  z1_bounds <- tryCatch(
-                      early_stopping_bounds(design, ...),
+                  integrand <- function(z1) ((n2(design, z1 + s@h/2) - n2(design, z1 - s@h/2))/s@h)^2
+                  z1_bounds <- tryCatch( # only evaluate n2 within continuation region!
+                      early_stopping_bounds(design, ...) + c(s@h, -s@h),
                       error = function(e) { # assume no early stopping, integrate over the entire range!
-                          qnorm(.0005, .9995, mean = bounds(s@conditional_score@prior) * n1(design), sd = 1)
+                          qnorm(c(.0005, .9995), mean = bounds(s@conditional_score@prior) * n1(design), sd = 1)
                       }
                   )
                   # use adaptive quadrature to integrate - only relies on generic interface
