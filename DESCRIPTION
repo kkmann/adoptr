@@ -10,8 +10,9 @@ License: What license is it under?
 Encoding: UTF-8
 LazyData: true
 Suggests: 
-        knitr,
-        rmarkdown
+    knitr,
+    rmarkdown,
+    testthat
 VignetteBuilder: knitr
 Collate: 
         Prior.R
