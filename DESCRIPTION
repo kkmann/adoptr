@@ -15,6 +15,7 @@ Suggests:
     testthat
 VignetteBuilder: knitr
 Collate: 
+        otsd.R
         Prior.R
         PointMassPrior.R
         ContinuousPrior.R
@@ -23,3 +24,4 @@ Collate:
         IntegralScore.R
         scores.R
         FivePointDesign.R
+RoxygenNote: 6.1.1
