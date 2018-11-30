@@ -38,7 +38,7 @@ setMethod("predictive_pdf", signature("PointMassPrior", "numeric"),
         k   <- length(prior@theta)
         res <- numeric(length(z1))
         for (i in 1:k) { # TODO: careful, assumed null hypothesis = 0
-            res <- res + prior@mass[i] * dnorm(z1, mean = sqrt(n1) * prior@theta, sd = 1)
+            res <- res + prior@mass[i] * dnorm(z1, mean = sqrt(n1) * prior@theta[i], sd = 1)
         }
         return(res)
     })
@@ -48,7 +48,7 @@ setMethod("predictive_cdf", signature("PointMassPrior", "numeric"),
         k   <- length(prior@theta)
         res <- numeric(length(z1))
         for (i in 1:k) { # TODO: careful, assumed null hypothesis = 0
-            res <- res + prior@mass[i] * pnorm(z1, mean = sqrt(n1) * prior@theta, sd = 1)
+            res <- res + prior@mass[i] * pnorm(z1, mean = sqrt(n1) * prior@theta[i], sd = 1)
         }
         return(res)
     })
