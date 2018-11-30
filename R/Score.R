@@ -1,4 +1,4 @@
-setClass("ConditionalScore", representation(prior = "Distribution"))
+setClass("ConditionalScore", representation(prior = "Prior"))
 
 # evaluate a score
 setGeneric("eval", function(s, design, ...) standardGeneric("eval"))

@@ -15,8 +15,9 @@ Suggests:
 VignetteBuilder: knitr
 Collate: 
         Prior.R
+        PointMassPrior.R
+        ContinuousPrior.R
         Design.R
         Score.R
         scores.R
-        BSDesign.R
         FivePointDesign.R
