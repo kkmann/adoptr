@@ -27,3 +27,5 @@ Collate:
         scores.R
         FivePointDesign.R   
 RoxygenNote: 6.1.1
+BugReports: https://github.com/kkmann/otsd/issues
+URL: https://github.com/kkmann/otsd
