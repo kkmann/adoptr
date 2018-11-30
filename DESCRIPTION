@@ -19,6 +19,7 @@ Collate:
         PointMassPrior.R
         ContinuousPrior.R
         Design.R
-        Score.R
+        ConditionalScore.R
+        IntegralScore.R
         scores.R
         FivePointDesign.R
