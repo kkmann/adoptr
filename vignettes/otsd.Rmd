@@ -24,10 +24,11 @@ some initial design
 n1     <- 25
 c1f    <-   .0
 c1e    <-  2.0
-n2_piv <- rep(40.0, 5)
-c2_piv <- rep( 1.96, 5)
+number_knots <- 7
+n2_piv <- rep(40.0, number_knots)
+c2_piv <- rep(1.96, number_knots)
 
-design <- FivePointDesign(n1, c1f, c1e, n2_piv, c2_piv)
+design <- GQDesign(n1, c1f, c1e, n2_piv, c2_piv, number_knots)
 
 z1 <- seq(-2, 4, .01)
 par(mfrow = c(1, 2))
@@ -77,11 +78,11 @@ constraint <- function(x) {
 }
 constraint(as.numeric(design))
 
-ub <- c(50, 1, 4, numeric(5) + 50, numeric(5) + 5)
-lb <- c(10, -1, 1, numeric(5) + 2, numeric(5) - 5)
+ub <- c(50, 1, 4, numeric(number_knots) + 50, numeric(number_knots) + 5)
+lb <- c(10, -1, 1, numeric(number_knots) + 2, numeric(number_knots) - 5)
 
 res <- nloptr::nloptr(
-  as.numeric(design),
+  x0 = as.numeric(design),
   lb = lb,
   ub = ub,
   eval_f      = objective,
@@ -99,7 +100,7 @@ plot(z1, n(d2, z1), 'l', ylim = c(0, max(n(d2, z1))))
 plot(z1, c2(d2, z1), 'l')
 ```
 
-Compute the scores using fast internal representation (5-point Newton-Cotes).
+Compute the scores using fast internal representation (Gauss quadrature).
 
 ```{r}
 do.call(sprintf, 
@@ -171,8 +172,8 @@ constraint <- function(x) {
 }
 constraint(as.numeric(design))
 
-ub <- c(50, 1, 4, numeric(5) + 50, numeric(5) + 5)
-lb <- c(10, -1, 1, numeric(5) + 2, numeric(5) - 5)
+ub <- c(50, 1, 4, numeric(number_knots) + 50, numeric(number_knots) + 5)
+lb <- c(10, -1, 1, numeric(number_knots) + 2, numeric(number_knots) - 5)
 
 res <- nloptr::nloptr(
   as.numeric(design),

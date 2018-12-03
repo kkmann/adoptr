@@ -28,7 +28,8 @@ Collate:
         ConditionalScore.R
         IntegralScore.R
         scores.R
-        FivePointDesign.R   
+        FivePointDesign.R 
+	GQDesign.R  
 RoxygenNote: 6.1.1
 BugReports: https://github.com/kkmann/otsd/issues
 URL: https://github.com/kkmann/otsd
