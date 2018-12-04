@@ -130,17 +130,17 @@ okay, so what changes when we use a continuous prior instead?
 ```{r}
 f <- function(x) dnorm(x, .5, .2)
 limits <- c(0, 1)
-z <- stats::integrate(f, limits[1], limits[2], abs.tol = .0001)$value
+z   <- stats::integrate(f, limits[1], limits[2], abs.tol = .0001)$value
 pdf <- function(x) f(x) / z
 alternative <- ContinuousPrior(pdf, limits)
 
-ess  <- integrate(ConditionalSampleSize(alternative))
+ess  <- integrate(ConditionalSampleSize(dist, alternative))
 
 # just for the fun of it lets condition on detla >= .1
 alternative_cond <- condition(alternative, c(.1, 1.))
-cp   <- ConditionalPower(alternative_cond)
+cp   <- ConditionalPower(dist, alternative_cond)
 pow  <- integrate(cp)
-toer <- integrate(ConditionalPower(null))
+toer <- integrate(ConditionalPower(dist, null))
 
 smth <- Smoothness_n2()
 
