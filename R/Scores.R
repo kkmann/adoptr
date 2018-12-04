@@ -20,7 +20,6 @@ setMethod("integrate", signature("ConditionalScore"),
 
 
 
-
 setClass("UnconditionalScore", representation(cs = "ConditionalScore"))
 
 # generic evaluation of integral score, this is where the problems lie ;)
