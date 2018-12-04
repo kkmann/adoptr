@@ -2,6 +2,8 @@ context("ContinuousPrior                                                      ")
 
 test_that("single point prior", {
 
+    dist <- Normal()
+
     prior <- ContinuousPrior(function(x) 2*x, c(0, 1))
 
     expect_equal(
@@ -16,14 +18,14 @@ test_that("single point prior", {
 
     expect_equal(
         stats::integrate(
-            function(z1) predictive_pdf(prior, z1, n1),
+            function(z1) predictive_pdf(dist, prior, z1, n1),
             qnorm(.0005), qnorm(.9995, mean = sqrt(n1)), abs.tol = .0001)$value,
         1,
         tolerance = .005)
 
     expect_gt(
         stats::integrate(
-            function(z1) z1 * predictive_pdf(prior, z1, n1),
+            function(z1) z1 * predictive_pdf(dist, prior, z1, n1),
             qnorm(.0005), qnorm(.9995, mean = sqrt(n1)), abs.tol = .0001)$value,
         0)
 
@@ -35,22 +37,22 @@ test_that("single point prior", {
 
     expect_equal(
         stats::integrate(
-            function(z1) predictive_pdf(cprior, z1, n1),
+            function(z1) predictive_pdf(dist, cprior, z1, n1),
             qnorm(.0005), qnorm(.9995, mean = sqrt(n1)), abs.tol = .0001)$value,
         1,
         tolerance = .005)
 
     expect_gt(
         stats::integrate(
-            function(z1) z1 * predictive_pdf(prior, z1, n1),
+            function(z1) z1 * predictive_pdf(dist, prior, z1, n1),
             qnorm(.0005), qnorm(.9995, mean = sqrt(n1)), abs.tol = .0001)$value,
         stats::integrate(
-            function(z1) z1 * predictive_pdf(cprior, z1, n1),
+            function(z1) z1 * predictive_pdf(dist, cprior, z1, n1),
             qnorm(.0005), qnorm(.9995, mean = sqrt(n1)), abs.tol = .0001)$value)
 
     delta <- 2
     z1    <- delta*sqrt(20)
-    post <- posterior(prior, z1, n1)
+    post <- posterior(dist, prior, z1, n1)
 
     expect_equal(
         stats::integrate(

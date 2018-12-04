@@ -21,6 +21,7 @@ Depends:
 VignetteBuilder: knitr
 Collate: 
         otsd.R
+        DataDistribution.R
         Prior.R
         PointMassPrior.R
         ContinuousPrior.R

@@ -32,14 +32,6 @@ setGeneric("c2", function(d, z1, ...) standardGeneric("c2"))
 
 
 
-setGeneric("conditional_power", function(d, z1, delta, ...) standardGeneric("conditional_power"))
-
-# TODO: allow null other than delta == 0!
-setMethod("conditional_power", signature("Design", "numeric", "numeric"),
-    function(d, z1, delta, ...) 1 - pnorm(c2(d, z1) - sqrt(n2(d, z1))*delta) )
-
-
-
 setMethod("as.numeric", signature("Design"), function(x) stop("not implemented"))
 
 setMethod("update", signature("Design"), function(object) stop("not implemented"))

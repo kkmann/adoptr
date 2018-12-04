@@ -17,18 +17,18 @@ ContinuousPrior <- function(pdf, support) {
 }
 
 setMethod("bounds", signature("ContinuousPrior"),
-    function(prior, ...) prior@support)
+    function(dist, ...) dist@support)
 
 setMethod("expectation", signature("ContinuousPrior", "function"),
-    function(prior, f, rel.tol = .001, ...) {
+    function(dist, f, rel.tol = .001, ...) {
         stats::integrate(
-            function(theta) f(theta) * prior@pdf(theta),
-            prior@support[1], prior@support[2], rel.tol = rel.tol
+            function(theta) f(theta) * dist@pdf(theta),
+            dist@support[1], dist@support[2], rel.tol = rel.tol
         )$value
     })
 
 setMethod("condition", signature("ContinuousPrior", "numeric"),
-    function(prior, interval, ...) {
+    function(dist, interval, ...) {
         if (length(interval) != 2)
             stop("interval must be of length 2")
         if (any(!is.finite(interval)))
@@ -36,48 +36,46 @@ setMethod("condition", signature("ContinuousPrior", "numeric"),
         if (diff(interval) < 0)
             stop("interval[2] must be larger or equal to interval[1]")
         # compute new normalizing constants
-        # TODO: change to non-adaptive quadrature!
-        z <- stats::integrate(prior@pdf, interval[1], interval[2], abs.tol = .00001)$value
+        z <- stats::integrate(dist@pdf, interval[1], interval[2], abs.tol = .00001)$value
         ContinuousPrior(
-            function(theta) prior@pdf(theta)/z,
+            function(theta) dist@pdf(theta)/z,
             interval
         )
     })
 
-setMethod("predictive_pdf", signature("ContinuousPrior", "numeric"),
-    function(prior, z1, n1, k = 33, ...) {
+setMethod("predictive_pdf", signature("DataDistribution", "ContinuousPrior", "numeric"),
+    function(dist, prior, x1, n1, k = 33, ...) {
         # TODO: use Gaussian Quadrature for pivots!
         piv <- seq(prior@support[1], prior@support[2], length.out = k)
         mass <- sapply(piv, prior@pdf)
         mass <- mass / sum(mass) # (renormalize!)
-        res <- numeric(length(z1))
-        for (i in 1:k) { # TODO: careful, assumed null hypothesis = 0
-            res <- res + mass[i] * dnorm(z1, mean = sqrt(n1) * piv[i], sd = 1)
+        res <- numeric(length(x1))
+        for (i in 1:k) {
+            res <- res + mass[i] * probability_density_function(dist, x1, n1, piv[i])
         }
         return(res)
     })
 
-setMethod("predictive_cdf", signature("ContinuousPrior", "numeric"),
-    function(prior, z1, n1, k = 33, ...) {
+setMethod("predictive_cdf", signature("DataDistribution", "ContinuousPrior", "numeric"),
+    function(dist, prior, x1, n1, k = 33, ...) {
         # TODO: use Gaussian Quadrature for pivots!
         piv <- seq(prior@support[1], prior@support[2], length.out = k)
         mass <- sapply(piv, prior@pdf)
         mass <- mass / sum(mass) # (renormalize!)
-        res <- numeric(length(z1))
-        for (i in 1:k) { # TODO: careful, assumed null hypothesis = 0
-            res <- res + mass[i] * pnorm(z1, mean = sqrt(n1) * piv[i], sd = 1)
+        res <- numeric(length(x1))
+        for (i in 1:k) {
+            res <- res + mass[i] * cumulative_distribution_function(dist, x1, n1, piv[i])
         }
         return(res)
     })
 
-setMethod("posterior", signature("ContinuousPrior", "numeric"),
-    function(prior, z1, n1, ...) { # careful, assumed null hypothesis = 0
-        if (length(z1) != 1)
-            stop("no vectorized version in z1")
+setMethod("posterior", signature("DataDistribution", "ContinuousPrior", "numeric"),
+    function(dist, prior, x1, n1, ...) { # careful, assumed null hypothesis = 0
+        if (length(x1) != 1)
+            stop("no vectorized version in x1")
         # TODO: use Gaussian Quadrature
-        prop_pdf <- function(theta) dnorm(z1, mean = sqrt(n1) * theta, sd = 1) * prior@pdf(theta)
-        z <- stats::integrate(prop_pdf, prior@support[1], prior@support[2], abs.tol = .00001
-        )$value
+        prop_pdf <- function(theta) probability_density_function(dist, x1, n1, theta) * prior@pdf(theta)
+        z <- stats::integrate(prop_pdf, prior@support[1], prior@support[2], abs.tol = .00001)$value
         ContinuousPrior(
             function(theta) prop_pdf(theta)/z, prior@support
         )

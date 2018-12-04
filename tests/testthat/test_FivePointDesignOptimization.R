@@ -14,10 +14,12 @@ test_that("single point prior", {
     null        <- PointMassPrior(.0, 1)
     alternative <- PointMassPrior(.4, 1)
 
-    ess  <- integrate(ConditionalSampleSize(alternative))
-    cp   <- ConditionalPower(alternative)
+    dist <- Normal()
+
+    ess  <- integrate(ConditionalSampleSize(dist, alternative))
+    cp   <- ConditionalPower(dist, alternative)
     pow  <- integrate(cp)
-    toer <- integrate(ConditionalPower(null))
+    toer <- integrate(ConditionalPower(dist, null))
 
     smth <- Smoothness_n2()
 
@@ -36,7 +38,7 @@ test_that("single point prior", {
         )
     }
 
-    ub <- c(50, 1, 4, numeric(5) + 50, numeric(5) + 5)
+        ub <- c(50, 1, 4, numeric(5) + 50, numeric(5) + 5)
     lb <- c(10, -1, 1, numeric(5) + 2, numeric(5) - 5)
 
     res <- nloptr::nloptr(

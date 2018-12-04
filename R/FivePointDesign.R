@@ -44,11 +44,11 @@ setMethod(".evaluate", signature("UnconditionalScore", "FivePointDesign"),
     function(s, design, ...) {
         # use design specific implementation tailored to this particular
         # implementation (Newton Cotes 5 points here)
-        poef <- predictive_cdf(s@cs@prior, design@c1f, n1(design))
-        poee <- 1 - predictive_cdf(s@cs@prior, design@c1e, n1(design))
+        poef <- predictive_cdf(s@cs@distribution, s@cs@prior, design@c1f, n1(design))
+        poee <- 1 - predictive_cdf(s@cs@distribution, s@cs@prior, design@c1e, n1(design))
         # continuation region
         integrand   <- function(z1) evaluate(s@cs, design, z1, ...) *
-            predictive_pdf(s@cs@prior, z1, n1(design), ...)
+            predictive_pdf(s@cs@distribution, s@cs@prior, z1, n1(design), ...)
         weights     <- c(7, 32, 12, 32, 7)
         h           <- (design@c1e - design@c1f)/4
         mid_section <- 2/45 * h * sum(weights * integrand(get_knots(design)))

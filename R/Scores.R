@@ -1,4 +1,4 @@
-setClass("ConditionalScore", representation(prior = "Prior"))
+setClass("ConditionalScore", representation(distribution = "DataDistribution", prior = "Prior"))
 
 # evaluate a score (both conditional and unconditional)
 setGeneric("evaluate", function(s, design, ...) standardGeneric("evaluate"))
@@ -37,9 +37,12 @@ setMethod("evaluate", signature("UnconditionalScore", "Design"),
                   # integrand is the conditional score as function of z1 times the
                   # predictive pdf given the scores prior
                   integrand <- function(x1) evaluate(s@cs, design, x1, ...) *
-                      predictive_pdf(s@cs@prior, x1, n1(design), ...)
-                  #
-                  x1_bounds <- qnorm(c(.0005, .9995), mean = bounds(s@cs@prior) * sqrt(n1(design)), sd = 1)
+                      predictive_pdf(s@cs@distribution, s@cs@prior, x1, n1(design), ...)
+                  # get integration bounds as quantiles using lower and upper bounds on prior
+                  x1_bounds <- c(
+                      quantile(s@cs@distribution, .0005, n1(design), bounds(s@cs@prior)[1]),
+                      quantile(s@cs@distribution, .9995, n1(design), bounds(s@cs@prior)[2])
+                  )
                   # use adaptive quadrature to integrate - only relies on generic interface
                   # provided by 'Design', no special optimization for particular
                   # design implementation
