@@ -36,7 +36,7 @@ setMethod("evaluate", signature("UnconditionalScore", "Design"),
                   # use generic approach
                   # integrand is the conditional score as function of z1 times the
                   # predictive pdf given the scores prior
-                  integrand <- function(z1) evaluate(s@cs, design, x1, ...) *
+                  integrand <- function(x1) evaluate(s@cs, design, x1, ...) *
                       predictive_pdf(s@cs@prior, x1, n1(design), ...)
                   #
                   x1_bounds <- qnorm(c(.0005, .9995), mean = bounds(s@cs@prior) * sqrt(n1(design)), sd = 1)
