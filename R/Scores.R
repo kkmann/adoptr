@@ -1,7 +1,18 @@
-setClass("ConditionalScore", representation(distribution = "DataDistribution", prior = "Prior"))
-
 # evaluate a score (both conditional and unconditional)
 setGeneric("evaluate", function(s, design, ...) standardGeneric("evaluate"))
+
+
+setClass("AbstractConditionalScore")
+
+setMethod("evaluate", signature("AbstractConditionalScore", "Design"),
+          function(s, design, x1, ...) stop("not implemented"))
+
+
+setClass("ConditionalScore", representation(
+        distribution = "DataDistribution",
+        prior = "Prior"
+    ),
+    contains = "AbstractConditionalScore")
 
 # must implement evaluate with additional argument x1!
 setMethod("evaluate", signature("ConditionalScore", "Design"),
@@ -15,17 +26,61 @@ setGeneric("integrate",
 # essentialy just changes class and stores conditional score to allow
 # different implementation of 'evaluation'
 setMethod("integrate", signature("ConditionalScore"),
-          function(s, ...) new("UnconditionalScore", cs = s) )
+          function(s, ...) new("IntegralScore", cs = s) )
+
+setMethod("+", signature("ConditionalScore", "numeric"),
+          function(e1, e2) AffineConditionalScore(list(e1), 1, e2) )
+setMethod("+", signature("numeric", "ConditionalScore"),
+          function(e1, e2) e2 + e1 )
+
+## TODO: check for duplicate scores and combine!
+setMethod("+", signature("ConditionalScore", "ConditionalScore"),
+          function(e1, e2) AffineConditionalScore(list(e1, e2), c(1, 1), 0) )
+
+setMethod("*", signature("ConditionalScore", "numeric"),
+          function(e1, e2) AffineConditionalScore(list(e1), e2, 0) )
+setMethod("*", signature("numeric", "ConditionalScore"),
+          function(e1, e2) e2 * e1 )
+
+
+
+setClass("UnconditionalScore")
+
+setMethod("evaluate", signature("UnconditionalScore", "Design"),
+          function(s, design, specific = TRUE, ...) stop("not implemented") )
+
+# allow custom implementation of evaluate() depending on design
+setGeneric(".evaluate", function(s, design, ...) standardGeneric(".evaluate"))
+
+setMethod(".evaluate", signature("UnconditionalScore", "Design"),
+          function(s, design, ...) stop("not implemented") )
+
+setMethod("+", signature("UnconditionalScore", "numeric"),
+          function(e1, e2) AffineUnconditionalScore(list(e1), 1, e2) )
+setMethod("+", signature("numeric", "UnconditionalScore"),
+          function(e1, e2) e2 + e1 )
+
+## TODO: check for duplicate scores and combine!
+setMethod("+", signature("UnconditionalScore", "UnconditionalScore"),
+          function(e1, e2) AffineUnconditionalScore(list(e1, e2), c(1, 1), 0) )
+
+setMethod("*", signature("UnconditionalScore", "numeric"),
+          function(e1, e2) AffineUnconditionalScore(list(e1), e2, 0) )
+setMethod("*", signature("numeric", "UnconditionalScore"),
+          function(e1, e2) e2 * e1 )
 
 
 
 
-setClass("UnconditionalScore", representation(cs = "ConditionalScore"))
+setClass("IntegralScore", representation(
+        cs = "ConditionalScore"
+    ),
+    contains = "UnconditionalScore")
 
 # generic evaluation of integral score, this is where the problems lie ;)
 # uses stats::integrate to integrate conditional score over Z1, not working for
 # optimization - need custom implementation for signature("IntegralScore", "BSDesign")
-setMethod("evaluate", signature("UnconditionalScore", "Design"),
+setMethod("evaluate", signature("IntegralScore", "Design"),
           function(s, design, specific = TRUE, ...) {
               # TODO: currently ignores the possibility of early stopping/uncontinuus
               # conditional scores - might get better when checking for early stopping
@@ -49,10 +104,3 @@ setMethod("evaluate", signature("UnconditionalScore", "Design"),
                   return(stats::integrate(integrand, x1_bounds[1], x1_bounds[2])$value)
               }
           })
-
-# allow custom implementation of evaluate() depending on design
-setGeneric(".evaluate", function(s, design, ...) standardGeneric(".evaluate"))
-
-# make sure .evaluate is implemented or throw error
-setMethod(".evaluate", signature("UnconditionalScore", "Design"),
-          function(s, design, ...) stop("not implemented") )

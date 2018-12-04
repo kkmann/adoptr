@@ -27,6 +27,7 @@ Collate:
         ContinuousPrior.R
         Design.R
         Scores.R
+        AffineScoreFunction.R
         ConditionalPower.R
         ConditionalSampleSize.R
         Smoothness_n2.R

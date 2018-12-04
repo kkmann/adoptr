@@ -2,15 +2,16 @@
 # distributions! (cannot be handeld by 'integrate')
 # TODO, this can probably be solved in a nicer way ;)
 setClass("Smoothness_n2", representation(
-    h = "numeric"
+        h = "numeric"
     ),
-    contains = "UnconditionalScore")
+    contains = "IntegralScore")
 
 Smoothness_n2 <- function(h = sqrt(.Machine$double.eps)) new("Smoothness_n2", h = h)
 
 setMethod("evaluate", signature("Smoothness_n2", "Design"),
           function(s, design, specific = TRUE, ...) {
-              if (specific) { # use design-specific implementation
+              if (specific) {
+                  # use design-specific implementation
                   return(.evaluate(s, design, ...))
               } else {
                   # use generic approach

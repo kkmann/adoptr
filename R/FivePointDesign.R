@@ -40,7 +40,7 @@ setMethod("c2", signature("FivePointDesign", "numeric"),
 setMethod("as.numeric", signature("FivePointDesign"),
         function(x, ...) c(x@n1, x@c1f, x@c1e, x@n2_pivots, x@c2_pivots))
 
-setMethod(".evaluate", signature("UnconditionalScore", "FivePointDesign"),
+setMethod(".evaluate", signature("IntegralScore", "FivePointDesign"),
     function(s, design, ...) {
         # use design specific implementation tailored to this particular
         # implementation (Newton Cotes 5 points here)
