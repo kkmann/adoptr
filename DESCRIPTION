@@ -17,7 +17,8 @@ Suggests:
     testthat,
     covr
 Depends:
-    nloptr
+    nloptr,
+    gaussquad
 VignetteBuilder: knitr
 Collate: 
         otsd.R
