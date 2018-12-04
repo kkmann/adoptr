@@ -2,13 +2,7 @@ context("FivePointDesign - optimization okay?                                ")
 
 test_that("single point prior", {
 
-    n1     <- 25
-    c1f    <-   .0
-    c1e    <-  2.0
-    n2_piv <- rep(40.0, 5)
-    c2_piv <- rep( 1.96, 5)
-
-    design <- FivePointDesign(n1, c1f, c1e, n2_piv, c2_piv)
+    design <- FivePointDesign(25, 0, 2, rep(40.0, 5), rep( 1.96, 5))
 
     # define null and alternative as point mass distributions
     null        <- PointMassPrior(.0, 1)
@@ -38,7 +32,7 @@ test_that("single point prior", {
         )
     }
 
-        ub <- c(50, 1, 4, numeric(5) + 50, numeric(5) + 5)
+    ub <- c(50, 1, 4, numeric(5) + 50, numeric(5) + 5)
     lb <- c(10, -1, 1, numeric(5) + 2, numeric(5) - 5)
 
     res <- nloptr::nloptr(

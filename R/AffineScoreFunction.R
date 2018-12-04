@@ -17,7 +17,7 @@ AffineScore <- function(scores, coefs, intercept) {
 
 
 setMethod("evaluate", signature("AffineScore", "Design"),
-          function(s, design, ...) sum(s@coefs * sapply(s@scores, function(s, ...) evaluate(s, design, ...), ...) + s@intercept) )
+          function(s, design, ...) rowSums(s@coefs * sapply(s@scores, function(s, ...) evaluate(s, design, ...), ...) + s@intercept) )
 
 
 
