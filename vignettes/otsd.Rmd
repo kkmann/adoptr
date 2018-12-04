@@ -42,7 +42,7 @@ plot(z1, c2(design, z1), 'l')
 null        <- PointMassPrior(.0, 1)
 alternative <- PointMassPrior(.4, 1)
 
-ess  <- integrate(SampleSize(alternative))
+ess  <- integrate(ConditionalSampleSize(alternative))
 cp   <- ConditionalPower(alternative)
 pow  <- integrate(cp)
 toer <- integrate(ConditionalPower(null))
@@ -52,7 +52,7 @@ smth <- Smoothness_n2()
 do.call(sprintf, 
         c(
           list("ESS: %.1f, power: %.3f, maximal type one error rate: %.3f"), 
-          lapply(list(ess, pow, toer), function(s) eval(s, design))
+          lapply(list(ess, pow, toer), function(s) evaluate(s, design))
         )
 )
 ```
@@ -62,15 +62,15 @@ do.call(sprintf,
 ```{r}
 objective <- function(x) {
   d  <- update(design, x)
-  eval(ess, d) + .001*eval(smth, d)
+  evaluate(ess, d) + .001*evaluate(smth, d)
 }
 objective(as.numeric(design))
 
 constraint <- function(x) {
   d  <- update(design, x)
   c(
-    .8 - eval(pow, d),
-    eval(toer, d) - 0.05,
+    .8 - evaluate(pow, d),
+    evaluate(toer, d) - 0.05,
     x[2] - x[3] + .1,
     diff(c2(d, get_knots(d)))
   )
@@ -105,7 +105,7 @@ Compute the scores using fast internal representation (5-point Newton-Cotes).
 do.call(sprintf, 
         c(
           list("ESS: %.1f, power: %.3f, maximal type one error rate: %.3f"), 
-          lapply(list(ess, pow, toer), function(s) eval(s, d2, specific = TRUE))
+          lapply(list(ess, pow, toer), function(s) evaluate(s, d2, specific = TRUE))
         )
 )
 ```

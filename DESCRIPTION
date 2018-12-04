@@ -25,9 +25,10 @@ Collate:
         PointMassPrior.R
         ContinuousPrior.R
         Design.R
-        ConditionalScore.R
-        IntegralScore.R
-        scores.R
+        Scores.R
+        ConditionalPower.R
+        ConditionalSampleSize.R
+        Smoothness_n2.R
         FivePointDesign.R   
 RoxygenNote: 6.1.1
 BugReports: https://github.com/kkmann/otsd/issues
