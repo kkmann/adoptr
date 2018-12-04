@@ -27,9 +27,7 @@ setMethod("n", signature("Design", "numeric"),
     function(d, x1, ...) n2(d, x1, ...) + n1(d, ...) )
 
 
-
 setGeneric("c2", function(d, x1, ...) standardGeneric("c2"))
-
 
 
 setMethod("as.numeric", signature("Design"), function(x) stop("not implemented"))
