@@ -42,10 +42,12 @@ plot(z1, c2(design, z1), 'l')
 null        <- PointMassPrior(.0, 1)
 alternative <- PointMassPrior(.4, 1)
 
-ess  <- integrate(ConditionalSampleSize(alternative))
-cp   <- ConditionalPower(alternative)
+dist <- Normal()
+
+ess  <- integrate(ConditionalSampleSize(dist, alternative))
+cp   <- ConditionalPower(dist, alternative)
 pow  <- integrate(cp)
-toer <- integrate(ConditionalPower(null))
+toer <- integrate(ConditionalPower(dist, null))
 
 smth <- Smoothness_n2()
 
