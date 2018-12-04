@@ -1,10 +1,10 @@
 setClass("DataDistribution")
 
-setGeneric("probability_density_function", function(dist, x1, n1, theta, ...) standardGeneric("probability_density_function"))
+setGeneric("probability_density_function", function(dist, x, n, theta, ...) standardGeneric("probability_density_function"))
 
-setGeneric("cumulative_distribution_function", function(dist, x1, n1, theta, ...) standardGeneric("cumulative_distribution_function"))
+setGeneric("cumulative_distribution_function", function(dist, x, n, theta, ...) standardGeneric("cumulative_distribution_function"))
 
-setMethod("quantile", signature("DataDistribution"), function(x, probs, n1, theta, ...) stop("not implemented"))
+setMethod("quantile", signature("DataDistribution"), function(x, probs, n, theta, ...) stop("not implemented"))
 
 
 
