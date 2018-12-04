@@ -30,12 +30,12 @@ setMethod("get_knots", signature("FivePointDesign"),
     function(d, ...) seq(d@c1f, d@c1e, length.out = 5))
 
 setMethod("n2", signature("FivePointDesign", "numeric"),
-    function(d, z1, ...) ifelse(z1 < d@c1f | z1 > d@c1e, 0, 1) *
-        pmax(0, approx(get_knots(d), d@n2_pivots, xout = z1, method = "linear", rule = 2)$y) )
+    function(d, x1, ...) ifelse(x1 < d@c1f | x1 > d@c1e, 0, 1) *
+        pmax(0, approx(get_knots(d), d@n2_pivots, xout = x1, method = "linear", rule = 2)$y) )
 
 setMethod("c2", signature("FivePointDesign", "numeric"),
-    function(d, z1, ...) approx(get_knots(d), d@c2_pivots, xout = z1, method = "linear", rule = 2)$y *
-        ifelse(z1 < d@c1f, Inf, 1) * ifelse(z1 > d@c1e, -Inf, 1) )
+    function(d, x1, ...) approx(get_knots(d), d@c2_pivots, xout = x1, method = "linear", rule = 2)$y *
+        ifelse(x1 < d@c1f, Inf, 1) * ifelse(x1 > d@c1e, -Inf, 1) )
 
 setMethod("as.numeric", signature("FivePointDesign"),
         function(x, ...) c(x@n1, x@c1f, x@c1e, x@n2_pivots, x@c2_pivots))
@@ -44,11 +44,11 @@ setMethod(".evaluate", signature("UnconditionalScore", "FivePointDesign"),
     function(s, design, ...) {
         # use design specific implementation tailored to this particular
         # implementation (Newton Cotes 5 points here)
-        poef <- predictive_cdf(s@cs@prior, design@c1f, n1(design))
-        poee <- 1 - predictive_cdf(s@cs@prior, design@c1e, n1(design))
+        poef <- predictive_cdf(s@cs@distribution, s@cs@prior, design@c1f, n1(design))
+        poee <- 1 - predictive_cdf(s@cs@distribution, s@cs@prior, design@c1e, n1(design))
         # continuation region
-        integrand   <- function(z1) evaluate(s@cs, design, z1, ...) *
-            predictive_pdf(s@cs@prior, z1, n1(design), ...)
+        integrand   <- function(x1) evaluate(s@cs, design, x1, ...) *
+            predictive_pdf(s@cs@distribution, s@cs@prior, x1, n1(design), ...)
         weights     <- c(7, 32, 12, 32, 7)
         h           <- (design@c1e - design@c1f)/4
         mid_section <- 2/45 * h * sum(weights * integrand(get_knots(design)))
