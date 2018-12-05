@@ -34,7 +34,6 @@ setMethod("update", signature("GQDesign"),
 setMethod("n1", signature("GQDesign"), function(d, ...) d@n1)
 
 
-setGeneric("get_knots", function(d, ...) standardGeneric("get_knots"))
 setMethod("get_knots", signature("GQDesign"),
     function(d, ...){
         h <- (d@c1e - d@c1f) / 2
@@ -44,40 +43,40 @@ setMethod("get_knots", signature("GQDesign"),
     )
 
 setMethod("n2", signature("GQDesign", "numeric"),
-    function(d, z1, ...) ifelse(z1 < d@c1f | z1 > d@c1e, 0, 1) *
-        pmax(0, approx(get_knots(d), d@n2_pivots, xout = z1, method = "linear", rule = 2)$y) )
+    function(d, x1, ...) ifelse(x1 < d@c1f | x1 > d@c1e, 0, 1) *
+        pmax(0, approx(get_knots(d), d@n2_pivots, xout = x1, method = "linear", rule = 2)$y) )
 
 setMethod("c2", signature("GQDesign", "numeric"),
-    function(d, z1, ...) approx(get_knots(d), d@c2_pivots, xout = z1, method = "linear", rule = 2)$y *
-        ifelse(z1 < d@c1f, Inf, 1) * ifelse(z1 > d@c1e, -Inf, 1) )
+    function(d, x1, ...) approx(get_knots(d), d@c2_pivots, xout = x1, method = "linear", rule = 2)$y *
+        ifelse(x1 < d@c1f, Inf, 1) * ifelse(x1 > d@c1e, -Inf, 1) )
 
 setMethod("as.numeric", signature("GQDesign"),
         function(x, ...) c(x@n1, x@c1f, x@c1e, x@n2_pivots, x@c2_pivots))
 
 
-setMethod(".eval_specific", signature("IntegralScore", "GQDesign"),
+setMethod(".evaluate", signature("IntegralScore", "GQDesign"),
     function(s, design, ...) {
         # use design specific implementation tailored to this particular
         # implementation (Gauss Quadrature N points here)
-        poef <- predictive_cdf(s@conditional_score@prior, design@c1f, n1(design))
-        poee <- 1 - predictive_cdf(s@conditional_score@prior, design@c1e, n1(design))
+        poef <- predictive_cdf(s@cs@distribution, s@cs@prior, design@c1f, n1(design))
+        poee <- 1 - predictive_cdf(s@cs@distribution, s@cs@prior, design@c1e, n1(design))
         # continuation region
-        integrand   <- function(z1) eval(s@conditional_score, design, z1, ...) *
-            predictive_pdf(s@conditional_score@prior, z1, n1(design), ...)
+        integrand   <- function(z1) evaluate(s@cs, design, z1, ...) *
+            predictive_pdf(s@cs@distribution, s@cs@prior, z1, n1(design), ...)
         h           <- (design@c1e - design@c1f) / 2
         mid_section <- h * sum(design@rule$w * integrand(get_knots(design)))
         # compose
-        res <- poef * eval( # score is constant on early stopping region (TODO: relax later!)
-                s@conditional_score, design,
+        res <- poef * evaluate( # score is constant on early stopping region (TODO: relax later!)
+                s@cs, design,
                 design@c1f - sqrt(.Machine$double.eps) # slightly smaller than stopping for futility
             ) +
             mid_section +
-            poee * eval(
-                s@conditional_score, design,
+            poee * evaluate(
+                s@cs, design,
                 design@c1e + sqrt(.Machine$double.eps)
             )
         return(res)
     })
 
-setMethod(".eval_specific", signature("Smoothness_n2", "GQDesign"),
+setMethod(".evaluate", signature("Smoothness_n2", "GQDesign"),
           function(s, design, ...) mean((diff(design@n2_pivots) / diff(get_knots(design)))^2) )

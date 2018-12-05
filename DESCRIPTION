@@ -19,6 +19,8 @@ Suggests:
 Imports:
     nloptr,
     methods
+Depends:
+    gaussquad
 VignetteBuilder: knitr
 Collate: 
     otsd.R

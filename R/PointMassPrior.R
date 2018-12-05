@@ -11,13 +11,13 @@ PointMassPrior <- function(theta, mass) {
 }
 
 setMethod("bounds", signature("PointMassPrior"),
-    function(prior, ...) range(prior@theta))
+    function(dist, ...) range(dist@theta))
 
 setMethod("expectation", signature("PointMassPrior", "function"),
-    function(prior, f, ...) sum(prior@mass * sapply(prior@theta, f, ...)) )
+    function(dist, f, ...) sum(dist@mass * sapply(dist@theta, f, ...)) )
 
 setMethod("condition", signature("PointMassPrior", "numeric"),
-    function(prior, interval, ...) {
+    function(dist, interval, ...) {
         if (length(interval) != 2)
             stop("interval must be of length 2")
         if (any(!is.finite(interval)))
@@ -26,36 +26,36 @@ setMethod("condition", signature("PointMassPrior", "numeric"),
             stop("interval[2] must be larger or equal to interval[1]")
         epsilon <- sqrt(.Machine$double.eps)
         # find indices of pivots wihtin interval (up to machine precision!)
-        idx <- (interval[1] - prior@theta <= epsilon) & (prior@theta - interval[2] <= epsilon)
+        idx <- (interval[1] - dist@theta <= epsilon) & (dist@theta - interval[2] <= epsilon)
         # re-normalize and return
         return(PointMassPrior(
-            prior@theta[idx], prior@mass[idx] / sum(prior@mass[idx])
+            dist@theta[idx], dist@mass[idx] / sum(dist@mass[idx])
         ))
     })
 
-setMethod("predictive_pdf", signature("PointMassPrior", "numeric"),
-    function(prior, z1, n1, ...) {
+setMethod("predictive_pdf", signature("DataDistribution", "PointMassPrior", "numeric"),
+    function(dist, prior, x1, n1, ...) {
         k   <- length(prior@theta)
-        res <- numeric(length(z1))
-        for (i in 1:k) { # TODO: careful, assumed null hypothesis = 0
-            res <- res + prior@mass[i] * dnorm(z1, mean = sqrt(n1) * prior@theta[i], sd = 1)
+        res <- numeric(length(x1))
+        for (i in 1:k) {
+            res <- res + prior@mass[i] * probability_density_function(dist, x1, n1, prior@theta[i]) # must be implemented
         }
         return(res)
     })
 
-setMethod("predictive_cdf", signature("PointMassPrior", "numeric"),
-    function(prior, z1, n1, ...) {
+setMethod("predictive_cdf", signature("DataDistribution", "PointMassPrior", "numeric"),
+    function(dist, prior, x1, n1, ...) {
         k   <- length(prior@theta)
-        res <- numeric(length(z1))
-        for (i in 1:k) { # TODO: careful, assumed null hypothesis = 0
-            res <- res + prior@mass[i] * pnorm(z1, mean = sqrt(n1) * prior@theta[i], sd = 1)
+        res <- numeric(length(x1))
+        for (i in 1:k) {
+            res <- res + prior@mass[i] * cumulative_distribution_function(dist, x1, n1, prior@theta[i])
         }
         return(res)
     })
 
-setMethod("posterior", signature("PointMassPrior", "numeric"),
-    function(prior, z1, n1, ...) { # careful, assumed null hypothesis = 0
-        mass <- prior@mass * dnorm(z1, mean = sqrt(n1) * prior@theta, sd = 1)
+setMethod("posterior", signature("DataDistribution", "PointMassPrior", "numeric"),
+    function(dist, prior, x1, n1, ...) {
+        mass <- prior@mass * sapply(prior@theta, function(theta) probability_density_function(dist, x1, n1, theta))
         mass <- mass / sum(mass) # normalize
         return(PointMassPrior(prior@theta, mass))
     })

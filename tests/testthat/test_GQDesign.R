@@ -31,23 +31,26 @@ test_that("Optimal design with point prior is computable", {
     null        <- PointMassPrior(.0, 1)
     alternative <- PointMassPrior(.4, 1)
 
-    ess  <- integrate(SampleSize(alternative))
+    dist <- Normal()
+
+    ess  <- integrate(ConditionalSampleSize(dist, alternative))
+    cp   <- ConditionalPower(dist, alternative)
     pow  <- integrate(cp)
-    toer <- integrate(ConditionalPower(null))
+    toer <- integrate(ConditionalPower(dist, null))
 
 
     expect_equal(
-        round(eval(ess, design), 1),
+        round(evaluate(ess, design), 1),
         44.1
     )
 
     expect_equal(
-        round(eval(pow, design), 3),
+        round(evaluate(pow, design), 3),
         0.842
     )
 
     expect_equal(
-        round(eval(toer, design), 3),
+        round(evaluate(toer, design), 3),
         0.035
     )
 
@@ -55,14 +58,14 @@ test_that("Optimal design with point prior is computable", {
 
     objective <- function(x) {
         d  <- update(design, x)
-        eval(ess, d) + .001*eval(smth, d)
+        evaluate(ess, d) + .001*evaluate(smth, d)
     }
 
     constraint <- function(x) {
         d  <- update(design, x)
         c(
-            .8 - eval(pow, d),
-            eval(toer, d) - 0.05,
+            .8 - evaluate(pow, d),
+            evaluate(toer, d) - 0.05,
             x[2] - x[3] + .1,
             diff(c2(d, get_knots(d)))
         )
@@ -87,17 +90,17 @@ test_that("Optimal design with point prior is computable", {
     d2 <- update(design, res$solution)
 
     expect_equal(
-        round(eval(pow, d2), 1),
+        round(evaluate(pow, d2), 1),
         0.8
     )
 
     expect_equal(
-        round(eval(toer, d2), 2),
+        round(evaluate(toer, d2), 2),
         0.05
     )
 
     expect_equal(
-        sign(eval(ess, d2) - eval(ess, design)),
+        sign(evaluate(ess, d2) - evaluate(ess, design)),
         -1
     )
 
