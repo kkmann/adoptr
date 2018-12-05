@@ -4,29 +4,31 @@ setClass("GQDesign", representation(
         c1e       = "numeric",
         n2_pivots = "numeric",
         c2_pivots = "numeric",
-        knots     = "numeric",
-        weights   = "numeric"
+        order     = "numeric",
+        rule      = "list"
     ),
     contains = "Design")
 
-GQDesign <- function(n1, c1f, c1e, n2_pivots, c2_pivots, knots, weights) {
-    if (length(n2_pivots) != length(knots) | length(c2_pivots) != length(knots) |
-        length(weights) != length(knots) )
+GQDesign <- function(n1, c1f, c1e, n2_pivots, c2_pivots, order) {
+    if (length(n2_pivots) != order | length(c2_pivots) != order )
         stop("length of pivot vectors does not fit")
     new("GQDesign", n1 = n1, c1f = c1f, c1e = c1e, n2_pivots = n2_pivots,
-        c2_pivots = c2_pivots, knots = knots, weights = weights)
+        c2_pivots = c2_pivots, order = order,
+        rule = gaussquad::legendre.quadrature.rules(order)[[order]])
 }
 
 setMethod("update", signature("GQDesign"),
     function(object, params, ...) {
+        if( ((length(params) - 3) / 2) != object@order)
+            stop("parameter length does not fit")
         new("GQDesign",
             n1 = params[1],
             c1f = params[2],
             c1e = params[3],
-            n2_pivots = params[4:(3 + length(object@knots))],
-            c2_pivots = params[(4 + length(object@knots)):(length(params))],
-            knots = object@knots,
-            weights = object@weights)
+            n2_pivots = params[4:(3 + object@order)],
+            c2_pivots = params[(4 + object@order):(length(params))],
+            order = object@order,
+            rule = object@rule)
     })
 
 setMethod("n1", signature("GQDesign"), function(d, ...) d@n1)
@@ -36,8 +38,8 @@ setGeneric("get_knots", function(d, ...) standardGeneric("get_knots"))
 setMethod("get_knots", signature("GQDesign"),
     function(d, ...){
         h <- (d@c1e - d@c1f) / 2
-        legendre_knots <- h * d@knots + (h + d@c1f)
-        return(legendre_knots[length(d@knots):1])
+        legendre_knots <- h * d@rule$x + (h + d@c1f)
+        return(legendre_knots[d@order:1])
     }
     )
 
@@ -63,7 +65,7 @@ setMethod(".eval_specific", signature("IntegralScore", "GQDesign"),
         integrand   <- function(z1) eval(s@conditional_score, design, z1, ...) *
             predictive_pdf(s@conditional_score@prior, z1, n1(design), ...)
         h           <- (design@c1e - design@c1f) / 2
-        mid_section <- h * sum(design@weights * integrand(get_knots(design)))
+        mid_section <- h * sum(design@rule$w * integrand(get_knots(design)))
         # compose
         res <- poef * eval( # score is constant on early stopping region (TODO: relax later!)
                 s@conditional_score, design,
