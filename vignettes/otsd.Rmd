@@ -41,6 +41,7 @@ plot(z1, c2(design, z1), 'l')
 null        <- PointMassPrior(.0, 1)
 alternative <- PointMassPrior(.4, 1)
 dist <- Normal()
+
 ess  <- integrate(ConditionalSampleSize(dist, alternative))
 cp   <- ConditionalPower(dist, alternative)
 pow  <- integrate(cp)
@@ -125,6 +126,7 @@ z   <- stats::integrate(f, limits[1], limits[2], abs.tol = .0001)$value
 pdf <- function(x) f(x) / z
 alternative <- ContinuousPrior(pdf, limits)
 ess  <- integrate(ConditionalSampleSize(dist, alternative))
+
 # just for the fun of it lets condition on detla >= .1
 alternative_cond <- condition(alternative, c(.1, 1.))
 cp   <- ConditionalPower(dist, alternative_cond)

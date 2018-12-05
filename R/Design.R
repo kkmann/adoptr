@@ -35,4 +35,5 @@ setGeneric("get_knots", function(d, ...) standardGeneric("get_knots"))
 
 setMethod("as.numeric", signature("Design"), function(x) stop("not implemented"))
 
+
 setMethod("update", signature("Design"), function(object) stop("not implemented"))
