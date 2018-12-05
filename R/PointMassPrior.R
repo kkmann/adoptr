@@ -1,15 +1,41 @@
+#' Point-mass prior
+#'
+#' \code{PointMassPrior} is a generic class for representing a univariate prior
+#' over a discrete set of points with positive probability mass.
+#' All methods for prior distributions [TODO link] are specialized to
+#' the discrete case.
+#'
+#' @slot theta numeric vector of pivot points (parameter values with positive
+#'     prior mass)
+#' @slot mass numeric vector of the same length as theta - corresponding
+#'     probability masses (must sum to one!)
+#'
+#' @exportClass PointMassPrior
 setClass("PointMassPrior", representation(
         theta = "numeric",
         mass  = "numeric"
     ),
     contains = "Prior")
 
+
+
+#' @param theta cf. slot 'theta'
+#' @param mass cf. slot 'mass'
+#'
+#' @rdname PointMassPrior-class
+#' @export
 PointMassPrior <- function(theta, mass) {
     if (sum(mass) != 1)
         stop("mass must sum to one")
     new("PointMassPrior", theta = theta, mass = mass)
 }
 
+
+
+#' A generic implementation for arbitrary two-stage designs based on adaptive
+#'
+#' @rdname Smoothness_n2-class
+#' @export
 setMethod("bounds", signature("PointMassPrior"),
     function(dist, ...) range(dist@theta))
 

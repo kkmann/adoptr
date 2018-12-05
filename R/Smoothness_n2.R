@@ -21,7 +21,7 @@ setClass("Smoothness_n2", representation(
 #' @param h positive number, see slot \code{h}
 #'
 #' @rdname Smoothness_n2-class
-#' @export Smoothness_n2
+#' @export
 Smoothness_n2 <- function(h = sqrt(.Machine$double.eps)) new("Smoothness_n2", h = h)
 
 
