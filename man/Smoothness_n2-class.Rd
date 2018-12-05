@@ -22,6 +22,8 @@ Smoothness_n2(h = sqrt(.Machine$double.eps))
 \item{specific}{logical, should a design-specific implementation be used?
 defaults to \code{TRUE}. If \code{TRUE}, looks for design-specific
 \code{.evaluate} method and calls it}
+
+\item{...}{further optional arguments}
 }
 \description{
 \code{Smoothness_n2} is a generic class for implementing a smoothness penalty

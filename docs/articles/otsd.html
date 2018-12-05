@@ -89,8 +89,8 @@
 <a class="sourceLine" id="cb1-7" data-line-number="7">design &lt;-<span class="st"> </span><span class="kw"><a href="../reference/GQDesign-class.html">GQDesign</a></span>(n1, c1f, c1e, n2_piv, c2_piv, number_knots)</a>
 <a class="sourceLine" id="cb1-8" data-line-number="8">z1 &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="op">-</span><span class="dv">2</span>, <span class="dv">4</span>, <span class="fl">.01</span>)</a>
 <a class="sourceLine" id="cb1-9" data-line-number="9"><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</a>
-<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="kw">plot</span>(z1, <span class="kw">n</span>(design, z1), <span class="st">'l'</span>, <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="kw">max</span>(<span class="kw">n</span>(design, z1))))</a>
-<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="kw">plot</span>(z1, <span class="kw">c2</span>(design, z1), <span class="st">'l'</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="kw">plot</span>(z1, <span class="kw"><a href="../reference/Design-class.html">n</a></span>(design, z1), <span class="st">'l'</span>, <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="kw">max</span>(<span class="kw"><a href="../reference/Design-class.html">n</a></span>(design, z1))))</a>
+<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="kw">plot</span>(z1, <span class="kw"><a href="../reference/Design-class.html">c2</a></span>(design, z1), <span class="st">'l'</span>)</a></code></pre></div>
 <p><img src="otsd_files/figure-html/unnamed-chunk-1-1.png" width="768"></p>
 <div id="define-scores" class="section level1">
 <h1 class="hasAnchor">
@@ -98,17 +98,17 @@
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># define null and alternative as point mass distributions</span></a>
 <a class="sourceLine" id="cb2-2" data-line-number="2">null        &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PointMassPrior-class.html">PointMassPrior</a></span>(.<span class="dv">0</span>, <span class="dv">1</span>)</a>
 <a class="sourceLine" id="cb2-3" data-line-number="3">alternative &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PointMassPrior-class.html">PointMassPrior</a></span>(.<span class="dv">4</span>, <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb2-4" data-line-number="4">dist &lt;-<span class="st"> </span><span class="kw"><a href="../reference/Normal-class.html">Normal</a></span>()</a>
+<a class="sourceLine" id="cb2-4" data-line-number="4">dist &lt;-<span class="st"> </span><span class="kw"><a href="../reference/NormalDataDistribution-class.html">Normal</a></span>()</a>
 <a class="sourceLine" id="cb2-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb2-6" data-line-number="6">ess  &lt;-<span class="st"> </span><span class="kw">integrate</span>(<span class="kw">ConditionalSampleSize</span>(dist, alternative))</a>
-<a class="sourceLine" id="cb2-7" data-line-number="7">cp   &lt;-<span class="st"> </span><span class="kw">ConditionalPower</span>(dist, alternative)</a>
-<a class="sourceLine" id="cb2-8" data-line-number="8">pow  &lt;-<span class="st"> </span><span class="kw">integrate</span>(cp)</a>
-<a class="sourceLine" id="cb2-9" data-line-number="9">toer &lt;-<span class="st"> </span><span class="kw">integrate</span>(<span class="kw">ConditionalPower</span>(dist, null))</a>
+<a class="sourceLine" id="cb2-6" data-line-number="6">ess  &lt;-<span class="st"> </span><span class="kw"><a href="../reference/working-with-scores.html">integrate</a></span>(<span class="kw"><a href="../reference/ConditionalSampleSize-class.html">ConditionalSampleSize</a></span>(dist, alternative))</a>
+<a class="sourceLine" id="cb2-7" data-line-number="7">cp   &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ConditionalPower-class.html">ConditionalPower</a></span>(dist, alternative)</a>
+<a class="sourceLine" id="cb2-8" data-line-number="8">pow  &lt;-<span class="st"> </span><span class="kw"><a href="../reference/working-with-scores.html">integrate</a></span>(cp)</a>
+<a class="sourceLine" id="cb2-9" data-line-number="9">toer &lt;-<span class="st"> </span><span class="kw"><a href="../reference/working-with-scores.html">integrate</a></span>(<span class="kw"><a href="../reference/ConditionalPower-class.html">ConditionalPower</a></span>(dist, null))</a>
 <a class="sourceLine" id="cb2-10" data-line-number="10">smth &lt;-<span class="st"> </span><span class="kw"><a href="../reference/Smoothness_n2-class.html">Smoothness_n2</a></span>()</a>
 <a class="sourceLine" id="cb2-11" data-line-number="11"><span class="kw">do.call</span>(sprintf, </a>
 <a class="sourceLine" id="cb2-12" data-line-number="12">        <span class="kw">c</span>(</a>
 <a class="sourceLine" id="cb2-13" data-line-number="13">          <span class="kw">list</span>(<span class="st">"ESS: %.1f, power: %.3f, maximal type one error rate: %.3f"</span>), </a>
-<a class="sourceLine" id="cb2-14" data-line-number="14">          <span class="kw">lapply</span>(<span class="kw">list</span>(ess, pow, toer), <span class="cf">function</span>(s) <span class="kw">evaluate</span>(s, design))</a>
+<a class="sourceLine" id="cb2-14" data-line-number="14">          <span class="kw">lapply</span>(<span class="kw">list</span>(ess, pow, toer), <span class="cf">function</span>(s) <span class="kw"><a href="../reference/working-with-scores.html">evaluate</a></span>(s, design))</a>
 <a class="sourceLine" id="cb2-15" data-line-number="15">        )</a>
 <a class="sourceLine" id="cb2-16" data-line-number="16">)</a>
 <a class="sourceLine" id="cb2-17" data-line-number="17"><span class="co">#&gt; [1] "ESS: 44.1, power: 0.842, maximal type one error rate: 0.035"</span></a></code></pre></div>
@@ -118,17 +118,17 @@
 <a href="#define-objective" class="anchor"></a>Define objective</h1>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">objective &lt;-<span class="st"> </span><span class="cf">function</span>(x) {</a>
 <a class="sourceLine" id="cb3-2" data-line-number="2">  d  &lt;-<span class="st"> </span><span class="kw">update</span>(design, x)</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3">  <span class="kw">evaluate</span>(ess, d) <span class="op">+</span><span class="st"> </span><span class="fl">.001</span><span class="op">*</span><span class="kw">evaluate</span>(smth, d)</a>
+<a class="sourceLine" id="cb3-3" data-line-number="3">  <span class="kw"><a href="../reference/working-with-scores.html">evaluate</a></span>(ess, d) <span class="op">+</span><span class="st"> </span><span class="fl">.001</span><span class="op">*</span><span class="kw"><a href="../reference/working-with-scores.html">evaluate</a></span>(smth, d)</a>
 <a class="sourceLine" id="cb3-4" data-line-number="4">}</a>
 <a class="sourceLine" id="cb3-5" data-line-number="5"><span class="kw">objective</span>(<span class="kw">as.numeric</span>(design))</a>
 <a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co">#&gt; [1] 44.08998</span></a>
 <a class="sourceLine" id="cb3-7" data-line-number="7">constraint &lt;-<span class="st"> </span><span class="cf">function</span>(x) {</a>
 <a class="sourceLine" id="cb3-8" data-line-number="8">  d  &lt;-<span class="st"> </span><span class="kw">update</span>(design, x)</a>
 <a class="sourceLine" id="cb3-9" data-line-number="9">  <span class="kw">c</span>(</a>
-<a class="sourceLine" id="cb3-10" data-line-number="10">    <span class="fl">.8</span> <span class="op">-</span><span class="st"> </span><span class="kw">evaluate</span>(pow, d),</a>
-<a class="sourceLine" id="cb3-11" data-line-number="11">    <span class="kw">evaluate</span>(toer, d) <span class="op">-</span><span class="st"> </span><span class="fl">0.05</span>,</a>
+<a class="sourceLine" id="cb3-10" data-line-number="10">    <span class="fl">.8</span> <span class="op">-</span><span class="st"> </span><span class="kw"><a href="../reference/working-with-scores.html">evaluate</a></span>(pow, d),</a>
+<a class="sourceLine" id="cb3-11" data-line-number="11">    <span class="kw"><a href="../reference/working-with-scores.html">evaluate</a></span>(toer, d) <span class="op">-</span><span class="st"> </span><span class="fl">0.05</span>,</a>
 <a class="sourceLine" id="cb3-12" data-line-number="12">    x[<span class="dv">2</span>] <span class="op">-</span><span class="st"> </span>x[<span class="dv">3</span>] <span class="op">+</span><span class="st"> </span><span class="fl">.1</span>,</a>
-<a class="sourceLine" id="cb3-13" data-line-number="13">    <span class="kw">diff</span>(<span class="kw">c2</span>(d, <span class="kw">get_knots</span>(d)))</a>
+<a class="sourceLine" id="cb3-13" data-line-number="13">    <span class="kw">diff</span>(<span class="kw"><a href="../reference/Design-class.html">c2</a></span>(d, <span class="kw"><a href="../reference/GQDesign-class.html">get_knots</a></span>(d)))</a>
 <a class="sourceLine" id="cb3-14" data-line-number="14">  )</a>
 <a class="sourceLine" id="cb3-15" data-line-number="15">}</a>
 <a class="sourceLine" id="cb3-16" data-line-number="16"><span class="kw">constraint</span>(<span class="kw">as.numeric</span>(design))</a>
@@ -150,14 +150,14 @@
 <a class="sourceLine" id="cb3-32" data-line-number="32">)</a>
 <a class="sourceLine" id="cb3-33" data-line-number="33">d2 &lt;-<span class="st"> </span><span class="kw">update</span>(design, res<span class="op">$</span>solution)</a>
 <a class="sourceLine" id="cb3-34" data-line-number="34"><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</a>
-<a class="sourceLine" id="cb3-35" data-line-number="35"><span class="kw">plot</span>(z1, <span class="kw">n</span>(d2, z1), <span class="st">'l'</span>, <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="kw">max</span>(<span class="kw">n</span>(d2, z1))))</a>
-<a class="sourceLine" id="cb3-36" data-line-number="36"><span class="kw">plot</span>(z1, <span class="kw">c2</span>(d2, z1), <span class="st">'l'</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb3-35" data-line-number="35"><span class="kw">plot</span>(z1, <span class="kw"><a href="../reference/Design-class.html">n</a></span>(d2, z1), <span class="st">'l'</span>, <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="kw">max</span>(<span class="kw"><a href="../reference/Design-class.html">n</a></span>(d2, z1))))</a>
+<a class="sourceLine" id="cb3-36" data-line-number="36"><span class="kw">plot</span>(z1, <span class="kw"><a href="../reference/Design-class.html">c2</a></span>(d2, z1), <span class="st">'l'</span>)</a></code></pre></div>
 <p><img src="otsd_files/figure-html/unnamed-chunk-3-1.png" width="768"></p>
 <p>Compute the scores using fast internal representation (Gauss quadrature).</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">do.call</span>(sprintf, </a>
 <a class="sourceLine" id="cb4-2" data-line-number="2">        <span class="kw">c</span>(</a>
 <a class="sourceLine" id="cb4-3" data-line-number="3">          <span class="kw">list</span>(<span class="st">"ESS: %.1f, power: %.3f, maximal type one error rate: %.3f"</span>), </a>
-<a class="sourceLine" id="cb4-4" data-line-number="4">          <span class="kw">lapply</span>(<span class="kw">list</span>(ess, pow, toer), <span class="cf">function</span>(s) <span class="kw">evaluate</span>(s, d2, <span class="dt">specific =</span> <span class="ot">TRUE</span>))</a>
+<a class="sourceLine" id="cb4-4" data-line-number="4">          <span class="kw">lapply</span>(<span class="kw">list</span>(ess, pow, toer), <span class="cf">function</span>(s) <span class="kw"><a href="../reference/working-with-scores.html">evaluate</a></span>(s, d2, <span class="dt">specific =</span> <span class="ot">TRUE</span>))</a>
 <a class="sourceLine" id="cb4-5" data-line-number="5">        )</a>
 <a class="sourceLine" id="cb4-6" data-line-number="6">)</a>
 <a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">#&gt; [1] "ESS: 31.3, power: 0.800, maximal type one error rate: 0.050"</span></a></code></pre></div>
@@ -165,7 +165,7 @@
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">do.call</span>(sprintf, </a>
 <a class="sourceLine" id="cb5-2" data-line-number="2">        <span class="kw">c</span>(</a>
 <a class="sourceLine" id="cb5-3" data-line-number="3">          <span class="kw">list</span>(<span class="st">"ESS: %.1f, power: %.3f, maximal type one error rate: %.3f"</span>), </a>
-<a class="sourceLine" id="cb5-4" data-line-number="4">          <span class="kw">lapply</span>(<span class="kw">list</span>(ess, pow, toer), <span class="cf">function</span>(s) <span class="kw">evaluate</span>(s, d2, <span class="dt">specific =</span> <span class="ot">FALSE</span>))</a>
+<a class="sourceLine" id="cb5-4" data-line-number="4">          <span class="kw">lapply</span>(<span class="kw">list</span>(ess, pow, toer), <span class="cf">function</span>(s) <span class="kw"><a href="../reference/working-with-scores.html">evaluate</a></span>(s, d2, <span class="dt">specific =</span> <span class="ot">FALSE</span>))</a>
 <a class="sourceLine" id="cb5-5" data-line-number="5">        )</a>
 <a class="sourceLine" id="cb5-6" data-line-number="6">)</a>
 <a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">#&gt; [1] "ESS: 31.3, power: 0.800, maximal type one error rate: 0.050"</span></a></code></pre></div>
@@ -174,37 +174,37 @@
 <a class="sourceLine" id="cb6-2" data-line-number="2">limits &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>)</a>
 <a class="sourceLine" id="cb6-3" data-line-number="3">z   &lt;-<span class="st"> </span>stats<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/stats/topics/integrate">integrate</a></span>(f, limits[<span class="dv">1</span>], limits[<span class="dv">2</span>], <span class="dt">abs.tol =</span> <span class="fl">.0001</span>)<span class="op">$</span>value</a>
 <a class="sourceLine" id="cb6-4" data-line-number="4">pdf &lt;-<span class="st"> </span><span class="cf">function</span>(x) <span class="kw">f</span>(x) <span class="op">/</span><span class="st"> </span>z</a>
-<a class="sourceLine" id="cb6-5" data-line-number="5">alternative &lt;-<span class="st"> </span><span class="kw">ContinuousPrior</span>(pdf, limits)</a>
-<a class="sourceLine" id="cb6-6" data-line-number="6">ess  &lt;-<span class="st"> </span><span class="kw">integrate</span>(<span class="kw">ConditionalSampleSize</span>(dist, alternative))</a>
+<a class="sourceLine" id="cb6-5" data-line-number="5">alternative &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ContinuousPrior-class.html">ContinuousPrior</a></span>(pdf, limits)</a>
+<a class="sourceLine" id="cb6-6" data-line-number="6">ess  &lt;-<span class="st"> </span><span class="kw"><a href="../reference/working-with-scores.html">integrate</a></span>(<span class="kw"><a href="../reference/ConditionalSampleSize-class.html">ConditionalSampleSize</a></span>(dist, alternative))</a>
 <a class="sourceLine" id="cb6-7" data-line-number="7"></a>
 <a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co"># just for the fun of it lets condition on detla &gt;= .1</span></a>
 <a class="sourceLine" id="cb6-9" data-line-number="9">alternative_cond &lt;-<span class="st"> </span><span class="kw"><a href="../reference/Prior-class.html">condition</a></span>(alternative, <span class="kw">c</span>(.<span class="dv">1</span>, <span class="fl">1.</span>))</a>
-<a class="sourceLine" id="cb6-10" data-line-number="10">cp   &lt;-<span class="st"> </span><span class="kw">ConditionalPower</span>(dist, alternative_cond)</a>
-<a class="sourceLine" id="cb6-11" data-line-number="11">pow  &lt;-<span class="st"> </span><span class="kw">integrate</span>(cp)</a>
-<a class="sourceLine" id="cb6-12" data-line-number="12">toer &lt;-<span class="st"> </span><span class="kw">integrate</span>(<span class="kw">ConditionalPower</span>(dist, null))</a>
+<a class="sourceLine" id="cb6-10" data-line-number="10">cp   &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ConditionalPower-class.html">ConditionalPower</a></span>(dist, alternative_cond)</a>
+<a class="sourceLine" id="cb6-11" data-line-number="11">pow  &lt;-<span class="st"> </span><span class="kw"><a href="../reference/working-with-scores.html">integrate</a></span>(cp)</a>
+<a class="sourceLine" id="cb6-12" data-line-number="12">toer &lt;-<span class="st"> </span><span class="kw"><a href="../reference/working-with-scores.html">integrate</a></span>(<span class="kw"><a href="../reference/ConditionalPower-class.html">ConditionalPower</a></span>(dist, null))</a>
 <a class="sourceLine" id="cb6-13" data-line-number="13">smth &lt;-<span class="st"> </span><span class="kw"><a href="../reference/Smoothness_n2-class.html">Smoothness_n2</a></span>()</a>
 <a class="sourceLine" id="cb6-14" data-line-number="14"><span class="kw">do.call</span>(sprintf, </a>
 <a class="sourceLine" id="cb6-15" data-line-number="15">        <span class="kw">c</span>(</a>
 <a class="sourceLine" id="cb6-16" data-line-number="16">          <span class="kw">list</span>(<span class="st">"ESS: %.1f, power: %.3f, maximal type one error rate: %.3f"</span>), </a>
-<a class="sourceLine" id="cb6-17" data-line-number="17">          <span class="kw">lapply</span>(<span class="kw">list</span>(ess, pow, toer), <span class="cf">function</span>(s) <span class="kw">evaluate</span>(s, design))</a>
+<a class="sourceLine" id="cb6-17" data-line-number="17">          <span class="kw">lapply</span>(<span class="kw">list</span>(ess, pow, toer), <span class="cf">function</span>(s) <span class="kw"><a href="../reference/working-with-scores.html">evaluate</a></span>(s, design))</a>
 <a class="sourceLine" id="cb6-18" data-line-number="18">        )</a>
 <a class="sourceLine" id="cb6-19" data-line-number="19">)</a>
 <a class="sourceLine" id="cb6-20" data-line-number="20"><span class="co">#&gt; [1] "ESS: 38.0, power: 0.852, maximal type one error rate: 0.035"</span></a></code></pre></div>
 <p>CP power constraints!</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">objective &lt;-<span class="st"> </span><span class="cf">function</span>(x) {</a>
 <a class="sourceLine" id="cb7-2" data-line-number="2">  d  &lt;-<span class="st"> </span><span class="kw">update</span>(design, x)</a>
-<a class="sourceLine" id="cb7-3" data-line-number="3">  <span class="kw">evaluate</span>(ess, d) <span class="op">+</span><span class="st"> </span><span class="fl">.001</span><span class="op">*</span><span class="kw">evaluate</span>(smth, d)</a>
+<a class="sourceLine" id="cb7-3" data-line-number="3">  <span class="kw"><a href="../reference/working-with-scores.html">evaluate</a></span>(ess, d) <span class="op">+</span><span class="st"> </span><span class="fl">.001</span><span class="op">*</span><span class="kw"><a href="../reference/working-with-scores.html">evaluate</a></span>(smth, d)</a>
 <a class="sourceLine" id="cb7-4" data-line-number="4">}</a>
 <a class="sourceLine" id="cb7-5" data-line-number="5"><span class="kw">objective</span>(<span class="kw">as.numeric</span>(design))</a>
 <a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co">#&gt; [1] 37.992</span></a>
 <a class="sourceLine" id="cb7-7" data-line-number="7">constraint &lt;-<span class="st"> </span><span class="cf">function</span>(x) {</a>
 <a class="sourceLine" id="cb7-8" data-line-number="8">  d  &lt;-<span class="st"> </span><span class="kw">update</span>(design, x)</a>
 <a class="sourceLine" id="cb7-9" data-line-number="9">  <span class="kw">c</span>(</a>
-<a class="sourceLine" id="cb7-10" data-line-number="10">    <span class="fl">.8</span> <span class="op">-</span><span class="st"> </span><span class="kw">evaluate</span>(pow, d),</a>
-<a class="sourceLine" id="cb7-11" data-line-number="11">    <span class="kw">evaluate</span>(toer, d) <span class="op">-</span><span class="st"> </span><span class="fl">0.05</span>,</a>
+<a class="sourceLine" id="cb7-10" data-line-number="10">    <span class="fl">.8</span> <span class="op">-</span><span class="st"> </span><span class="kw"><a href="../reference/working-with-scores.html">evaluate</a></span>(pow, d),</a>
+<a class="sourceLine" id="cb7-11" data-line-number="11">    <span class="kw"><a href="../reference/working-with-scores.html">evaluate</a></span>(toer, d) <span class="op">-</span><span class="st"> </span><span class="fl">0.05</span>,</a>
 <a class="sourceLine" id="cb7-12" data-line-number="12">    x[<span class="dv">2</span>] <span class="op">-</span><span class="st"> </span>x[<span class="dv">3</span>] <span class="op">+</span><span class="st"> </span><span class="fl">.25</span>,</a>
-<a class="sourceLine" id="cb7-13" data-line-number="13">    <span class="kw">diff</span>(<span class="kw">c2</span>(d, <span class="kw">get_knots</span>(d))),</a>
-<a class="sourceLine" id="cb7-14" data-line-number="14">    <span class="fl">.7</span> <span class="op">-</span><span class="st"> </span><span class="kw">evaluate</span>(cp, d, <span class="kw">get_knots</span>(d))</a>
+<a class="sourceLine" id="cb7-13" data-line-number="13">    <span class="kw">diff</span>(<span class="kw"><a href="../reference/Design-class.html">c2</a></span>(d, <span class="kw"><a href="../reference/GQDesign-class.html">get_knots</a></span>(d))),</a>
+<a class="sourceLine" id="cb7-14" data-line-number="14">    <span class="fl">.7</span> <span class="op">-</span><span class="st"> </span><span class="kw"><a href="../reference/working-with-scores.html">evaluate</a></span>(cp, d, <span class="kw"><a href="../reference/GQDesign-class.html">get_knots</a></span>(d))</a>
 <a class="sourceLine" id="cb7-15" data-line-number="15">  )</a>
 <a class="sourceLine" id="cb7-16" data-line-number="16">}</a>
 <a class="sourceLine" id="cb7-17" data-line-number="17"><span class="kw">constraint</span>(<span class="kw">as.numeric</span>(design))</a>
@@ -227,9 +227,9 @@
 <a class="sourceLine" id="cb7-34" data-line-number="34">)</a>
 <a class="sourceLine" id="cb7-35" data-line-number="35">d2 &lt;-<span class="st"> </span><span class="kw">update</span>(design, res<span class="op">$</span>solution)</a>
 <a class="sourceLine" id="cb7-36" data-line-number="36"><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">3</span>))</a>
-<a class="sourceLine" id="cb7-37" data-line-number="37"><span class="kw">plot</span>(z1, <span class="kw">n</span>(d2, z1), <span class="st">'l'</span>, <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="kw">max</span>(<span class="kw">n</span>(d2, z1))))</a>
-<a class="sourceLine" id="cb7-38" data-line-number="38"><span class="kw">plot</span>(z1, <span class="kw">c2</span>(d2, z1), <span class="st">'l'</span>)</a>
-<a class="sourceLine" id="cb7-39" data-line-number="39"><span class="kw">plot</span>(z1, <span class="kw">evaluate</span>(cp, d2, z1), <span class="st">'l'</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb7-37" data-line-number="37"><span class="kw">plot</span>(z1, <span class="kw"><a href="../reference/Design-class.html">n</a></span>(d2, z1), <span class="st">'l'</span>, <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="kw">max</span>(<span class="kw"><a href="../reference/Design-class.html">n</a></span>(d2, z1))))</a>
+<a class="sourceLine" id="cb7-38" data-line-number="38"><span class="kw">plot</span>(z1, <span class="kw"><a href="../reference/Design-class.html">c2</a></span>(d2, z1), <span class="st">'l'</span>)</a>
+<a class="sourceLine" id="cb7-39" data-line-number="39"><span class="kw">plot</span>(z1, <span class="kw"><a href="../reference/working-with-scores.html">evaluate</a></span>(cp, d2, z1), <span class="st">'l'</span>)</a></code></pre></div>
 <p><img src="otsd_files/figure-html/unnamed-chunk-7-1.png" width="768"></p>
 </div>
   </div>

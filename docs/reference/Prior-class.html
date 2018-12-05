@@ -124,7 +124,7 @@ posterior() returns a new prior distribution [TODO: okay, maybe rethink naming?]
     
     <p><code>Prior</code> is an abstract class specifying the interface to be implemented
 by an prior class.
-Implementations for <a href='PointMassPrior-class.html'>PointMassPrior</a> and ContinuousPrior are available.</p>
+Implementations for <a href='PointMassPrior-class.html'>PointMassPrior</a> and <a href='ContinuousPrior-class.html'>ContinuousPrior</a> are available.</p>
 <p><code>bounds()</code> returns the range of the support of a prior [TODO: rename support()?]</p>
 <p><code>expectation()</code> evaluates the expected value of a function <code>f</code>
     depending on only the parameter value with respect to the prior
@@ -159,6 +159,10 @@ Implementations for <a href='PointMassPrior-class.html'>PointMassPrior</a> and C
     <tr>
       <th>dist</th>
       <td><p>a distribution object of class <code>Prior</code> or <code>DataDistribution</code></p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>further optional parameters</p></td>
     </tr>
     <tr>
       <th>f</th>

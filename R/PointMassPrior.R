@@ -10,6 +10,8 @@
 #' @slot mass numeric vector of the same length as theta - corresponding
 #'     probability masses (must sum to one!)
 #'
+#' @template PriorTemplate
+#'
 #' @exportClass PointMassPrior
 setClass("PointMassPrior", representation(
         theta = "numeric",
@@ -31,11 +33,6 @@ PointMassPrior <- function(theta, mass) {
 }
 
 
-
-#' Get support of prior
-#'
-#' \code{bounds(dist, ...)} simply returns \code{range(dist@theta)}
-#'
 #' @rdname PointMassPrior-class
 #' @export
 setMethod("bounds", signature("PointMassPrior"),

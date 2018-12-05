@@ -124,7 +124,7 @@ continuation region of a design.</p>
     <pre class="usage"><span class='fu'>Smoothness_n2</span>(<span class='kw'>h</span> <span class='kw'>=</span> <span class='fu'>sqrt</span>(<span class='no'>.Machine</span>$<span class='no'>double.eps</span>))
 
 <span class='co'># S4 method for Smoothness_n2,Design</span>
-<span class='fu'>evaluate</span>(<span class='no'>s</span>, <span class='no'>design</span>, <span class='kw'>specific</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+<span class='fu'><a href='working-with-scores.html'>evaluate</a></span>(<span class='no'>s</span>, <span class='no'>design</span>, <span class='kw'>specific</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -147,6 +147,10 @@ continuation region of a design.</p>
       <td><p>logical, should a design-specific implementation be used?
 defaults to <code>TRUE</code>. If <code>TRUE</code>, looks for design-specific
 <code>.evaluate</code> method and calls it</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>further optional arguments</p></td>
     </tr>
     </table>
     

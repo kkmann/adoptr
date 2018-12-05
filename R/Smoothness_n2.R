@@ -37,6 +37,7 @@ Smoothness_n2 <- function(h = sqrt(.Machine$double.eps)) new("Smoothness_n2", h 
 #' @param specific logical, should a design-specific implementation be used?
 #'     defaults to \code{TRUE}. If \code{TRUE}, looks for design-specific
 #'     \code{.evaluate} method and calls it
+#' @template dotdotdotTemplate
 #'
 #' @rdname Smoothness_n2-class
 #' @export

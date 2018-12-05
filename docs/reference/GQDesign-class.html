@@ -38,7 +38,7 @@ Gaussian quadrature rules.
 The pivots are chosen to be the evaluation points of the selected
 Gaussian quadrature rule and guarantee a stable evaluation during
 optimization.
-[TODO: implement a constructor taking in n2 and c2 functions?]" />
+See Design-class for details on the inherited methods." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -118,8 +118,8 @@ by linear interpolation of pivot points and integration is handled via
 Gaussian quadrature rules.
 The pivots are chosen to be the evaluation points of the selected
 Gaussian quadrature rule and guarantee a stable evaluation during
-optimization.</p>
-<p>[TODO: implement a constructor taking in n2 and c2 functions?]</p>
+optimization.
+See <code><a href='Design-class.html'>Design-class</a></code> for details on the inherited methods.</p>
     
     </div>
 
@@ -128,17 +128,16 @@ optimization.</p>
 <span class='co'># S4 method for GQDesign</span>
 <span class='fu'>update</span>(<span class='no'>object</span>, <span class='no'>params</span>, <span class='no'>...</span>)
 
-<span class='co'># S4 method for GQDesign</span>
-<span class='fu'>n1</span>(<span class='no'>d</span>, <span class='no'>...</span>)
+<span class='fu'>get_knots</span>(<span class='no'>d</span>, <span class='no'>...</span>)
 
 <span class='co'># S4 method for GQDesign</span>
 <span class='fu'>get_knots</span>(<span class='no'>d</span>, <span class='no'>...</span>)
 
 <span class='co'># S4 method for GQDesign,numeric</span>
-<span class='fu'>n2</span>(<span class='no'>d</span>, <span class='no'>x1</span>, <span class='no'>...</span>)
+<span class='fu'><a href='Design-class.html'>n2</a></span>(<span class='no'>d</span>, <span class='no'>x1</span>, <span class='no'>...</span>)
 
 <span class='co'># S4 method for GQDesign,numeric</span>
-<span class='fu'>c2</span>(<span class='no'>d</span>, <span class='no'>x1</span>, <span class='no'>...</span>)
+<span class='fu'><a href='Design-class.html'>c2</a></span>(<span class='no'>d</span>, <span class='no'>x1</span>, <span class='no'>...</span>)
 
 <span class='co'># S4 method for GQDesign</span>
 <span class='fu'>as.numeric</span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
@@ -175,11 +174,20 @@ of the Gaussian quadrature rule to use for integration</p></td>
     </tr>
     <tr>
       <th>object</th>
-      <td><p>GQDesign to update with given parameter values.</p></td>
+      <td><p><code>Design</code> object to update with new design parameter values</p></td>
+    </tr>
+    <tr>
+      <th>params</th>
+      <td><p>vector of design parameters (must be in same order as returned
+by <code>as.numeric(design)</code>)</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>further optional arguments</p></td>
     </tr>
     <tr>
       <th>d</th>
-      <td><p>object of class GQDesign</p></td>
+      <td><p><code>Design</code> object</p></td>
     </tr>
     <tr>
       <th>x1</th>
@@ -187,22 +195,15 @@ of the Gaussian quadrature rule to use for integration</p></td>
     </tr>
     <tr>
       <th>x</th>
-      <td><p>GQDesign</p></td>
+      <td><p><code>Design</code> object to conver to numeric vector of design parameters.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="methods-by-generic-"><a class="anchor" href="#methods-by-generic-"></a>Methods (by generic)</h2>
 
     <ul>
-<li><p><code>update</code>: return a new design object with parameters given by a
-single numeric vector of length 2*order + 3, inverse of <code>as.numeric(design)</code>.</p></li>
-<li><p><code>n1</code>: stage-one sample size</p></li>
 <li><p><code>get_knots</code>: get the pivots points (knots) of the Gaussian quadrature
 rule.</p></li>
-<li><p><code>n2</code>: stage-two sample size by linear interpolation of n2_pivots</p></li>
-<li><p><code>c2</code>: stage-two critical value by linear interpolation of n2_pivots</p></li>
-<li><p><code>as.numeric</code>: convert GQDesign to vector of tunable parameters via
-<code>c(x@n1, x@c1f, x@c1e, x@n2_pivots, x@c2_pivots)</code>; inverse of update();</p></li>
 </ul>
     
     <h2 class="hasAnchor" id="slots"><a class="anchor" href="#slots"></a>Slots</h2>
@@ -212,6 +213,11 @@ rule.</p></li>
 <dt><code>rule</code></dt><dd><p>data.frame, the integration rule, result of a call to
 <code>gaussquad::legendre.quadrature.rules(order)[[order]])</code> during
 construction</p></dd>
+    <dt><code>n1</code></dt><dd><p>cf. parameter</p></dd>
+    <dt><code>c1f</code></dt><dd><p>cf. parameter</p></dd>
+    <dt><code>c1e</code></dt><dd><p>cf. parameter</p></dd>
+    <dt><code>n2_pivots</code></dt><dd><p>cf. parameter</p></dd>
+    <dt><code>c2_pivots</code></dt><dd><p>cf. parameter</p></dd>
 </dl>
     
 

@@ -35,8 +35,7 @@
 <meta property="og:description" content="PointMassPrior is a generic class for representing a univariate prior
 over a discrete set of points with positive probability mass.
 All methods for prior distributions [TODO link] are specialized to
-the discrete case.
-bounds(dist, ...) simply returns range(dist@theta)" />
+the discrete case." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -115,7 +114,6 @@ bounds(dist, ...) simply returns range(dist@theta)" />
 over a discrete set of points with positive probability mass.
 All methods for prior distributions [TODO link] are specialized to
 the discrete case.</p>
-<p><code><a href='Prior-class.html'>bounds(dist, ...)</a></code> simply returns <code>range(dist@theta)</code></p>
     
     </div>
 
@@ -152,6 +150,34 @@ the discrete case.</p>
     <tr>
       <th>mass</th>
       <td><p>cf. slot 'mass'</p></td>
+    </tr>
+    <tr>
+      <th>dist</th>
+      <td><p>data distribution or prior distribution (depending on context) [TODO: make this clearer by renaming arguments in generics!]</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>further optional arguments</p></td>
+    </tr>
+    <tr>
+      <th>f</th>
+      <td><p>univariate function of parameter to get expected value of</p></td>
+    </tr>
+    <tr>
+      <th>interval</th>
+      <td><p>numeric vector of length two specifying the interval to condition on.</p></td>
+    </tr>
+    <tr>
+      <th>prior</th>
+      <td><p>prior distribution</p></td>
+    </tr>
+    <tr>
+      <th>x1</th>
+      <td><p>stage one outcome (note that n1 is available from <code>design</code>)</p></td>
+    </tr>
+    <tr>
+      <th>n1</th>
+      <td><p>stage-one sample size</p></td>
     </tr>
     </table>
     

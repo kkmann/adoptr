@@ -1,3 +1,13 @@
+#' Affine functions of scores
+#'
+#' [TODO]
+#'
+#' @slot scores the list of scores
+#' @slot coefs numeric vector of the same length as \code{scores}, holding the
+#'     coefficients
+#' @slot intercept the intercept for the affine function
+#'
+#' @exportClass AffineScore
 setClass("AffineScore", representation(
     scores    = "list",
     coefs     = "numeric",
@@ -5,6 +15,13 @@ setClass("AffineScore", representation(
     ))
 
 
+#' @param scores cf. corresponding slot
+#' @param coefs cf. corresponding slot
+#' @param intercept cf. corresponding slot
+#' @template dotdotdotTemplate
+#'
+#' @rdname AffineScore-class
+#' @export
 AffineScore <- function(scores, coefs, intercept) {
     if (length(scores) != length(coefs))
         stop("scores and coefs must have same size")
@@ -16,6 +33,11 @@ AffineScore <- function(scores, coefs, intercept) {
 }
 
 
+#' @param s score
+#' @param design design
+#'
+#' @rdname AffineScore-class
+#' @export
 setMethod("evaluate", signature("AffineScore", "Design"),
           function(s, design, ...) rowSums(s@coefs * sapply(s@scores, function(s, ...) evaluate(s, design, ...), ...) + s@intercept) )
 
@@ -32,22 +54,29 @@ AffineUnconditionalScore <- function(scores, coefs, intercept = 0) {
     return(res)
 }
 
+
+#'@rdname score-arithmetic
 setMethod("+", signature("AffineUnconditionalScore", "UnconditionalScore"),
           function(e1, e2) AffineUnconditionalScore(c(e1@scores, list(e2)), c(e1@coefs, 1.0), e1@intercept) )
+#'@rdname score-arithmetic
 setMethod("+", signature("UnconditionalScore", "AffineUnconditionalScore"),
           function(e1, e2) e2 + e1 )
-
+#'@rdname score-arithmetic
 setMethod("+", signature("AffineUnconditionalScore", "numeric"),
           function(e1, e2) AffineUnconditionalScore(e1@scores, e1@coefs, e1@intercept + e2) )
+#'@rdname score-arithmetic
 setMethod("+", signature("numeric", "AffineUnconditionalScore"),
           function(e1, e2) e2 + e1 )
-
 ## TODO: check for duplicate scores and combine!
+#'@rdname score-arithmetic
 setMethod("+", signature("AffineUnconditionalScore", "AffineUnconditionalScore"),
           function(e1, e2) AffineUnconditionalScore(c(e1@scores, e2@scores), c(e1@coefs, e2@coefs), e1@intercept + e2@intercept) )
 
+
+#'@rdname score-arithmetic
 setMethod("*", signature("AffineUnconditionalScore", "numeric"),
           function(e1, e2) AffineUnconditionalScore(e1@scores, e2 * e1@coefs, e2 * e1@intercept) )
+#'@rdname score-arithmetic
 setMethod("*", signature("numeric", "AffineUnconditionalScore"),
           function(e1, e2) e2 * e1 )
 
@@ -63,21 +92,28 @@ AffineConditionalScore <- function(scores, coefs, intercept = 0) {
     return(res)
 }
 
+
+#'@rdname score-arithmetic
 setMethod("+", signature("AffineConditionalScore", "ConditionalScore"),
           function(e1, e2) AffineConditionalScore(c(e1@scores, list(e2)), c(e1@coefs, 1.0), e1@intercept) )
+#'@rdname score-arithmetic
 setMethod("+", signature("ConditionalScore", "AffineConditionalScore"),
           function(e1, e2) e2 + e1 )
-
+#'@rdname score-arithmetic
 setMethod("+", signature("AffineConditionalScore", "numeric"),
           function(e1, e2) AffineConditionalScore(e1@scores, e1@coefs, e1@intercept + e2) )
+#'@rdname score-arithmetic
 setMethod("+", signature("numeric", "AffineConditionalScore"),
           function(e1, e2) e2 + e1 )
-
 ## TODO: check for duplicate scores and combine!
+#'@rdname score-arithmetic
 setMethod("+", signature("AffineConditionalScore", "AffineConditionalScore"),
           function(e1, e2) AffineConditionalScore(c(e1@scores, e2@scores), c(e1@coefs, e2@coefs), e1@intercept + e2@intercept) )
 
+
+#'@rdname score-arithmetic
 setMethod("*", signature("AffineConditionalScore", "numeric"),
           function(e1, e2) AffineConditionalScore(e1@scores, e2 * e1@coefs, e2 * e1@intercept) )
+#'@rdname score-arithmetic
 setMethod("*", signature("numeric", "AffineConditionalScore"),
           function(e1, e2) e2 * e1 )

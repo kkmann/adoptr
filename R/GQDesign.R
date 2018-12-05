@@ -6,10 +6,18 @@
 #' The pivots are chosen to be the evaluation points of the selected
 #' Gaussian quadrature rule and guarantee a stable evaluation during
 #' optimization.
+#' See \code{\link{Design-class}} for details on the inherited methods.
 #'
 #' @slot rule data.frame, the integration rule, result of a call to
 #'     \code{gaussquad::legendre.quadrature.rules(order)[[order]])} during
 #'     construction
+#' @slot n1 cf. parameter
+#' @slot c1f cf. parameter
+#' @slot c1e cf. parameter
+#' @slot n2_pivots cf. parameter
+#' @slot c2_pivots cf. parameter
+#'
+#' @template DesignTemplate
 #'
 #' @exportClass GQDesign
 setClass("GQDesign", representation(
@@ -22,10 +30,7 @@ setClass("GQDesign", representation(
     ),
     contains = "Design")
 
-#' Constructor
-#'
-#' [TODO: implement a constructor taking in n2 and c2 functions?]
-#'
+
 #' @param n1 stage-one sample size
 #' @param c1f early stopping for futility boundary
 #' @param c1e early stopping for efficacy boundary
@@ -46,10 +51,11 @@ GQDesign <- function(n1, c1f, c1e, n2_pivots, c2_pivots, order) {
         rule = gaussquad::legendre.quadrature.rules(order)[[order]])
 }
 
-#' @param object GQDesign to update with given parameter values.
-#'
-#' @describeIn GQDesign return a new design object with parameters given by a
-#'     single numeric vector of length 2*order + 3, inverse of \code{as.numeric(design)}.
+
+#' @param params vector of design parameters (must be in same order as returned
+#'     by \code{as.numeric(design)})
+#' @rdname GQDesign-class
+#' @export
 setMethod("update", signature("GQDesign"),
     function(object, params, ...) {
         if( ((length(params) - 3) / 2) != nrow(object@rule))
@@ -64,10 +70,9 @@ setMethod("update", signature("GQDesign"),
     })
 
 
-#' @param d object of class GQDesign
-#' @describeIn GQDesign stage-one sample size
-setMethod("n1", signature("GQDesign"), function(d, ...) d@n1)
-
+#' @rdname GQDesign-class
+#' @export
+setGeneric("get_knots", function(d, ...) standardGeneric("get_knots"))
 
 #' @describeIn GQDesign get the pivots points (knots) of the Gaussian quadrature
 #'     rule.
@@ -80,22 +85,22 @@ setMethod("get_knots", signature("GQDesign"),
     })
 
 
-#' @param x1 stage-one outcome
-#' @describeIn GQDesign stage-two sample size by linear interpolation of n2_pivots
+#' @rdname GQDesign-class
+#' @export
 setMethod("n2", signature("GQDesign", "numeric"),
     function(d, x1, ...) ifelse(x1 < d@c1f | x1 > d@c1e, 0, 1) *
         pmax(0, stats::approx(get_knots(d), d@n2_pivots, xout = x1, method = "linear", rule = 2)$y) )
 
 
-#' @describeIn GQDesign stage-two critical value by linear interpolation of n2_pivots
+#' @rdname GQDesign-class
+#' @export
 setMethod("c2", signature("GQDesign", "numeric"),
     function(d, x1, ...) stats::approx(get_knots(d), d@c2_pivots, xout = x1, method = "linear", rule = 2)$y *
         ifelse(x1 < d@c1f, Inf, 1) * ifelse(x1 > d@c1e, -Inf, 1) )
 
 
-#' @param x GQDesign
-#' @describeIn GQDesign convert GQDesign to vector of tunable parameters via
-#'     \code{c(x@n1, x@c1f, x@c1e, x@n2_pivots, x@c2_pivots)}; inverse of update();
+#' @rdname GQDesign-class
+#' @export
 setMethod("as.numeric", signature("GQDesign"),
         function(x, ...) c(x@n1, x@c1f, x@c1e, x@n2_pivots, x@c2_pivots))
 

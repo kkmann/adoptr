@@ -13,6 +13,7 @@ setClass("Prior")
 #' \code{bounds()} returns the range of the support of a prior [TODO: rename support()?]
 #'
 #' @param dist a distribution object of class \code{Prior} or \code{DataDistribution}
+#' @param ... further optional parameters
 #'
 #' @rdname Prior-class
 #' @export

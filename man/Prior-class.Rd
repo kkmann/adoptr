@@ -26,6 +26,8 @@ posterior(dist, prior, x1, n1, ...)
 \arguments{
 \item{dist}{a distribution object of class \code{Prior} or \code{DataDistribution}}
 
+\item{...}{further optional parameters}
+
 \item{f}{a function of the single model parameter}
 
 \item{interval}{length two numeric vector giving the parameter interval to

@@ -5,7 +5,7 @@
 \alias{GQDesign-class}
 \alias{GQDesign}
 \alias{update,GQDesign-method}
-\alias{n1,GQDesign-method}
+\alias{get_knots}
 \alias{get_knots,GQDesign-method}
 \alias{n2,GQDesign,numeric-method}
 \alias{c2,GQDesign,numeric-method}
@@ -16,7 +16,7 @@ GQDesign(n1, c1f, c1e, n2_pivots, c2_pivots, order)
 
 \S4method{update}{GQDesign}(object, params, ...)
 
-\S4method{n1}{GQDesign}(d, ...)
+get_knots(d, ...)
 
 \S4method{get_knots}{GQDesign}(d, ...)
 
@@ -42,13 +42,18 @@ pivot points of the Gaussian quadrature rule [TODO: these are not available duri
 \item{order}{order (i.e. number of pivot points in the interior of [c1f, c1e])
 of the Gaussian quadrature rule to use for integration}
 
-\item{object}{GQDesign to update with given parameter values.}
+\item{object}{\code{Design} object to update with new design parameter values}
 
-\item{d}{object of class GQDesign}
+\item{params}{vector of design parameters (must be in same order as returned
+by \code{as.numeric(design)})}
+
+\item{...}{further optional arguments}
+
+\item{d}{\code{Design} object}
 
 \item{x1}{stage-one outcome}
 
-\item{x}{GQDesign}
+\item{x}{\code{Design} object to conver to numeric vector of design parameters.}
 }
 \description{
 Implements a class for two-stage designs where n2 and c2 are approximated
@@ -57,25 +62,12 @@ Gaussian quadrature rules.
 The pivots are chosen to be the evaluation points of the selected
 Gaussian quadrature rule and guarantee a stable evaluation during
 optimization.
-
-[TODO: implement a constructor taking in n2 and c2 functions?]
+See \code{\link{Design-class}} for details on the inherited methods.
 }
 \section{Methods (by generic)}{
 \itemize{
-\item \code{update}: return a new design object with parameters given by a
-single numeric vector of length 2*order + 3, inverse of \code{as.numeric(design)}.
-
-\item \code{n1}: stage-one sample size
-
 \item \code{get_knots}: get the pivots points (knots) of the Gaussian quadrature
 rule.
-
-\item \code{n2}: stage-two sample size by linear interpolation of n2_pivots
-
-\item \code{c2}: stage-two critical value by linear interpolation of n2_pivots
-
-\item \code{as.numeric}: convert GQDesign to vector of tunable parameters via
-\code{c(x@n1, x@c1f, x@c1e, x@n2_pivots, x@c2_pivots)}; inverse of update();
 }}
 
 \section{Slots}{
@@ -84,5 +76,15 @@ rule.
 \item{\code{rule}}{data.frame, the integration rule, result of a call to
 \code{gaussquad::legendre.quadrature.rules(order)[[order]])} during
 construction}
+
+\item{\code{n1}}{cf. parameter}
+
+\item{\code{c1f}}{cf. parameter}
+
+\item{\code{c1e}}{cf. parameter}
+
+\item{\code{n2_pivots}}{cf. parameter}
+
+\item{\code{c2_pivots}}{cf. parameter}
 }}
 

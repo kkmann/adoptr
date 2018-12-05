@@ -4,7 +4,7 @@
 \name{IntegralScore-class}
 \alias{IntegralScore-class}
 \alias{evaluate,IntegralScore,Design-method}
-\title{Score class obtained by integration of a \code{ConditionalScore}}
+\title{Unconditional score class obtained by integration of a \code{ConditionalScore}}
 \usage{
 \S4method{evaluate}{IntegralScore,Design}(s, design, specific = TRUE,
   ...)
@@ -14,18 +14,19 @@
 
 \item{design}{a \code{Design}}
 
-\item{specific}{logical, flag for switching to design-specific implementation
-(default).}
+\item{specific}{logical, flag for switching to design-specific implementation.}
+
+\item{...}{further optimal arguments}
 }
 \description{
-Score class obtained by integration of a \code{ConditionalScore}
+Unconditional score class obtained by integration of a \code{ConditionalScore}
 }
 \section{Methods (by generic)}{
 \itemize{
 \item \code{evaluate}: generic implementation of evaluating an integral
 score. Uses adaptive Gaussian quadrature for integration and might be
 more efficiently implemented by specific \code{Design}-classes
-(cf. .evaluate).
+(cf. \code{\link{.evaluate}}).
 }}
 
 \section{Slots}{

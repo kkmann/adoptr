@@ -12,25 +12,33 @@
 \S4method{integrate}{ConditionalScore}(s, ...)
 }
 \arguments{
-\item{s}{an \code{ConditionalScore}}
+\item{s}{conditional score object to evaluate}
 
 \item{design}{a \code{Design}}
 
 \item{x1}{stage one outcome (note that n1 is available from \code{design})}
 
-\item{s}{an \code{ConditionalScore}}
-
-\item{design}{a \code{Design}}
-
-\item{x1}{stage one outcome (note that n1 is available from \code{design})}
+\item{...}{further optional parameters}
 }
 \description{
 [ToDo]
 }
 \section{Methods (by generic)}{
 \itemize{
-\item \code{evaluate}: bla
+\item \code{evaluate}: not implemented, just raises a 'not implemented'
+error.
 
-\item \code{integrate}: Integrate a Conditional Score over the stage-one outcome
+\item \code{integrate}: integrate a \code{ConditionalScore} over the
+stage-one outcome; return object of class \code{\link{IntegralScore-class}}.
+}}
+
+\section{Slots}{
+
+\describe{
+\item{\code{distribution}}{\code{DataDistribution} object specifying the data distribution
+given the parameter \eqn{\theta} of the model}
+
+\item{\code{prior}}{\code{Prior} object specifying the data distribution
+given the parameter \eqn{\theta} of the model}
 }}
 

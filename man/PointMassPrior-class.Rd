@@ -33,14 +33,26 @@ PointMassPrior(theta, mass)
 \item{theta}{cf. slot 'theta'}
 
 \item{mass}{cf. slot 'mass'}
+
+\item{dist}{data distribution or prior distribution (depending on context) [TODO: make this clearer by renaming arguments in generics!]}
+
+\item{...}{further optional arguments}
+
+\item{f}{univariate function of parameter to get expected value of}
+
+\item{interval}{numeric vector of length two specifying the interval to condition on.}
+
+\item{prior}{prior distribution}
+
+\item{x1}{stage one outcome (note that n1 is available from \code{design})}
+
+\item{n1}{stage-one sample size}
 }
 \description{
 \code{PointMassPrior} is a generic class for representing a univariate prior
 over a discrete set of points with positive probability mass.
 All methods for prior distributions [TODO link] are specialized to
 the discrete case.
-
-\code{bounds(dist, ...)} simply returns \code{range(dist@theta)}
 }
 \section{Slots}{
 
