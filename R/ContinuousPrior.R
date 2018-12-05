@@ -4,6 +4,7 @@ setClass("ContinuousPrior", representation(
     ),
     contains = "Prior")
 
+#' @export
 ContinuousPrior <- function(pdf, support) {
     if (length(support) != 2)
         stop("support must be of length 2")

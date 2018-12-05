@@ -32,16 +32,24 @@ PointMassPrior <- function(theta, mass) {
 
 
 
-#' A generic implementation for arbitrary two-stage designs based on adaptive
+#' Get support of prior
 #'
-#' @rdname Smoothness_n2-class
+#' \code{bounds(dist, ...)} simply returns \code{range(dist@theta)}
+#'
+#' @rdname PointMassPrior-class
 #' @export
 setMethod("bounds", signature("PointMassPrior"),
     function(dist, ...) range(dist@theta))
 
+
+#' @rdname PointMassPrior-class
+#' @export
 setMethod("expectation", signature("PointMassPrior", "function"),
     function(dist, f, ...) sum(dist@mass * sapply(dist@theta, f, ...)) )
 
+
+#' @rdname PointMassPrior-class
+#' @export
 setMethod("condition", signature("PointMassPrior", "numeric"),
     function(dist, interval, ...) {
         if (length(interval) != 2)
@@ -59,6 +67,9 @@ setMethod("condition", signature("PointMassPrior", "numeric"),
         ))
     })
 
+
+#' @rdname PointMassPrior-class
+#' @export
 setMethod("predictive_pdf", signature("DataDistribution", "PointMassPrior", "numeric"),
     function(dist, prior, x1, n1, ...) {
         k   <- length(prior@theta)
@@ -69,6 +80,9 @@ setMethod("predictive_pdf", signature("DataDistribution", "PointMassPrior", "num
         return(res)
     })
 
+
+#' @rdname PointMassPrior-class
+#' @export
 setMethod("predictive_cdf", signature("DataDistribution", "PointMassPrior", "numeric"),
     function(dist, prior, x1, n1, ...) {
         k   <- length(prior@theta)
@@ -79,6 +93,9 @@ setMethod("predictive_cdf", signature("DataDistribution", "PointMassPrior", "num
         return(res)
     })
 
+
+#' @rdname PointMassPrior-class
+#' @export
 setMethod("posterior", signature("DataDistribution", "PointMassPrior", "numeric"),
     function(dist, prior, x1, n1, ...) {
         mass <- prior@mass * sapply(prior@theta, function(theta) probability_density_function(dist, x1, n1, theta))

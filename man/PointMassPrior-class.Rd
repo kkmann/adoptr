@@ -4,9 +4,30 @@
 \name{PointMassPrior-class}
 \alias{PointMassPrior-class}
 \alias{PointMassPrior}
+\alias{bounds,PointMassPrior-method}
+\alias{expectation,PointMassPrior,function-method}
+\alias{condition,PointMassPrior,numeric-method}
+\alias{predictive_pdf,DataDistribution,PointMassPrior,numeric-method}
+\alias{predictive_cdf,DataDistribution,PointMassPrior,numeric-method}
+\alias{posterior,DataDistribution,PointMassPrior,numeric-method}
 \title{Point-mass prior}
 \usage{
 PointMassPrior(theta, mass)
+
+\S4method{bounds}{PointMassPrior}(dist, ...)
+
+\S4method{expectation}{PointMassPrior,`function`}(dist, f, ...)
+
+\S4method{condition}{PointMassPrior,numeric}(dist, interval, ...)
+
+\S4method{predictive_pdf}{DataDistribution,PointMassPrior,numeric}(dist,
+  prior, x1, n1, ...)
+
+\S4method{predictive_cdf}{DataDistribution,PointMassPrior,numeric}(dist,
+  prior, x1, n1, ...)
+
+\S4method{posterior}{DataDistribution,PointMassPrior,numeric}(dist, prior,
+  x1, n1, ...)
 }
 \arguments{
 \item{theta}{cf. slot 'theta'}
@@ -18,6 +39,8 @@ PointMassPrior(theta, mass)
 over a discrete set of points with positive probability mass.
 All methods for prior distributions [TODO link] are specialized to
 the discrete case.
+
+\code{bounds(dist, ...)} simply returns \code{range(dist@theta)}
 }
 \section{Slots}{
 

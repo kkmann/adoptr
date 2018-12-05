@@ -26,9 +26,8 @@ c1f    <-   .0
 c1e    <-  2.0
 n2_piv <- rep(40.0, 5)
 c2_piv <- rep( 1.96, 5)
-
-design <- FivePointDesign(n1, c1f, c1e, n2_piv, c2_piv)
-
+number_knots <- 5
+design <- GQDesign(n1, c1f, c1e, n2_piv, c2_piv, number_knots)
 z1 <- seq(-2, 4, .01)
 par(mfrow = c(1, 2))
 plot(z1, n(design, z1), 'l', ylim = c(0, max(n(design, z1))))
@@ -41,16 +40,13 @@ plot(z1, c2(design, z1), 'l')
 # define null and alternative as point mass distributions
 null        <- PointMassPrior(.0, 1)
 alternative <- PointMassPrior(.4, 1)
-
 dist <- Normal()
 
 ess  <- integrate(ConditionalSampleSize(dist, alternative))
 cp   <- ConditionalPower(dist, alternative)
 pow  <- integrate(cp)
 toer <- integrate(ConditionalPower(dist, null))
-
 smth <- Smoothness_n2()
-
 do.call(sprintf, 
         c(
           list("ESS: %.1f, power: %.3f, maximal type one error rate: %.3f"), 
@@ -67,7 +63,6 @@ objective <- function(x) {
   evaluate(ess, d) + .001*evaluate(smth, d)
 }
 objective(as.numeric(design))
-
 constraint <- function(x) {
   d  <- update(design, x)
   c(
@@ -78,10 +73,8 @@ constraint <- function(x) {
   )
 }
 constraint(as.numeric(design))
-
 ub <- c(50, 1, 4, numeric(5) + 50, numeric(5) + 5)
 lb <- c(10, -1, 1, numeric(5) + 2, numeric(5) - 5)
-
 res <- nloptr::nloptr(
   as.numeric(design),
   lb = lb,
@@ -94,14 +87,13 @@ res <- nloptr::nloptr(
     maxeval     = 2500
   )
 )
-
 d2 <- update(design, res$solution)
 par(mfrow = c(1, 2))
 plot(z1, n(d2, z1), 'l', ylim = c(0, max(n(d2, z1))))
 plot(z1, c2(d2, z1), 'l')
 ```
 
-Compute the scores using fast internal representation (5-point Newton-Cotes).
+Compute the scores using fast internal representation (Gauss quadrature).
 
 ```{r}
 do.call(sprintf, 
@@ -133,7 +125,6 @@ limits <- c(0, 1)
 z   <- stats::integrate(f, limits[1], limits[2], abs.tol = .0001)$value
 pdf <- function(x) f(x) / z
 alternative <- ContinuousPrior(pdf, limits)
-
 ess  <- integrate(ConditionalSampleSize(dist, alternative))
 
 # just for the fun of it lets condition on detla >= .1
@@ -141,9 +132,7 @@ alternative_cond <- condition(alternative, c(.1, 1.))
 cp   <- ConditionalPower(dist, alternative_cond)
 pow  <- integrate(cp)
 toer <- integrate(ConditionalPower(dist, null))
-
 smth <- Smoothness_n2()
-
 do.call(sprintf, 
         c(
           list("ESS: %.1f, power: %.3f, maximal type one error rate: %.3f"), 
@@ -160,7 +149,6 @@ objective <- function(x) {
   evaluate(ess, d) + .001*evaluate(smth, d)
 }
 objective(as.numeric(design))
-
 constraint <- function(x) {
   d  <- update(design, x)
   c(
@@ -172,10 +160,8 @@ constraint <- function(x) {
   )
 }
 constraint(as.numeric(design))
-
 ub <- c(50, 1, 4, numeric(5) + 50, numeric(5) + 5)
 lb <- c(10, -1, 1, numeric(5) + 2, numeric(5) - 5)
-
 res <- nloptr::nloptr(
   as.numeric(design),
   lb = lb,
@@ -188,7 +174,6 @@ res <- nloptr::nloptr(
     maxeval     = 2500
   )
 )
-
 d2 <- update(design, res$solution)
 par(mfrow = c(1, 3))
 plot(z1, n(d2, z1), 'l', ylim = c(0, max(n(d2, z1))))

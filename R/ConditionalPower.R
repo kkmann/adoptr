@@ -1,5 +1,6 @@
 setClass("ConditionalPower", contains = "ConditionalScore")
 
+#' @export
 ConditionalPower <- function(dist, prior) new("ConditionalPower", distribution = dist, prior = prior)
 
 setMethod("evaluate", signature("ConditionalPower", "Design"),

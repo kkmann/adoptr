@@ -1,41 +1,59 @@
-# evaluate a score (both conditional and unconditional)
+#' @export
 setGeneric("evaluate", function(s, design, ...) standardGeneric("evaluate"))
+#' @export
+setGeneric("integrate", function(s, ...) standardGeneric("integrate"))
+setGeneric(".evaluate", function(s, design, ...) standardGeneric(".evaluate"))
+
+
 
 
 setClass("AbstractConditionalScore")
+
 
 setMethod("evaluate", signature("AbstractConditionalScore", "Design"),
           function(s, design, x1, ...) stop("not implemented"))
 
 
+
+
+#' Abstract class for conditional scoring function
+#'
+#' [ToDo]
+#'
+#' @param s an \code{ConditionalScore}
+#' @param design a \code{Design}
+#' @param x1 stage one outcome (note that n1 is available from \code{design})
+#'
+#' @exportClass ConditionalScore
 setClass("ConditionalScore", representation(
         distribution = "DataDistribution",
         prior = "Prior"
     ),
     contains = "AbstractConditionalScore")
 
-# must implement evaluate with additional argument x1!
+
+#' @param s an \code{ConditionalScore}
+#' @param design a \code{Design}
+#' @param x1 stage one outcome (note that n1 is available from \code{design})
+#'
+#' @describeIn ConditionalScore bla
 setMethod("evaluate", signature("ConditionalScore", "Design"),
           function(s, design, x1, ...) stop("not implemented"))
 
-# better name? integrate a conditional score with respect to X1
-setGeneric("integrate",
-           function(s, ...) standardGeneric("integrate")
-)
 
-# essentialy just changes class and stores conditional score to allow
-# different implementation of 'evaluation'
+#' @describeIn ConditionalScore Integrate a Conditional Score over the stage-one outcome
 setMethod("integrate", signature("ConditionalScore"),
           function(s, ...) new("IntegralScore", cs = s) )
+
 
 setMethod("+", signature("ConditionalScore", "numeric"),
           function(e1, e2) AffineConditionalScore(list(e1), 1, e2) )
 setMethod("+", signature("numeric", "ConditionalScore"),
           function(e1, e2) e2 + e1 )
-
 ## TODO: check for duplicate scores and combine!
 setMethod("+", signature("ConditionalScore", "ConditionalScore"),
           function(e1, e2) AffineConditionalScore(list(e1, e2), c(1, 1), 0) )
+
 
 setMethod("*", signature("ConditionalScore", "numeric"),
           function(e1, e2) AffineConditionalScore(list(e1), e2, 0) )
@@ -44,25 +62,28 @@ setMethod("*", signature("numeric", "ConditionalScore"),
 
 
 
+
+
+
 setClass("UnconditionalScore")
+
 
 setMethod("evaluate", signature("UnconditionalScore", "Design"),
           function(s, design, specific = TRUE, ...) stop("not implemented") )
 
-# allow custom implementation of evaluate() depending on design
-setGeneric(".evaluate", function(s, design, ...) standardGeneric(".evaluate"))
 
 setMethod(".evaluate", signature("UnconditionalScore", "Design"),
           function(s, design, ...) stop("not implemented") )
+
 
 setMethod("+", signature("UnconditionalScore", "numeric"),
           function(e1, e2) AffineUnconditionalScore(list(e1), 1, e2) )
 setMethod("+", signature("numeric", "UnconditionalScore"),
           function(e1, e2) e2 + e1 )
-
 ## TODO: check for duplicate scores and combine!
 setMethod("+", signature("UnconditionalScore", "UnconditionalScore"),
           function(e1, e2) AffineUnconditionalScore(list(e1, e2), c(1, 1), 0) )
+
 
 setMethod("*", signature("UnconditionalScore", "numeric"),
           function(e1, e2) AffineUnconditionalScore(list(e1), e2, 0) )
@@ -72,14 +93,26 @@ setMethod("*", signature("numeric", "UnconditionalScore"),
 
 
 
+#' Score class obtained by integration of a \code{ConditionalScore}
+#'
+#' @param s an \code{IntegralScore}
+#' @param design a \code{Design}
+#'
+#' @slot cs the underlying \code{ConditionalScore}
+#'
+#' @exportClass IntegralScore
 setClass("IntegralScore", representation(
         cs = "ConditionalScore"
     ),
     contains = "UnconditionalScore")
 
-# generic evaluation of integral score, this is where the problems lie ;)
-# uses stats::integrate to integrate conditional score over Z1, not working for
-# optimization - need custom implementation for signature("IntegralScore", "BSDesign")
+
+#' @param specific logical, flag for switching to design-specific implementation
+#'     (default).
+#' @describeIn IntegralScore generic implementation of evaluating an integral
+#'     score. Uses adaptive Gaussian quadrature for integration and might be
+#'     more efficiently implemented by specific \code{Design}-classes
+#'     (cf. .evaluate).
 setMethod("evaluate", signature("IntegralScore", "Design"),
           function(s, design, specific = TRUE, ...) {
               # TODO: currently ignores the possibility of early stopping/uncontinuus

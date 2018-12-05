@@ -19,6 +19,8 @@ Suggests:
 Imports:
     nloptr,
     methods
+Depends:
+    gaussquad
 VignetteBuilder: knitr
 Collate: 
     otsd.R
@@ -32,7 +34,8 @@ Collate:
     ConditionalPower.R
     ConditionalSampleSize.R
     Smoothness_n2.R
-    FivePointDesign.R   
+    FivePointDesign.R  
+    GQDesign.R 
 RoxygenNote: 6.1.1
 BugReports: https://github.com/kkmann/otsd/issues
 URL: https://github.com/kkmann/otsd

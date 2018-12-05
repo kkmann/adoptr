@@ -25,7 +25,6 @@ setMethod("update", signature("FivePointDesign"),
 setMethod("n1", signature("FivePointDesign"), function(d, ...) d@n1)
 
 
-setGeneric("get_knots", function(d, ...) standardGeneric("get_knots"))
 setMethod("get_knots", signature("FivePointDesign"),
     function(d, ...) seq(d@c1f, d@c1e, length.out = 5))
 
