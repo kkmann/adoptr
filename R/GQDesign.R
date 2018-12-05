@@ -5,7 +5,7 @@ setClass("GQDesign", representation(
         n2_pivots = "numeric",
         c2_pivots = "numeric",
         order     = "numeric",
-        rule      = "list"
+        rule      = "data.frame"
     ),
     contains = "Design")
 
@@ -44,10 +44,10 @@ setMethod("get_knots", signature("GQDesign"),
 
 setMethod("n2", signature("GQDesign", "numeric"),
     function(d, x1, ...) ifelse(x1 < d@c1f | x1 > d@c1e, 0, 1) *
-        pmax(0, approx(get_knots(d), d@n2_pivots, xout = x1, method = "linear", rule = 2)$y) )
+        pmax(0, stats::approx(get_knots(d), d@n2_pivots, xout = x1, method = "linear", rule = 2)$y) )
 
 setMethod("c2", signature("GQDesign", "numeric"),
-    function(d, x1, ...) approx(get_knots(d), d@c2_pivots, xout = x1, method = "linear", rule = 2)$y *
+    function(d, x1, ...) stats::approx(get_knots(d), d@c2_pivots, xout = x1, method = "linear", rule = 2)$y *
         ifelse(x1 < d@c1f, Inf, 1) * ifelse(x1 > d@c1e, -Inf, 1) )
 
 setMethod("as.numeric", signature("GQDesign"),
@@ -63,8 +63,9 @@ setMethod(".evaluate", signature("IntegralScore", "GQDesign"),
         # continuation region
         integrand   <- function(z1) evaluate(s@cs, design, z1, ...) *
             predictive_pdf(s@cs@distribution, s@cs@prior, z1, n1(design), ...)
-        h           <- (design@c1e - design@c1f) / 2
-        mid_section <- h * sum(design@rule$w * integrand(get_knots(design)))
+        mid_section <- gaussquad::legendre.quadrature(integrand,
+                                                      design@rule,
+                                                      design@c1f, design@c1e)
         # compose
         res <- poef * evaluate( # score is constant on early stopping region (TODO: relax later!)
                 s@cs, design,
