@@ -1,13 +1,45 @@
-# smoothness terms must be implemented 'by-hand' since they are independent of any
-# distributions! (cannot be handeld by 'integrate')
-# TODO, this can probably be solved in a nicer way ;)
+#' Quadratic smoothness penalty term
+#'
+#' \code{Smoothness_n2} is a generic class for implementing a smoothness penalty
+#' via the average squared first derivative of the stage two sample size function
+#' \code{n2} of a two-stage design.
+#' The only parameter is the width used for the finite differences, \code{h}.
+#' The generic implementation only evluates \code{n2} in the interior of the
+#' continuation region of a design.
+#'
+#' @slot h positive number giving the width of the central finite difference
+#'     interval for approximating the first derivative.
+#'
+#' @exportClass Smoothness_n2
 setClass("Smoothness_n2", representation(
         h = "numeric"
     ),
     contains = "IntegralScore")
 
+
+
+#' @param h positive number, see slot \code{h}
+#'
+#' @rdname Smoothness_n2-class
+#' @export Smoothness_n2
 Smoothness_n2 <- function(h = sqrt(.Machine$double.eps)) new("Smoothness_n2", h = h)
 
+
+
+#' A generic implementation for arbitrary two-stage designs based on adaptive
+#' Gaussian quadrature integration of the finite-differences approximation to
+#' the first derivative is provided.
+#' Custom subclasses of \code{Design} might implement this slightly different
+#' (cf. [TODO: link to GQDesign implementation]).
+#'
+#' @param s an object of class \code{Smoothness_n2}
+#' @param design the design to compute the smoothness term for
+#' @param specific logical, should a design-specific implementation be used?
+#'     defaults to \code{TRUE}. If \code{TRUE}, looks for design-specific
+#'     \code{.evaluate} method and calls it
+#'
+#' @rdname Smoothness_n2-class
+#' @export
 setMethod("evaluate", signature("Smoothness_n2", "Design"),
           function(s, design, specific = TRUE, ...) {
               if (specific) {

@@ -14,7 +14,7 @@ A range of pre-implemented objective/constraint functions are provided.
 
 
 For a sample workflow and a quick demo of the capabilities, see the
-vignette [todo: link].
+vignette .
 }
 
 \section{Designs}{
