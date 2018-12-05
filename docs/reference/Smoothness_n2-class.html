@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Optimal Two-Stage Designs — otsd • otsd</title>
+<title>Quadratic smoothness penalty term — Smoothness_n2-class • otsd</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,11 +30,14 @@
 
 
 
-<meta property="og:title" content="Optimal Two-Stage Designs — otsd" />
+<meta property="og:title" content="Quadratic smoothness penalty term — Smoothness_n2-class" />
 
-<meta property="og:description" content="This package provides functionality to compute and analyze optimal
-two-stage designs for two-stage superiority tests based on a Z statistic.
-A range of pre-implemented objective/constraint functions are provided." />
+<meta property="og:description" content="Smoothness_n2 is a generic class for implementing a smoothness penalty
+via the average squared first derivative of the stage two sample size function
+n2 of a two-stage design.
+The only parameter is the width used for the finite differences, h.
+The generic implementation only evluates n2 in the interior of the
+continuation region of a design." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -102,54 +105,67 @@ A range of pre-implemented objective/constraint functions are provided." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Optimal Two-Stage Designs</h1>
-    <small class="dont-index">Source: <a href='https://github.com/kkmann/otsd/blob/master/R/otsd.R'><code>R/otsd.R</code></a></small>
-    <div class="hidden name"><code>otsd.Rd</code></div>
+    <h1>Quadratic smoothness penalty term</h1>
+    <small class="dont-index">Source: <a href='https://github.com/kkmann/otsd/blob/master/R/Smoothness_n2.R'><code>R/Smoothness_n2.R</code></a></small>
+    <div class="hidden name"><code>Smoothness_n2-class.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>This package provides functionality to compute and analyze optimal
-two-stage designs for two-stage superiority tests based on a Z statistic.
-A range of pre-implemented objective/constraint functions are provided.</p>
+    <p><code>Smoothness_n2</code> is a generic class for implementing a smoothness penalty
+via the average squared first derivative of the stage two sample size function
+<code>n2</code> of a two-stage design.
+The only parameter is the width used for the finite differences, <code>h</code>.
+The generic implementation only evluates <code>n2</code> in the interior of the
+continuation region of a design.</p>
     
     </div>
 
-        
-    <h2 class="hasAnchor" id="quickstart"><a class="anchor" href="#quickstart"></a>Quickstart</h2>
+    <pre class="usage"><span class='fu'>Smoothness_n2</span>(<span class='kw'>h</span> <span class='kw'>=</span> <span class='fu'>sqrt</span>(<span class='no'>.Machine</span>$<span class='no'>double.eps</span>))
+
+<span class='co'># S4 method for Smoothness_n2,Design</span>
+<span class='fu'>evaluate</span>(<span class='no'>s</span>, <span class='no'>design</span>, <span class='kw'>specific</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='no'>...</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>h</th>
+      <td><p>positive number, see slot <code>h</code></p></td>
+    </tr>
+    <tr>
+      <th>s</th>
+      <td><p>an object of class <code>Smoothness_n2</code></p></td>
+    </tr>
+    <tr>
+      <th>design</th>
+      <td><p>the design to compute the smoothness term for</p></td>
+    </tr>
+    <tr>
+      <th>specific</th>
+      <td><p>logical, should a design-specific implementation be used?
+defaults to <code>TRUE</code>. If <code>TRUE</code>, looks for design-specific
+<code>.evaluate</code> method and calls it</p></td>
+    </tr>
+    </table>
+    
+    <h2 class="hasAnchor" id="slots"><a class="anchor" href="#slots"></a>Slots</h2>
 
     
-    <p>For a sample workflow and a quick demo of the capabilities, see the
-vignette .</p>
-    
-    <h2 class="hasAnchor" id="designs"><a class="anchor" href="#designs"></a>Designs</h2>
-
-    
-    <p>list designs</p>
-    
-    <h2 class="hasAnchor" id="prios"><a class="anchor" href="#prios"></a>Prios</h2>
-
-    
-    <p>List prior classes</p>
-    
-    <h2 class="hasAnchor" id="scores"><a class="anchor" href="#scores"></a>Scores</h2>
-
-    
-    <p>list score classes</p>
+    <dl class='dl-horizontal'>
+<dt><code>h</code></dt><dd><p>positive number giving the width of the central finite difference
+interval for approximating the first derivative.</p></dd>
+</dl>
     
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#quickstart">Quickstart</a></li>
-
-      <li><a href="#designs">Designs</a></li>
-
-      <li><a href="#prios">Prios</a></li>
-
-      <li><a href="#scores">Scores</a></li>
+      <li><a href="#slots">Slots</a></li>
           </ul>
 
   </div>

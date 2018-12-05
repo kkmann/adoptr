@@ -118,6 +118,48 @@
       <tr>
         
         <td>
+          <p><code><a href="ConditionalScore-class.html">evaluate(<i>&lt;ConditionalScore&gt;</i>,<i>&lt;Design&gt;</i>)</a></code> <code><a href="ConditionalScore-class.html">integrate(<i>&lt;ConditionalScore&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Abstract class for conditional scoring function</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="GQDesign-class.html">GQDesign()</a></code> <code><a href="GQDesign-class.html">update(<i>&lt;GQDesign&gt;</i>)</a></code> <code><a href="GQDesign-class.html">n1(<i>&lt;GQDesign&gt;</i>)</a></code> <code><a href="GQDesign-class.html">get_knots(<i>&lt;GQDesign&gt;</i>)</a></code> <code><a href="GQDesign-class.html">n2(<i>&lt;GQDesign&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="GQDesign-class.html">c2(<i>&lt;GQDesign&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="GQDesign-class.html">as.numeric(<i>&lt;GQDesign&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Gaussian-quadrature based implementation of <code>Design</code></p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="IntegralScore-class.html">evaluate(<i>&lt;IntegralScore&gt;</i>,<i>&lt;Design&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Score class obtained by integration of a <code>ConditionalScore</code></p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Normal-class.html">Normal()</a></code> <code><a href="Normal-class.html">probability_density_function(<i>&lt;Normal&gt;</i>,<i>&lt;numeric&gt;</i>,<i>&lt;numeric&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="Normal-class.html">cumulative_distribution_function(<i>&lt;Normal&gt;</i>,<i>&lt;numeric&gt;</i>,<i>&lt;numeric&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="Normal-class.html">quantile(<i>&lt;DataDistribution&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Normal data distribution</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="PointMassPrior-class.html">PointMassPrior()</a></code> <code><a href="PointMassPrior-class.html">bounds(<i>&lt;PointMassPrior&gt;</i>)</a></code> <code><a href="PointMassPrior-class.html">expectation(<i>&lt;PointMassPrior&gt;</i>,<i>&lt;function&gt;</i>)</a></code> <code><a href="PointMassPrior-class.html">condition(<i>&lt;PointMassPrior&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="PointMassPrior-class.html">predictive_pdf(<i>&lt;DataDistribution&gt;</i>,<i>&lt;PointMassPrior&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="PointMassPrior-class.html">predictive_cdf(<i>&lt;DataDistribution&gt;</i>,<i>&lt;PointMassPrior&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="PointMassPrior-class.html">posterior(<i>&lt;DataDistribution&gt;</i>,<i>&lt;PointMassPrior&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Point-mass prior</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Prior-class.html">bounds()</a></code> <code><a href="Prior-class.html">expectation()</a></code> <code><a href="Prior-class.html">condition()</a></code> <code><a href="Prior-class.html">predictive_pdf()</a></code> <code><a href="Prior-class.html">predictive_cdf()</a></code> <code><a href="Prior-class.html">posterior()</a></code> </p>
+        </td>
+        <td><p>Abstract univariate prior on model parameter</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Smoothness_n2-class.html">Smoothness_n2()</a></code> <code><a href="Smoothness_n2-class.html">evaluate(<i>&lt;Smoothness_n2&gt;</i>,<i>&lt;Design&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Quadratic smoothness penalty term</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="otsd.html">otsd</a></code> </p>
         </td>
         <td><p>Optimal Two-Stage Designs</p></td>

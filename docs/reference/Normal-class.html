@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Optimal Two-Stage Designs — otsd • otsd</title>
+<title>Normal data distribution — Normal-class • otsd</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,11 +30,12 @@
 
 
 
-<meta property="og:title" content="Optimal Two-Stage Designs — otsd" />
+<meta property="og:title" content="Normal data distribution — Normal-class" />
 
-<meta property="og:description" content="This package provides functionality to compute and analyze optimal
-two-stage designs for two-stage superiority tests based on a Z statistic.
-A range of pre-implemented objective/constraint functions are provided." />
+<meta property="og:description" content="Implements a normal data distribution for z-values given an observed z-value
+and stage size.
+Standard deviation is 1 and mean \(\theta\sqrt n\) where
+\(\theta\) is the standardized effect size." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -102,54 +103,68 @@ A range of pre-implemented objective/constraint functions are provided." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Optimal Two-Stage Designs</h1>
-    <small class="dont-index">Source: <a href='https://github.com/kkmann/otsd/blob/master/R/otsd.R'><code>R/otsd.R</code></a></small>
-    <div class="hidden name"><code>otsd.Rd</code></div>
+    <h1>Normal data distribution</h1>
+    <small class="dont-index">Source: <a href='https://github.com/kkmann/otsd/blob/master/R/DataDistribution.R'><code>R/DataDistribution.R</code></a></small>
+    <div class="hidden name"><code>Normal-class.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>This package provides functionality to compute and analyze optimal
-two-stage designs for two-stage superiority tests based on a Z statistic.
-A range of pre-implemented objective/constraint functions are provided.</p>
+    <p>Implements a normal data distribution for z-values given an observed z-value
+and stage size.
+Standard deviation is 1 and mean \(\theta\sqrt n\) where
+\(\theta\) is the standardized effect size.</p>
     
     </div>
 
-        
-    <h2 class="hasAnchor" id="quickstart"><a class="anchor" href="#quickstart"></a>Quickstart</h2>
+    <pre class="usage"><span class='fu'>Normal</span>()
 
-    
-    <p>For a sample workflow and a quick demo of the capabilities, see the
-vignette .</p>
-    
-    <h2 class="hasAnchor" id="designs"><a class="anchor" href="#designs"></a>Designs</h2>
 
-    
-    <p>list designs</p>
-    
-    <h2 class="hasAnchor" id="prios"><a class="anchor" href="#prios"></a>Prios</h2>
+  <span class='co'># S4 method for Normal,numeric,numeric,numeric</span>
+<span class='fu'>probability_density_function</span>(<span class='no'>dist</span>,
+  <span class='no'>x</span>, <span class='no'>n</span>, <span class='no'>theta</span>, <span class='no'>...</span>)
 
-    
-    <p>List prior classes</p>
-    
-    <h2 class="hasAnchor" id="scores"><a class="anchor" href="#scores"></a>Scores</h2>
 
+  <span class='co'># S4 method for Normal,numeric,numeric,numeric</span>
+<span class='fu'>cumulative_distribution_function</span>(<span class='no'>dist</span>,
+  <span class='no'>x</span>, <span class='no'>n</span>, <span class='no'>theta</span>, <span class='no'>...</span>)
+
+<span class='co'># S4 method for DataDistribution</span>
+<span class='fu'>quantile</span>(<span class='no'>x</span>, <span class='no'>probs</span>, <span class='no'>n</span>, <span class='no'>theta</span>, <span class='no'>...</span>)</pre>
     
-    <p>list score classes</p>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>observed z value</p></td>
+    </tr>
+    <tr>
+      <th>n</th>
+      <td><p>stage size</p></td>
+    </tr>
+    <tr>
+      <th>probs</th>
+      <td><p>vector of probablities</p></td>
+    </tr>
+    </table>
+    
+    <h2 class="hasAnchor" id="methods-by-generic-"><a class="anchor" href="#methods-by-generic-"></a>Methods (by generic)</h2>
+
+    <ul>
+<li><p><code>probability_density_function</code>: PDF</p></li>
+<li><p><code>cumulative_distribution_function</code>: CDF</p></li>
+<li><p><code>quantile</code>: quantile function</p></li>
+</ul>
     
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#quickstart">Quickstart</a></li>
-
-      <li><a href="#designs">Designs</a></li>
-
-      <li><a href="#prios">Prios</a></li>
-
-      <li><a href="#scores">Scores</a></li>
+      <li><a href="#methods-by-generic-">Methods (by generic)</a></li>
           </ul>
 
   </div>
