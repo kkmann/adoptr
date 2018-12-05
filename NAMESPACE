@@ -1,3 +1,4 @@
+import(gaussquad)
 import(methods)
 
 exportPattern("^[[:alpha:]]+")

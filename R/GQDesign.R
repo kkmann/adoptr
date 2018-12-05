@@ -21,7 +21,7 @@ setMethod("update", signature("GQDesign"),
         if( ((length(params) - 3) / 2) != nrow(object@rule))
             stop("parameter length does not fit")
         new("GQDesign",
-            n1 = params[1],
+            n1  = params[1],
             c1f = params[2],
             c1e = params[3],
             n2_pivots = params[4:(3 + nrow(object@rule))],
@@ -36,9 +36,9 @@ setMethod("get_knots", signature("GQDesign"),
     function(d, ...){
         h <- (d@c1e - d@c1f) / 2
         legendre_knots <- h * d@rule$x + (h + d@c1f)
+        # need to reorder pivots (sored in reverse order ...)
         return(legendre_knots[nrow(d@rule):1])
-    }
-    )
+    })
 
 setMethod("n2", signature("GQDesign", "numeric"),
     function(d, x1, ...) ifelse(x1 < d@c1f | x1 > d@c1e, 0, 1) *
@@ -61,9 +61,9 @@ setMethod(".evaluate", signature("IntegralScore", "GQDesign"),
         # continuation region
         integrand   <- function(z1) evaluate(s@cs, design, z1, ...) *
             predictive_pdf(s@cs@distribution, s@cs@prior, z1, n1(design), ...)
-        mid_section <- gaussquad::legendre.quadrature(integrand,
-                                                      design@rule,
-                                                      design@c1f, design@c1e)
+        mid_section <- gaussquad::legendre.quadrature(
+            integrand, design@rule, design@c1f, design@c1e
+        )
         # compose
         res <- poef * evaluate( # score is constant on early stopping region (TODO: relax later!)
                 s@cs, design,
