@@ -8,7 +8,7 @@ Authors@R: c(
     )
 Description: More about what it does (maybe more than one line)
         Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Suggests: 
@@ -16,22 +16,23 @@ Suggests:
     rmarkdown,
     testthat,
     covr
-Depends:
-    nloptr
+Imports:
+    nloptr,
+    methods
 VignetteBuilder: knitr
 Collate: 
-        otsd.R
-        DataDistribution.R
-        Prior.R
-        PointMassPrior.R
-        ContinuousPrior.R
-        Design.R
-        Scores.R
-        AffineScoreFunction.R
-        ConditionalPower.R
-        ConditionalSampleSize.R
-        Smoothness_n2.R
-        FivePointDesign.R   
+    otsd.R
+    DataDistribution.R
+    Prior.R
+    PointMassPrior.R
+    ContinuousPrior.R
+    Design.R
+    Scores.R
+    AffineScoreFunction.R
+    ConditionalPower.R
+    ConditionalSampleSize.R
+    Smoothness_n2.R
+    FivePointDesign.R   
 RoxygenNote: 6.1.1
 BugReports: https://github.com/kkmann/otsd/issues
 URL: https://github.com/kkmann/otsd

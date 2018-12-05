@@ -21,10 +21,10 @@ setClass("Normal", representation(
 Normal <- function() new("Normal", dummy = FALSE)
 
 setMethod("probability_density_function", signature("Normal", "numeric", "numeric", "numeric"),
-          function(dist, x, n, theta, ...) dnorm(x, mean = sqrt(n) * theta, sd = 1) )
+          function(dist, x, n, theta, ...) stats::dnorm(x, mean = sqrt(n) * theta, sd = 1) )
 
 setMethod("cumulative_distribution_function", signature("Normal", "numeric", "numeric", "numeric"),
-          function(dist, x, n, theta, ...) pnorm(x, mean = sqrt(n) * theta, sd = 1) )
+          function(dist, x, n, theta, ...) stats::pnorm(x, mean = sqrt(n) * theta, sd = 1) )
 
 setMethod("quantile", signature("DataDistribution"),
-          function(x, probs, n, theta, ...) qnorm(probs, mean = sqrt(n) * theta, sd = 1) )
+          function(x, probs, n, theta, ...) stats::qnorm(probs, mean = sqrt(n) * theta, sd = 1) )

@@ -31,10 +31,10 @@ setMethod("get_knots", signature("FivePointDesign"),
 
 setMethod("n2", signature("FivePointDesign", "numeric"),
     function(d, x1, ...) ifelse(x1 < d@c1f | x1 > d@c1e, 0, 1) *
-        pmax(0, approx(get_knots(d), d@n2_pivots, xout = x1, method = "linear", rule = 2)$y) )
+        pmax(0, stats::approx(get_knots(d), d@n2_pivots, xout = x1, method = "linear", rule = 2)$y) )
 
 setMethod("c2", signature("FivePointDesign", "numeric"),
-    function(d, x1, ...) approx(get_knots(d), d@c2_pivots, xout = x1, method = "linear", rule = 2)$y *
+    function(d, x1, ...) stats::approx(get_knots(d), d@c2_pivots, xout = x1, method = "linear", rule = 2)$y *
         ifelse(x1 < d@c1f, Inf, 1) * ifelse(x1 > d@c1e, -Inf, 1) )
 
 setMethod("as.numeric", signature("FivePointDesign"),
