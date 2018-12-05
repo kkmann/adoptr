@@ -4,7 +4,6 @@ setClass("GQDesign", representation(
         c1e       = "numeric",
         n2_pivots = "numeric",
         c2_pivots = "numeric",
-        order     = "numeric",
         rule      = "data.frame"
     ),
     contains = "Design")
@@ -13,21 +12,20 @@ GQDesign <- function(n1, c1f, c1e, n2_pivots, c2_pivots, order) {
     if (length(n2_pivots) != order | length(c2_pivots) != order )
         stop("length of pivot vectors does not fit")
     new("GQDesign", n1 = n1, c1f = c1f, c1e = c1e, n2_pivots = n2_pivots,
-        c2_pivots = c2_pivots, order = order,
+        c2_pivots = c2_pivots,
         rule = gaussquad::legendre.quadrature.rules(order)[[order]])
 }
 
 setMethod("update", signature("GQDesign"),
     function(object, params, ...) {
-        if( ((length(params) - 3) / 2) != object@order)
+        if( ((length(params) - 3) / 2) != nrow(object@rule))
             stop("parameter length does not fit")
         new("GQDesign",
             n1 = params[1],
             c1f = params[2],
             c1e = params[3],
-            n2_pivots = params[4:(3 + object@order)],
-            c2_pivots = params[(4 + object@order):(length(params))],
-            order = object@order,
+            n2_pivots = params[4:(3 + nrow(object@rule))],
+            c2_pivots = params[(4 + nrow(object@rule)):(length(params))],
             rule = object@rule)
     })
 
@@ -38,7 +36,7 @@ setMethod("get_knots", signature("GQDesign"),
     function(d, ...){
         h <- (d@c1e - d@c1f) / 2
         legendre_knots <- h * d@rule$x + (h + d@c1f)
-        return(legendre_knots[d@order:1])
+        return(legendre_knots[nrow(d@rule):1])
     }
     )
 
