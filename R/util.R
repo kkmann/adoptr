@@ -1,10 +1,11 @@
 #' Implementation of Gauss Legendre integration rule and computation of integral
 #' based on implementation at https://rdrr.io/cran/SMR/src/R/GaussLegendre.R
-#' \code{GaussLegendreRule} gives the nodes and weights for the interval [-1, 1].
+#' \code{GaussLegendreRule} gives the nodes and weights for the interval \eqn{(-1, 1)}.
 #'
 #'
 #' @param order Number of nodes to be used
 #'
+#' @rdname GaussLegendreRule
 #' @export
 
 GaussLegendreRule <- function(order) {
@@ -28,11 +29,15 @@ GaussLegendreRule <- function(order) {
     return(data.frame(nodes = x, weights = w))
 }
 
-#' @param f Function to be integrated
-#' @param low Lower bound of integration
-#' @param up Upper bound of integration
-#' @param rule The integration rule as computed by \code{GaussLegendre Rule}
+
+#' Integration via the Gauss Legendre quadrature
 #'
+#' @param f function to be integrated
+#' @param low lower bound of integration
+#' @param up upper bound of integration
+#' @param rule integration rule as computed by \code{GaussLegendreRule}
+#'
+#' @rdname GaussLegendreIntegral
 #' @export
 
 GaussLegendreIntegral <- function(f, low, up, rule) {
