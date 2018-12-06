@@ -1,23 +1,17 @@
-#' Gaussian-quadrature based implementation of \code{Design}
+#' Two-stage designs
 #'
-#' Implements a class for two-stage designs where n2 and c2 are approximated
-#' by linear interpolation of pivot points and integration is handled via
-#' Gaussian quadrature rules.
-#' The pivots are chosen to be the evaluation points of the selected
-#' Gaussian quadrature rule and guarantee a stable evaluation during
-#' optimization.
-#' See \code{\link{Design-class}} for details on the inherited methods.
+#' [ToDo]
 #'
-#' @slot rule data.frame, the integration rule, result of a call to
-#'     \code{gaussquad::legendre.quadrature.rules(order)[[order]])} during
-#'     construction
-#' @slot n1 cf. parameter
-#' @slot c1f cf. parameter
-#' @slot c1e cf. parameter
-#' @slot n2_pivots cf. parameter
-#' @slot c2_pivots cf. parameter
-#'
-#' @template DesignTemplate
+#' @slot n1 stage-one sample size
+#' @slot c1f early stopping for futility boundary
+#' @slot c1e early stopping for efficacy boundary
+#' @slot n2_pivots vector of length order giving the values of n2 at the
+#'     pivot points of the numeric integration rule [TODO: these are not available during construction]
+#' @slot c2_pivots vector of length order giving the values of c2 at the
+#'     pivot points of the numeric integration rule [TODO: these are not available during construction]
+#' @slot x1_norm_pivots normalized pivots for integration rule (in [-1, 1])
+#' @slot weights weights of conditional score values at x1_norm_pivots for
+#'     approximating the integral over x1.
 #'
 #' @exportClass TwoStageDesign
 setClass("TwoStageDesign", representation(
@@ -28,19 +22,18 @@ setClass("TwoStageDesign", representation(
         c2_pivots = "numeric",
         x1_norm_pivots = "numeric",
         weights   = "numeric"
-    ),
-    contains = "Design")
+    ))
 
 
-#' @param n1 stage-one sample size
-#' @param c1f early stopping for futility boundary
-#' @param c1e early stopping for efficacy boundary
-#' @param n2_pivots vector of length order giving the values of n2 at the
-#'     pivot points of the Gaussian quadrature rule [TODO: these are not available during construction]
-#' @param c2_pivots vector of length order giving the values of c2 at the
-#'     pivot points of the Gaussian quadrature rule [TODO: these are not available during construction]
-#' @param order order (i.e. number of pivot points in the interior of [c1f, c1e])
-#'     of the Gaussian quadrature rule to use for integration
+
+#' @param n1 cf. slot
+#' @param c1f cf. slot
+#' @param c1e cf. slot
+#' @param n2_pivots cf. slot
+#' @param c2_pivots cf. slot
+#' @param x1_norm_pivots cf. slot
+#' @param weights cf. slot
+#' @param ... further optional arguments
 #'
 #' @rdname TwoStageDesign-class
 #' @export
@@ -50,6 +43,13 @@ TwoStageDesign <- function(n1, c1f, c1e, n2_pivots, c2_pivots, x1_norm_pivots, w
 }
 
 
+
+#' @details GQDesign simply creates a TwoStageDesign object with a Gaussian
+#'     quadrature numerical integration rule.
+#'
+#' @param order order (i.e. number of pivot points in the interior of [c1f, c1e])
+#'     of the Gaussian quadrature rule to use for integration
+#'
 #' @rdname TwoStageDesign-class
 #' @export
 GQDesign <- function(n1, c1f, c1e, n2_pivots, c2_pivots, order) {
@@ -61,8 +61,26 @@ GQDesign <- function(n1, c1f, c1e, n2_pivots, c2_pivots, order) {
 }
 
 
+
+#' @param x object to get parameters from
+#'
+#' @rdname TwoStageDesign-class
+#' @export
+setGeneric("tunable_parameters", function(x, ...) standardGeneric("tunable_parameters"))
+
+#' @describeIn TwoStageDesign get optimization parameters
+#' @export
+setMethod("tunable_parameters", signature("TwoStageDesign"),
+          function(x, ...) c(x@n1, x@c1f, x@c1e, x@n2_pivots, x@c2_pivots))
+
+
+
+
+
 #' @param params vector of design parameters (must be in same order as returned
 #'     by \code{as.numeric(design)})
+#' @param object object to update
+#'
 #' @rdname TwoStageDesign-class
 #' @export
 setMethod("update", signature("TwoStageDesign"),
@@ -81,64 +99,52 @@ setMethod("update", signature("TwoStageDesign"),
     })
 
 
+
+#' @param x1 stage-one outcome
+#' @param d design object
+#'
 #' @rdname TwoStageDesign-class
 #' @export
-setGeneric("get_knots", function(d, ...) standardGeneric("get_knots"))
-
-#' @describeIn TwoStageDesign get the pivots points (knots) of the Gaussian quadrature
-#'     rule.
-setMethod("get_knots", signature("TwoStageDesign"),
-    function(d, ...){
-        h <- (d@c1e - d@c1f) / 2
-        return(h * d@x1_norm_pivots + (h + d@c1f))
-    })
-
+setGeneric("n2", function(d, x1, ...) standardGeneric("n2"))
 
 #' @rdname TwoStageDesign-class
 #' @export
 setMethod("n2", signature("TwoStageDesign", "numeric"),
-    function(d, x1, ...) ifelse(x1 < d@c1f | x1 > d@c1e, 0, 1) *
-        pmax(0, stats::approx(get_knots(d), d@n2_pivots, xout = x1, method = "linear", rule = 2)$y) )
+          function(d, x1, ...) ifelse(x1 < d@c1f | x1 > d@c1e, 0, 1) *
+              pmax(0, stats::approx(scaled_integration_pivots(d), d@n2_pivots, xout = x1, method = "linear", rule = 2)$y) )
 
+
+
+#' @rdname TwoStageDesign-class
+#' @export
+setGeneric("n", function(d, x1, ...) standardGeneric("n"))
+
+#' @describeIn TwoStageDesign overall sample size given stage-one outcome
+#' @export
+setMethod("n", signature("TwoStageDesign", "numeric"), function(d, x1, ...) n2(d, x1, ...) + d@n1 )
+
+
+
+#' @rdname TwoStageDesign-class
+#' @export
+setGeneric("c2", function(d, x1, ...) standardGeneric("c2"))
 
 #' @rdname TwoStageDesign-class
 #' @export
 setMethod("c2", signature("TwoStageDesign", "numeric"),
-    function(d, x1, ...) stats::approx(get_knots(d), d@c2_pivots, xout = x1, method = "linear", rule = 2)$y *
+    function(d, x1, ...) stats::approx(scaled_integration_pivots(d), d@c2_pivots, xout = x1, method = "linear", rule = 2)$y *
         ifelse(x1 < d@c1f, Inf, 1) * ifelse(x1 > d@c1e, -Inf, 1) )
+
 
 
 #' @rdname TwoStageDesign-class
 #' @export
-setMethod("as.numeric", signature("TwoStageDesign"),
-        function(x, ...) c(x@n1, x@c1f, x@c1e, x@n2_pivots, x@c2_pivots))
+setGeneric("scaled_integration_pivots", function(d, ...) standardGeneric("scaled_integration_pivots"))
 
-# not user facing!
-setMethod(".evaluate", signature("IntegralScore", "TwoStageDesign"),
-    function(s, design, ...) {
-        # use design specific implementation tailored to this particular
-        # implementation (Gauss Quadrature N points here)
-        poef <- predictive_cdf(s@cs@distribution, s@cs@prior, design@c1f, design@n1)
-        poee <- 1 - predictive_cdf(s@cs@distribution, s@cs@prior, design@c1e, design@n1)
-        # continuation region
-        integrand   <- function(x1) evaluate(s@cs, design, x1, ...) *
-            predictive_pdf(s@cs@distribution, s@cs@prior, x1, design@n1, ...)
-        h <- (design@c1e - design@c1f) / 2
-        mid_section <- h * sum(design@weights * integrand(get_knots(design)))
-        # compose
-        res <- poef * evaluate( # score is constant on early stopping region (TODO: relax later!)
-                s@cs, design,
-                design@c1f - sqrt(.Machine$double.eps) # slightly smaller than stopping for futility
-            ) +
-            mid_section +
-            poee * evaluate(
-                s@cs, design,
-                design@c1e + sqrt(.Machine$double.eps)
-            )
-        return(res)
-    })
-
-
-# not user facing! we need to redo this whole SMoothness stuff...
-setMethod(".evaluate", signature("Smoothness_n2", "TwoStageDesign"),
-          function(s, design, ...) mean((diff(design@n2_pivots) / diff(get_knots(design)))^2) )
+#' @describeIn TwoStageDesign get the actual pivots points (knots) of the numerical integration routine
+#'     rule.
+setMethod("scaled_integration_pivots", signature("TwoStageDesign"),
+          function(d, ...){
+              h <- (d@c1e - d@c1f) / 2
+              return(h * d@x1_norm_pivots + (h + d@c1f))
+          })

@@ -5,89 +5,111 @@
 \alias{TwoStageDesign-class}
 \alias{TwoStageDesign}
 \alias{GQDesign}
+\alias{tunable_parameters}
+\alias{tunable_parameters,TwoStageDesign-method}
 \alias{update,TwoStageDesign-method}
-\alias{get_knots}
-\alias{get_knots,TwoStageDesign-method}
+\alias{n2}
 \alias{n2,TwoStageDesign,numeric-method}
+\alias{n}
+\alias{n,TwoStageDesign,numeric-method}
+\alias{c2}
 \alias{c2,TwoStageDesign,numeric-method}
-\alias{as.numeric,TwoStageDesign-method}
-\title{Gaussian-quadrature based implementation of \code{Design}}
+\alias{scaled_integration_pivots}
+\alias{scaled_integration_pivots,TwoStageDesign-method}
+\title{Two-stage designs}
 \usage{
 TwoStageDesign(n1, c1f, c1e, n2_pivots, c2_pivots, x1_norm_pivots, weights)
 
 GQDesign(n1, c1f, c1e, n2_pivots, c2_pivots, order)
 
+tunable_parameters(x, ...)
+
+\S4method{tunable_parameters}{TwoStageDesign}(x, ...)
+
 \S4method{update}{TwoStageDesign}(object, params, ...)
 
-get_knots(d, ...)
-
-\S4method{get_knots}{TwoStageDesign}(d, ...)
+n2(d, x1, ...)
 
 \S4method{n2}{TwoStageDesign,numeric}(d, x1, ...)
 
+n(d, x1, ...)
+
+\S4method{n}{TwoStageDesign,numeric}(d, x1, ...)
+
+c2(d, x1, ...)
+
 \S4method{c2}{TwoStageDesign,numeric}(d, x1, ...)
 
-\S4method{as.numeric}{TwoStageDesign}(x, ...)
+scaled_integration_pivots(d, ...)
+
+\S4method{scaled_integration_pivots}{TwoStageDesign}(d, ...)
 }
 \arguments{
-\item{n1}{stage-one sample size}
+\item{n1}{cf. slot}
 
-\item{c1f}{early stopping for futility boundary}
+\item{c1f}{cf. slot}
 
-\item{c1e}{early stopping for efficacy boundary}
+\item{c1e}{cf. slot}
 
-\item{n2_pivots}{vector of length order giving the values of n2 at the
-pivot points of the Gaussian quadrature rule [TODO: these are not available during construction]}
+\item{n2_pivots}{cf. slot}
 
-\item{c2_pivots}{vector of length order giving the values of c2 at the
-pivot points of the Gaussian quadrature rule [TODO: these are not available during construction]}
+\item{c2_pivots}{cf. slot}
+
+\item{x1_norm_pivots}{cf. slot}
+
+\item{weights}{cf. slot}
 
 \item{order}{order (i.e. number of pivot points in the interior of [c1f, c1e])
 of the Gaussian quadrature rule to use for integration}
 
-\item{object}{\code{Design} object to update with new design parameter values}
+\item{x}{object to get parameters from}
+
+\item{...}{further optional arguments}
+
+\item{object}{object to update}
 
 \item{params}{vector of design parameters (must be in same order as returned
 by \code{as.numeric(design)})}
 
-\item{...}{further optional arguments}
-
-\item{d}{\code{Design} object}
+\item{d}{design object}
 
 \item{x1}{stage-one outcome}
-
-\item{x}{\code{Design} object to conver to numeric vector of design parameters.}
 }
 \description{
-Implements a class for two-stage designs where n2 and c2 are approximated
-by linear interpolation of pivot points and integration is handled via
-Gaussian quadrature rules.
-The pivots are chosen to be the evaluation points of the selected
-Gaussian quadrature rule and guarantee a stable evaluation during
-optimization.
-See \code{\link{Design-class}} for details on the inherited methods.
+[ToDo]
+}
+\details{
+GQDesign simply creates a TwoStageDesign object with a Gaussian
+    quadrature numerical integration rule.
 }
 \section{Methods (by generic)}{
 \itemize{
-\item \code{get_knots}: get the pivots points (knots) of the Gaussian quadrature
+\item \code{tunable_parameters}: get optimization parameters
+
+\item \code{n}: overall sample size given stage-one outcome
+
+\item \code{scaled_integration_pivots}: get the actual pivots points (knots) of the numerical integration routine
 rule.
 }}
 
 \section{Slots}{
 
 \describe{
-\item{\code{rule}}{data.frame, the integration rule, result of a call to
-\code{gaussquad::legendre.quadrature.rules(order)[[order]])} during
-construction}
+\item{\code{n1}}{stage-one sample size}
 
-\item{\code{n1}}{cf. parameter}
+\item{\code{c1f}}{early stopping for futility boundary}
 
-\item{\code{c1f}}{cf. parameter}
+\item{\code{c1e}}{early stopping for efficacy boundary}
 
-\item{\code{c1e}}{cf. parameter}
+\item{\code{n2_pivots}}{vector of length order giving the values of n2 at the
+pivot points of the numeric integration rule [TODO: these are not available during construction]}
 
-\item{\code{n2_pivots}}{cf. parameter}
+\item{\code{c2_pivots}}{vector of length order giving the values of c2 at the
+pivot points of the numeric integration rule [TODO: these are not available during construction]}
 
-\item{\code{c2_pivots}}{cf. parameter}
+\item{\code{x1_norm_pivots}}{normalized pivots for integration rule (in [-1, 1])}
+
+\item{\code{weights}}{weights of conditional score values at x1_norm_pivots for
+approximating the integral over x1.}
 }}
 

@@ -10,7 +10,7 @@
 #' @name working-with-scores
 NULL
 #' @param s score
-#' @param design \code{Design} object
+#' @param design \code{TwoStageDesign} object
 #' @template dotdotdotTemplate
 #'
 #' @rdname working-with-scores
@@ -55,7 +55,7 @@ setClass("AbstractConditionalScore")
 #'
 #' @rdname AbstractConditionalScore-class
 #' @export
-setMethod("evaluate", signature("AbstractConditionalScore", "Design"),
+setMethod("evaluate", signature("AbstractConditionalScore", "TwoStageDesign"),
           function(s, design, x1, ...) stop("not implemented"))
 
 
@@ -77,7 +77,7 @@ setClass("ConditionalScore", representation(
 
 #' @describeIn ConditionalScore not implemented, just raises a 'not implemented'
 #'     error.
-setMethod("evaluate", signature("ConditionalScore", "Design"),
+setMethod("evaluate", signature("ConditionalScore", "TwoStageDesign"),
           function(s, design, x1, ...) stop("not implemented"))
 
 
@@ -133,17 +133,17 @@ setClass("UnconditionalScore")
 
 
 #' @param s an \code{IntegralScore}
-#' @param design a \code{Design}
+#' @param design a \code{TwoStageDesign}
 #' @template dotdotdotTemplate
 #'
 #' @rdname UnconditionalScore-class
 #' @export
-setMethod("evaluate", signature("UnconditionalScore", "Design"),
+setMethod("evaluate", signature("UnconditionalScore", "TwoStageDesign"),
           function(s, design, ...) stop("not implemented") )
 
 
 #' @rdname UnconditionalScore-class
-setMethod(".evaluate", signature("UnconditionalScore", "Design"),
+setMethod(".evaluate", signature("UnconditionalScore", "TwoStageDesign"),
           function(s, design, ...) stop("not implemented") )
 
 
@@ -172,7 +172,7 @@ setMethod("*", signature("numeric", "UnconditionalScore"),
 #' Unconditional score class obtained by integration of a \code{ConditionalScore}
 #'
 #' @param s an \code{IntegralScore}
-#' @param design a \code{Design}
+#' @param design a \code{TwoStageDesign}
 #'
 #' @slot cs the underlying \code{ConditionalScore}
 #'
@@ -188,9 +188,9 @@ setClass("IntegralScore", representation(
 #'
 #' @describeIn IntegralScore generic implementation of evaluating an integral
 #'     score. Uses adaptive Gaussian quadrature for integration and might be
-#'     more efficiently implemented by specific \code{Design}-classes
+#'     more efficiently implemented by specific \code{TwoStageDesign}-classes
 #'     (cf. \code{\link{.evaluate}}).
-setMethod("evaluate", signature("IntegralScore", "Design"),
+setMethod("evaluate", signature("IntegralScore", "TwoStageDesign"),
           function(s, design, specific = TRUE, ...) {
               # TODO: currently ignores the possibility of early stopping/uncontinuus
               # conditional scores - might get better when checking for early stopping
@@ -209,8 +209,36 @@ setMethod("evaluate", signature("IntegralScore", "Design"),
                       quantile(s@cs@distribution, .9995, design@n1, bounds(s@cs@prior)[2])
                   )
                   # use adaptive quadrature to integrate - only relies on generic interface
-                  # provided by 'Design', no special optimization for particular
+                  # provided by 'TwoStageDesign', no special optimization for particular
                   # design implementation
                   return(stats::integrate(integrand, x1_bounds[1], x1_bounds[2])$value)
               }
+          })
+
+
+
+
+# not user facing!
+setMethod(".evaluate", signature("IntegralScore", "TwoStageDesign"),
+          function(s, design, ...) {
+              # use design specific implementation tailored to this particular
+              # implementation (Gauss Quadrature N points here)
+              poef <- predictive_cdf(s@cs@distribution, s@cs@prior, design@c1f, design@n1)
+              poee <- 1 - predictive_cdf(s@cs@distribution, s@cs@prior, design@c1e, design@n1)
+              # continuation region
+              integrand   <- function(x1) evaluate(s@cs, design, x1, ...) *
+                  predictive_pdf(s@cs@distribution, s@cs@prior, x1, design@n1, ...)
+              h <- (design@c1e - design@c1f) / 2
+              mid_section <- h * sum(design@weights * integrand(scaled_integration_pivots(design)))
+              # compose
+              res <- poef * evaluate( # score is constant on early stopping region (TODO: relax later!)
+                  s@cs, design,
+                  design@c1f - sqrt(.Machine$double.eps) # slightly smaller than stopping for futility
+              ) +
+              mid_section +
+              poee * evaluate(
+                  s@cs, design,
+                  design@c1e + sqrt(.Machine$double.eps)
+              )
+              return(res)
           })

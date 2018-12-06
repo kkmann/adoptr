@@ -62,21 +62,21 @@ objective <- function(x) {
   d  <- update(design, x)
   evaluate(ess, d) + .001*evaluate(smth, d)
 }
-objective(as.numeric(design))
+objective(tunable_parameters(design))
 constraint <- function(x) {
   d  <- update(design, x)
   c(
     .8 - evaluate(pow, d),
     evaluate(toer, d) - 0.05,
     x[2] - x[3] + .1,
-    diff(c2(d, get_knots(d)))
+    diff(c2(d, scaled_integration_pivots(d)))
   )
 }
-constraint(as.numeric(design))
+constraint(tunable_parameters(design))
 ub <- c(50, 1, 4, numeric(order) + 50, numeric(order) + 5)
 lb <- c(10, -1, 1, numeric(order) + 2, numeric(order) - 5)
 res <- nloptr::nloptr(
-  as.numeric(design),
+  tunable_parameters(design),
   lb = lb,
   ub = ub,
   eval_f      = objective,

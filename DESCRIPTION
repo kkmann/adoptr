@@ -29,13 +29,12 @@ Collate:
     Prior.R
     PointMassPrior.R
     ContinuousPrior.R
-    Design.R
+    TwoStageDesign.R
     Scores.R
     AffineScoreFunction.R
     ConditionalPower.R
     ConditionalSampleSize.R
     Smoothness_n2.R
-    TwoStageDesign.R
 RoxygenNote: 6.1.1
 BugReports: https://github.com/kkmann/otsd/issues
 URL: https://github.com/kkmann/otsd

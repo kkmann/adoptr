@@ -38,7 +38,7 @@ AffineScore <- function(scores, coefs, intercept) {
 #'
 #' @rdname AffineScore-class
 #' @export
-setMethod("evaluate", signature("AffineScore", "Design"),
+setMethod("evaluate", signature("AffineScore", "TwoStageDesign"),
           function(s, design, ...) rowSums(s@coefs * sapply(s@scores, function(s, ...) evaluate(s, design, ...), ...) + s@intercept) )
 
 
