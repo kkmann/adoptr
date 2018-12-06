@@ -134,3 +134,5 @@ setMethod(".evaluate", signature("IntegralScore", "GQDesign"),
 # not user facing! we need to redo this whole SMoothness stuff...
 setMethod(".evaluate", signature("Smoothness_n2", "GQDesign"),
           function(s, design, ...) mean((diff(design@n2_pivots) / diff(get_knots(design)))^2) )
+
+

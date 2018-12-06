@@ -11,11 +11,12 @@
 NULL
 #' @param s score
 #' @param design \code{Design} object
+#' @param x1 stage-one outcome - can be NA for unconditional scores
 #' @template dotdotdotTemplate
 #'
 #' @rdname working-with-scores
 #' @export
-setGeneric("evaluate", function(s, design, ...) standardGeneric("evaluate"))
+setGeneric("evaluate", function(s, design, x1, ...) standardGeneric("evaluate"))
 
 
 #' @rdname working-with-scores
@@ -55,7 +56,7 @@ setClass("AbstractConditionalScore")
 #'
 #' @rdname AbstractConditionalScore-class
 #' @export
-setMethod("evaluate", signature("AbstractConditionalScore", "Design"),
+setMethod("evaluate", signature("AbstractConditionalScore", "Design", "numeric"),
           function(s, design, x1, ...) stop("not implemented"))
 
 
@@ -77,7 +78,7 @@ setClass("ConditionalScore", representation(
 
 #' @describeIn ConditionalScore not implemented, just raises a 'not implemented'
 #'     error.
-setMethod("evaluate", signature("ConditionalScore", "Design"),
+setMethod("evaluate", signature("ConditionalScore", "Design", "numeric"),
           function(s, design, x1, ...) stop("not implemented"))
 
 
@@ -183,6 +184,7 @@ setClass("IntegralScore", representation(
     contains = "UnconditionalScore")
 
 
+#' @param x1 required argument for generic, unused
 #' @param specific logical, flag for switching to design-specific implementation.
 #' @param ... further optimal arguments
 #'
@@ -191,7 +193,7 @@ setClass("IntegralScore", representation(
 #'     more efficiently implemented by specific \code{Design}-classes
 #'     (cf. \code{\link{.evaluate}}).
 setMethod("evaluate", signature("IntegralScore", "Design"),
-          function(s, design, specific = TRUE, ...) {
+          function(s, design, x1 = NA, specific = TRUE, ..) {
               # TODO: currently ignores the possibility of early stopping/uncontinuus
               # conditional scores - might get better when checking for early stopping
               # and integrating separately!
