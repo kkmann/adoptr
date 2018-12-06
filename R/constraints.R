@@ -87,18 +87,9 @@ setClass("ConstraintsCollection", representation(
 setMethod("evaluate", signature("ConstraintsCollection", "Design"),
           function(s, design, ...) {
               # evaluate the unconditional constraints
-              unconditional <- sapply(s@unconditional_constraints, function(cnstr) evaluate(cnstr, design, ...))
-              # the conditional constraints must be evaluated 'everywhere'
-              # for most designs this will be a set of pivot points in the
-              # continuation area
-              # TODO: do we want to support conditional constraints
-              # on the stopping regions as well? might be handy, e.g. minimal
-              # sample size for stopping for efficacy...?
-              # to do that we need an additional argument to
-              # evaluate(ConditionalScore, Design, where = c(x1, "continuation", "early_futility", "early_efficacy"))
-              # which then returns a Design-specific vector evaluating the ConditionalScore on a grid.
-              # BETTER: dispatch on class of x1, currently implemented for numeric,
-              # for character can implement evaluation on "continuation"
+              unconditional <- as.numeric(sapply(s@unconditional_constraints, function(cnstr) evaluate(cnstr, design, ...)))
+              conditional <- as.numeric(sapply(list(cp, cp), function(s) evaluate(s, design, "continuation region")))
+              return(c(unconditional, conditional))
           })
 
 
@@ -126,6 +117,6 @@ subject_to <- function(...) {
             }
         }
     }
-    res <- new("ConstraintsCollection", unconditional, conditional)
+    res <- new("ConstraintsCollection", unconditional_constraints = unconditional, conditional_constraints = conditional)
     return(res)
 }

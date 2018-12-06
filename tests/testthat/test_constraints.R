@@ -45,3 +45,19 @@ test_that("ConditionalConstraints", {
         evaluate(ctoer <= .05, design, .8), -.0250, tolerance = .001)
 
 })
+
+
+test_that("ConditionalConstraints", {
+
+    # create dummy design
+    design <- GQDesign(25, 0, 2, rep(40.0, 5), rep( 1.96, 5), 5)
+
+    # create power as IntegralScore
+    cp <- ConditionalPower(Normal(), PointMassPrior(.4, 1))
+
+    # construct a constraint set and see if it is at least of the right length
+    expect_equal(
+        length(evaluate(subject_to(cp>=.6, cp>=.5), design)),
+        10)
+
+})
