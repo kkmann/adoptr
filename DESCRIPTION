@@ -35,7 +35,7 @@ Collate:
     ConditionalPower.R
     ConditionalSampleSize.R
     Smoothness_n2.R
-    GQDesign.R 
+    TwoStageDesign.R
 RoxygenNote: 6.1.1
 BugReports: https://github.com/kkmann/otsd/issues
 URL: https://github.com/kkmann/otsd

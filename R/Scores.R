@@ -202,11 +202,11 @@ setMethod("evaluate", signature("IntegralScore", "Design"),
                   # integrand is the conditional score as function of z1 times the
                   # predictive pdf given the scores prior
                   integrand <- function(x1) evaluate(s@cs, design, x1, ...) *
-                      predictive_pdf(s@cs@distribution, s@cs@prior, x1, n1(design), ...)
+                      predictive_pdf(s@cs@distribution, s@cs@prior, x1, design@n1, ...)
                   # get integration bounds as quantiles using lower and upper bounds on prior
                   x1_bounds <- c(
-                      quantile(s@cs@distribution, .0005, n1(design), bounds(s@cs@prior)[1]),
-                      quantile(s@cs@distribution, .9995, n1(design), bounds(s@cs@prior)[2])
+                      quantile(s@cs@distribution, .0005, design@n1, bounds(s@cs@prior)[1]),
+                      quantile(s@cs@distribution, .9995, design@n1, bounds(s@cs@prior)[2])
                   )
                   # use adaptive quadrature to integrate - only relies on generic interface
                   # provided by 'Design', no special optimization for particular

@@ -37,7 +37,7 @@ test_that("conditional sample size maps to actual sample size", {
 
     expect_gt(
         evaluate(ess1, design),
-        n1(design)
+        design@n1
     )
 
 })

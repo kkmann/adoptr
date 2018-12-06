@@ -19,8 +19,8 @@
 #'
 #' @template DesignTemplate
 #'
-#' @exportClass GQDesign
-setClass("GQDesign", representation(
+#' @exportClass TwoStageDesign
+setClass("TwoStageDesign", representation(
         n1        = "numeric",
         c1f       = "numeric",
         c1e       = "numeric",
@@ -42,27 +42,35 @@ setClass("GQDesign", representation(
 #' @param order order (i.e. number of pivot points in the interior of [c1f, c1e])
 #'     of the Gaussian quadrature rule to use for integration
 #'
-#' @rdname GQDesign-class
+#' @rdname TwoStageDesign-class
+#' @export
+TwoStageDesign <- function(n1, c1f, c1e, n2_pivots, c2_pivots, x1_norm_pivots, weights) {
+    new("TwoStageDesign", n1 = n1, c1f = c1f, c1e = c1e, n2_pivots = n2_pivots,
+        c2_pivots = c2_pivots, x1_norm_pivots = x1_norm_pivots, weights = weights)
+}
+
+
+#' @rdname TwoStageDesign-class
 #' @export
 GQDesign <- function(n1, c1f, c1e, n2_pivots, c2_pivots, order) {
-    if (length(n2_pivots) != order | length(c2_pivots) != order )
+    if ( (length(n2_pivots) != order) | (length(c2_pivots) != order) )
         stop("length of pivot vectors does not fit")
     rule <- .GaussLegendre(order)
-    new("GQDesign", n1 = n1, c1f = c1f, c1e = c1e, n2_pivots = n2_pivots,
-        c2_pivots = c2_pivots, x1_norm_pivots = rule$nodes, weights = rule$weights)
+    TwoStageDesign(n1 = n1, c1f = c1f, c1e = c1e, n2_pivots = n2_pivots,
+                   c2_pivots = c2_pivots, x1_norm_pivots = rule$nodes, weights = rule$weights)
 }
 
 
 #' @param params vector of design parameters (must be in same order as returned
 #'     by \code{as.numeric(design)})
-#' @rdname GQDesign-class
+#' @rdname TwoStageDesign-class
 #' @export
-setMethod("update", signature("GQDesign"),
+setMethod("update", signature("TwoStageDesign"),
     function(object, params, ...) {
         k <- length(object@weights)
         if( ((length(params) - 3) / 2) != k)
             stop("parameter length does not fit")
-        new("GQDesign",
+        new("TwoStageDesign",
             n1  = params[1],
             c1f = params[2],
             c1e = params[3],
@@ -73,40 +81,40 @@ setMethod("update", signature("GQDesign"),
     })
 
 
-#' @rdname GQDesign-class
+#' @rdname TwoStageDesign-class
 #' @export
 setGeneric("get_knots", function(d, ...) standardGeneric("get_knots"))
 
-#' @describeIn GQDesign get the pivots points (knots) of the Gaussian quadrature
+#' @describeIn TwoStageDesign get the pivots points (knots) of the Gaussian quadrature
 #'     rule.
-setMethod("get_knots", signature("GQDesign"),
+setMethod("get_knots", signature("TwoStageDesign"),
     function(d, ...){
         h <- (d@c1e - d@c1f) / 2
         return(h * d@x1_norm_pivots + (h + d@c1f))
     })
 
 
-#' @rdname GQDesign-class
+#' @rdname TwoStageDesign-class
 #' @export
-setMethod("n2", signature("GQDesign", "numeric"),
+setMethod("n2", signature("TwoStageDesign", "numeric"),
     function(d, x1, ...) ifelse(x1 < d@c1f | x1 > d@c1e, 0, 1) *
         pmax(0, stats::approx(get_knots(d), d@n2_pivots, xout = x1, method = "linear", rule = 2)$y) )
 
 
-#' @rdname GQDesign-class
+#' @rdname TwoStageDesign-class
 #' @export
-setMethod("c2", signature("GQDesign", "numeric"),
+setMethod("c2", signature("TwoStageDesign", "numeric"),
     function(d, x1, ...) stats::approx(get_knots(d), d@c2_pivots, xout = x1, method = "linear", rule = 2)$y *
         ifelse(x1 < d@c1f, Inf, 1) * ifelse(x1 > d@c1e, -Inf, 1) )
 
 
-#' @rdname GQDesign-class
+#' @rdname TwoStageDesign-class
 #' @export
-setMethod("as.numeric", signature("GQDesign"),
+setMethod("as.numeric", signature("TwoStageDesign"),
         function(x, ...) c(x@n1, x@c1f, x@c1e, x@n2_pivots, x@c2_pivots))
 
 # not user facing!
-setMethod(".evaluate", signature("IntegralScore", "GQDesign"),
+setMethod(".evaluate", signature("IntegralScore", "TwoStageDesign"),
     function(s, design, ...) {
         # use design specific implementation tailored to this particular
         # implementation (Gauss Quadrature N points here)
@@ -132,5 +140,5 @@ setMethod(".evaluate", signature("IntegralScore", "GQDesign"),
 
 
 # not user facing! we need to redo this whole SMoothness stuff...
-setMethod(".evaluate", signature("Smoothness_n2", "GQDesign"),
+setMethod(".evaluate", signature("Smoothness_n2", "TwoStageDesign"),
           function(s, design, ...) mean((diff(design@n2_pivots) / diff(get_knots(design)))^2) )
