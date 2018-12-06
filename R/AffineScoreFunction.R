@@ -39,7 +39,15 @@ AffineScore <- function(scores, coefs, intercept) {
 #' @rdname AffineScore-class
 #' @export
 setMethod("evaluate", signature("AffineScore", "Design"),
-          function(s, design, ...) rowSums(s@coefs * sapply(s@scores, function(s, ...) evaluate(s, design, ...), ...) + s@intercept) )
+          function(s, design, ...) {
+              if (length(s@scores) == 1) {
+                  return(s@coefs[[1]] * evaluate(s@scores[[1]], design, ...) + s@intercept)
+              }
+              if (length(s@scores) > 1) {
+                  return(rowSums(s@coefs * sapply(s@scores, function(s, ...) evaluate(s, design, ...), ...) + s@intercept) )
+              }
+              stop("length of s@scores must be at least 1")
+          })
 
 
 

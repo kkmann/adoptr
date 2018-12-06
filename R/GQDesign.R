@@ -118,7 +118,7 @@ setMethod(".evaluate", signature("IntegralScore", "GQDesign"),
             integrand, design@rule, design@c1f, design@c1e
         )
         # compose
-        res <- poef * evaluate( # score is constant on early stopping region (TODO: relax later!)
+        res <- poef * evaluate( # score is constant on early stopping region (TODO: relax later!), can use adaptive quadrature here!
                 s@cs, design,
                 design@c1f - sqrt(.Machine$double.eps) # slightly smaller than stopping for futility
             ) +
