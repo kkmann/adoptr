@@ -7,7 +7,7 @@
 #' @section Quickstart:
 #'
 #' For a sample workflow and a quick demo of the capabilities, see the
-#' vignette [todo: link].
+#' vignette .
 #'
 #' @section Designs:
 #'
@@ -21,6 +21,8 @@
 #'
 #' list score classes
 #'
+#' @import methods
+#' @import gaussquad
 #' @docType package
 #' @name otsd
 NULL

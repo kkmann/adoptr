@@ -4,7 +4,61 @@
     <loc>https://kkmann.github.io/otsd//index.html</loc>
   </url>
   <url>
+    <loc>https://kkmann.github.io/otsd//reference/AbstractConditionalScore-class.html</loc>
+  </url>
+  <url>
+    <loc>https://kkmann.github.io/otsd//reference/AffineScore-class.html</loc>
+  </url>
+  <url>
+    <loc>https://kkmann.github.io/otsd//reference/ConditionalPower-class.html</loc>
+  </url>
+  <url>
+    <loc>https://kkmann.github.io/otsd//reference/ConditionalSampleSize-class.html</loc>
+  </url>
+  <url>
+    <loc>https://kkmann.github.io/otsd//reference/ConditionalScore-class.html</loc>
+  </url>
+  <url>
+    <loc>https://kkmann.github.io/otsd//reference/ContinuousPrior-class.html</loc>
+  </url>
+  <url>
+    <loc>https://kkmann.github.io/otsd//reference/DataDistribution-class.html</loc>
+  </url>
+  <url>
+    <loc>https://kkmann.github.io/otsd//reference/Design-class.html</loc>
+  </url>
+  <url>
+    <loc>https://kkmann.github.io/otsd//reference/GQDesign-class.html</loc>
+  </url>
+  <url>
+    <loc>https://kkmann.github.io/otsd//reference/IntegralScore-class.html</loc>
+  </url>
+  <url>
+    <loc>https://kkmann.github.io/otsd//reference/NormalDataDistribution-class.html</loc>
+  </url>
+  <url>
+    <loc>https://kkmann.github.io/otsd//reference/PointMassPrior-class.html</loc>
+  </url>
+  <url>
+    <loc>https://kkmann.github.io/otsd//reference/Prior-class.html</loc>
+  </url>
+  <url>
+    <loc>https://kkmann.github.io/otsd//reference/Smoothness_n2-class.html</loc>
+  </url>
+  <url>
+    <loc>https://kkmann.github.io/otsd//reference/UnconditionalScore-class.html</loc>
+  </url>
+  <url>
+    <loc>https://kkmann.github.io/otsd//reference/dot-evaluate.html</loc>
+  </url>
+  <url>
     <loc>https://kkmann.github.io/otsd//reference/otsd.html</loc>
+  </url>
+  <url>
+    <loc>https://kkmann.github.io/otsd//reference/score-arithmetic.html</loc>
+  </url>
+  <url>
+    <loc>https://kkmann.github.io/otsd//reference/working-with-scores.html</loc>
   </url>
   <url>
     <loc>https://kkmann.github.io/otsd//articles/otsd.html</loc>

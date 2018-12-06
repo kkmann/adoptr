@@ -1,9 +1,32 @@
+#' Continuous univariate prior distribution
+#'
+#' \code{ContinuousPrior} is a generic class for representing a univariate prior
+#' over a compact interval of the real numbers.
+#'
+#' For further details cf. \code{\link{Prior-class}}.
+#'
+#' @slot pdf function the actual probability density function , only called
+#'     in the interior of support therefore need not be set to zero outside of
+#'     support. [TODO: expose via pdf(prior, theta)!]
+#' @slot support numeric vector of length two with the bounds of the compact
+#'     interval on which the pdf is positive.
+#'     The restriction to compact support simplifies numerical integration.
+#'
+#' @template PriorTemplate
+#'
+#' @exportClass ContinuousPrior
 setClass("ContinuousPrior", representation(
         pdf     = "function", # actual prior pdf
         support = "numeric"   # the compact support of the prior
     ),
     contains = "Prior")
 
+
+#' @param pdf cf. slot \code{pdf}
+#' @param support cf. slot \code{support}
+#'
+#' @describeIn ContinuousPrior-class constructor
+#' @export
 ContinuousPrior <- function(pdf, support) {
     if (length(support) != 2)
         stop("support must be of length 2")
@@ -16,9 +39,17 @@ ContinuousPrior <- function(pdf, support) {
     new("ContinuousPrior", pdf = pdf, support = support)
 }
 
+
+#' @rdname ContinuousPrior-class
+#' @export
 setMethod("bounds", signature("ContinuousPrior"),
     function(dist, ...) dist@support)
 
+
+#' @param rel.tol relative tolerance used in adaptive gaussian quadrature
+#'     to evaluate the integral
+#' @rdname ContinuousPrior-class
+#' @export
 setMethod("expectation", signature("ContinuousPrior", "function"),
     function(dist, f, rel.tol = .001, ...) {
         stats::integrate(
@@ -27,6 +58,9 @@ setMethod("expectation", signature("ContinuousPrior", "function"),
         )$value
     })
 
+
+#' @rdname ContinuousPrior-class
+#' @export
 setMethod("condition", signature("ContinuousPrior", "numeric"),
     function(dist, interval, ...) {
         if (length(interval) != 2)
@@ -43,6 +77,10 @@ setMethod("condition", signature("ContinuousPrior", "numeric"),
         )
     })
 
+
+#' @param k number of pivots for crude integral approximation [TODO: this needs to be done properly!, cant use integrate since we wnat this vectorized!]
+#' @rdname ContinuousPrior-class
+#' @export
 setMethod("predictive_pdf", signature("DataDistribution", "ContinuousPrior", "numeric"),
     function(dist, prior, x1, n1, k = 33, ...) {
         # TODO: use Gaussian Quadrature for pivots!
@@ -56,6 +94,9 @@ setMethod("predictive_pdf", signature("DataDistribution", "ContinuousPrior", "nu
         return(res)
     })
 
+
+#' @rdname ContinuousPrior-class
+#' @export
 setMethod("predictive_cdf", signature("DataDistribution", "ContinuousPrior", "numeric"),
     function(dist, prior, x1, n1, k = 33, ...) {
         # TODO: use Gaussian Quadrature for pivots!
@@ -69,6 +110,9 @@ setMethod("predictive_cdf", signature("DataDistribution", "ContinuousPrior", "nu
         return(res)
     })
 
+
+#' @rdname ContinuousPrior-class
+#' @export
 setMethod("posterior", signature("DataDistribution", "ContinuousPrior", "numeric"),
     function(dist, prior, x1, n1, ...) { # careful, assumed null hypothesis = 0
         if (length(x1) != 1)

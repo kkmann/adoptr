@@ -1,85 +1,195 @@
-# evaluate a score (both conditional and unconditional)
+#' Working with scores
+#'
+#' Both \code{\link{ConditionalScore-class}} as well as
+#' \code{\link{UnconditionalScore-class}} implement \code{evaluate} methods
+#' which handle the actual computation of the score given a design and
+#' (for conditional scores) an interim result.
+#' Conditional scores additionally implement an \code{integrate} method
+#' to obtain the corresponding unconditional \code{\link{IntegralScore-class}}.
+#'
+#' @name working-with-scores
+NULL
+#' @param s score
+#' @param design \code{Design} object
+#' @template dotdotdotTemplate
+#'
+#' @rdname working-with-scores
+#' @export
 setGeneric("evaluate", function(s, design, ...) standardGeneric("evaluate"))
 
 
+#' @rdname working-with-scores
+#' @export
+setGeneric("integrate", function(s, ...) standardGeneric("integrate"))
+
+
+#' Design specific implementation for evaluating integral scores
+#'
+#' This generic is not exported and for internal use only.
+#' It allows \code{\link{evaluate}} which is implemented generically via
+#' adaptive Gaussian quadrature to selectively dispatch to a design-specific
+#' implementation.
+#' This is mostly exploited during optiization to allow more efficient and
+#' stable evaluation of integral scores.
+#'
+#' @param s score object
+#' @param design design object
+#' @template dotdotdotTemplate
+#'
+#' @name .evaluate
+setGeneric(".evaluate", function(s, design, ...) standardGeneric(".evaluate"))
+
+
+
+#' [ToDO]
+#'
+#' [ToDo]
+#'
+#' @exportClass AbstractConditionalScore
 setClass("AbstractConditionalScore")
 
+#' @param s score
+#' @param design design
+#' @param x1 stage-one outcome
+#' @template dotdotdotTemplate
+#'
+#' @rdname AbstractConditionalScore-class
+#' @export
 setMethod("evaluate", signature("AbstractConditionalScore", "Design"),
           function(s, design, x1, ...) stop("not implemented"))
 
 
+
+
+#' Abstract class for conditional scoring function
+#'
+#' [ToDo]
+#'
+#' @template ConditionalScoreTemplate
+#'
+#' @exportClass ConditionalScore
 setClass("ConditionalScore", representation(
         distribution = "DataDistribution",
         prior = "Prior"
     ),
     contains = "AbstractConditionalScore")
 
-# must implement evaluate with additional argument x1!
+
+#' @describeIn ConditionalScore not implemented, just raises a 'not implemented'
+#'     error.
 setMethod("evaluate", signature("ConditionalScore", "Design"),
           function(s, design, x1, ...) stop("not implemented"))
 
-# better name? integrate a conditional score with respect to X1
-setGeneric("integrate",
-           function(s, ...) standardGeneric("integrate")
-)
 
-# essentialy just changes class and stores conditional score to allow
-# different implementation of 'evaluation'
+#' @describeIn ConditionalScore integrate a \code{ConditionalScore} over the
+#'     stage-one outcome; return object of class \code{\link{IntegralScore-class}}.
 setMethod("integrate", signature("ConditionalScore"),
           function(s, ...) new("IntegralScore", cs = s) )
 
+
+#' Score arithmetic
+#'
+#' To facilitate working with simple weighted sums of scores,
+#' \code{otsd} supports some basic arithmetic operations on score object
+#' (both conditional and unconditional ones).
+#' Scores can be scalar-multiplied by a constant and added to produce new
+#' scores.
+#' Conditional and unconditional scores cannot be mixed.
+#'
+#' @param e1 first summand / factor
+#' @param e2 second summand / factor
+#' @name score-arithmetic
+NULL
+#' @rdname score-arithmetic
 setMethod("+", signature("ConditionalScore", "numeric"),
           function(e1, e2) AffineConditionalScore(list(e1), 1, e2) )
+#'@rdname score-arithmetic
 setMethod("+", signature("numeric", "ConditionalScore"),
           function(e1, e2) e2 + e1 )
-
 ## TODO: check for duplicate scores and combine!
+#'@rdname score-arithmetic
 setMethod("+", signature("ConditionalScore", "ConditionalScore"),
           function(e1, e2) AffineConditionalScore(list(e1, e2), c(1, 1), 0) )
 
+
+#'@rdname score-arithmetic
 setMethod("*", signature("ConditionalScore", "numeric"),
           function(e1, e2) AffineConditionalScore(list(e1), e2, 0) )
+#'@rdname score-arithmetic
 setMethod("*", signature("numeric", "ConditionalScore"),
           function(e1, e2) e2 * e1 )
 
 
 
+
+
+#' Abstract class for unconditional scoring function
+#'
+#' [ToDo]
+#'
+#'
+#' @exportClass UnconditionalScore
 setClass("UnconditionalScore")
 
+
+#' @param s an \code{IntegralScore}
+#' @param design a \code{Design}
+#' @template dotdotdotTemplate
+#'
+#' @rdname UnconditionalScore-class
+#' @export
 setMethod("evaluate", signature("UnconditionalScore", "Design"),
-          function(s, design, specific = TRUE, ...) stop("not implemented") )
+          function(s, design, ...) stop("not implemented") )
 
-# allow custom implementation of evaluate() depending on design
-setGeneric(".evaluate", function(s, design, ...) standardGeneric(".evaluate"))
 
+#' @rdname UnconditionalScore-class
 setMethod(".evaluate", signature("UnconditionalScore", "Design"),
           function(s, design, ...) stop("not implemented") )
 
+
+#'@rdname score-arithmetic
 setMethod("+", signature("UnconditionalScore", "numeric"),
           function(e1, e2) AffineUnconditionalScore(list(e1), 1, e2) )
+#'@rdname score-arithmetic
 setMethod("+", signature("numeric", "UnconditionalScore"),
           function(e1, e2) e2 + e1 )
-
 ## TODO: check for duplicate scores and combine!
+#'@rdname score-arithmetic
 setMethod("+", signature("UnconditionalScore", "UnconditionalScore"),
           function(e1, e2) AffineUnconditionalScore(list(e1, e2), c(1, 1), 0) )
 
+
+#'@rdname score-arithmetic
 setMethod("*", signature("UnconditionalScore", "numeric"),
           function(e1, e2) AffineUnconditionalScore(list(e1), e2, 0) )
+#'@rdname score-arithmetic
 setMethod("*", signature("numeric", "UnconditionalScore"),
           function(e1, e2) e2 * e1 )
 
 
 
 
+#' Unconditional score class obtained by integration of a \code{ConditionalScore}
+#'
+#' @param s an \code{IntegralScore}
+#' @param design a \code{Design}
+#'
+#' @slot cs the underlying \code{ConditionalScore}
+#'
+#' @exportClass IntegralScore
 setClass("IntegralScore", representation(
         cs = "ConditionalScore"
     ),
     contains = "UnconditionalScore")
 
-# generic evaluation of integral score, this is where the problems lie ;)
-# uses stats::integrate to integrate conditional score over Z1, not working for
-# optimization - need custom implementation for signature("IntegralScore", "BSDesign")
+
+#' @param specific logical, flag for switching to design-specific implementation.
+#' @param ... further optimal arguments
+#'
+#' @describeIn IntegralScore generic implementation of evaluating an integral
+#'     score. Uses adaptive Gaussian quadrature for integration and might be
+#'     more efficiently implemented by specific \code{Design}-classes
+#'     (cf. \code{\link{.evaluate}}).
 setMethod("evaluate", signature("IntegralScore", "Design"),
           function(s, design, specific = TRUE, ...) {
               # TODO: currently ignores the possibility of early stopping/uncontinuus
