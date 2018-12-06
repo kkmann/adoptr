@@ -3,7 +3,7 @@
 \docType{class}
 \name{Constraint-class}
 \alias{Constraint-class}
-\alias{evaluate,Constraint,Design-method}
+\alias{evaluate,Constraint,Design,ANY-method}
 \alias{ConditionalConstraint-class}
 \alias{<=,AbstractConditionalScore,numeric-method}
 \alias{>=,AbstractConditionalScore,numeric-method}
@@ -12,7 +12,7 @@
 \alias{>=,UnconditionalScore,numeric-method}
 \title{Formulating constraints}
 \usage{
-\S4method{evaluate}{Constraint,Design}(s, design, ...)
+\S4method{evaluate}{Constraint,Design,ANY}(s, design, x1, ...)
 
 \S4method{<=}{AbstractConditionalScore,numeric}(e1, e2)
 

@@ -19,7 +19,7 @@ setClass("ConditionalPower", contains = "ConditionalScore")
 ConditionalPower <- function(dist, prior) new("ConditionalPower", distribution = dist, prior = prior)
 
 #' @rdname ConditionalPower-class
-setMethod("evaluate", signature("ConditionalPower", "Design"),
+setMethod("evaluate", signature("ConditionalPower", "Design", "numeric"),
           function(s, design, x1, ...) {
               sapply(x1,
                   function(x1) expectation(

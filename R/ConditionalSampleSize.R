@@ -18,5 +18,5 @@ setClass("ConditionalSampleSize", contains = "ConditionalScore")
 ConditionalSampleSize <- function(dist, prior) new("ConditionalSampleSize", distribution = dist, prior = prior)
 
 #' @rdname ConditionalSampleSize-class
-setMethod("evaluate", signature("ConditionalSampleSize", "Design"),
+setMethod("evaluate", signature("ConditionalSampleSize", "Design", "numeric"),
           function(s, design, x1, ...) n(design, x1) )

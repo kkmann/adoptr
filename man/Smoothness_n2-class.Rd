@@ -4,12 +4,12 @@
 \name{Smoothness_n2-class}
 \alias{Smoothness_n2-class}
 \alias{Smoothness_n2}
-\alias{evaluate,Smoothness_n2,Design-method}
+\alias{evaluate,Smoothness_n2,Design,ANY-method}
 \title{Quadratic smoothness penalty term}
 \usage{
 Smoothness_n2(h = sqrt(.Machine$double.eps))
 
-\S4method{evaluate}{Smoothness_n2,Design}(s, design, specific = TRUE,
+\S4method{evaluate}{Smoothness_n2,Design,ANY}(s, design, specific = TRUE,
   ...)
 }
 \arguments{

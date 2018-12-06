@@ -3,16 +3,18 @@
 \docType{class}
 \name{IntegralScore-class}
 \alias{IntegralScore-class}
-\alias{evaluate,IntegralScore,Design-method}
+\alias{evaluate,IntegralScore,Design,ANY-method}
 \title{Unconditional score class obtained by integration of a \code{ConditionalScore}}
 \usage{
-\S4method{evaluate}{IntegralScore,Design}(s, design, specific = TRUE,
-  ...)
+\S4method{evaluate}{IntegralScore,Design,ANY}(s, design, x1 = NA,
+  specific = TRUE, ..)
 }
 \arguments{
 \item{s}{an \code{IntegralScore}}
 
 \item{design}{a \code{Design}}
+
+\item{x1}{required argument for generic, unused}
 
 \item{specific}{logical, flag for switching to design-specific implementation.}
 

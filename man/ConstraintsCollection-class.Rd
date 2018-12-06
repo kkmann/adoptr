@@ -3,11 +3,11 @@
 \docType{class}
 \name{ConstraintsCollection-class}
 \alias{ConstraintsCollection-class}
-\alias{evaluate,ConstraintsCollection,Design-method}
+\alias{evaluate,ConstraintsCollection,Design,ANY-method}
 \alias{subject_to}
 \title{Collection of constraints}
 \usage{
-\S4method{evaluate}{ConstraintsCollection,Design}(s, design, ...)
+\S4method{evaluate}{ConstraintsCollection,Design,ANY}(s, design, x1, ...)
 
 subject_to(...)
 }

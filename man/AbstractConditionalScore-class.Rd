@@ -3,10 +3,11 @@
 \docType{class}
 \name{AbstractConditionalScore-class}
 \alias{AbstractConditionalScore-class}
-\alias{evaluate,AbstractConditionalScore,Design-method}
+\alias{evaluate,AbstractConditionalScore,Design,numeric-method}
 \title{[ToDO]}
 \usage{
-\S4method{evaluate}{AbstractConditionalScore,Design}(s, design, x1, ...)
+\S4method{evaluate}{AbstractConditionalScore,Design,numeric}(s, design, x1,
+  ...)
 }
 \arguments{
 \item{s}{score}

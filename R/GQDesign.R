@@ -131,6 +131,18 @@ setMethod(".evaluate", signature("IntegralScore", "GQDesign"),
     })
 
 
+#' @describeIn GQDesign the design specific implementation for evaluatiing a
+#'     condtional score on the continuation region simply evaluates on all pivot points
+#' @export
+setMethod("evaluate", signature("AbstractConditionalScore", "GQDesign", "character"),
+          function(s, design, x1, ...) {
+              if (x1 == "continuation region") {
+                  return(sapply(get_knots(design), function(x1) evaluate(s, design, x1, ...)))
+              }
+              stop("invalid x1 term")
+          })
+
+
 # not user facing! we need to redo this whole SMoothness stuff...
 setMethod(".evaluate", signature("Smoothness_n2", "GQDesign"),
           function(s, design, ...) mean((diff(design@n2_pivots) / diff(get_knots(design)))^2) )

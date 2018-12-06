@@ -3,11 +3,11 @@
 \docType{class}
 \name{UnconditionalScore-class}
 \alias{UnconditionalScore-class}
-\alias{evaluate,UnconditionalScore,Design-method}
+\alias{evaluate,UnconditionalScore,Design,ANY-method}
 \alias{.evaluate,UnconditionalScore,Design-method}
 \title{Abstract class for unconditional scoring function}
 \usage{
-\S4method{evaluate}{UnconditionalScore,Design}(s, design, ...)
+\S4method{evaluate}{UnconditionalScore,Design,ANY}(s, design, x1, ...)
 
 \S4method{.evaluate}{UnconditionalScore,Design}(s, design, ...)
 }

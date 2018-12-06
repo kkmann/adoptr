@@ -10,6 +10,7 @@
 \alias{n2,GQDesign,numeric-method}
 \alias{c2,GQDesign,numeric-method}
 \alias{as.numeric,GQDesign-method}
+\alias{evaluate,AbstractConditionalScore,GQDesign,character-method}
 \title{Gaussian-quadrature based implementation of \code{Design}}
 \usage{
 GQDesign(n1, c1f, c1e, n2_pivots, c2_pivots, order)
@@ -25,6 +26,9 @@ get_knots(d, ...)
 \S4method{c2}{GQDesign,numeric}(d, x1, ...)
 
 \S4method{as.numeric}{GQDesign}(x, ...)
+
+\S4method{evaluate}{AbstractConditionalScore,GQDesign,character}(s, design,
+  x1, ...)
 }
 \arguments{
 \item{n1}{stage-one sample size}
@@ -68,6 +72,9 @@ See \code{\link{Design-class}} for details on the inherited methods.
 \itemize{
 \item \code{get_knots}: get the pivots points (knots) of the Gaussian quadrature
 rule.
+
+\item \code{evaluate}: the design specific implementation for evaluatiing a
+condtional score on the continuation region simply evaluates on all pivot points
 }}
 
 \section{Slots}{

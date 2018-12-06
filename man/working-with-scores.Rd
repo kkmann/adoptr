@@ -6,7 +6,7 @@
 \alias{integrate}
 \title{Working with scores}
 \usage{
-evaluate(s, design, ...)
+evaluate(s, design, x1, ...)
 
 integrate(s, ...)
 }
@@ -14,6 +14,8 @@ integrate(s, ...)
 \item{s}{score}
 
 \item{design}{\code{Design} object}
+
+\item{x1}{stage-one outcome - can be NA for unconditional scores}
 
 \item{...}{further optional arguments}
 }

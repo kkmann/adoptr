@@ -3,11 +3,11 @@
 \docType{class}
 \name{ConditionalScore-class}
 \alias{ConditionalScore-class}
-\alias{evaluate,ConditionalScore,Design-method}
+\alias{evaluate,ConditionalScore,Design,numeric-method}
 \alias{integrate,ConditionalScore-method}
 \title{Abstract class for conditional scoring function}
 \usage{
-\S4method{evaluate}{ConditionalScore,Design}(s, design, x1, ...)
+\S4method{evaluate}{ConditionalScore,Design,numeric}(s, design, x1, ...)
 
 \S4method{integrate}{ConditionalScore}(s, ...)
 }
