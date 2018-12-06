@@ -22,7 +22,6 @@
 #' list score classes
 #'
 #' @import methods
-#' @import gaussquad
 #' @docType package
 #' @name otsd
 NULL
