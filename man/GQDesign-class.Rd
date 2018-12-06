@@ -74,7 +74,7 @@ rule.
 
 \describe{
 \item{\code{rule}}{data.frame, the integration rule, result of a call to
-\code{gaussquad::legendre.quadrature.rules(order)[[order]])} during
+\code{\link{GaussLegendreRule}} during
 construction}
 
 \item{\code{n1}}{cf. parameter}

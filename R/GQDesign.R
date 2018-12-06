@@ -9,7 +9,7 @@
 #' See \code{\link{Design-class}} for details on the inherited methods.
 #'
 #' @slot rule data.frame, the integration rule, result of a call to
-#'     \code{gaussquad::legendre.quadrature.rules(order)[[order]])} during
+#'     \code{\link{GaussLegendreRule}} during
 #'     construction
 #' @slot n1 cf. parameter
 #' @slot c1f cf. parameter
