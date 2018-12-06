@@ -26,7 +26,8 @@ setClass("GQDesign", representation(
         c1e       = "numeric",
         n2_pivots = "numeric",
         c2_pivots = "numeric",
-        rule      = "data.frame"
+        x1_norm_pivots = "numeric",
+        weights   = "numeric"
     ),
     contains = "Design")
 
@@ -46,12 +47,9 @@ setClass("GQDesign", representation(
 GQDesign <- function(n1, c1f, c1e, n2_pivots, c2_pivots, order) {
     if (length(n2_pivots) != order | length(c2_pivots) != order )
         stop("length of pivot vectors does not fit")
+    rule <- .GaussLegendre(order)
     new("GQDesign", n1 = n1, c1f = c1f, c1e = c1e, n2_pivots = n2_pivots,
-        c2_pivots = c2_pivots,
-        rule = data.frame(
-            x = .GaussLegendre(order)$nodes,
-            w = .GaussLegendre(order)$weights
-        ))
+        c2_pivots = c2_pivots, x1_norm_pivots = rule$nodes, weights = rule$weights)
 }
 
 
@@ -61,15 +59,17 @@ GQDesign <- function(n1, c1f, c1e, n2_pivots, c2_pivots, order) {
 #' @export
 setMethod("update", signature("GQDesign"),
     function(object, params, ...) {
-        if( ((length(params) - 3) / 2) != nrow(object@rule))
+        k <- length(object@weights)
+        if( ((length(params) - 3) / 2) != k)
             stop("parameter length does not fit")
         new("GQDesign",
             n1  = params[1],
             c1f = params[2],
             c1e = params[3],
-            n2_pivots = params[4:(3 + nrow(object@rule))],
-            c2_pivots = params[(4 + nrow(object@rule)):(length(params))],
-            rule = object@rule)
+            n2_pivots = params[4:(3 + k)],
+            c2_pivots = params[(4 + k):(length(params))],
+            x1_norm_pivots = object@x1_norm_pivots,
+            weights = object@weights)
     })
 
 
@@ -82,7 +82,7 @@ setGeneric("get_knots", function(d, ...) standardGeneric("get_knots"))
 setMethod("get_knots", signature("GQDesign"),
     function(d, ...){
         h <- (d@c1e - d@c1f) / 2
-        return(h * d@rule$x + (h + d@c1f))
+        return(h * d@x1_norm_pivots + (h + d@c1f))
     })
 
 
@@ -116,7 +116,7 @@ setMethod(".evaluate", signature("IntegralScore", "GQDesign"),
         integrand   <- function(x1) evaluate(s@cs, design, x1, ...) *
             predictive_pdf(s@cs@distribution, s@cs@prior, x1, design@n1, ...)
         h <- (design@c1e - design@c1f) / 2
-        mid_section <- h * sum(design@rule$w * integrand(get_knots(design)))
+        mid_section <- h * sum(design@weights * integrand(get_knots(design)))
         # compose
         res <- poef * evaluate( # score is constant on early stopping region (TODO: relax later!)
                 s@cs, design,
