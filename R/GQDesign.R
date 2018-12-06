@@ -48,7 +48,10 @@ GQDesign <- function(n1, c1f, c1e, n2_pivots, c2_pivots, order) {
         stop("length of pivot vectors does not fit")
     new("GQDesign", n1 = n1, c1f = c1f, c1e = c1e, n2_pivots = n2_pivots,
         c2_pivots = c2_pivots,
-        rule = gaussquad::legendre.quadrature.rules(order)[[order]])
+        rule = data.frame(
+            x = .GaussLegendre(order)$nodes,
+            w = .GaussLegendre(order)$weights
+        ))
 }
 
 
@@ -79,9 +82,7 @@ setGeneric("get_knots", function(d, ...) standardGeneric("get_knots"))
 setMethod("get_knots", signature("GQDesign"),
     function(d, ...){
         h <- (d@c1e - d@c1f) / 2
-        legendre_knots <- h * d@rule$x + (h + d@c1f)
-        # need to reorder pivots (sored in reverse order ...)
-        return(legendre_knots[nrow(d@rule):1])
+        return(h * d@rule$x + (h + d@c1f))
     })
 
 
@@ -109,14 +110,13 @@ setMethod(".evaluate", signature("IntegralScore", "GQDesign"),
     function(s, design, ...) {
         # use design specific implementation tailored to this particular
         # implementation (Gauss Quadrature N points here)
-        poef <- predictive_cdf(s@cs@distribution, s@cs@prior, design@c1f, n1(design))
-        poee <- 1 - predictive_cdf(s@cs@distribution, s@cs@prior, design@c1e, n1(design))
+        poef <- predictive_cdf(s@cs@distribution, s@cs@prior, design@c1f, design@n1)
+        poee <- 1 - predictive_cdf(s@cs@distribution, s@cs@prior, design@c1e, design@n1)
         # continuation region
-        integrand   <- function(z1) evaluate(s@cs, design, z1, ...) *
-            predictive_pdf(s@cs@distribution, s@cs@prior, z1, n1(design), ...)
-        mid_section <- gaussquad::legendre.quadrature(
-            integrand, design@rule, design@c1f, design@c1e
-        )
+        integrand   <- function(x1) evaluate(s@cs, design, x1, ...) *
+            predictive_pdf(s@cs@distribution, s@cs@prior, x1, design@n1, ...)
+        h <- (design@c1e - design@c1f) / 2
+        mid_section <- h * sum(design@rule$w * integrand(get_knots(design)))
         # compose
         res <- poef * evaluate( # score is constant on early stopping region (TODO: relax later!)
                 s@cs, design,

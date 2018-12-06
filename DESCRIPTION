@@ -21,11 +21,10 @@ Suggests:
 Imports:
     nloptr,
     methods
-Depends:
-    gaussquad
 VignetteBuilder: knitr
 Collate: 
     otsd.R
+    util.R
     DataDistribution.R
     Prior.R
     PointMassPrior.R
