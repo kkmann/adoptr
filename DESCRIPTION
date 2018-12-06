@@ -4,7 +4,7 @@ Title: Optimal Two-Stage Designs
 Version: 0.1.0
 Authors@R: c(
         person("Kevin", "Kunzmann", role = c("aut", "cre"), email = "kevin.kunzmann@mrc-bsu.cam.uk"),
-        person("Max", "Pilz", role = c("aut"), email = "pilz@imbi.uni-heidelberg.de")
+        person("Maximilian", "Pilz", role = c("aut"), email = "pilz@imbi.uni-heidelberg.de")
     )
 Description: Optimize two-stage designs for clinical trials for tests based on
     Z statistics. 
@@ -21,8 +21,6 @@ Suggests:
 Imports:
     nloptr,
     methods
-Depends:
-    gaussquad
 VignetteBuilder: knitr
 Collate: 
     otsd.R
@@ -37,6 +35,7 @@ Collate:
     ConditionalSampleSize.R
     Smoothness_n2.R
     GQDesign.R 
+    util.R
 RoxygenNote: 6.1.1
 BugReports: https://github.com/kkmann/otsd/issues
 URL: https://github.com/kkmann/otsd

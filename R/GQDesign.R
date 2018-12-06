@@ -47,8 +47,7 @@ GQDesign <- function(n1, c1f, c1e, n2_pivots, c2_pivots, order) {
     if (length(n2_pivots) != order | length(c2_pivots) != order )
         stop("length of pivot vectors does not fit")
     new("GQDesign", n1 = n1, c1f = c1f, c1e = c1e, n2_pivots = n2_pivots,
-        c2_pivots = c2_pivots,
-        rule = gaussquad::legendre.quadrature.rules(order)[[order]])
+        c2_pivots = c2_pivots, rule = GaussLegendreRule(order))
 }
 
 
@@ -79,9 +78,8 @@ setGeneric("get_knots", function(d, ...) standardGeneric("get_knots"))
 setMethod("get_knots", signature("GQDesign"),
     function(d, ...){
         h <- (d@c1e - d@c1f) / 2
-        legendre_knots <- h * d@rule$x + (h + d@c1f)
-        # need to reorder pivots (sored in reverse order ...)
-        return(legendre_knots[nrow(d@rule):1])
+        legendre_knots <- h * d@rule$nodes + (h + d@c1f)
+        return(legendre_knots)
     })
 
 
@@ -114,8 +112,8 @@ setMethod(".evaluate", signature("IntegralScore", "GQDesign"),
         # continuation region
         integrand   <- function(z1) evaluate(s@cs, design, z1, ...) *
             predictive_pdf(s@cs@distribution, s@cs@prior, z1, n1(design), ...)
-        mid_section <- gaussquad::legendre.quadrature(
-            integrand, design@rule, design@c1f, design@c1e
+        mid_section <- GaussLegendreIntegral(
+            integrand, design@c1f, design@c1e, design@rule
         )
         # compose
         res <- poef * evaluate( # score is constant on early stopping region (TODO: relax later!)
