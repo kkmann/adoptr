@@ -13,7 +13,7 @@ integrate(s, ...)
 \arguments{
 \item{s}{score}
 
-\item{design}{\code{Design} object}
+\item{design}{\code{TwoStageDesign} object}
 
 \item{...}{further optional arguments}
 }

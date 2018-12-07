@@ -1,0 +1,53 @@
+#' Compute weights an knots for Gauss-Legendre integration
+#'
+#' Implementation of Gauss Legendre integration rule and computation of integral
+#' based on implementation at https://rdrr.io/cran/SMR/src/R/GaussLegendre.R
+#' \code{GaussLegendreRule} gives the nodes and weights for the interval \eqn{(-1, 1)}.
+#'
+#' @param order Number of nodes to be used
+#'
+#' @rdname GaussLegendreRule
+#' @export
+GaussLegendreRule <- function(order) {
+    order <- as.integer(order)
+    if (order < 0)
+        stop("Must be a non-negative number of nodes!")
+    if (order == 0)
+        return(list(x = numeric(0), w = numeric(0)))
+    j   <- 1:(order - 1)
+    mu0 <- 2
+    b   <- j / (4 * j^2 - 1)^0.5
+    A   <- rep(0, order * order)
+    A[(order + 1) * (j - 1) + 2] <- b
+    A[(order + 1) * j] <- b
+    dim(A) <- c(order, order)
+    sd <- eigen(A, symmetric = TRUE)
+    w <- rev(as.vector(sd$vectors[1, ]))
+    w <- mu0 * w^2
+    x <- rev(sd$values)
+    return(data.frame(nodes = x, weights = w))
+}
+
+
+#' Integration via the Gauss-Legendre quadrature
+#'
+#' @param f function to be integrated
+#' @param low lower bound of integration
+#' @param up upper bound of integration
+#' @param x normalized integration knots on [-1, 1]
+#' @param weights integration weights
+#'
+#' @rdname GaussLegendreIntegral
+#' @export
+integrate_rule <- function(f, low, up, x, weights) {
+  if (!(length(weights) == length(x)))
+      stop("x and weights must be of same length")
+  if (any(x < -1) | any(x > 1))
+    stop("x must be in [-1, 1], is scaled automatically")
+  if (any(weights <= 0))
+    stop("weights must be positive")
+  a  <- (up - low) / 2
+  b  <- (up + low) / 2
+  ff <- sapply(x, function(x) f(a * x + b))
+  return(a * sum(weights * ff))
+}
