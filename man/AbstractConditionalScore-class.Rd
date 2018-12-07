@@ -3,10 +3,10 @@
 \docType{class}
 \name{AbstractConditionalScore-class}
 \alias{AbstractConditionalScore-class}
-\alias{evaluate,AbstractConditionalScore,Design,numeric-method}
+\alias{evaluate,AbstractConditionalScore,TwoStageDesign-method}
 \title{[ToDO]}
 \usage{
-\S4method{evaluate}{AbstractConditionalScore,Design,numeric}(s, design, x1,
+\S4method{evaluate}{AbstractConditionalScore,TwoStageDesign}(s, design, x1,
   ...)
 }
 \arguments{

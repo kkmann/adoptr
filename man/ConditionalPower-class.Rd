@@ -4,12 +4,12 @@
 \name{ConditionalPower-class}
 \alias{ConditionalPower-class}
 \alias{ConditionalPower}
-\alias{evaluate,ConditionalPower,Design,numeric-method}
+\alias{evaluate,ConditionalPower,TwoStageDesign-method}
 \title{Conditional power of a design given stage-one outcome}
 \usage{
 ConditionalPower(dist, prior)
 
-\S4method{evaluate}{ConditionalPower,Design,numeric}(s, design, x1, ...)
+\S4method{evaluate}{ConditionalPower,TwoStageDesign}(s, design, x1, ...)
 }
 \arguments{
 \item{dist}{data distribution}

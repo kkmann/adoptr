@@ -3,7 +3,7 @@
 \docType{class}
 \name{Constraint-class}
 \alias{Constraint-class}
-\alias{evaluate,Constraint,Design,ANY-method}
+\alias{evaluate,Constraint,TwoStageDesign-method}
 \alias{ConditionalConstraint-class}
 \alias{<=,AbstractConditionalScore,numeric-method}
 \alias{>=,AbstractConditionalScore,numeric-method}
@@ -12,7 +12,7 @@
 \alias{>=,UnconditionalScore,numeric-method}
 \title{Formulating constraints}
 \usage{
-\S4method{evaluate}{Constraint,Design,ANY}(s, design, x1, ...)
+\S4method{evaluate}{Constraint,TwoStageDesign}(s, design, ...)
 
 \S4method{<=}{AbstractConditionalScore,numeric}(e1, e2)
 
@@ -25,13 +25,13 @@
 \arguments{
 \item{s}{constraint to evaluate [TODO make naming of arguments for evaluate more generic!]}
 
-\item{design}{design to evaluate}
-
 \item{...}{further optional arguments}
 
 \item{e1}{first comparator}
 
 \item{e2}{second comparator}
+
+\item{TwoStageDesign}{TwoStageDesign to evaluate}
 }
 \description{
 [TODO]

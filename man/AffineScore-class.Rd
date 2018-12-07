@@ -4,12 +4,12 @@
 \name{AffineScore-class}
 \alias{AffineScore-class}
 \alias{AffineScore}
-\alias{evaluate,AffineScore,Design,ANY-method}
+\alias{evaluate,AffineScore,TwoStageDesign-method}
 \title{Affine functions of scores}
 \usage{
 AffineScore(scores, coefs, intercept)
 
-\S4method{evaluate}{AffineScore,Design,ANY}(s, design, x1, ...)
+\S4method{evaluate}{AffineScore,TwoStageDesign}(s, design, ...)
 }
 \arguments{
 \item{scores}{cf. corresponding slot}

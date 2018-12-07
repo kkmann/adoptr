@@ -23,7 +23,7 @@ test_that("Optimal design with point prior is computable", {
 
     # check if length does fit
     expect_equal(
-        length(as.numeric(design)),
+        length(tunable_parameters(design)),
         2 * number_knots + 3
     )
 
@@ -61,6 +61,7 @@ test_that("Optimal design with point prior is computable", {
         d  <- update(design, x)
         evaluate(ess, d) + .001*evaluate(smth, d)
     }
+    update(design, tunable_parameters(design))
 
     constraint <- function(x) {
         d  <- update(design, x)
@@ -68,7 +69,7 @@ test_that("Optimal design with point prior is computable", {
             .8 - evaluate(pow, d),
             evaluate(toer, d) - 0.05,
             x[2] - x[3] + .1,
-            diff(c2(d, get_knots(d)))
+            diff(c2(d, scaled_integration_pivots(d)))
         )
     }
 
@@ -76,7 +77,7 @@ test_that("Optimal design with point prior is computable", {
     lb <- c(10, -1, 1, numeric(number_knots) + 2, numeric(number_knots) - 5)
 
     res <- nloptr::nloptr(
-        x0 = as.numeric(design),
+        x0 = tunable_parameters(design),
         lb = lb,
         ub = ub,
         eval_f      = objective,

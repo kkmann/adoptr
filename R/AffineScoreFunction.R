@@ -38,15 +38,13 @@ AffineScore <- function(scores, coefs, intercept) {
 #'
 #' @rdname AffineScore-class
 #' @export
-setMethod("evaluate", signature("AffineScore", "Design"),
+setMethod("evaluate", signature("AffineScore", "TwoStageDesign"),
           function(s, design, ...) {
-              if (length(s@scores) == 1) {
-                  return(s@coefs[[1]] * evaluate(s@scores[[1]], design, ...) + s@intercept)
-              }
-              if (length(s@scores) > 1) {
-                  return(rowSums(s@coefs * sapply(s@scores, function(s, ...) evaluate(s, design, ...), ...) + s@intercept) )
-              }
-              stop("length of s@scores must be at least 1")
+              if (length(s@scores) > 1)
+                  res <- rowSums(s@coefs * sapply(s@scores, function(s, ...) evaluate(s, design, ...), ...))
+              else
+                  res <- s@coefs * evaluate(s@scores[[1]], design, ...)
+              return(res + s@intercept)
           })
 
 

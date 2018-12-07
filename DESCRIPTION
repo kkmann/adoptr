@@ -4,12 +4,10 @@ Title: Optimal Two-Stage Designs
 Version: 0.1.0
 Authors@R: c(
         person("Kevin", "Kunzmann", role = c("aut", "cre"), email = "kevin.kunzmann@mrc-bsu.cam.uk"),
-        person("Max", "Pilz", role = c("aut"), email = "pilz@imbi.uni-heidelberg.de")
+        person("Maximilian", "Pilz", role = c("aut"), email = "pilz@imbi.uni-heidelberg.de")
     )
 Description: Optimize two-stage designs for clinical trials for tests based on
     Z statistics. 
-    The implementation is generic such that new performance scores can be added
-    easily. 
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
@@ -21,16 +19,15 @@ Suggests:
 Imports:
     nloptr,
     methods
-Depends:
-    gaussquad
 VignetteBuilder: knitr
 Collate: 
     otsd.R
+    util.R
     DataDistribution.R
     Prior.R
     PointMassPrior.R
     ContinuousPrior.R
-    Design.R
+    TwoStageDesign.R
     Scores.R
     AffineScoreFunction.R
     constraints.R
@@ -38,7 +35,6 @@ Collate:
     ConditionalPower.R
     ConditionalSampleSize.R
     Smoothness_n2.R
-    GQDesign.R 
 RoxygenNote: 6.1.1
 BugReports: https://github.com/kkmann/otsd/issues
 URL: https://github.com/kkmann/otsd

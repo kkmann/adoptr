@@ -3,22 +3,22 @@
 \docType{class}
 \name{IntegralScore-class}
 \alias{IntegralScore-class}
-\alias{evaluate,IntegralScore,Design,ANY-method}
+\alias{evaluate,IntegralScore,TwoStageDesign-method}
 \title{Unconditional score class obtained by integration of a \code{ConditionalScore}}
 \usage{
-\S4method{evaluate}{IntegralScore,Design,ANY}(s, design, x1 = NA,
-  specific = TRUE, ..)
+\S4method{evaluate}{IntegralScore,TwoStageDesign}(s, design,
+  specific = TRUE, ...)
 }
 \arguments{
 \item{s}{an \code{IntegralScore}}
 
-\item{design}{a \code{Design}}
-
-\item{x1}{required argument for generic, unused}
+\item{design}{a \code{TwoStageDesign}}
 
 \item{specific}{logical, flag for switching to design-specific implementation.}
 
 \item{...}{further optimal arguments}
+
+\item{x1}{required argument for generic, unused}
 }
 \description{
 Unconditional score class obtained by integration of a \code{ConditionalScore}
@@ -27,7 +27,7 @@ Unconditional score class obtained by integration of a \code{ConditionalScore}
 \itemize{
 \item \code{evaluate}: generic implementation of evaluating an integral
 score. Uses adaptive Gaussian quadrature for integration and might be
-more efficiently implemented by specific \code{Design}-classes
+more efficiently implemented by specific \code{TwoStageDesign}-classes
 (cf. \code{\link{.evaluate}}).
 }}
 

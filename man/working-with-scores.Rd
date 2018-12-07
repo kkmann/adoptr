@@ -6,16 +6,14 @@
 \alias{integrate}
 \title{Working with scores}
 \usage{
-evaluate(s, design, x1, ...)
+evaluate(s, design, ...)
 
 integrate(s, ...)
 }
 \arguments{
 \item{s}{score}
 
-\item{design}{\code{Design} object}
-
-\item{x1}{stage-one outcome - can be NA for unconditional scores}
+\item{design}{\code{TwoStageDesign} object}
 
 \item{...}{further optional arguments}
 }

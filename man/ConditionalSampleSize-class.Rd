@@ -4,12 +4,12 @@
 \name{ConditionalSampleSize-class}
 \alias{ConditionalSampleSize-class}
 \alias{ConditionalSampleSize}
-\alias{evaluate,ConditionalSampleSize,Design,numeric-method}
+\alias{evaluate,ConditionalSampleSize,TwoStageDesign-method}
 \title{Conditional sample size of a design given stage-one outcome}
 \usage{
 ConditionalSampleSize(dist, prior)
 
-\S4method{evaluate}{ConditionalSampleSize,Design,numeric}(s, design, x1,
+\S4method{evaluate}{ConditionalSampleSize,TwoStageDesign}(s, design, x1,
   ...)
 }
 \arguments{

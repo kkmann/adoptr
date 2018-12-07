@@ -3,18 +3,18 @@
 \docType{class}
 \name{UnconditionalScore-class}
 \alias{UnconditionalScore-class}
-\alias{evaluate,UnconditionalScore,Design,ANY-method}
-\alias{.evaluate,UnconditionalScore,Design-method}
+\alias{evaluate,UnconditionalScore,TwoStageDesign-method}
+\alias{.evaluate,UnconditionalScore,TwoStageDesign-method}
 \title{Abstract class for unconditional scoring function}
 \usage{
-\S4method{evaluate}{UnconditionalScore,Design,ANY}(s, design, x1, ...)
+\S4method{evaluate}{UnconditionalScore,TwoStageDesign}(s, design, ...)
 
-\S4method{.evaluate}{UnconditionalScore,Design}(s, design, ...)
+\S4method{.evaluate}{UnconditionalScore,TwoStageDesign}(s, design, ...)
 }
 \arguments{
 \item{s}{an \code{IntegralScore}}
 
-\item{design}{a \code{Design}}
+\item{design}{a \code{TwoStageDesign}}
 
 \item{...}{further optional arguments}
 }

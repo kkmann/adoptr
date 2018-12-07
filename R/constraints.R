@@ -14,11 +14,11 @@
 setClass("Constraint")
 
 #' @param s constraint to evaluate [TODO make naming of arguments for evaluate more generic!]
-#' @param design design to evaluate
+#' @param TwoStageDesign TwoStageDesign to evaluate
 #'
 #' @rdname Constraint-class
 #' @export
-setMethod("evaluate", signature("Constraint", "Design"),
+setMethod("evaluate", signature("Constraint", "TwoStageDesign"),
           function(s, design, ...) evaluate(s@score, design, ...) - s@rhs )
 
 
@@ -84,13 +84,21 @@ setClass("ConstraintsCollection", representation(
 
 #' @rdname ConstraintsCollection-class
 #' @export
-setMethod("evaluate", signature("ConstraintsCollection", "Design"),
+setMethod("evaluate", signature("ConstraintsCollection", "TwoStageDesign"),
           function(s, design, ...) {
-              # evaluate the unconditional constraints
-              unconditional <- as.numeric(sapply(s@unconditional_constraints, function(cnstr) evaluate(cnstr, design, ...)))
-              conditional <- as.numeric(sapply(list(cp, cp), function(s) evaluate(s, design, "continuation region")))
+              # TODO: we will want to allow users to chose where the conditional constraints should apply,
+              # e.g.  continuation, early efficacy etc.
+              x1_cont <- scaled_integration_pivots(design)
+              unconditional <- as.numeric(sapply(
+                  s@unconditional_constraints,
+                  function(cnstr) evaluate(cnstr, design, ...)
+              ))
+              conditional <- as.numeric(sapply(
+                  s@conditional_constraints,
+                  function(cnstr) evaluate(cnstr, design, x1_cont, ...)
+              ))
               return(c(unconditional, conditional))
-          })
+        })
 
 
 #' @description \code{subject_to(...)} can be used to generate an object of class
