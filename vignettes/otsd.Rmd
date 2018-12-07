@@ -67,63 +67,25 @@ do.call(sprintf, c(
 ))
 ```
 
-```{r define-constraints}
-# currently just checking whether it is evaluable
-evaluate(
-  subject_to(
-    pow >= .8,
-    toer <= .05
-  ),
-  design
-)
-# goal would be something like
-#
-# minimize(
-#   ess + .001 * smth,
-#   subject_to(
-#     pow >= .8,
-#     toer <= .05
-#   )
-# )
-```
 
-
-# Define objective
+# Optimize
 
 ```{r}
-objective <- function(x) {
-  d  <- update(design, x)
-  evaluate(ess, d) + .001*evaluate(smth, d)
-}
-objective(tunable_parameters(design))
-constraint <- function(x) {
-  d  <- update(design, x)
-  c(
-    .8 - evaluate(pow, d),
-    evaluate(toer, d) - 0.05,
-    x[2] - x[3] + .1,
-    diff(c2(d, scaled_integration_pivots(d)))
-  )
-}
-constraint(tunable_parameters(design))
-ub <- c(50, 1, 4, numeric(order) + 50, numeric(order) + 5)
-lb <- c(10, -1, 1, numeric(order) + 2, numeric(order) - 5)
-res <- nloptr::nloptr(
-  tunable_parameters(design),
-  lb = lb,
-  ub = ub,
-  eval_f      = objective,
-  eval_g_ineq = constraint,
-  opts = list(
-    algorithm   = "NLOPT_LN_COBYLA",
-    xtol_rel    = 1e-4,
-    maxeval     = 2500
-  )
-)
-d2 <- update(design, res$solution)
+minimize(
+  ess + 0.001*smth,
+  subject_to(
+    pow >= 0.8,
+    toer <= .05
+  ),
+  initial_design = design,
+  lower_boundary_design = update(design, c(10, -1, 1, numeric(order) + 2, numeric(order) - 5)),
+  upper_boundary_design = update(design, c(50, 1, 4, numeric(order) + 50, numeric(order) + 5))
+) ->
+  optimal_design
+
 par(mfrow = c(1, 2))
-plot(z1, n(d2, z1), 'l', ylim = c(0, max(n(d2, z1))))
-plot(z1, c2(d2, z1), 'l')
+plot(z1, n(optimal_design, z1), 'l', ylim = c(0, max(n(optimal_design, z1))))
+plot(z1, c2(optimal_design, z1), 'l')
 ```
 
 Compute the scores using fast internal representation (Gauss quadrature).
@@ -131,7 +93,7 @@ Compute the scores using fast internal representation (Gauss quadrature).
 ```{r}
 do.call(sprintf, c(
   list("ESS: %.1f, power: %.3f, maximal type one error rate: %.3f"), 
-  lapply(list(ess, pow, toer), function(s) evaluate(s, d2, specific = TRUE))
+  lapply(list(ess, pow, toer), function(s) evaluate(s, optimal_design, specific = TRUE))
 ))
 ```
 
@@ -140,6 +102,6 @@ Compute the scores using adaptive quadrature rules (increased precision but slow
 ```{r}
 do.call(sprintf, c(
   list("ESS: %.1f, power: %.3f, maximal type one error rate: %.3f"), 
-  lapply(list(ess, pow, toer), function(s) evaluate(s, d2, specific = FALSE))
+  lapply(list(ess, pow, toer), function(s) evaluate(s, optimal_design, specific = FALSE))
 ))
 ```

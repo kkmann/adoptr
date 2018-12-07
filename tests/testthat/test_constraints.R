@@ -57,7 +57,9 @@ test_that("ConditionalConstraints", {
 
     # construct a constraint set and see if it is at least of the right length
     expect_equal(
-        length(evaluate(subject_to(cp>=.6, cp>=.5), design)),
+        length(
+            evaluate(subject_to(cp >= .6, cp >= .5), design)
+        ),
         10)
 
 })
