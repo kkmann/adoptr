@@ -25,13 +25,13 @@
 \arguments{
 \item{s}{constraint to evaluate [TODO make naming of arguments for evaluate more generic!]}
 
+\item{design}{TwoStageDesign to evaluate}
+
 \item{...}{further optional arguments}
 
 \item{e1}{first comparator}
 
 \item{e2}{second comparator}
-
-\item{TwoStageDesign}{TwoStageDesign to evaluate}
 }
 \description{
 [TODO]

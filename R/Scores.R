@@ -183,7 +183,6 @@ setClass("IntegralScore", representation(
     contains = "UnconditionalScore")
 
 
-#' @param x1 required argument for generic, unused
 #' @param specific logical, flag for switching to design-specific implementation.
 #' @param ... further optimal arguments
 #'

@@ -5,8 +5,10 @@ date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{quickstart}
-  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: inline
 ---
 
 ```{r setup, include = FALSE}
@@ -18,42 +20,73 @@ knitr::opts_chunk$set(
 library(otsd)
 ```
 
-some initial design
+Create some more or less random start design.
 
-```{r}
-order  <- 5
-n1     <- 25
-c1f    <-   .0
-c1e    <-  2.0
-n2_piv <- rep(40.0, order)
-c2_piv <- rep( 1.96, order)
-design <- GQDesign(n1, c1f, c1e, n2_piv, c2_piv, order)
+```{r create-design}
+order <- 7
+
+design <- GQDesign(
+  n1 = 25, 
+  c1f = 0,
+  c1e = 2,
+  n2_pivots = rep(40.0, order), 
+  c2_pivots = rep( 1.96, order), 
+  order = order)
+#TODO we need nice output for out designs...
+```
+
+```{r plot-design}
 z1 <- seq(-2, 4, .01)
 par(mfrow = c(1, 2))
 plot(z1, n(design, z1), 'l', ylim = c(0, max(n(design, z1))))
 plot(z1, c2(design, z1), 'l')
 ```
 
+
+
 # Define scores 
 
-```{r}
+```{r define-statistical-model}
 # define null and alternative as point mass distributions
 null        <- PointMassPrior(.0, 1)
 alternative <- PointMassPrior(.4, 1)
-dist <- Normal()
+dist        <- Normal()# data distribution
+```
 
+```{r define-scores}
 ess  <- integrate(ConditionalSampleSize(dist, alternative))
 cp   <- ConditionalPower(dist, alternative)
 pow  <- integrate(cp)
 toer <- integrate(ConditionalPower(dist, null))
 smth <- Smoothness_n2()
-do.call(sprintf, 
-        c(
-          list("ESS: %.1f, power: %.3f, maximal type one error rate: %.3f"), 
-          lapply(list(ess, pow, toer), function(s) evaluate(s, design))
-        )
-)
+
+# print TODO: need nice functionality like summary(design, ess, pow, toer)
+do.call(sprintf, c(
+  list("ESS: %.1f, power: %.3f, maximal type one error rate: %.3f"), 
+  lapply(list(ess, pow, toer), function(s) evaluate(s, design))
+))
 ```
+
+```{r define-constraints}
+# currently just checking whether it is evaluable
+evaluate(
+  subject_to(
+    pow >= .8,
+    toer <= .05
+  ),
+  design
+)
+# goal would be something like
+#
+# minimize(
+#   ess + .001 * smth,
+#   subject_to(
+#     pow >= .8,
+#     toer <= .05
+#   )
+# )
+```
+
 
 # Define objective
 
@@ -96,21 +129,17 @@ plot(z1, c2(d2, z1), 'l')
 Compute the scores using fast internal representation (Gauss quadrature).
 
 ```{r}
-do.call(sprintf, 
-        c(
-          list("ESS: %.1f, power: %.3f, maximal type one error rate: %.3f"), 
-          lapply(list(ess, pow, toer), function(s) evaluate(s, d2, specific = TRUE))
-        )
-)
+do.call(sprintf, c(
+  list("ESS: %.1f, power: %.3f, maximal type one error rate: %.3f"), 
+  lapply(list(ess, pow, toer), function(s) evaluate(s, d2, specific = TRUE))
+))
 ```
 
 Compute the scores using adaptive quadrature rules (increased precision but slow).
 
 ```{r}
-do.call(sprintf, 
-        c(
-          list("ESS: %.1f, power: %.3f, maximal type one error rate: %.3f"), 
-          lapply(list(ess, pow, toer), function(s) evaluate(s, d2, specific = FALSE))
-        )
-)
+do.call(sprintf, c(
+  list("ESS: %.1f, power: %.3f, maximal type one error rate: %.3f"), 
+  lapply(list(ess, pow, toer), function(s) evaluate(s, d2, specific = FALSE))
+))
 ```

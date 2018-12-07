@@ -17,8 +17,6 @@
 \item{specific}{logical, flag for switching to design-specific implementation.}
 
 \item{...}{further optimal arguments}
-
-\item{x1}{required argument for generic, unused}
 }
 \description{
 Unconditional score class obtained by integration of a \code{ConditionalScore}

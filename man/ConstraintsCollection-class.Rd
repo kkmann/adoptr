@@ -12,6 +12,10 @@
 subject_to(...)
 }
 \arguments{
+\item{s}{constraint collection}
+
+\item{design}{design}
+
 \item{...}{arbitrary number of (un)conditional constraints}
 }
 \description{

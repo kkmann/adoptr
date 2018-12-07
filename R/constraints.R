@@ -14,7 +14,7 @@
 setClass("Constraint")
 
 #' @param s constraint to evaluate [TODO make naming of arguments for evaluate more generic!]
-#' @param TwoStageDesign TwoStageDesign to evaluate
+#' @param design TwoStageDesign to evaluate
 #'
 #' @rdname Constraint-class
 #' @export
@@ -75,6 +75,9 @@ setMethod(">=", signature("UnconditionalScore", "numeric"),
 #'
 #' @slot unconditional_constraints [todo]
 #' @slot conditional_constraints [todo]
+#'
+#' @param s constraint collection
+#' @param design design
 #'
 #' @exportClass ConstraintsCollection
 setClass("ConstraintsCollection", representation(
