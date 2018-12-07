@@ -4,12 +4,10 @@ Title: Optimal Two-Stage Designs
 Version: 0.1.0
 Authors@R: c(
         person("Kevin", "Kunzmann", role = c("aut", "cre"), email = "kevin.kunzmann@mrc-bsu.cam.uk"),
-        person("Max", "Pilz", role = c("aut"), email = "pilz@imbi.uni-heidelberg.de")
+        person("Maximilian", "Pilz", role = c("aut"), email = "pilz@imbi.uni-heidelberg.de")
     )
 Description: Optimize two-stage designs for clinical trials for tests based on
     Z statistics. 
-    The implementation is generic such that new performance scores can be added
-    easily. 
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

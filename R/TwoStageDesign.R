@@ -55,7 +55,7 @@ TwoStageDesign <- function(n1, c1f, c1e, n2_pivots, c2_pivots, x1_norm_pivots, w
 GQDesign <- function(n1, c1f, c1e, n2_pivots, c2_pivots, order) {
     if ( (length(n2_pivots) != order) | (length(c2_pivots) != order) )
         stop("length of pivot vectors does not fit")
-    rule <- .GaussLegendre(order)
+    rule <- GaussLegendreRule(order)
     TwoStageDesign(n1 = n1, c1f = c1f, c1e = c1e, n2_pivots = n2_pivots,
                    c2_pivots = c2_pivots, x1_norm_pivots = rule$nodes, weights = rule$weights)
 }
