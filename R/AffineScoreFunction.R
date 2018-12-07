@@ -33,13 +33,20 @@ AffineScore <- function(scores, coefs, intercept) {
 }
 
 
+
 #' @param s score
 #' @param design design
 #'
 #' @rdname AffineScore-class
 #' @export
 setMethod("evaluate", signature("AffineScore", "TwoStageDesign"),
-          function(s, design, ...) rowSums(s@coefs * sapply(s@scores, function(s, ...) evaluate(s, design, ...), ...) + s@intercept) )
+          function(s, design, ...) {
+              res <- 0
+              for (i in 1:length(s@scores)) {
+                  res <- res + s@coefs[[i]] * evaluate(s@scores[[i]], design, ...) # score might be evaluated at more than one point
+              }
+              return(res + s@intercept)
+          })
 
 
 
@@ -91,6 +98,7 @@ AffineConditionalScore <- function(scores, coefs, intercept = 0) {
     class(res) <- "AffineConditionalScore"
     return(res)
 }
+
 
 
 #'@rdname score-arithmetic

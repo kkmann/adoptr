@@ -118,33 +118,45 @@
       <tr>
         
         <td>
-          <p><code><a href="AbstractConditionalScore-class.html">evaluate(<i>&lt;AbstractConditionalScore&gt;</i>,<i>&lt;Design&gt;</i>)</a></code> </p>
+          <p><code><a href="AbstractConditionalScore-class.html">evaluate(<i>&lt;AbstractConditionalScore&gt;</i>,<i>&lt;TwoStageDesign&gt;</i>)</a></code> </p>
         </td>
         <td><p>[ToDO]</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="AffineScore-class.html">AffineScore()</a></code> <code><a href="AffineScore-class.html">evaluate(<i>&lt;AffineScore&gt;</i>,<i>&lt;Design&gt;</i>)</a></code> </p>
+          <p><code><a href="AffineScore-class.html">AffineScore()</a></code> <code><a href="AffineScore-class.html">evaluate(<i>&lt;AffineScore&gt;</i>,<i>&lt;TwoStageDesign&gt;</i>)</a></code> </p>
         </td>
         <td><p>Affine functions of scores</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="ConditionalPower-class.html">ConditionalPower()</a></code> <code><a href="ConditionalPower-class.html">evaluate(<i>&lt;ConditionalPower&gt;</i>,<i>&lt;Design&gt;</i>)</a></code> </p>
+          <p><code><a href="ConditionalPower-class.html">ConditionalPower()</a></code> <code><a href="ConditionalPower-class.html">evaluate(<i>&lt;ConditionalPower&gt;</i>,<i>&lt;TwoStageDesign&gt;</i>)</a></code> </p>
         </td>
         <td><p>Conditional power of a design given stage-one outcome</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="ConditionalSampleSize-class.html">ConditionalSampleSize()</a></code> <code><a href="ConditionalSampleSize-class.html">evaluate(<i>&lt;ConditionalSampleSize&gt;</i>,<i>&lt;Design&gt;</i>)</a></code> </p>
+          <p><code><a href="ConditionalSampleSize-class.html">ConditionalSampleSize()</a></code> <code><a href="ConditionalSampleSize-class.html">evaluate(<i>&lt;ConditionalSampleSize&gt;</i>,<i>&lt;TwoStageDesign&gt;</i>)</a></code> </p>
         </td>
         <td><p>Conditional sample size of a design given stage-one outcome</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="ConditionalScore-class.html">evaluate(<i>&lt;ConditionalScore&gt;</i>,<i>&lt;Design&gt;</i>)</a></code> <code><a href="ConditionalScore-class.html">integrate(<i>&lt;ConditionalScore&gt;</i>)</a></code> </p>
+          <p><code><a href="ConditionalScore-class.html">evaluate(<i>&lt;ConditionalScore&gt;</i>,<i>&lt;TwoStageDesign&gt;</i>)</a></code> <code><a href="ConditionalScore-class.html">integrate(<i>&lt;ConditionalScore&gt;</i>)</a></code> </p>
         </td>
         <td><p>Abstract class for conditional scoring function</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Constraint-class.html">evaluate(<i>&lt;Constraint&gt;</i>,<i>&lt;TwoStageDesign&gt;</i>)</a></code> <code><a href="Constraint-class.html">`<=`(<i>&lt;AbstractConditionalScore&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="Constraint-class.html">`>=`(<i>&lt;AbstractConditionalScore&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="Constraint-class.html">`<=`(<i>&lt;UnconditionalScore&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="Constraint-class.html">`>=`(<i>&lt;UnconditionalScore&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Formulating constraints</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="ConstraintsCollection-class.html">evaluate(<i>&lt;ConstraintsCollection&gt;</i>,<i>&lt;TwoStageDesign&gt;</i>)</a></code> <code><a href="ConstraintsCollection-class.html">subject_to()</a></code> </p>
+        </td>
+        <td><p>Collection of constraints</p></td>
       </tr><tr>
         
         <td>
@@ -160,19 +172,19 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="Design-class.html">early_stopping_bounds()</a></code> <code><a href="Design-class.html">n1()</a></code> <code><a href="Design-class.html">n2()</a></code> <code><a href="Design-class.html">n()</a></code> <code><a href="Design-class.html">c2()</a></code> <code><a href="Design-class.html">as.numeric(<i>&lt;Design&gt;</i>)</a></code> <code><a href="Design-class.html">update(<i>&lt;Design&gt;</i>)</a></code> </p>
+          <p><code><a href="GaussLegendreIntegral.html">integrate_rule()</a></code> </p>
         </td>
-        <td><p>Two-stage design</p></td>
+        <td><p>Integration via the Gauss-Legendre quadrature</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="GQDesign-class.html">GQDesign()</a></code> <code><a href="GQDesign-class.html">update(<i>&lt;GQDesign&gt;</i>)</a></code> <code><a href="GQDesign-class.html">get_knots()</a></code> <code><a href="GQDesign-class.html">n2(<i>&lt;GQDesign&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="GQDesign-class.html">c2(<i>&lt;GQDesign&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="GQDesign-class.html">as.numeric(<i>&lt;GQDesign&gt;</i>)</a></code> </p>
+          <p><code><a href="GaussLegendreRule.html">GaussLegendreRule()</a></code> </p>
         </td>
-        <td><p>Gaussian-quadrature based implementation of <code>Design</code></p></td>
+        <td><p>Compute weights an knots for Gauss-Legendre integration</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="IntegralScore-class.html">evaluate(<i>&lt;IntegralScore&gt;</i>,<i>&lt;Design&gt;</i>)</a></code> </p>
+          <p><code><a href="IntegralScore-class.html">evaluate(<i>&lt;IntegralScore&gt;</i>,<i>&lt;TwoStageDesign&gt;</i>)</a></code> </p>
         </td>
         <td><p>Unconditional score class obtained by integration of a <code>ConditionalScore</code></p></td>
       </tr><tr>
@@ -196,13 +208,19 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="Smoothness_n2-class.html">Smoothness_n2()</a></code> <code><a href="Smoothness_n2-class.html">evaluate(<i>&lt;Smoothness_n2&gt;</i>,<i>&lt;Design&gt;</i>)</a></code> </p>
+          <p><code><a href="Smoothness_n2-class.html">Smoothness_n2()</a></code> <code><a href="Smoothness_n2-class.html">evaluate(<i>&lt;Smoothness_n2&gt;</i>,<i>&lt;TwoStageDesign&gt;</i>)</a></code> </p>
         </td>
         <td><p>Quadratic smoothness penalty term</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="UnconditionalScore-class.html">evaluate(<i>&lt;UnconditionalScore&gt;</i>,<i>&lt;Design&gt;</i>)</a></code> <code><a href="UnconditionalScore-class.html">.evaluate(<i>&lt;UnconditionalScore&gt;</i>,<i>&lt;Design&gt;</i>)</a></code> </p>
+          <p><code><a href="TwoStageDesign-class.html">TwoStageDesign()</a></code> <code><a href="TwoStageDesign-class.html">GQDesign()</a></code> <code><a href="TwoStageDesign-class.html">tunable_parameters()</a></code> <code><a href="TwoStageDesign-class.html">update(<i>&lt;TwoStageDesign&gt;</i>)</a></code> <code><a href="TwoStageDesign-class.html">n2()</a></code> <code><a href="TwoStageDesign-class.html">n()</a></code> <code><a href="TwoStageDesign-class.html">c2()</a></code> <code><a href="TwoStageDesign-class.html">scaled_integration_pivots()</a></code> </p>
+        </td>
+        <td><p>Two-stage designs</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="UnconditionalScore-class.html">evaluate(<i>&lt;UnconditionalScore&gt;</i>,<i>&lt;TwoStageDesign&gt;</i>)</a></code> <code><a href="UnconditionalScore-class.html">.evaluate(<i>&lt;UnconditionalScore&gt;</i>,<i>&lt;TwoStageDesign&gt;</i>)</a></code> </p>
         </td>
         <td><p>Abstract class for unconditional scoring function</p></td>
       </tr><tr>
@@ -244,7 +262,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kevin Kunzmann, Max Pilz.</p>
+  <p>Developed by Kevin Kunzmann, Maximilian Pilz.</p>
 </div>
 
 <div class="pkgdown">

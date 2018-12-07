@@ -111,9 +111,9 @@
     
     </div>
 
-    <pre class="usage"><span class='co'># S4 method for IntegralScore,Design</span>
-<span class='fu'><a href='working-with-scores.html'>evaluate</a></span>(<span class='no'>s</span>, <span class='no'>design</span>, <span class='kw'>specific</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='co'># S4 method for IntegralScore,TwoStageDesign</span>
+<span class='fu'><a href='working-with-scores.html'>evaluate</a></span>(<span class='no'>s</span>, <span class='no'>design</span>,
+  <span class='kw'>specific</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -124,7 +124,7 @@
     </tr>
     <tr>
       <th>design</th>
-      <td><p>a <code>Design</code></p></td>
+      <td><p>a <code>TwoStageDesign</code></p></td>
     </tr>
     <tr>
       <th>specific</th>
@@ -141,7 +141,7 @@
     <ul>
 <li><p><code>evaluate</code>: generic implementation of evaluating an integral
 score. Uses adaptive Gaussian quadrature for integration and might be
-more efficiently implemented by specific <code>Design</code>-classes
+more efficiently implemented by specific <code>TwoStageDesign</code>-classes
 (cf. <code><a href='dot-evaluate.html'>.evaluate</a></code>).</p></li>
 </ul>
     
@@ -169,7 +169,7 @@ more efficiently implemented by specific <code>Design</code>-classes
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kevin Kunzmann, Max Pilz.</p>
+  <p>Developed by Kevin Kunzmann, Maximilian Pilz.</p>
 </div>
 
 <div class="pkgdown">

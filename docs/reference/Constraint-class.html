@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Articles • otsd</title>
+<title>Formulating constraints — Constraint-class • otsd</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,7 +30,10 @@
 
 
 
-<meta property="og:title" content="Articles" />
+<meta property="og:title" content="Formulating constraints — Constraint-class" />
+
+<meta property="og:description" content="[TODO]" />
+<meta name="twitter:card" content="summary" />
 
 
 
@@ -46,7 +49,7 @@
   </head>
 
   <body>
-    <div class="container template-article-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -97,17 +100,72 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Articles</h1>
+    <h1>Formulating constraints</h1>
+    <small class="dont-index">Source: <a href='https://github.com/kkmann/otsd/blob/master/R/constraints.R'><code>R/constraints.R</code></a></small>
+    <div class="hidden name"><code>Constraint-class.Rd</code></div>
     </div>
 
-    <div class="section ">
-      <h3>All vignettes</h3>
-      <p class="section-desc"></p>
-
-      <ul>
-        <li><a href="otsd.html">OTSD quickstart</a></li>
-      </ul>
+    <div class="ref-description">
+    
+    <p>[TODO]</p>
+    
     </div>
+
+    <pre class="usage"># S4 method for Constraint,TwoStageDesign
+evaluate(s, design, ...)
+
+# S4 method for AbstractConditionalScore,numeric
+&lt;=(e1, e2)
+
+# S4 method for AbstractConditionalScore,numeric
+&gt;=(e1, e2)
+
+# S4 method for UnconditionalScore,numeric
+&lt;=(e1, e2)
+
+# S4 method for UnconditionalScore,numeric
+&gt;=(e1, e2)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>s</th>
+      <td><p>constraint to evaluate [TODO make naming of arguments for evaluate more generic!]</p></td>
+    </tr>
+    <tr>
+      <th>design</th>
+      <td><p>TwoStageDesign to evaluate</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>further optional arguments</p></td>
+    </tr>
+    <tr>
+      <th>e1</th>
+      <td><p>first comparator</p></td>
+    </tr>
+    <tr>
+      <th>e2</th>
+      <td><p>second comparator</p></td>
+    </tr>
+    </table>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>[TODO: currently we only support scores on the LHS - this can be easily extended!]</p>
+<p>[TODO: do we also want to support scores vs scores comparisons?]</p>
+    
+
+  </div>
+  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+    <h2>Contents</h2>
+    <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
+      
+      <li><a href="#details">Details</a></li>
+          </ul>
+
   </div>
 </div>
 

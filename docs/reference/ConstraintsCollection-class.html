@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Articles • otsd</title>
+<title>Collection of constraints — ConstraintsCollection-class • otsd</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,7 +30,12 @@
 
 
 
-<meta property="og:title" content="Articles" />
+<meta property="og:title" content="Collection of constraints — ConstraintsCollection-class" />
+
+<meta property="og:description" content="subject_to(...) can be used to generate an object of class
+     ConstrintsCollection from an arbitrary number of (un)conditional
+     constraints." />
+<meta name="twitter:card" content="summary" />
 
 
 
@@ -46,7 +51,7 @@
   </head>
 
   <body>
-    <div class="container template-article-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -97,17 +102,59 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Articles</h1>
+    <h1>Collection of constraints</h1>
+    <small class="dont-index">Source: <a href='https://github.com/kkmann/otsd/blob/master/R/constraints.R'><code>R/constraints.R</code></a></small>
+    <div class="hidden name"><code>ConstraintsCollection-class.Rd</code></div>
     </div>
 
-    <div class="section ">
-      <h3>All vignettes</h3>
-      <p class="section-desc"></p>
-
-      <ul>
-        <li><a href="otsd.html">OTSD quickstart</a></li>
-      </ul>
+    <div class="ref-description">
+    
+    <p><code>subject_to(...)</code> can be used to generate an object of class
+     <code>ConstrintsCollection</code> from an arbitrary number of (un)conditional
+     constraints.</p>
+    
     </div>
+
+    <pre class="usage"><span class='co'># S4 method for ConstraintsCollection,TwoStageDesign</span>
+<span class='fu'><a href='working-with-scores.html'>evaluate</a></span>(<span class='no'>s</span>, <span class='no'>design</span>, <span class='no'>...</span>)
+
+<span class='fu'>subject_to</span>(<span class='no'>...</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>s</th>
+      <td><p>constraint collection</p></td>
+    </tr>
+    <tr>
+      <th>design</th>
+      <td><p>design</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>arbitrary number of (un)conditional constraints</p></td>
+    </tr>
+    </table>
+    
+    <h2 class="hasAnchor" id="slots"><a class="anchor" href="#slots"></a>Slots</h2>
+
+    
+    <dl class='dl-horizontal'>
+<dt><code>unconditional_constraints</code></dt><dd><p>[todo]</p></dd>
+    <dt><code>conditional_constraints</code></dt><dd><p>[todo]</p></dd>
+</dl>
+    
+
+  </div>
+  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+    <h2>Contents</h2>
+    <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
+      
+      <li><a href="#slots">Slots</a></li>
+          </ul>
+
   </div>
 </div>
 

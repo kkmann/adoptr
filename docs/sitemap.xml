@@ -19,16 +19,22 @@
     <loc>https://kkmann.github.io/otsd//reference/ConditionalScore-class.html</loc>
   </url>
   <url>
+    <loc>https://kkmann.github.io/otsd//reference/Constraint-class.html</loc>
+  </url>
+  <url>
+    <loc>https://kkmann.github.io/otsd//reference/ConstraintsCollection-class.html</loc>
+  </url>
+  <url>
     <loc>https://kkmann.github.io/otsd//reference/ContinuousPrior-class.html</loc>
   </url>
   <url>
     <loc>https://kkmann.github.io/otsd//reference/DataDistribution-class.html</loc>
   </url>
   <url>
-    <loc>https://kkmann.github.io/otsd//reference/Design-class.html</loc>
+    <loc>https://kkmann.github.io/otsd//reference/GaussLegendreIntegral.html</loc>
   </url>
   <url>
-    <loc>https://kkmann.github.io/otsd//reference/GQDesign-class.html</loc>
+    <loc>https://kkmann.github.io/otsd//reference/GaussLegendreRule.html</loc>
   </url>
   <url>
     <loc>https://kkmann.github.io/otsd//reference/IntegralScore-class.html</loc>
@@ -44,6 +50,9 @@
   </url>
   <url>
     <loc>https://kkmann.github.io/otsd//reference/Smoothness_n2-class.html</loc>
+  </url>
+  <url>
+    <loc>https://kkmann.github.io/otsd//reference/TwoStageDesign-class.html</loc>
   </url>
   <url>
     <loc>https://kkmann.github.io/otsd//reference/UnconditionalScore-class.html</loc>
