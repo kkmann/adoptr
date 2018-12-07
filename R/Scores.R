@@ -228,8 +228,9 @@ setMethod(".evaluate", signature("IntegralScore", "TwoStageDesign"),
               # continuation region
               integrand   <- function(x1) evaluate(s@cs, design, x1, ...) *
                   predictive_pdf(s@cs@distribution, s@cs@prior, x1, design@n1, ...)
-              h <- (design@c1e - design@c1f) / 2
-              mid_section <- h * sum(design@weights * integrand(scaled_integration_pivots(design)))
+              mid_section <- integrate_rule(
+                  integrand, design@c1f, design@c1e, design@x1_norm_pivots, design@weights
+              )
               # compose
               res <- poef * evaluate( # score is constant on early stopping region (TODO: relax later!)
                   s@cs, design,
