@@ -38,6 +38,12 @@ setClass("TwoStageDesign", representation(
 #' @rdname TwoStageDesign-class
 #' @export
 TwoStageDesign <- function(n1, c1f, c1e, n2_pivots, c2_pivots, x1_norm_pivots, weights) {
+    if (any(diff(sapply(list(n2_pivots, c2_pivots, x1_norm_pivots, weights), length)) != 0))
+        stop("pivots and weights must all be of the same length")
+    if (any(x1_norm_pivots < -1) | any(x1_norm_pivots > 1))
+        stop("x1_norm_pivots must be in [-1, 1], is scaled automatically")
+    if (any(weights <= 0))
+        stop("weights must be positive")
     new("TwoStageDesign", n1 = n1, c1f = c1f, c1e = c1e, n2_pivots = n2_pivots,
         c2_pivots = c2_pivots, x1_norm_pivots = x1_norm_pivots, weights = weights)
 }
