@@ -70,7 +70,7 @@
       <h1>OTSD quickstart</h1>
                         <h4 class="author">Kevin Kunzmann</h4>
             
-            <h4 class="date">2018-12-07</h4>
+            <h4 class="date">2018-12-10</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/kkmann/otsd/blob/master/vignettes/otsd.Rmd"><code>vignettes/otsd.Rmd</code></a></small>
       <div class="hidden name"><code>otsd.Rmd</code></div>
@@ -113,7 +113,7 @@
 <a class="sourceLine" id="cb4-9" data-line-number="9">  <span class="kw">list</span>(<span class="st">"ESS: %.1f, power: %.3f, maximal type one error rate: %.3f"</span>), </a>
 <a class="sourceLine" id="cb4-10" data-line-number="10">  <span class="kw">lapply</span>(<span class="kw">list</span>(ess, pow, toer), <span class="cf">function</span>(s) <span class="kw"><a href="../reference/working-with-scores.html">evaluate</a></span>(s, design))</a>
 <a class="sourceLine" id="cb4-11" data-line-number="11">))</a>
-<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="co">#&gt; [1] "ESS: 44.1, power: 0.842, maximal type one error rate: 0.035"</span></a></code></pre></div>
+<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="co">#&gt; [1] "ESS: 44.1, power: 0.841, maximal type one error rate: 0.034"</span></a></code></pre></div>
 </div>
 <div id="optimize" class="section level1">
 <h1 class="hasAnchor">
@@ -139,13 +139,13 @@
 <a class="sourceLine" id="cb6-2" data-line-number="2">  <span class="kw">list</span>(<span class="st">"ESS: %.1f, power: %.3f, maximal type one error rate: %.3f"</span>), </a>
 <a class="sourceLine" id="cb6-3" data-line-number="3">  <span class="kw">lapply</span>(<span class="kw">list</span>(ess, pow, toer), <span class="cf">function</span>(s) <span class="kw"><a href="../reference/working-with-scores.html">evaluate</a></span>(s, optimal_design, <span class="dt">specific =</span> <span class="ot">TRUE</span>))</a>
 <a class="sourceLine" id="cb6-4" data-line-number="4">))</a>
-<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co">#&gt; [1] "ESS: 31.4, power: 0.800, maximal type one error rate: 0.050"</span></a></code></pre></div>
+<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co">#&gt; [1] "ESS: 31.3, power: 0.800, maximal type one error rate: 0.050"</span></a></code></pre></div>
 <p>Compute the scores using adaptive quadrature rules (increased precision but slow).</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">do.call</span>(sprintf, <span class="kw">c</span>(</a>
 <a class="sourceLine" id="cb7-2" data-line-number="2">  <span class="kw">list</span>(<span class="st">"ESS: %.1f, power: %.3f, maximal type one error rate: %.3f"</span>), </a>
 <a class="sourceLine" id="cb7-3" data-line-number="3">  <span class="kw">lapply</span>(<span class="kw">list</span>(ess, pow, toer), <span class="cf">function</span>(s) <span class="kw"><a href="../reference/working-with-scores.html">evaluate</a></span>(s, optimal_design, <span class="dt">specific =</span> <span class="ot">FALSE</span>))</a>
 <a class="sourceLine" id="cb7-4" data-line-number="4">))</a>
-<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt; [1] "ESS: 31.4, power: 0.800, maximal type one error rate: 0.050"</span></a></code></pre></div>
+<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt; [1] "ESS: 31.3, power: 0.800, maximal type one error rate: 0.050"</span></a></code></pre></div>
 </div>
   </div>
 
