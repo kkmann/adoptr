@@ -26,7 +26,7 @@ AffineScore <- function(scores, coefs, intercept) {
     if (length(scores) != length(coefs))
         stop("scores and coefs must have same size")
     if (length(intercept) != 1)
-        stop("intercept must have length 0")
+        stop("intercept must have length 1")
     if (any(!is.finite(c(coefs, intercept))))
         stop("scores and intercept must be finite")
     new("AffineScore", scores = scores, coefs = coefs, intercept = intercept)
