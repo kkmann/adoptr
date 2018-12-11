@@ -70,7 +70,7 @@
       <h1>OTSD quickstart</h1>
                         <h4 class="author">Kevin Kunzmann</h4>
             
-            <h4 class="date">2018-12-10</h4>
+            <h4 class="date">2018-12-11</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/kkmann/otsd/blob/master/vignettes/otsd.Rmd"><code>vignettes/otsd.Rmd</code></a></small>
       <div class="hidden name"><code>otsd.Rmd</code></div>
@@ -91,9 +91,7 @@
 <a class="sourceLine" id="cb1-9" data-line-number="9">  <span class="dt">order =</span> order)</a>
 <a class="sourceLine" id="cb1-10" data-line-number="10"><span class="co">#TODO we need nice output for out designs...</span></a></code></pre></div>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">z1 &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="op">-</span><span class="dv">2</span>, <span class="dv">4</span>, <span class="fl">.01</span>)</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="kw">plot</span>(z1, <span class="kw"><a href="../reference/TwoStageDesign-class.html">n</a></span>(design, z1), <span class="st">'l'</span>, <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="kw">max</span>(<span class="kw"><a href="../reference/TwoStageDesign-class.html">n</a></span>(design, z1))))</a>
-<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="kw">plot</span>(z1, <span class="kw"><a href="../reference/TwoStageDesign-class.html">c2</a></span>(design, z1), <span class="st">'l'</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw">plot</span>(design)</a></code></pre></div>
 <p><img src="otsd_files/figure-html/plot-design-1.png" width="768"></p>
 <div id="define-scores" class="section level1">
 <h1 class="hasAnchor">
@@ -121,7 +119,7 @@
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="../reference/minimize.html">minimize</a></span>(</a>
 <a class="sourceLine" id="cb5-2" data-line-number="2">  ess <span class="op">+</span><span class="st"> </span><span class="fl">0.001</span><span class="op">*</span>smth,</a>
 <a class="sourceLine" id="cb5-3" data-line-number="3">  <span class="kw"><a href="../reference/ConstraintsCollection-class.html">subject_to</a></span>(</a>
-<a class="sourceLine" id="cb5-4" data-line-number="4">    pow <span class="op">&gt;=</span><span class="st"> </span><span class="fl">0.8</span>,</a>
+<a class="sourceLine" id="cb5-4" data-line-number="4">    pow  <span class="op">&gt;=</span><span class="st"> </span><span class="fl">0.8</span>,</a>
 <a class="sourceLine" id="cb5-5" data-line-number="5">    toer <span class="op">&lt;=</span><span class="st"> </span><span class="fl">.05</span></a>
 <a class="sourceLine" id="cb5-6" data-line-number="6">  ),</a>
 <a class="sourceLine" id="cb5-7" data-line-number="7">  <span class="dt">initial_design =</span> design,</a>
@@ -130,9 +128,7 @@
 <a class="sourceLine" id="cb5-10" data-line-number="10">) -&gt;</a>
 <a class="sourceLine" id="cb5-11" data-line-number="11"><span class="st">  </span>optimal_design</a>
 <a class="sourceLine" id="cb5-12" data-line-number="12"></a>
-<a class="sourceLine" id="cb5-13" data-line-number="13"><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</a>
-<a class="sourceLine" id="cb5-14" data-line-number="14"><span class="kw">plot</span>(z1, <span class="kw"><a href="../reference/TwoStageDesign-class.html">n</a></span>(optimal_design, z1), <span class="st">'l'</span>, <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="kw">max</span>(<span class="kw"><a href="../reference/TwoStageDesign-class.html">n</a></span>(optimal_design, z1))))</a>
-<a class="sourceLine" id="cb5-15" data-line-number="15"><span class="kw">plot</span>(z1, <span class="kw"><a href="../reference/TwoStageDesign-class.html">c2</a></span>(optimal_design, z1), <span class="st">'l'</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb5-13" data-line-number="13"><span class="kw">plot</span>(optimal_design, <span class="st">"Conditional power"</span> =<span class="st"> </span>cp)</a></code></pre></div>
 <p><img src="otsd_files/figure-html/unnamed-chunk-1-1.png" width="768"></p>
 <p>Compute the scores using fast internal representation (Gauss quadrature).</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">do.call</span>(sprintf, <span class="kw">c</span>(</a>
