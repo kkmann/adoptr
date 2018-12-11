@@ -37,9 +37,7 @@ design <- GQDesign(
 
 ```{r plot-design}
 z1 <- seq(-2, 4, .01)
-par(mfrow = c(1, 2))
-plot(z1, n(design, z1), 'l', ylim = c(0, max(n(design, z1))))
-plot(z1, c2(design, z1), 'l')
+plot(design)
 ```
 
 
@@ -74,7 +72,7 @@ do.call(sprintf, c(
 minimize(
   ess + 0.001*smth,
   subject_to(
-    pow >= 0.8,
+    pow  >= 0.8,
     toer <= .05
   ),
   initial_design = design,
@@ -83,9 +81,7 @@ minimize(
 ) ->
   optimal_design
 
-par(mfrow = c(1, 2))
-plot(z1, n(optimal_design, z1), 'l', ylim = c(0, max(n(optimal_design, z1))))
-plot(z1, c2(optimal_design, z1), 'l')
+plot(optimal_design, "Conditional power" = cp)
 ```
 
 Compute the scores using fast internal representation (Gauss quadrature).

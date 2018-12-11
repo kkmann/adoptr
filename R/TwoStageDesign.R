@@ -154,3 +154,34 @@ setMethod("scaled_integration_pivots", signature("TwoStageDesign"),
               h <- (d@c1e - d@c1f) / 2
               return(h * d@x1_norm_pivots + (h + d@c1f))
           })
+
+
+
+#' Plot TwoStageDesign with optional set of conditional scores
+#'
+#' [TODO]
+#'
+#' @param x design object to plot
+#' @param k number of points to use for plotting
+#' @param ... optinal additional named ConditionalScores to plot
+#'
+#' @rdname TwoStagDesign-class
+#' @export
+setMethod("plot", signature("TwoStageDesign"),
+          function(x, ..., k = 100) {
+            scores <- list(...)
+            if (!all(sapply(scores, function(s) is(s, "ConditionalScore"))))
+                stop("optional arguments must be ConditionalScores")
+            opts  <- graphics::par(mfrow = c(1, length(scores) + 2))
+            x1    <- seq(x@c1f - (x@c1e - x@c1f)/5, x@c1e + (x@c1e - x@c1f)/5, length.out = k)
+            plot(x1, n(x, x1), 'l', ylim = c(0, 1.05 * max(n(x, x1))),
+                 main = "Overall sample size", ylab = "")
+            plot(x1, c2(x, x1), 'l', main = "Stage-two critical value", ylab = "")
+            if (length(scores) > 0) {
+                for (i in 1:length(scores)) {
+                    plot(x1, evaluate(scores[[i]], x, x1), 'l', main = names(scores[i]),
+                         ylab = "")
+                }
+            }
+            graphics::par(opts)
+          })
