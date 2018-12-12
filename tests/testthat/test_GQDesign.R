@@ -47,12 +47,12 @@ test_that("Optimal design with point prior is computable", {
 
     expect_equal(
         round(evaluate(pow, design), 3),
-        0.841
+        0.842
     )
 
     expect_equal(
         round(evaluate(toer, design), 3),
-        0.034
+        0.035
     )
 
     #compute optimal design
