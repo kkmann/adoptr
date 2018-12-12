@@ -201,24 +201,26 @@ setMethod("evaluate", signature("IntegralScore", "TwoStageDesign"),
                   # use generic approach
                   # integrand is the conditional score as function of z1 times the
                   # predictive pdf given the scores prior
-                  integrand <- function(x1) evaluate(s@cs, design, x1, ...) *
+                  poef <- predictive_cdf(s@cs@distribution, s@cs@prior, design@c1f, design@n1)
+                  poee <- 1 - predictive_cdf(s@cs@distribution, s@cs@prior, design@c1e, design@n1)
+                  # continuation region
+                  integrand   <- function(x1) evaluate(s@cs, design, x1, ...) *
                       predictive_pdf(s@cs@distribution, s@cs@prior, x1, design@n1, ...)
-                  # get integration bounds as quantiles using lower and upper bounds on prior
-                  x1_bounds <- c(
-                      quantile(s@cs@distribution, .0005, design@n1, bounds(s@cs@prior)[1]),
-                      quantile(s@cs@distribution, .9995, design@n1, bounds(s@cs@prior)[2])
-                  )
-                  # split adaptive integration by potentially non-smooth sections
-                  early_futility_section <- stats::integrate(
-                      integrand, x1_bounds[1], design@c1f
-                  )$value
-                  continuation_section <- stats::integrate(
-                      integrand, design@c1f, design@c1e
-                  )$value
-                  early_efficacy_section <- stats::integrate(
-                      integrand, design@c1e, x1_bounds[2]
-                  )$value
-                  return(early_futility_section + continuation_section + early_efficacy_section)
+                  # use adaptive quadrature to integrate - only relies on generic interface
+                  # provided by 'TwoStageDesign', no special optimization for particular
+                  # design implementation
+                  mid_section <- stats::integrate(integrand, design@c1f, design@c1e)$value
+                  # compose
+                  res <- poef * evaluate( # score is constant on early stopping region
+                      s@cs, design,
+                      design@c1f - sqrt(.Machine$double.eps) # slightly smaller than stopping for futility
+                  ) +
+                      mid_section +
+                      poee * evaluate(
+                          s@cs, design,
+                          design@c1e + sqrt(.Machine$double.eps)
+                      )
+                  return(res)
               }
           })
 
@@ -230,21 +232,23 @@ setMethod(".evaluate", signature("IntegralScore", "TwoStageDesign"),
           function(s, design, ...) {
               # use design specific implementation tailored to this particular
               # implementation (Gauss Quadrature N points here)
-              x1_bounds <- c(
-                  quantile(s@cs@distribution, .0005, design@n1, bounds(s@cs@prior)[1]),
-                  quantile(s@cs@distribution, .9995, design@n1, bounds(s@cs@prior)[2])
-              )
+              poef <- predictive_cdf(s@cs@distribution, s@cs@prior, design@c1f, design@n1)
+              poee <- 1 - predictive_cdf(s@cs@distribution, s@cs@prior, design@c1e, design@n1)
+              # continuation region
               integrand   <- function(x1) evaluate(s@cs, design, x1, ...) *
                   predictive_pdf(s@cs@distribution, s@cs@prior, x1, design@n1, ...)
-              early_futility_section <- integrate_rule(
-                  integrand, x1_bounds[1], design@c1f, design@x1_norm_pivots, design@weights
-              )
-              continuation_section <- integrate_rule(
+              mid_section <- integrate_rule(
                   integrand, design@c1f, design@c1e, design@x1_norm_pivots, design@weights
               )
-              early_efficacy_section <- integrate_rule(
-                  integrand, design@c1e, x1_bounds[2], design@x1_norm_pivots, design@weights
-              )
               # compose
-              return(early_futility_section + continuation_section + early_efficacy_section)
+              res <- poef * evaluate( # score is constant on early stopping region
+                  s@cs, design,
+                  design@c1f - sqrt(.Machine$double.eps) # slightly smaller than stopping for futility
+              ) +
+              mid_section +
+              poee * evaluate(
+                  s@cs, design,
+                  design@c1e + sqrt(.Machine$double.eps)
+              )
+              return(res)
           })
