@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Articles • otsd</title>
+<title>Find optimal two-stage design by constraint minimization — minimize • otsd</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,7 +30,12 @@
 
 
 
-<meta property="og:title" content="Articles" />
+<meta property="og:title" content="Find optimal two-stage design by constraint minimization — minimize" />
+
+<meta property="og:description" content="minimize takes an unconditioonal score [TODO: need joint superclass for UnconditionalDesign and AffineScores...]
+and a constraint set (or single constraint) and solves the corresponding
+constraint minimization problem using nloptr (using COBYLA by default)." />
+<meta name="twitter:card" content="summary" />
 
 
 
@@ -46,7 +51,7 @@
   </head>
 
   <body>
-    <div class="container template-article-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -97,17 +102,64 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Articles</h1>
+    <h1>Find optimal two-stage design by constraint minimization</h1>
+    <small class="dont-index">Source: <a href='https://github.com/kkmann/otsd/blob/master/R/minimize.R'><code>R/minimize.R</code></a></small>
+    <div class="hidden name"><code>minimize.Rd</code></div>
     </div>
 
-    <div class="section ">
-      <h3>All vignettes</h3>
-      <p class="section-desc"></p>
-
-      <ul>
-        <li><a href="otsd.html">OTSD quickstart</a></li>
-      </ul>
+    <div class="ref-description">
+    
+    <p><code>minimize</code> takes an unconditioonal score [TODO: need joint superclass for UnconditionalDesign and AffineScores...]
+and a constraint set (or single constraint) and solves the corresponding
+constraint minimization problem using <code>nloptr</code> (using COBYLA by default).</p>
+    
     </div>
+
+    <pre class="usage"><span class='fu'>minimize</span>(<span class='no'>objective</span>, <span class='no'>subject_to</span>, <span class='no'>initial_design</span>, <span class='no'>lower_boundary_design</span>,
+  <span class='no'>upper_boundary_design</span>, <span class='kw'>opts</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>algorithm</span> <span class='kw'>=</span> <span class='st'>"NLOPT_LN_COBYLA"</span>,
+  <span class='kw'>xtol_rel</span> <span class='kw'>=</span> <span class='fl'>1e-04</span>, <span class='kw'>maxeval</span> <span class='kw'>=</span> <span class='fl'>2500</span>), <span class='no'>...</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>objective</th>
+      <td><p>objective function</p></td>
+    </tr>
+    <tr>
+      <th>subject_to</th>
+      <td><p>constraint collection</p></td>
+    </tr>
+    <tr>
+      <th>initial_design</th>
+      <td><p>initial guess (x0 for nloptr)</p></td>
+    </tr>
+    <tr>
+      <th>lower_boundary_design</th>
+      <td><p>design specifying the lower boundary</p></td>
+    </tr>
+    <tr>
+      <th>upper_boundary_design</th>
+      <td><p>design specifying the upper boundary</p></td>
+    </tr>
+    <tr>
+      <th>opts</th>
+      <td><p>options list passed to nloptr</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>further optional arguments passed to <code>nloptr</code></p></td>
+    </tr>
+    </table>
+    
+
+  </div>
+  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+    <h2>Contents</h2>
+    <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
+                </ul>
+
   </div>
 </div>
 

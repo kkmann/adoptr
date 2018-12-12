@@ -5,8 +5,10 @@ date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{quickstart}
-  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: inline
 ---
 
 ```{r setup, include = FALSE}
@@ -18,99 +20,84 @@ knitr::opts_chunk$set(
 library(otsd)
 ```
 
-some initial design
+Create some more or less random start design.
 
-```{r}
-order  <- 5
-n1     <- 25
-c1f    <-   .0
-c1e    <-  2.0
-n2_piv <- rep(40.0, order)
-c2_piv <- rep( 1.96, order)
-design <- GQDesign(n1, c1f, c1e, n2_piv, c2_piv, order)
-z1 <- seq(-2, 4, .01)
-par(mfrow = c(1, 2))
-plot(z1, n(design, z1), 'l', ylim = c(0, max(n(design, z1))))
-plot(z1, c2(design, z1), 'l')
+```{r create-design}
+order <- 7
+
+design <- GQDesign(
+  n1 = 25, 
+  c1f = 0,
+  c1e = 2,
+  n2_pivots = rep(40.0, order), 
+  c2_pivots = rep( 1.96, order), 
+  order = order)
+#TODO we need nice output for out designs...
 ```
+
+```{r plot-design}
+z1 <- seq(-2, 4, .01)
+plot(design)
+```
+
+
 
 # Define scores 
 
-```{r}
+```{r define-statistical-model}
 # define null and alternative as point mass distributions
 null        <- PointMassPrior(.0, 1)
 alternative <- PointMassPrior(.4, 1)
-dist <- Normal()
+dist        <- Normal()# data distribution
+```
 
+```{r define-scores}
 ess  <- integrate(ConditionalSampleSize(dist, alternative))
 cp   <- ConditionalPower(dist, alternative)
 pow  <- integrate(cp)
 toer <- integrate(ConditionalPower(dist, null))
 smth <- Smoothness_n2()
-do.call(sprintf, 
-        c(
-          list("ESS: %.1f, power: %.3f, maximal type one error rate: %.3f"), 
-          lapply(list(ess, pow, toer), function(s) evaluate(s, design))
-        )
-)
+
+# print TODO: need nice functionality like summary(design, ess, pow, toer)
+do.call(sprintf, c(
+  list("ESS: %.1f, power: %.3f, maximal type one error rate: %.3f"), 
+  lapply(list(ess, pow, toer), function(s) evaluate(s, design))
+))
 ```
 
-# Define objective
+
+# Optimize
 
 ```{r}
-objective <- function(x) {
-  d  <- update(design, x)
-  evaluate(ess, d) + .001*evaluate(smth, d)
-}
-objective(tunable_parameters(design))
-constraint <- function(x) {
-  d  <- update(design, x)
-  c(
-    .8 - evaluate(pow, d),
-    evaluate(toer, d) - 0.05,
-    x[2] - x[3] + .1,
-    diff(c2(d, scaled_integration_pivots(d)))
-  )
-}
-constraint(tunable_parameters(design))
-ub <- c(50, 1, 4, numeric(order) + 50, numeric(order) + 5)
-lb <- c(10, -1, 1, numeric(order) + 2, numeric(order) - 5)
-res <- nloptr::nloptr(
-  tunable_parameters(design),
-  lb = lb,
-  ub = ub,
-  eval_f      = objective,
-  eval_g_ineq = constraint,
-  opts = list(
-    algorithm   = "NLOPT_LN_COBYLA",
-    xtol_rel    = 1e-4,
-    maxeval     = 2500
-  )
-)
-d2 <- update(design, res$solution)
-par(mfrow = c(1, 2))
-plot(z1, n(d2, z1), 'l', ylim = c(0, max(n(d2, z1))))
-plot(z1, c2(d2, z1), 'l')
+minimize(
+  ess + 0.001*smth,
+  subject_to(
+    pow  >= 0.8,
+    toer <= .05
+  ),
+  initial_design = design,
+  lower_boundary_design = update(design, c(10, -1, 1, numeric(order) + 2, numeric(order) - 5)),
+  upper_boundary_design = update(design, c(50, 1, 4, numeric(order) + 50, numeric(order) + 5))
+) ->
+  optimal_design
+
+plot(optimal_design, "Conditional power" = cp)
 ```
 
 Compute the scores using fast internal representation (Gauss quadrature).
 
 ```{r}
-do.call(sprintf, 
-        c(
-          list("ESS: %.1f, power: %.3f, maximal type one error rate: %.3f"), 
-          lapply(list(ess, pow, toer), function(s) evaluate(s, d2, specific = TRUE))
-        )
-)
+do.call(sprintf, c(
+  list("ESS: %.1f, power: %.3f, maximal type one error rate: %.3f"), 
+  lapply(list(ess, pow, toer), function(s) evaluate(s, optimal_design, specific = TRUE))
+))
 ```
 
 Compute the scores using adaptive quadrature rules (increased precision but slow).
 
 ```{r}
-do.call(sprintf, 
-        c(
-          list("ESS: %.1f, power: %.3f, maximal type one error rate: %.3f"), 
-          lapply(list(ess, pow, toer), function(s) evaluate(s, d2, specific = FALSE))
-        )
-)
+do.call(sprintf, c(
+  list("ESS: %.1f, power: %.3f, maximal type one error rate: %.3f"), 
+  lapply(list(ess, pow, toer), function(s) evaluate(s, optimal_design, specific = FALSE))
+))
 ```

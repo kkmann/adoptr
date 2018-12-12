@@ -30,6 +30,8 @@ Collate:
     TwoStageDesign.R
     Scores.R
     AffineScoreFunction.R
+    constraints.R
+    minimize.R
     ConditionalPower.R
     ConditionalSampleSize.R
     Smoothness_n2.R
