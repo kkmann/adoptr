@@ -5,12 +5,14 @@
 \alias{plot,TwoStageDesign-method}
 \title{Plot TwoStageDesign with optional set of conditional scores}
 \usage{
-\S4method{plot}{TwoStageDesign}(x, ..., k = 100)
+\S4method{plot}{TwoStageDesign}(x, y = NULL, ..., k = 100)
 }
 \arguments{
-\item{x}{design object to plot}
+\item{x}{design to plot}
 
-\item{...}{optinal additional named ConditionalScores to plot}
+\item{y}{not used}
+
+\item{...}{optional named (Un)ConditionalScores to plot / include in the summary}
 
 \item{k}{number of points to use for plotting}
 }

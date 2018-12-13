@@ -157,31 +157,92 @@ setMethod("scaled_integration_pivots", signature("TwoStageDesign"),
 
 
 
+
+#' Show method for TwoStageDesign objects
+#'
+#' Only states the class itself. More information is given by the respective
+#' \code{summary} method, cf. \link{TwoStageDesign-class}.
+#'
+#' @param object design to show
+#'
+#' @export
+setMethod("show", signature(object = "TwoStageDesign"),
+          function(object) cat("TwoStageDesign"))
+
+
+
+
 #' Plot TwoStageDesign with optional set of conditional scores
 #'
 #' [TODO]
 #'
-#' @param x design object to plot
+#' @param x design to plot
+#' @param y not used
 #' @param k number of points to use for plotting
-#' @param ... optinal additional named ConditionalScores to plot
+#' @param ... optional named (Un)ConditionalScores to plot / include in the summary
 #'
 #' @rdname TwoStagDesign-class
 #' @export
-setMethod("plot", signature("TwoStageDesign"),
-          function(x, ..., k = 100) {
-            scores <- list(...)
-            if (!all(sapply(scores, function(s) is(s, "ConditionalScore"))))
-                stop("optional arguments must be ConditionalScores")
-            opts  <- graphics::par(mfrow = c(1, length(scores) + 2))
-            x1    <- seq(x@c1f - (x@c1e - x@c1f)/5, x@c1e + (x@c1e - x@c1f)/5, length.out = k)
-            plot(x1, n(x, x1), 'l', ylim = c(0, 1.05 * max(n(x, x1))),
-                 main = "Overall sample size", ylab = "")
-            plot(x1, c2(x, x1), 'l', main = "Stage-two critical value", ylab = "")
-            if (length(scores) > 0) {
-                for (i in 1:length(scores)) {
-                    plot(x1, evaluate(scores[[i]], x, x1), 'l', main = names(scores[i]),
-                         ylab = "")
-                }
-            }
-            graphics::par(opts)
+setMethod("plot", signature(x = "TwoStageDesign"),
+          function(x, y = NULL, ..., k = 100) {
+              scores <- list(...)
+              if (!all(sapply(scores, function(s) is(s, "ConditionalScore"))))
+                  stop("optional arguments must be ConditionalScores")
+              opts  <- graphics::par(mfrow = c(1, length(scores) + 2))
+              x1    <- seq(x@c1f - (x@c1e - x@c1f)/5, x@c1e + (x@c1e - x@c1f)/5, length.out = k)
+              plot(x1, n(x, x1), 'l', ylim = c(0, 1.05 * max(n(x, x1))),
+                   main = "Overall sample size", ylab = "")
+              plot(x1, c2(x, x1), 'l', main = "Stage-two critical value", ylab = "")
+              if (length(scores) > 0) {
+                  for (i in 1:length(scores)) {
+                      plot(x1, evaluate(scores[[i]], x, x1), 'l', main = names(scores[i]),
+                           ylab = "")
+                  }
+              }
+              graphics::par(opts)
           })
+
+
+
+#' Summarize TwoStageDesign objects with optional set of scores
+#'
+#' [TODO]
+#'
+#' @param object design object to plot
+#' @param ... optinal additional named UnconditionalScores
+#'
+#' @export
+setMethod("summary", signature("TwoStageDesign"),
+          function(object, ...) {
+              scores <- list(...)
+              if (!all(sapply(scores, function(s) is(s, "UnconditionalScore"))))
+                  stop("optional arguments must be UnconditionalScores")
+              res <- list(
+                  design = object,
+                  scores = sapply(scores, function(s) evaluate(s, object))
+              )
+              names(res$scores) <- names(scores)
+              class(res) <- c("TwoStageDesignSummary", "list")
+              return(res)
+          })
+
+
+#' Print obejct of class TwoStageDesignSummary
+#'
+#' @param x object to print
+#' @param ... unused
+#'
+#' @export
+print.TwoStageDesignSummary <- function(x, ...) {
+    cat("TwoStageDesign with:\n\r")
+    cat(sprintf("     n1: %6.1f\n\r", x$design@n1))
+    cat(sprintf("    c1f: %6.1f\n\r", x$design@c1f))
+    cat(sprintf("    c1e: %6.1f\n\r", x$design@c1e))
+    if (length(x$scores) > 0) {
+        cat("Unconditional scores:\n\r")
+        for (i in 1:length(x$scores)) {
+            cat(sprintf("    %s: %7.2f\n\r", names(x$scores)[i], x$scores[i]))
+        }
+        cat("\n\r")
+    }
+}
