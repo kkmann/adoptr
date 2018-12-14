@@ -4,7 +4,7 @@
 \name{TwoStageDesign-class}
 \alias{TwoStageDesign-class}
 \alias{TwoStageDesign}
-\alias{GQDesign}
+\alias{TwoStageDesign,numeric-method}
 \alias{tunable_parameters}
 \alias{tunable_parameters,TwoStageDesign-method}
 \alias{update,TwoStageDesign-method}
@@ -16,11 +16,13 @@
 \alias{c2,TwoStageDesign,numeric-method}
 \alias{scaled_integration_pivots}
 \alias{scaled_integration_pivots,TwoStageDesign-method}
+\alias{plot,TwoStageDesign-method}
 \title{Two-stage designs}
 \usage{
-TwoStageDesign(n1, c1f, c1e, n2_pivots, c2_pivots, x1_norm_pivots, weights)
+TwoStageDesign(...)
 
-GQDesign(n1, c1f, c1e, n2_pivots, c2_pivots, order)
+\S4method{TwoStageDesign}{numeric}(n1, c1f, c1e, n2_pivots, c2_pivots,
+  x1_norm_pivots, weights)
 
 tunable_parameters(x, ...)
 
@@ -43,8 +45,12 @@ c2(d, x1, ...)
 scaled_integration_pivots(d, ...)
 
 \S4method{scaled_integration_pivots}{TwoStageDesign}(d, ...)
+
+\S4method{plot}{TwoStageDesign}(x, y = NULL, ..., k = 100)
 }
 \arguments{
+\item{...}{optional arguments depending on implementation}
+
 \item{n1}{cf. slot}
 
 \item{c1f}{cf. slot}
@@ -59,12 +65,7 @@ scaled_integration_pivots(d, ...)
 
 \item{weights}{cf. slot}
 
-\item{order}{order (i.e. number of pivot points in the interior of [c1f, c1e])
-of the Gaussian quadrature rule to use for integration}
-
 \item{x}{object to get parameters from}
-
-\item{...}{further optional arguments}
 
 \item{object}{object to update}
 
@@ -74,18 +75,22 @@ by \code{as.numeric(design)})}
 \item{d}{design object}
 
 \item{x1}{stage-one outcome}
+
+\item{y}{not used}
+
+\item{k}{number of points to use for plotting}
+
+\item{x}{design to plot}
+
+\item{...}{optional named (Un)ConditionalScores to plot / include in the summary}
 }
 \description{
 [ToDo]
-}
-\details{
-GQDesign simply creates a TwoStageDesign object with a Gaussian
-    quadrature numerical integration rule.
+
+[TODO]
 }
 \section{Methods (by generic)}{
 \itemize{
-\item \code{tunable_parameters}: get optimization parameters
-
 \item \code{n}: overall sample size given stage-one outcome
 
 \item \code{scaled_integration_pivots}: get the actual pivots points (knots) of the numerical integration routine

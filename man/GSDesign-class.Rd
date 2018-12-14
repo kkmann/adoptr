@@ -4,21 +4,21 @@
 \name{GSDesign-class}
 \alias{GSDesign-class}
 \alias{GSDesign}
-\alias{GS_GQDesign}
 \alias{tunable_parameters,GSDesign-method}
 \alias{update,GSDesign-method}
 \alias{n2,GSDesign,numeric-method}
+\alias{TwoStageDesign,GSDesign-method}
 \title{Group-sequential design}
 \usage{
-GSDesign(n1, c1f, c1e, n2, c2_pivots, x1_norm_pivots, weights)
-
-GS_GQDesign(n1, c1f, c1e, n2, c2_pivots, order)
+GSDesign(n1, c1f, c1e, n2_continue, c2_pivots, x1_norm_pivots, weights)
 
 \S4method{tunable_parameters}{GSDesign}(x, ...)
 
 \S4method{update}{GSDesign}(object, params, ...)
 
 \S4method{n2}{GSDesign,numeric}(d, x1, ...)
+
+\S4method{TwoStageDesign}{GSDesign}(s, ...)
 }
 \arguments{
 \item{n1}{cf. slot}
@@ -27,16 +27,13 @@ GS_GQDesign(n1, c1f, c1e, n2, c2_pivots, order)
 
 \item{c1e}{cf. slot}
 
-\item{n2}{cf. slot}
+\item{n2_continue}{cf. slot}
 
 \item{c2_pivots}{cf. slot}
 
 \item{x1_norm_pivots}{cf. slot}
 
 \item{weights}{cf. slot}
-
-\item{order}{order (i.e. number of pivot points in the interior of [c1f, c1e])
-of the Gaussian quadrature rule to use for integration}
 
 \item{x}{object to get parameters from}
 
@@ -50,13 +47,11 @@ by \code{as.numeric(design)})}
 \item{d}{design object}
 
 \item{x1}{stage-one outcome}
+
+\item{s}{object of class \code{GSDesign}}
 }
 \description{
 [ToDo]
-}
-\details{
-GQDesign simply creates a TwoStageDesign object with a Gaussian
-    quadrature numerical integration rule.
 }
 \section{Slots}{
 
@@ -67,7 +62,7 @@ GQDesign simply creates a TwoStageDesign object with a Gaussian
 
 \item{\code{c1e}}{early stopping for efficacy boundary}
 
-\item{\code{n2}}{stage-two sample size}
+\item{\code{n2_continue}}{stage-two sample size}
 
 \item{\code{c2_pivots}}{vector of length order giving the values of c2 at the
 pivot points of the numeric integration rule [TODO: these are not available during construction]}

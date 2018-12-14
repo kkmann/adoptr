@@ -2,18 +2,18 @@ context("GSDesign")
 
 test_that("Optimal group-sequential design with point prior is computable", {
     # define an initial design
-    n1     <- 25
-    c1f    <-   .0
-    c1e    <-  2.0
-    order <- 5
-    n2 <- 30
-    c2_piv <- rep(1.96, order)
-    design <- GS_GQDesign(n1, c1f, c1e, n2, c2_piv, order)
+    n1      <- 25
+    c1f     <-   .0
+    c1e     <-  2.0
+    order   <-  5
+    n2_cont <- 40
+    c2_piv  <- rep(1.96, order)
+    design  <- gq_design(n1, c1f, c1e, n2_cont, c2_piv, order)
 
     # check if functions are defined correctly
     expect_equal(
         n2(design, 1.0),
-        30.0
+        40.0
     )
 
     expect_equal(
@@ -40,12 +40,12 @@ test_that("Optimal group-sequential design with point prior is computable", {
 
     expect_equal(
         round(evaluate(ess, design), 1),
-        39.3
+        44.1
     )
 
     expect_equal(
         round(evaluate(pow, design), 3),
-        0.782
+        0.842
     )
 
     expect_equal(
@@ -55,7 +55,7 @@ test_that("Optimal group-sequential design with point prior is computable", {
 
     #compute optimal design
 
-    minimize_gs(
+    minimize(
         ess,
         subject_to(
             pow  >= 0.8,

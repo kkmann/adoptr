@@ -26,6 +26,12 @@ setClass("TwoStageDesign", representation(
 
 
 
+#' @param ... optional arguments depending on implementation
+#'
+#' @rdname TwoStageDesign-class
+#' @export
+setGeneric("TwoStageDesign", function(...) standardGeneric("TwoStageDesign"))
+
 #' @param n1 cf. slot
 #' @param c1f cf. slot
 #' @param c1e cf. slot
@@ -33,38 +39,20 @@ setClass("TwoStageDesign", representation(
 #' @param c2_pivots cf. slot
 #' @param x1_norm_pivots cf. slot
 #' @param weights cf. slot
-#' @param ... further optional arguments
 #'
 #' @rdname TwoStageDesign-class
 #' @export
-TwoStageDesign <- function(n1, c1f, c1e, n2_pivots, c2_pivots, x1_norm_pivots, weights) {
-    if (any(diff(sapply(list(n2_pivots, c2_pivots, x1_norm_pivots, weights), length)) != 0))
-        stop("pivots and weights must all be of the same length")
-    if (any(x1_norm_pivots < -1) | any(x1_norm_pivots > 1))
-        stop("x1_norm_pivots must be in [-1, 1], is scaled automatically")
-    if (any(weights <= 0))
-        stop("weights must be positive")
-    new("TwoStageDesign", n1 = n1, c1f = c1f, c1e = c1e, n2_pivots = n2_pivots,
-        c2_pivots = c2_pivots, x1_norm_pivots = x1_norm_pivots, weights = weights)
-}
-
-
-
-#' @details GQDesign simply creates a TwoStageDesign object with a Gaussian
-#'     quadrature numerical integration rule.
-#'
-#' @param order order (i.e. number of pivot points in the interior of [c1f, c1e])
-#'     of the Gaussian quadrature rule to use for integration
-#'
-#' @rdname TwoStageDesign-class
-#' @export
-GQDesign <- function(n1, c1f, c1e, n2_pivots, c2_pivots, order) {
-    if ( (length(n2_pivots) != order) | (length(c2_pivots) != order) )
-        stop("length of pivot vectors does not fit")
-    rule <- GaussLegendreRule(order)
-    TwoStageDesign(n1 = n1, c1f = c1f, c1e = c1e, n2_pivots = n2_pivots,
-                   c2_pivots = c2_pivots, x1_norm_pivots = rule$nodes, weights = rule$weights)
-}
+setMethod("TwoStageDesign", signature("numeric"),
+     function(n1, c1f, c1e, n2_pivots, c2_pivots, x1_norm_pivots, weights) {
+        if (any(diff(sapply(list(n2_pivots, c2_pivots, x1_norm_pivots, weights), length)) != 0))
+            stop("pivots and weights must all be of the same length")
+        if (any(x1_norm_pivots < -1) | any(x1_norm_pivots > 1))
+            stop("x1_norm_pivots must be in [-1, 1], is scaled automatically")
+        if (any(weights <= 0))
+            stop("weights must be positive")
+        new("TwoStageDesign", n1 = n1, c1f = c1f, c1e = c1e, n2_pivots = n2_pivots,
+            c2_pivots = c2_pivots, x1_norm_pivots = x1_norm_pivots, weights = weights)
+})
 
 
 
@@ -74,7 +62,7 @@ GQDesign <- function(n1, c1f, c1e, n2_pivots, c2_pivots, order) {
 #' @export
 setGeneric("tunable_parameters", function(x, ...) standardGeneric("tunable_parameters"))
 
-#' @describeIn TwoStageDesign get optimization parameters
+#' @rdname TwoStageDesign-class
 #' @export
 setMethod("tunable_parameters", signature("TwoStageDesign"),
           function(x, ...) c(x@n1, x@c1f, x@c1e, x@n2_pivots, x@c2_pivots))
@@ -103,7 +91,6 @@ setMethod("update", signature("TwoStageDesign"),
             x1_norm_pivots = object@x1_norm_pivots,
             weights = object@weights)
     })
-
 
 
 #' @param x1 stage-one outcome
@@ -157,31 +144,91 @@ setMethod("scaled_integration_pivots", signature("TwoStageDesign"),
 
 
 
+#' Show method for TwoStageDesign objects
+#'
+#' Only states the class itself. More information is given by the respective
+#' \code{summary} method, cf. \link{TwoStageDesign-class}.
+#'
+#' @param object design to show
+#'
+#' @export
+setMethod("show", signature(object = "TwoStageDesign"),
+          function(object) cat("TwoStageDesign"))
+
+
+
+
 #' Plot TwoStageDesign with optional set of conditional scores
 #'
 #' [TODO]
 #'
-#' @param x design object to plot
+#' @param x design to plot
+#' @param y not used
 #' @param k number of points to use for plotting
-#' @param ... optinal additional named ConditionalScores to plot
+#' @param ... optional named (Un)ConditionalScores to plot / include in the summary
 #'
-#' @rdname TwoStagDesign-class
+#' @rdname TwoStageDesign-class
 #' @export
-setMethod("plot", signature("TwoStageDesign"),
-          function(x, ..., k = 100) {
-            scores <- list(...)
-            if (!all(sapply(scores, function(s) is(s, "ConditionalScore"))))
-                stop("optional arguments must be ConditionalScores")
-            opts  <- graphics::par(mfrow = c(1, length(scores) + 2))
-            x1    <- seq(x@c1f - (x@c1e - x@c1f)/5, x@c1e + (x@c1e - x@c1f)/5, length.out = k)
-            plot(x1, n(x, x1), 'l', ylim = c(0, 1.05 * max(n(x, x1))),
-                 main = "Overall sample size", ylab = "")
-            plot(x1, c2(x, x1), 'l', main = "Stage-two critical value", ylab = "")
-            if (length(scores) > 0) {
-                for (i in 1:length(scores)) {
-                    plot(x1, evaluate(scores[[i]], x, x1), 'l', main = names(scores[i]),
-                         ylab = "")
-                }
-            }
-            graphics::par(opts)
+setMethod("plot", signature(x = "TwoStageDesign"),
+          function(x, y = NULL, ..., k = 100) {
+              scores <- list(...)
+              if (!all(sapply(scores, function(s) is(s, "ConditionalScore"))))
+                  stop("optional arguments must be ConditionalScores")
+              opts  <- graphics::par(mfrow = c(1, length(scores) + 2))
+              x1    <- seq(x@c1f - (x@c1e - x@c1f)/5, x@c1e + (x@c1e - x@c1f)/5, length.out = k)
+              plot(x1, n(x, x1), 'l', ylim = c(0, 1.05 * max(n(x, x1))),
+                   main = "Overall sample size", ylab = "")
+              plot(x1, c2(x, x1), 'l', main = "Stage-two critical value", ylab = "")
+              if (length(scores) > 0) {
+                  for (i in 1:length(scores)) {
+                      plot(x1, evaluate(scores[[i]], x, x1), 'l', main = names(scores[i]),
+                           ylab = "")
+                  }
+              }
+              graphics::par(opts)
           })
+
+
+
+#' Summarize TwoStageDesign objects with optional set of scores
+#'
+#' [TODO]
+#'
+#' @param object design object to plot
+#' @param ... optinal additional named UnconditionalScores
+#'
+#' @export
+setMethod("summary", signature("TwoStageDesign"),
+          function(object, ...) {
+              scores <- list(...)
+              if (!all(sapply(scores, function(s) is(s, "UnconditionalScore"))))
+                  stop("optional arguments must be UnconditionalScores")
+              res <- list(
+                  design = object,
+                  scores = sapply(scores, function(s) evaluate(s, object))
+              )
+              names(res$scores) <- names(scores)
+              class(res) <- c("TwoStageDesignSummary", "list")
+              return(res)
+          })
+
+
+#' Print obejct of class TwoStageDesignSummary
+#'
+#' @param x object to print
+#' @param ... unused
+#'
+#' @export
+print.TwoStageDesignSummary <- function(x, ...) {
+    cat("TwoStageDesign with:\n\r")
+    cat(sprintf("     n1: %6.1f\n\r", x$design@n1))
+    cat(sprintf("    c1f: %6.1f\n\r", x$design@c1f))
+    cat(sprintf("    c1e: %6.1f\n\r", x$design@c1e))
+    if (length(x$scores) > 0) {
+        cat("Unconditional scores:\n\r")
+        for (i in 1:length(x$scores)) {
+            cat(sprintf("    %s: %7.2f\n\r", names(x$scores)[i], x$scores[i]))
+        }
+        cat("\n\r")
+    }
+}
