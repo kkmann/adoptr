@@ -2,7 +2,7 @@ context("Test ConditionalSampleSize                                          ")
 
 test_that("conditional sample size maps to actual sample size", {
 
-    design <- gq_design(25, 0, 2, rep(40.0, 5), rep( 1.96, 5), 5)
+    design <- gq_design(25, 0, 2, rep(40.0, 5), rep( 1.96, 5), 5L)
 
     dist <- Normal()
     z1   <- seq(-1, 3, .1)
@@ -46,7 +46,7 @@ test_that("conditional sample size maps to actual sample size", {
 
 test_that("conditional score arithmetic works", {
 
-    design <- gq_design(25, 0, 2, rep(40.0, 5), rep( 1.96, 5), 5)
+    design <- gq_design(25, 0, 2, rep(40.0, 5), rep( 1.96, 5), 5L)
 
     dist <- Normal()
     z1   <- seq(-1, 3, .1)

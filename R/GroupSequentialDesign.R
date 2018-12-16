@@ -5,7 +5,7 @@
 #' @slot n1 stage-one sample size
 #' @slot c1f early stopping for futility boundary
 #' @slot c1e early stopping for efficacy boundary
-#' @slot n2_continue stage-two sample size upon continuation
+#' @slot n2_pivots stage-two sample size upon continuation
 #' @slot c2_pivots vector of length order giving the values of c2 at the
 #'     pivot points of the numeric integration rule [TODO: these are not available during construction]
 #' @slot x1_norm_pivots normalized pivots for integration rule (in [-1, 1])
@@ -13,23 +13,14 @@
 #'     approximating the integral over x1.
 #'
 #' @exportClass GSDesign
-setClass("GSDesign", representation(
-        n1          = "numeric",
-        c1f         = "numeric",
-        c1e         = "numeric",
-        n2_continue = "numeric",
-        c2_pivots   = "numeric",
-        x1_norm_pivots = "numeric",
-        weights   = "numeric"
-    ),  contains = "TwoStageDesign"
-)
+setClass("GSDesign",  contains = "TwoStageDesign")
 
 
 
 #' @param n1 cf. slot
 #' @param c1f cf. slot
 #' @param c1e cf. slot
-#' @param n2_continue cf. slot
+#' @param n2_pivots cf. slot
 #' @param c2_pivots cf. slot
 #' @param x1_norm_pivots cf. slot
 #' @param weights cf. slot
@@ -37,14 +28,14 @@ setClass("GSDesign", representation(
 #'
 #' @rdname GSDesign-class
 #' @export
-GSDesign <- function(n1, c1f, c1e, n2_continue, c2_pivots, x1_norm_pivots, weights) {
+GSDesign <- function(n1, c1f, c1e, n2_pivots, c2_pivots, x1_norm_pivots, weights) {
     if (any(diff(sapply(list(c2_pivots, x1_norm_pivots, weights), length)) != 0))
         stop("pivots and weights must all be of the same length")
     if (any(x1_norm_pivots < -1) | any(x1_norm_pivots > 1))
         stop("x1_norm_pivots must be in [-1, 1], is scaled automatically")
     if (any(weights <= 0))
         stop("weights must be positive")
-    new("GSDesign", n1 = n1, c1f = c1f, c1e = c1e, n2_continue = n2_continue,
+    new("GSDesign", n1 = n1, c1f = c1f, c1e = c1e, n2_pivots = n2_pivots,
         c2_pivots = c2_pivots, x1_norm_pivots = x1_norm_pivots, weights = weights)
 }
 
@@ -57,7 +48,7 @@ GSDesign <- function(n1, c1f, c1e, n2_continue, c2_pivots, x1_norm_pivots, weigh
 #' @rdname GSDesign-class
 #' @export
 setMethod("tunable_parameters", signature("GSDesign"),
-          function(x, ...) c(x@n1, x@c1f, x@c1e, x@n2_continue, x@c2_pivots))
+          function(x, ...) c(x@n1, x@c1f, x@c1e, x@n2_pivots, x@c2_pivots))
 
 
 
@@ -77,7 +68,7 @@ setMethod("update", signature("GSDesign"),
             n1  = params[1],
             c1f = params[2],
             c1e = params[3],
-            n2_continue    = params[4],
+            n2_pivots    = params[4],
             c2_pivots      = params[5:(length(params))],
             x1_norm_pivots = object@x1_norm_pivots,
             weights = object@weights)
@@ -91,7 +82,7 @@ setMethod("update", signature("GSDesign"),
 #' @rdname GSDesign-class
 #' @export
 setMethod("n2", signature("GSDesign", "numeric"),
-          function(d, x1, ...) ifelse(x1 < d@c1f | x1 > d@c1e, 0, d@n2_continue) )
+          function(d, x1, ...) ifelse(x1 < d@c1f | x1 > d@c1e, 0, d@n2_pivots) )
 
 
 
@@ -105,7 +96,7 @@ setMethod("n2", signature("GSDesign", "numeric"),
 setMethod("TwoStageDesign", signature("GSDesign"),
      function(s, ...){
         new("TwoStageDesign", n1 = s@n1, c1f = s@c1f, c1e = s@c1e,
-                        n2_pivots = rep(s@n2_continue, length(s@weights)),
+                        n2_pivots = rep(s@n2_pivots, length(s@weights)),
                         c2_pivots = s@c2_pivots,
                         x1_norm_pivots = s@x1_norm_pivots, weights = s@weights)
 })

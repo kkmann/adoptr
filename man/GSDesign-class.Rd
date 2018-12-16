@@ -10,7 +10,7 @@
 \alias{TwoStageDesign,GSDesign-method}
 \title{Group-sequential design}
 \usage{
-GSDesign(n1, c1f, c1e, n2_continue, c2_pivots, x1_norm_pivots, weights)
+GSDesign(n1, c1f, c1e, n2_pivots, c2_pivots, x1_norm_pivots, weights)
 
 \S4method{tunable_parameters}{GSDesign}(x, ...)
 
@@ -27,7 +27,7 @@ GSDesign(n1, c1f, c1e, n2_continue, c2_pivots, x1_norm_pivots, weights)
 
 \item{c1e}{cf. slot}
 
-\item{n2_continue}{cf. slot}
+\item{n2_pivots}{cf. slot}
 
 \item{c2_pivots}{cf. slot}
 
@@ -62,7 +62,7 @@ by \code{as.numeric(design)})}
 
 \item{\code{c1e}}{early stopping for efficacy boundary}
 
-\item{\code{n2_continue}}{stage-two sample size upon continuation}
+\item{\code{n2_pivots}}{stage-two sample size upon continuation}
 
 \item{\code{c2_pivots}}{vector of length order giving the values of c2 at the
 pivot points of the numeric integration rule [TODO: these are not available during construction]}

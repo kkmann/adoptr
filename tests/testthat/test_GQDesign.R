@@ -5,7 +5,7 @@ test_that("Optimal design with point prior is computable", {
     n1     <- 25
     c1f    <-   .0
     c1e    <-  2.0
-    number_knots <- 5
+    number_knots <- 5L
     n2_piv <- rep(40.0, number_knots)
     c2_piv <- rep(1.96, number_knots)
     design <- gq_design(n1, c1f, c1e, n2_piv, c2_piv, number_knots)

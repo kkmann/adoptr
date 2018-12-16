@@ -30,8 +30,8 @@ setClass("SmoothnessN2", representation(
 #' @export
 SmoothnessN2 <- function(distribution,
                          prior = ContinuousPrior(
-                             pdf = function(x) stats::dunif(x, -1, 3),
-                             support = c(-1, 3)),
+                             pdf = function(x) stats::dunif(x, -5, 5),
+                             support = c(-5, 5)),
                          h = .1)
     new("SmoothnessN2", distribution = distribution, prior = prior, h = h)
 

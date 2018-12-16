@@ -5,7 +5,7 @@ test_that("Optimal group-sequential design with point prior is computable", {
     n1      <- 25
     c1f     <-   .0
     c1e     <-  2.0
-    order   <-  5
+    order   <-  5L
     n2_cont <- 40
     c2_piv  <- rep(1.96, order)
     design  <- gq_design(n1, c1f, c1e, n2_cont, c2_piv, order)

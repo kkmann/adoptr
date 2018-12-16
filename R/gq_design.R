@@ -22,7 +22,7 @@ setGeneric("gq_design", function(n1, c1f, c1e, n2, c2, order, ...)
 #'             and Legendre nodes
 #' @export
 setMethod("gq_design", signature("numeric", "numeric", "numeric", "numeric",
-                                 "numeric", "numeric"),
+                                 "numeric", "integer"),
           function(n1, c1f, c1e, n2, c2, order, ...) {
               rule <- GaussLegendreRule(order)
               if(length(n2) == length(c2) & length(n2) == order) {
@@ -31,7 +31,7 @@ setMethod("gq_design", signature("numeric", "numeric", "numeric", "numeric",
                                  weights = rule$weights)
               } else if (length(n2) == 1 & length(c2) > 1 & length(c2) == order) {
                   GSDesign(n1 = n1, c1f = c1f, c1e = c1e,
-                           n2_continue = n2, c2_pivots = c2,
+                           n2_pivots = n2, c2_pivots = c2,
                            x1_norm_pivots = rule$nodes, weights = rule$weights)
               } else {
                   stop("parameter lengths do not fit!")

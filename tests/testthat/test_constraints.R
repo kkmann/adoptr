@@ -5,7 +5,7 @@ context("constraint specifications                                            ")
 test_that("UnconditionalConstraints", {
 
     # create dummy design
-    design <- gq_design(25, 0, 2, rep(40.0, 5), rep( 1.96, 5), 5)
+    design <- gq_design(25, 0, 2, rep(40.0, 5), rep( 1.96, 5), 5L)
 
     # create power as IntegralScore
     pow <- integrate(ConditionalPower(Normal(), PointMassPrior(.4, 1)))
@@ -27,7 +27,7 @@ test_that("UnconditionalConstraints", {
 test_that("ConditionalConstraints", {
 
     # create dummy design
-    design <- gq_design(25, 0, 2, rep(40.0, 5), rep( 1.96, 5), 5)
+    design <- gq_design(25, 0, 2, rep(40.0, 5), rep( 1.96, 5), 5L)
 
     # create power as IntegralScore
     cp <- ConditionalPower(Normal(), PointMassPrior(.4, 1))
@@ -50,7 +50,7 @@ test_that("ConditionalConstraints", {
 test_that("ConditionalConstraints", {
 
     # create dummy design
-    design <- gq_design(25, 0, 2, rep(40.0, 5), rep( 1.96, 5), 5)
+    design <- gq_design(25, 0, 2, rep(40.0, 5), rep( 1.96, 5), 5L)
 
     # create power as IntegralScore
     cp <- ConditionalPower(Normal(), PointMassPrior(.4, 1))
