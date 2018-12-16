@@ -167,7 +167,7 @@ setMethod("show", signature(object = "TwoStageDesign"),
 #' @param k number of points to use for plotting
 #' @param ... optional named (Un)ConditionalScores to plot / include in the summary
 #'
-#' @rdname TwoStageDesign-class
+#' @rdname TwoStagDesign-class
 #' @export
 setMethod("plot", signature(x = "TwoStageDesign"),
           function(x, y = NULL, ..., k = 100) {
