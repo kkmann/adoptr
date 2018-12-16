@@ -3,12 +3,13 @@
 \docType{methods}
 \name{gq_design}
 \alias{gq_design}
-\alias{gq_design,numeric-method}
+\alias{gq_design,numeric,numeric,numeric,numeric,numeric,numeric-method}
 \title{Design with Gaussian quadrature integration rule}
 \usage{
-gq_design(n1, c1f, c1e, n2, c2, order = 5, ...)
+gq_design(n1, c1f, c1e, n2, c2, order, ...)
 
-\S4method{gq_design}{numeric}(n1, c1f, c1e, n2, c2, order = 5, ...)
+\S4method{gq_design}{numeric,numeric,numeric,numeric,numeric,numeric}(n1,
+  c1f, c1e, n2, c2, order, ...)
 }
 \arguments{
 \item{n1}{stage-one sample size}
@@ -34,7 +35,7 @@ gq_design simply creates a TwoStageDesign object with a Gaussian
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{numeric}: Method to create design with Gaussian quadrature rule
+\item \code{n1 = numeric,c1f = numeric,c1e = numeric,n2 = numeric,c2 = numeric,order = numeric}: Method to create design with Gaussian quadrature rule
 and Legendre nodes
 }}
 

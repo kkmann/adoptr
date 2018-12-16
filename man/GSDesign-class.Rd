@@ -62,7 +62,7 @@ by \code{as.numeric(design)})}
 
 \item{\code{c1e}}{early stopping for efficacy boundary}
 
-\item{\code{n2_continue}}{stage-two sample size}
+\item{\code{n2_continue}}{stage-two sample size upon continuation}
 
 \item{\code{c2_pivots}}{vector of length order giving the values of c2 at the
 pivot points of the numeric integration rule [TODO: these are not available during construction]}

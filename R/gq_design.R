@@ -15,13 +15,14 @@
 #' @param ... futher arguments
 #'
 #' @export
-setGeneric("gq_design", function(n1, c1f, c1e, n2, c2, order = 5, ...)
+setGeneric("gq_design", function(n1, c1f, c1e, n2, c2, order, ...)
     standardGeneric("gq_design"))
 
 #' @describeIn gq_design Method to create design with Gaussian quadrature rule
 #'             and Legendre nodes
 #' @export
-setMethod("gq_design", signature("numeric"),
+setMethod("gq_design", signature("numeric", "numeric", "numeric", "numeric",
+                                 "numeric", "numeric"),
           function(n1, c1f, c1e, n2, c2, order, ...) {
               rule <- GaussLegendreRule(order)
               if(length(n2) == length(c2) & length(n2) == order) {

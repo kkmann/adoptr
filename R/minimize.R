@@ -13,18 +13,13 @@
 #' @param ... further optional arguments passed to \code{\link{nloptr}}
 #'
 #' @export
-setGeneric("minimize", function(objective, subject_to, initial_design,
-                                lower_boundary_design, upper_boundary_design,
-                                opts = list(
-                                    algorithm   = "NLOPT_LN_COBYLA",
-                                    xtol_rel    = 1e-4,
-                                    maxeval     = 2500), ...) standardGeneric("minimize"))
-#' @rdname minimize
-#' @export
-setMethod("minimize", signature("UnconditionalScore", "ConstraintsCollection", "TwoStageDesign"),
-     function(objective, subject_to, initial_design,
-                         lower_boundary_design, upper_boundary_design,
-                         opts, ...) {
+minimize <- function(objective, subject_to, initial_design,
+                     lower_boundary_design, upper_boundary_design,
+                     opts = list(
+                         algorithm   = "NLOPT_LN_COBYLA",
+                         xtol_rel    = 1e-4,
+                         maxeval     = 2500
+                     ), ...) {
 
         f_obj <- function(params) evaluate(objective, update(initial_design, params))
 
@@ -55,4 +50,4 @@ setMethod("minimize", signature("UnconditionalScore", "ConstraintsCollection", "
 
         return(update(initial_design, res$solution))
 
-    })
+    }

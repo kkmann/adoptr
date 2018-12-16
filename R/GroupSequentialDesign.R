@@ -5,7 +5,7 @@
 #' @slot n1 stage-one sample size
 #' @slot c1f early stopping for futility boundary
 #' @slot c1e early stopping for efficacy boundary
-#' @slot n2_continue stage-two sample size
+#' @slot n2_continue stage-two sample size upon continuation
 #' @slot c2_pivots vector of length order giving the values of c2 at the
 #'     pivot points of the numeric integration rule [TODO: these are not available during construction]
 #' @slot x1_norm_pivots normalized pivots for integration rule (in [-1, 1])
