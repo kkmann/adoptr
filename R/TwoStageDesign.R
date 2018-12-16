@@ -144,6 +144,7 @@ setMethod("scaled_integration_pivots", signature("TwoStageDesign"),
 
 
 
+
 #' Show method for TwoStageDesign objects
 #'
 #' Only states the class itself. More information is given by the respective
