@@ -8,7 +8,7 @@
 \title{Quadratic smoothness penalty term}
 \usage{
 SmoothnessN2(distribution, prior = ContinuousPrior(pdf = function(x)
-  stats::dunif(x, -1, 3), support = c(-1, 3)), h = 0.1)
+  stats::dunif(x, -5, 5), support = c(-5, 5)), h = 0.1)
 
 \S4method{evaluate}{SmoothnessN2,TwoStageDesign}(s, design, x1, ...)
 }

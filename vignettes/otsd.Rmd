@@ -23,7 +23,7 @@ library(otsd)
 Create some more or less random start design.
 
 ```{r create-design}
-order <- 5
+order <- 5L # must be integer!
 
 design <- gq_design(
   n1 = 25, 
