@@ -77,7 +77,7 @@ setMethod("update", signature("GSDesign"),
 
 
 #' @param x1 stage-one outcome
-#' @param d design object
+#' @param d object of class \code{GSDesign}
 #'
 #' @rdname GSDesign-class
 #' @export
@@ -85,19 +85,27 @@ setMethod("n2", signature("GSDesign", "numeric"),
           function(d, x1, ...) ifelse(x1 < d@c1f | x1 > d@c1e, 0, d@n2_pivots) )
 
 
+#' Return smootheness of a group-sequential design as 0.
+#'
+#' @param s an object of class \code{SmoothnessN2}
+#' @param design an object of class \code{GSDesign}
+#'
+#' @rdname GSDesign-class
+#' @export
+setMethod("evaluate", signature("SmoothnessN2", "GSDesign"),
+          function(s, design, ...) 0 )
+
 
 
 #' Convert a group-sequential design to a two-stage design
 #'
-#' @param s object of class \code{GSDesign}
-#'
 #' @rdname GSDesign-class
 #' @export
 setMethod("TwoStageDesign", signature("GSDesign"),
-     function(s, ...){
-        new("TwoStageDesign", n1 = s@n1, c1f = s@c1f, c1e = s@c1e,
-                        n2_pivots = rep(s@n2_pivots, length(s@weights)),
-                        c2_pivots = s@c2_pivots,
-                        x1_norm_pivots = s@x1_norm_pivots, weights = s@weights)
+     function(d, ...){
+        new("TwoStageDesign", n1 = d@n1, c1f = d@c1f, c1e = d@c1e,
+                        n2_pivots = rep(d@n2_pivots, length(d@weights)),
+                        c2_pivots = d@c2_pivots,
+                        x1_norm_pivots = d@x1_norm_pivots, weights = d@weights)
 })
 

@@ -46,15 +46,31 @@ SmoothnessN2 <- function(distribution,
 #'
 #' @param s an object of class \code{SmoothnessN2}
 #' @param design the design to compute the smoothness term for
-#' @param x1 first-stage outcome
+#' @param specific should a specific implementation be used?
 #' @template dotdotdotTemplate
 #'
 #' @rdname SmoothnessN2-class
 #' @export
 setMethod("evaluate", signature("SmoothnessN2", "TwoStageDesign"),
-          function(s, design, x1, ...) {
-              res <- abs(n2(design, x1 + s@h) - n2(design, x1 - s@h))
-              return(res / s@h)
-          }
-)
+          function(s, design, specific = TRUE, ...) {
+              if (specific) {
+                  # use design-specific implementation
+                  return(.evaluate(s, design, ...))
+              } else {
+                  # use generic approach
+                  # integrand is the finite difference approximation of the
+                  # squared derivative
+                  integrand <- function(x1) ((n2(design, x1 + s@h/2) - n2(design, x1 - s@h/2))/s@h)^2
+                  x1_bounds <- c(design@c1f + s@h, design@c1e - s@h)
+                  # use adaptive quadrature to integrate - only relies on generic interface
+                  # provided by 'Design', no special optimization for particular
+                  # design implementation
+                  return(1 / diff(x1_bounds) * stats::integrate(integrand, x1_bounds[1], x1_bounds[2])$value)
+              }
+          })
+
+# specific method for class TwoStageDesign
+setMethod(".evaluate", signature("SmoothnessN2", "TwoStageDesign"),
+          function(s, design, ...) mean((diff(design@n2_pivots) / diff(scaled_integration_pivots(design)))^2) )
+
 

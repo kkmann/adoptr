@@ -10,7 +10,8 @@
 SmoothnessN2(distribution, prior = ContinuousPrior(pdf = function(x)
   stats::dunif(x, -5, 5), support = c(-5, 5)), h = 0.1)
 
-\S4method{evaluate}{SmoothnessN2,TwoStageDesign}(s, design, x1, ...)
+\S4method{evaluate}{SmoothnessN2,TwoStageDesign}(s, design,
+  specific = TRUE, ...)
 }
 \arguments{
 \item{distribution}{see slot}
@@ -23,7 +24,7 @@ SmoothnessN2(distribution, prior = ContinuousPrior(pdf = function(x)
 
 \item{design}{the design to compute the smoothness term for}
 
-\item{x1}{first-stage outcome}
+\item{specific}{should a specific implementation be used?}
 
 \item{...}{further optional arguments}
 }

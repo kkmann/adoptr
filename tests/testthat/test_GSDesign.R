@@ -37,6 +37,9 @@ test_that("Optimal group-sequential design with point prior is computable", {
     cp   <- ConditionalPower(dist, alternative)
     pow  <- integrate(cp)
     toer <- integrate(ConditionalPower(dist, null))
+    smth <- integrate(SmoothnessN2(dist))
+
+
 
     expect_equal(
         round(evaluate(ess, design), 1),
@@ -51,6 +54,11 @@ test_that("Optimal group-sequential design with point prior is computable", {
     expect_equal(
         round(evaluate(toer, design), 3),
         0.035
+    )
+
+    expect_equal(
+        evaluate(smth, design),
+        0.0
     )
 
     #compute optimal design

@@ -7,6 +7,7 @@
 \alias{tunable_parameters,GSDesign-method}
 \alias{update,GSDesign-method}
 \alias{n2,GSDesign,numeric-method}
+\alias{evaluate,SmoothnessN2,GSDesign-method}
 \alias{TwoStageDesign,GSDesign-method}
 \title{Group-sequential design}
 \usage{
@@ -18,7 +19,9 @@ GSDesign(n1, c1f, c1e, n2_pivots, c2_pivots, x1_norm_pivots, weights)
 
 \S4method{n2}{GSDesign,numeric}(d, x1, ...)
 
-\S4method{TwoStageDesign}{GSDesign}(s, ...)
+\S4method{evaluate}{SmoothnessN2,GSDesign}(s, design, ...)
+
+\S4method{TwoStageDesign}{GSDesign}(d, ...)
 }
 \arguments{
 \item{n1}{cf. slot}
@@ -44,11 +47,13 @@ GSDesign(n1, c1f, c1e, n2_pivots, c2_pivots, x1_norm_pivots, weights)
 \item{params}{vector of design parameters (must be in same order as returned
 by \code{as.numeric(design)})}
 
-\item{d}{design object}
+\item{d}{object of class \code{GSDesign}}
 
 \item{x1}{stage-one outcome}
 
-\item{s}{object of class \code{GSDesign}}
+\item{s}{an object of class \code{SmoothnessN2}}
+
+\item{design}{an object of class \code{GSDesign}}
 }
 \description{
 [ToDo]
