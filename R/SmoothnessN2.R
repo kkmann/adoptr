@@ -1,28 +1,40 @@
 #' Quadratic smoothness penalty term
 #'
-#' \code{Smoothness_n2} is a generic class for implementing a smoothness penalty
+#' \code{SmoothnessN2} is a generic class for implementing a smoothness penalty
 #' via the average squared first derivative of the stage two sample size function
 #' \code{n2} of a two-stage design.
 #' The only parameter is the width used for the finite differences, \code{h}.
 #' The generic implementation only evluates \code{n2} in the interior of the
 #' continuation region of a design.
 #'
+#' @slot distribution Data distribution
+#' @slot prior Prior distribution
 #' @slot h positive number giving the width of the central finite difference
 #'     interval for approximating the first derivative.
 #'
-#' @exportClass Smoothness_n2
-setClass("Smoothness_n2", representation(
+#' @exportClass SmoothnessN2
+setClass("SmoothnessN2", representation(
+        distribution = "DataDistribution",
+        prior = "Prior",
         h = "numeric"
     ),
-    contains = "IntegralScore")
+    contains = "ConditionalScore")
 
 
 
+#' @param distribution see slot
+#' @param prior see slot
 #' @param h positive number, see slot \code{h}
 #'
-#' @rdname Smoothness_n2-class
+#' @rdname SmoothnessN2-class
 #' @export
-Smoothness_n2 <- function(h = sqrt(.Machine$double.eps)) new("Smoothness_n2", h = h)
+SmoothnessN2 <- function(distribution,
+                         prior = ContinuousPrior(
+                             pdf = function(x) stats::dunif(x, -5, 5),
+                             support = c(-5, 5)),
+                         h = .1)
+    new("SmoothnessN2", distribution = distribution, prior = prior, h = h)
+
 
 
 
@@ -32,16 +44,14 @@ Smoothness_n2 <- function(h = sqrt(.Machine$double.eps)) new("Smoothness_n2", h 
 #' Custom subclasses of \code{Design} might implement this slightly different
 #' (cf. [TODO: link to GQDesign implementation]).
 #'
-#' @param s an object of class \code{Smoothness_n2}
+#' @param s an object of class \code{SmoothnessN2}
 #' @param design the design to compute the smoothness term for
-#' @param specific logical, should a design-specific implementation be used?
-#'     defaults to \code{TRUE}. If \code{TRUE}, looks for design-specific
-#'     \code{.evaluate} method and calls it
+#' @param specific should a specific implementation be used?
 #' @template dotdotdotTemplate
 #'
-#' @rdname Smoothness_n2-class
+#' @rdname SmoothnessN2-class
 #' @export
-setMethod("evaluate", signature("Smoothness_n2", "TwoStageDesign"),
+setMethod("evaluate", signature("SmoothnessN2", "TwoStageDesign"),
           function(s, design, specific = TRUE, ...) {
               if (specific) {
                   # use design-specific implementation
@@ -59,6 +69,8 @@ setMethod("evaluate", signature("Smoothness_n2", "TwoStageDesign"),
               }
           })
 
-# not user facing! we need to redo this whole Smoothness stuff...
-setMethod(".evaluate", signature("Smoothness_n2", "TwoStageDesign"),
+# specific method for class TwoStageDesign
+setMethod(".evaluate", signature("SmoothnessN2", "TwoStageDesign"),
           function(s, design, ...) mean((diff(design@n2_pivots) / diff(scaled_integration_pivots(design)))^2) )
+
+

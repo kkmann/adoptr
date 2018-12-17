@@ -26,6 +26,12 @@ setClass("TwoStageDesign", representation(
 
 
 
+#' @param ... optional arguments depending on implementation
+#'
+#' @rdname TwoStageDesign-class
+#' @export
+setGeneric("TwoStageDesign", function(...) standardGeneric("TwoStageDesign"))
+
 #' @param n1 cf. slot
 #' @param c1f cf. slot
 #' @param c1e cf. slot
@@ -33,38 +39,20 @@ setClass("TwoStageDesign", representation(
 #' @param c2_pivots cf. slot
 #' @param x1_norm_pivots cf. slot
 #' @param weights cf. slot
-#' @param ... further optional arguments
 #'
 #' @rdname TwoStageDesign-class
 #' @export
-TwoStageDesign <- function(n1, c1f, c1e, n2_pivots, c2_pivots, x1_norm_pivots, weights) {
-    if (any(diff(sapply(list(n2_pivots, c2_pivots, x1_norm_pivots, weights), length)) != 0))
-        stop("pivots and weights must all be of the same length")
-    if (any(x1_norm_pivots < -1) | any(x1_norm_pivots > 1))
-        stop("x1_norm_pivots must be in [-1, 1], is scaled automatically")
-    if (any(weights <= 0))
-        stop("weights must be positive")
-    new("TwoStageDesign", n1 = n1, c1f = c1f, c1e = c1e, n2_pivots = n2_pivots,
-        c2_pivots = c2_pivots, x1_norm_pivots = x1_norm_pivots, weights = weights)
-}
-
-
-
-#' @details GQDesign simply creates a TwoStageDesign object with a Gaussian
-#'     quadrature numerical integration rule.
-#'
-#' @param order order (i.e. number of pivot points in the interior of [c1f, c1e])
-#'     of the Gaussian quadrature rule to use for integration
-#'
-#' @rdname TwoStageDesign-class
-#' @export
-GQDesign <- function(n1, c1f, c1e, n2_pivots, c2_pivots, order) {
-    if ( (length(n2_pivots) != order) | (length(c2_pivots) != order) )
-        stop("length of pivot vectors does not fit")
-    rule <- GaussLegendreRule(order)
-    TwoStageDesign(n1 = n1, c1f = c1f, c1e = c1e, n2_pivots = n2_pivots,
-                   c2_pivots = c2_pivots, x1_norm_pivots = rule$nodes, weights = rule$weights)
-}
+setMethod("TwoStageDesign", signature("numeric"),
+     function(n1, c1f, c1e, n2_pivots, c2_pivots, x1_norm_pivots, weights) {
+        if (any(diff(sapply(list(n2_pivots, c2_pivots, x1_norm_pivots, weights), length)) != 0))
+            stop("pivots and weights must all be of the same length")
+        if (any(x1_norm_pivots < -1) | any(x1_norm_pivots > 1))
+            stop("x1_norm_pivots must be in [-1, 1], is scaled automatically")
+        if (any(weights <= 0))
+            stop("weights must be positive")
+        new("TwoStageDesign", n1 = n1, c1f = c1f, c1e = c1e, n2_pivots = n2_pivots,
+            c2_pivots = c2_pivots, x1_norm_pivots = x1_norm_pivots, weights = weights)
+})
 
 
 
@@ -74,7 +62,7 @@ GQDesign <- function(n1, c1f, c1e, n2_pivots, c2_pivots, order) {
 #' @export
 setGeneric("tunable_parameters", function(x, ...) standardGeneric("tunable_parameters"))
 
-#' @describeIn TwoStageDesign get optimization parameters
+#' @rdname TwoStageDesign-class
 #' @export
 setMethod("tunable_parameters", signature("TwoStageDesign"),
           function(x, ...) c(x@n1, x@c1f, x@c1e, x@n2_pivots, x@c2_pivots))
@@ -103,7 +91,6 @@ setMethod("update", signature("TwoStageDesign"),
             x1_norm_pivots = object@x1_norm_pivots,
             weights = object@weights)
     })
-
 
 
 #' @param x1 stage-one outcome

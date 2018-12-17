@@ -1,14 +1,14 @@
-context("GQDesign")
+context("TwoStageDesign")
 
 test_that("Optimal design with point prior is computable", {
     # define an initial design
     n1     <- 25
     c1f    <-   .0
     c1e    <-  2.0
-    number_knots <- 5
+    number_knots <- 5L
     n2_piv <- rep(40.0, number_knots)
     c2_piv <- rep(1.96, number_knots)
-    design <- GQDesign(n1, c1f, c1e, n2_piv, c2_piv, number_knots)
+    design <- gq_design(n1, c1f, c1e, n2_piv, c2_piv, number_knots)
 
     # check if functions are defined correctly
     expect_equal(
@@ -37,7 +37,7 @@ test_that("Optimal design with point prior is computable", {
     cp   <- ConditionalPower(dist, alternative)
     pow  <- integrate(cp)
     toer <- integrate(ConditionalPower(dist, null))
-    smth <- Smoothness_n2()
+    smth <- integrate(SmoothnessN2(dist))
 
 
     expect_equal(
