@@ -28,7 +28,7 @@ minimize <- function(objective, subject_to, initial_design,
             user_cnstr <- evaluate(subject_to, design)
             return(c(
                 user_cnstr,
-                design@c1f - design@c1e + .1, # ensure c1e > c1f
+                design@c1f - design@c1e + ifelse(length(params) > 2, .1, 0), # ensure c1e > c1f
                 diff(c2(design, scaled_integration_pivots(design))) # make c2() monotone
             ))
         }
