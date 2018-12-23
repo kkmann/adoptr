@@ -15,14 +15,14 @@ setClass("OneStageDesign",  contains = "TwoStageDesign")
 
 
 
-#' @param n1 cf. slot
-#' @param c1f cf. slot
+#' @param n sample size (stage-one sample size)
+#' @param c rejection boundary (c = c1f = c1e)
 #'
 #' @rdname OneStageDesign-class
 #' @export
-OneStageDesign <- function(n1, c1f) {
-    new("OneStageDesign", n1 = n1, c1f = c1f, c1e = c1f, n2_pivots = 0,
-    c2_pivots = Inf, x1_norm_pivots = 0, weights = 1)
+OneStageDesign <- function(n, c) {
+    new("OneStageDesign", n1 = n, c1f = c, c1e = c, n2_pivots = 0,
+    c2_pivots = NaN, x1_norm_pivots = NaN, weights = NaN)
 }
 
 
@@ -54,9 +54,9 @@ setMethod("update", signature("OneStageDesign"),
             c1f = params[2],
             c1e = params[2],
             n2_pivots    = 0,
-            c2_pivots      = Inf,
-            x1_norm_pivots = 0,
-            weights = 1)
+            c2_pivots      = NaN,
+            x1_norm_pivots = NaN,
+            weights = NaN)
     })
 
 
@@ -76,16 +76,6 @@ setMethod("c2", signature("OneStageDesign", "numeric"),
           function(d, x1, ...) ifelse(x1 <= d@c1f, Inf, -Inf) )
 
 
-
-#' Return smootheness of a one-stage design as 0.
-#'
-#' @param s an object of class \code{SmoothnessN2}
-#' @param design an object of class \code{OneStageDesign}
-#'
-#' @rdname OneStageDesign-class
-#' @export
-setMethod("evaluate", signature("SmoothnessN2", "OneStageDesign"),
-          function(s, design, ...) 0 )
 
 
 

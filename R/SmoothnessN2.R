@@ -74,3 +74,26 @@ setMethod(".evaluate", signature("SmoothnessN2", "TwoStageDesign"),
           function(s, design, ...) mean((diff(design@n2_pivots) / diff(scaled_integration_pivots(design)))^2) )
 
 
+
+#' Return smootheness of a group-sequential design as 0.
+#'
+#' @param s an object of class \code{SmoothnessN2}
+#' @param design an object of class \code{GSDesign}
+#'
+#' @rdname GSDesign-class
+#' @export
+setMethod("evaluate", signature("SmoothnessN2", "GSDesign"),
+          function(s, design, ...) 0 )
+
+
+
+#' Return smootheness of a one-stage design as 0.
+#'
+#' @param s an object of class \code{SmoothnessN2}
+#' @param design an object of class \code{OneStageDesign}
+#'
+#' @rdname OneStageDesign-class
+#' @export
+setMethod("evaluate", signature("SmoothnessN2", "OneStageDesign"),
+          function(s, design, ...) 0 )
+
