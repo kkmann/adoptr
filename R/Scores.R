@@ -252,3 +252,24 @@ setMethod(".evaluate", signature("IntegralScore", "TwoStageDesign"),
               )
               return(res)
           })
+
+
+
+
+# not user facing!
+setMethod(".evaluate", signature("IntegralScore", "OneStageDesign"),
+          function(s, design, ...) {
+              # use design specific implementation tailored to this particular
+              # implementation (Gauss Quadrature N points here)
+              poef <- predictive_cdf(s@cs@distribution, s@cs@prior, design@c1f, design@n1)
+              poee <- 1 - predictive_cdf(s@cs@distribution, s@cs@prior, design@c1e, design@n1)
+              res  <- poef * evaluate( # score is constant on early stopping region
+                      s@cs, design,
+                      design@c1f - sqrt(.Machine$double.eps) # slightly smaller than stopping for futility
+                  ) +
+                  poee * evaluate(
+                      s@cs, design,
+                      design@c1e + sqrt(.Machine$double.eps)
+                  )
+              return(res)
+          })

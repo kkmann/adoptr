@@ -85,17 +85,6 @@ setMethod("n2", signature("GSDesign", "numeric"),
           function(d, x1, ...) ifelse(x1 < d@c1f | x1 > d@c1e, 0, d@n2_pivots) )
 
 
-#' Return smootheness of a group-sequential design as 0.
-#'
-#' @param s an object of class \code{SmoothnessN2}
-#' @param design an object of class \code{GSDesign}
-#'
-#' @rdname GSDesign-class
-#' @export
-setMethod("evaluate", signature("SmoothnessN2", "GSDesign"),
-          function(s, design, ...) 0 )
-
-
 
 #' Convert a group-sequential design to a two-stage design
 #'

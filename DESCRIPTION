@@ -28,6 +28,8 @@ Collate:
     PointMassPrior.R
     ContinuousPrior.R
     TwoStageDesign.R
+    GroupSequentialDesign.R
+    OneStageDesign.R
     Scores.R
     AffineScoreFunction.R
     constraints.R
@@ -35,7 +37,6 @@ Collate:
     ConditionalPower.R
     ConditionalSampleSize.R
     SmoothnessN2.R
-    GroupSequentialDesign.R
     gq_design.R
 RoxygenNote: 6.1.1
 BugReports: https://github.com/kkmann/otsd/issues

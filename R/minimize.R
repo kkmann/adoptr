@@ -28,7 +28,8 @@ minimize <- function(objective, subject_to, initial_design,
             user_cnstr <- evaluate(subject_to, design)
             return(c(
                 user_cnstr,
-                design@c1f - design@c1e + .1, # ensure c1e > c1f
+                design@c1f - design@c1e + ifelse( # ensure c1e > c1f if not one-stage
+                    is(initial_design, "OneStageDesign"), 0, .1),
                 diff(c2(design, scaled_integration_pivots(design))) # make c2() monotone
             ))
         }
