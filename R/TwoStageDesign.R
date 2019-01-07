@@ -62,8 +62,6 @@ setMethod("TwoStageDesign", signature("numeric"),
 
 
 
-#' @param x object to get parameters from
-#'
 #' @rdname TwoStageDesign-class
 #' @export
 setGeneric("tunable_parameters", function(x, ...) standardGeneric("tunable_parameters"))
@@ -81,9 +79,6 @@ setMethod("tunable_parameters", signature("TwoStageDesign"),
           })
 
 
-
-#' @param x object to modify
-#'
 #' @rdname TwoStageDesign-class
 #' @export
 setGeneric("make_tunable", function(x, ...) standardGeneric("make_tunable"))
@@ -102,7 +97,7 @@ setMethod("make_tunable", signature("TwoStageDesign"),
           })
 
 
-#' @param x object to modify
+#' @param x design
 #'
 #' @rdname TwoStageDesign-class
 #' @export
@@ -215,12 +210,10 @@ setMethod("show", signature(object = "TwoStageDesign"),
 #'
 #' [TODO]
 #'
-#' @param x design to plot
 #' @param y not used
 #' @param k number of points to use for plotting
-#' @param ... optional named (Un)ConditionalScores to plot / include in the summary
 #'
-#' @rdname TwoStagDesign-class
+#' @rdname TwoStageDesign-class
 #' @export
 setMethod("plot", signature(x = "TwoStageDesign"),
           function(x, y = NULL, ..., k = 100) {

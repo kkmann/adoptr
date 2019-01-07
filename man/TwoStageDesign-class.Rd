@@ -20,6 +20,7 @@
 \alias{c2,TwoStageDesign,numeric-method}
 \alias{scaled_integration_pivots}
 \alias{scaled_integration_pivots,TwoStageDesign-method}
+\alias{plot,TwoStageDesign-method}
 \title{Two-stage designs}
 \usage{
 TwoStageDesign(...)
@@ -56,6 +57,8 @@ c2(d, x1, ...)
 scaled_integration_pivots(d, ...)
 
 \S4method{scaled_integration_pivots}{TwoStageDesign}(d, ...)
+
+\S4method{plot}{TwoStageDesign}(x, y = NULL, ..., k = 100)
 }
 \arguments{
 \item{...}{optional arguments depending on implementation}
@@ -74,7 +77,7 @@ scaled_integration_pivots(d, ...)
 
 \item{weights}{cf. slot}
 
-\item{x}{object to get parameters from}
+\item{x}{design}
 
 \item{object}{object to update}
 
@@ -85,12 +88,14 @@ by \code{as.numeric(design)})}
 
 \item{x1}{stage-one outcome}
 
-\item{x}{object to modify}
+\item{y}{not used}
 
-\item{x}{object to modify}
+\item{k}{number of points to use for plotting}
 }
 \description{
 [ToDo]
+
+[TODO]
 }
 \section{Methods (by generic)}{
 \itemize{
