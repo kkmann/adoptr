@@ -12,6 +12,7 @@
 #' @slot x1_norm_pivots normalized pivots for integration rule (in [-1, 1])
 #' @slot weights weights of conditional score values at x1_norm_pivots for
 #'     approximating the integral over x1.
+#' @slot tunable named logical vector indicating whether corresponding slot is considered a tunable parameter
 #'
 #' @exportClass TwoStageDesign
 setClass("TwoStageDesign", representation(
@@ -21,7 +22,8 @@ setClass("TwoStageDesign", representation(
         n2_pivots = "numeric",
         c2_pivots = "numeric",
         x1_norm_pivots = "numeric",
-        weights   = "numeric"
+        weights   = "numeric",
+        tunable   = "logical"
     ))
 
 
@@ -50,14 +52,16 @@ setMethod("TwoStageDesign", signature("numeric"),
             stop("x1_norm_pivots must be in [-1, 1], is scaled automatically")
         if (any(weights <= 0))
             stop("weights must be positive")
+        tunable <- logical(8) # initialize to all false
+        tunable[1:5] <- TRUE
+        names(tunable) <- c("n1", "c1f", "c1e", "n2_pivots", "c2_pivots", "x1_norm_pivots", "weights", "tunable")
         new("TwoStageDesign", n1 = n1, c1f = c1f, c1e = c1e, n2_pivots = n2_pivots,
-            c2_pivots = c2_pivots, x1_norm_pivots = x1_norm_pivots, weights = weights)
+            c2_pivots = c2_pivots, x1_norm_pivots = x1_norm_pivots, weights = weights,
+            tunable = tunable)
 })
 
 
 
-#' @param x object to get parameters from
-#'
 #' @rdname TwoStageDesign-class
 #' @export
 setGeneric("tunable_parameters", function(x, ...) standardGeneric("tunable_parameters"))
@@ -65,8 +69,52 @@ setGeneric("tunable_parameters", function(x, ...) standardGeneric("tunable_param
 #' @rdname TwoStageDesign-class
 #' @export
 setMethod("tunable_parameters", signature("TwoStageDesign"),
-          function(x, ...) c(x@n1, x@c1f, x@c1e, x@n2_pivots, x@c2_pivots))
+          function(x, ...) {
+              res <- numeric(0)
+              for (i in 1:length(x@tunable)) {
+                  if (x@tunable[i])
+                      res <- c(res, slot(x, names(x@tunable)[i]))
+              }
+              return(res)
+          })
 
+
+#' @rdname TwoStageDesign-class
+#' @export
+setGeneric("make_tunable", function(x, ...) standardGeneric("make_tunable"))
+
+#' @rdname TwoStageDesign-class
+#' @export
+setMethod("make_tunable", signature("TwoStageDesign"),
+          function(x, ...) {
+              params <- sapply(substitute(list(...))[-1], deparse)
+              res    <- x
+              for (i in 1:length(x@tunable)) {
+                  if (names(x@tunable)[i] %in% params)
+                      res@tunable[i] <- TRUE
+              }
+              return(res)
+          })
+
+
+#' @param x design
+#'
+#' @rdname TwoStageDesign-class
+#' @export
+setGeneric("make_fixed", function(x, ...) standardGeneric("make_fixed"))
+
+#' @rdname TwoStageDesign-class
+#' @export
+setMethod("make_fixed", signature("TwoStageDesign"),
+          function(x, ...) {
+              params <- sapply(substitute(list(...))[-1], deparse)
+              res    <- x
+              for (i in 1:length(x@tunable)) {
+                  if (names(x@tunable)[i] %in% params)
+                      res@tunable[i] <- FALSE
+              }
+              return(res)
+          })
 
 
 
@@ -79,17 +127,16 @@ setMethod("tunable_parameters", signature("TwoStageDesign"),
 #' @export
 setMethod("update", signature("TwoStageDesign"),
     function(object, params, ...) {
-        k <- length(object@weights)
-        if( ((length(params) - 3) / 2) != k)
-            stop("parameter length does not fit")
-        new("TwoStageDesign",
-            n1  = params[1],
-            c1f = params[2],
-            c1e = params[3],
-            n2_pivots = params[4:(3 + k)],
-            c2_pivots = params[(4 + k):(length(params))],
-            x1_norm_pivots = object@x1_norm_pivots,
-            weights = object@weights)
+        tunable_names <- names(object@tunable)[object@tunable]
+        res <- object
+        idx <- 1
+        for (i in 1:length(tunable_names)) {
+            slotname <- tunable_names[i]
+            k <- length(slot(object, name = slotname))
+            slot(res, name = slotname) <- params[idx:(idx + k - 1)]
+            idx <- idx + k
+        }
+        return(res)
     })
 
 
@@ -163,12 +210,10 @@ setMethod("show", signature(object = "TwoStageDesign"),
 #'
 #' [TODO]
 #'
-#' @param x design to plot
 #' @param y not used
 #' @param k number of points to use for plotting
-#' @param ... optional named (Un)ConditionalScores to plot / include in the summary
 #'
-#' @rdname TwoStagDesign-class
+#' @rdname TwoStageDesign-class
 #' @export
 setMethod("plot", signature(x = "TwoStageDesign"),
           function(x, y = NULL, ..., k = 100) {

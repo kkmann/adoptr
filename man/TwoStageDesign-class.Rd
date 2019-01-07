@@ -7,6 +7,10 @@
 \alias{TwoStageDesign,numeric-method}
 \alias{tunable_parameters}
 \alias{tunable_parameters,TwoStageDesign-method}
+\alias{make_tunable}
+\alias{make_tunable,TwoStageDesign-method}
+\alias{make_fixed}
+\alias{make_fixed,TwoStageDesign-method}
 \alias{update,TwoStageDesign-method}
 \alias{n2}
 \alias{n2,TwoStageDesign,numeric-method}
@@ -16,6 +20,7 @@
 \alias{c2,TwoStageDesign,numeric-method}
 \alias{scaled_integration_pivots}
 \alias{scaled_integration_pivots,TwoStageDesign-method}
+\alias{plot,TwoStageDesign-method}
 \title{Two-stage designs}
 \usage{
 TwoStageDesign(...)
@@ -26,6 +31,14 @@ TwoStageDesign(...)
 tunable_parameters(x, ...)
 
 \S4method{tunable_parameters}{TwoStageDesign}(x, ...)
+
+make_tunable(x, ...)
+
+\S4method{make_tunable}{TwoStageDesign}(x, ...)
+
+make_fixed(x, ...)
+
+\S4method{make_fixed}{TwoStageDesign}(x, ...)
 
 \S4method{update}{TwoStageDesign}(object, params, ...)
 
@@ -44,6 +57,8 @@ c2(d, x1, ...)
 scaled_integration_pivots(d, ...)
 
 \S4method{scaled_integration_pivots}{TwoStageDesign}(d, ...)
+
+\S4method{plot}{TwoStageDesign}(x, y = NULL, ..., k = 100)
 }
 \arguments{
 \item{...}{optional arguments depending on implementation}
@@ -62,7 +77,7 @@ scaled_integration_pivots(d, ...)
 
 \item{weights}{cf. slot}
 
-\item{x}{object to get parameters from}
+\item{x}{design}
 
 \item{object}{object to update}
 
@@ -72,9 +87,15 @@ by \code{as.numeric(design)})}
 \item{d}{design object}
 
 \item{x1}{stage-one outcome}
+
+\item{y}{not used}
+
+\item{k}{number of points to use for plotting}
 }
 \description{
 [ToDo]
+
+[TODO]
 }
 \section{Methods (by generic)}{
 \itemize{
@@ -103,5 +124,7 @@ pivot points of the numeric integration rule [TODO: these are not available duri
 
 \item{\code{weights}}{weights of conditional score values at x1_norm_pivots for
 approximating the integral over x1.}
+
+\item{\code{tunable}}{named logical vector indicating whether corresponding slot is considered a tunable parameter}
 }}
 
