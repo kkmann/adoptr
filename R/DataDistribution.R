@@ -9,15 +9,20 @@
 #' approximation of a binary endpoint.
 #' Currently, only the normal case is implemented with \code{\link{Normal-class}}.
 #'
+#' @slot two_armed Should a two-armed design be used?
+#'
 #' @template DataDistributionTemplate
 #'
 #' @exportClass DataDistribution
-setClass("DataDistribution")
+setClass("DataDistribution", representation(
+    two_armed = "logical")
+)
+
 
 #' @param probs numeric vector of probabilities
 #' @describeIn DataDistribution quantile function of the respective distribution.
 #' @export
-setMethod("quantile", signature("DataDistribution"), function(x, probs, n, theta, ...) stop("not implemented"))
+setMethod("quantile", signature("DataDistribution"), function(dist, x, probs, n, theta, ...) stop("not implemented"))
 
 
 #' @rdname DataDistribution-class
@@ -58,30 +63,44 @@ setMethod("cumulative_distribution_function", signature("DataDistribution", "num
 #' @rdname NormalDataDistribution-class
 #' @exportClass Normal
 setClass("Normal", representation(
-    dummy = "logical" # needed to make this non-abstract
+    two_armed = "logical"
     ),
     contains = "DataDistribution")
 
-
+#' @param two_armed s. slot
+#'
 #' @rdname NormalDataDistribution-class
 #' @export
-Normal <- function() new("Normal", dummy = FALSE)
+Normal <- function(two_armed = TRUE) new("Normal", two_armed = two_armed)
 
 
 #' @rdname NormalDataDistribution-class
 #' @export
 setMethod("probability_density_function", signature("Normal", "numeric", "numeric", "numeric"),
-          function(dist, x, n, theta, ...) stats::dnorm(x, mean = sqrt(n) * theta, sd = 1) )
+          function(dist, x, n, theta, ...){
+              theta <- ifelse(dist@two_armed == T, theta / sqrt(2), theta)
+              return(stats::dnorm(x, mean = sqrt(n) * theta, sd = 1))
+              }
+          )
 
 
 #' @rdname NormalDataDistribution-class
 #' @export
 setMethod("cumulative_distribution_function", signature("Normal", "numeric", "numeric", "numeric"),
-          function(dist, x, n, theta, ...) stats::pnorm(x, mean = sqrt(n) * theta, sd = 1) )
+          function(dist, x, n, theta, ...){
+              theta <- ifelse(dist@two_armed == T, theta / sqrt(2), theta)
+              return(stats::pnorm(x, mean = sqrt(n) * theta, sd = 1))
+              }
+          )
+
 
 
 #' @param probs vector of probabilities
 #' @rdname NormalDataDistribution-class
 #' @export
 setMethod("quantile", signature("Normal"),
-          function(x, probs, n, theta, ...) stats::qnorm(probs, mean = sqrt(n) * theta, sd = 1) )
+          function(dist, x, probs, n, theta, ...){
+              theta <- ifelse(dist@two_armed == T, theta / sqrt(2), theta)
+              return(stats::qnorm(probs, mean = sqrt(n) * theta, sd = 1))
+              }
+          )

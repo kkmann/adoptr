@@ -10,7 +10,7 @@
 \alias{cumulative_distribution_function,DataDistribution,numeric,numeric,numeric-method}
 \title{Data distributions}
 \usage{
-\S4method{quantile}{DataDistribution}(x, probs, n, theta, ...)
+\S4method{quantile}{DataDistribution}(dist, x, probs, n, theta, ...)
 
 probability_density_function(dist, x, n, theta, ...)
 
@@ -25,6 +25,8 @@ cumulative_distribution_function(dist, x, n, theta, ...)
   x, n, theta, ...)
 }
 \arguments{
+\item{dist}{data distribution object}
+
 \item{x}{outcome}
 
 \item{probs}{numeric vector of probabilities}
@@ -34,8 +36,6 @@ cumulative_distribution_function(dist, x, n, theta, ...)
 \item{theta}{distribution parameter}
 
 \item{...}{further optional arguments}
-
-\item{dist}{data distribution object}
 }
 \description{
 \code{DataDistribution} is an abstract class used to represent the distribution
@@ -57,5 +57,11 @@ sample size and parameter; must be implemented.
 
 \item \code{cumulative_distribution_function}: cumulative distribution function given outcome,
 sample size and parameter; must be implemented.
+}}
+
+\section{Slots}{
+
+\describe{
+\item{\code{two_armed}}{Should a two-armed design be used?}
 }}
 

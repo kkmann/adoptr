@@ -9,7 +9,7 @@
 \alias{quantile,Normal-method}
 \title{Normal data distribution}
 \usage{
-Normal()
+Normal(two_armed = TRUE)
 
 
   \S4method{probability_density_function}{Normal,numeric,numeric,numeric}(dist,
@@ -19,9 +19,11 @@ Normal()
   \S4method{cumulative_distribution_function}{Normal,numeric,numeric,numeric}(dist,
   x, n, theta, ...)
 
-\S4method{quantile}{Normal}(x, probs, n, theta, ...)
+\S4method{quantile}{Normal}(dist, x, probs, n, theta, ...)
 }
 \arguments{
+\item{two_armed}{s. slot}
+
 \item{dist}{data distribution object}
 
 \item{x}{outcome}
