@@ -10,6 +10,7 @@
 #' @param lower_boundary_design design specifying the lower boundary
 #' @param upper_boundary_design design specifying the upper boundary
 #' @param c2_monotone should the c2-function be forced to be monotoneously decreasing?
+#' @param post_process should the sample sizes be integers?
 #' @param opts options list passed to nloptr
 #' @param ... further optional arguments passed to \code{\link{nloptr}}
 #'
@@ -17,6 +18,7 @@
 minimize <- function(objective, subject_to, initial_design,
                      lower_boundary_design, upper_boundary_design,
                      c2_monotone = F,
+                     post_process = F,
                      opts = list(
                          algorithm   = "NLOPT_LN_COBYLA",
                          xtol_rel    = 1e-4,
@@ -50,6 +52,9 @@ minimize <- function(objective, subject_to, initial_design,
         )
 
         if(post_process == TRUE){
+            n1 <- NULL
+            n2_pivots <- NULL
+
             # Define continuous design as starting value and fix rounded sample sizes
             cont_design <- update(initial_design, res$solution)
             cont_design@n1 <- round(cont_design@n1)
@@ -58,14 +63,14 @@ minimize <- function(objective, subject_to, initial_design,
 
             # Define new lower boundary design and fix rounded sample sizes
             lb_design <- lower_boundary_design
-            lb_design@n1 <- round(cont_design@n1)
-            lb_design@n2_pivots <- round(cont_design@n2_pivots)
+            lb_design@n1 <- cont_design@n1
+            lb_design@n2_pivots <- cont_design@n2_pivots
             lb_design  <- make_fixed(lb_design, n1, n2_pivots)
 
             # Define new upper boundary design and fix rounded sample sizes
             ub_design <- upper_boundary_design
-            ub_design@n1 <- round(cont_design@n1)
-            ub_design@n2_pivots <- round(cont_design@n2_pivots)
+            ub_design@n1 <- cont_design@n1
+            ub_design@n2_pivots <- cont_design@n2_pivots
             ub_design  <- make_fixed(ub_design, n1, n2_pivots)
 
             f_obj <- function(params) evaluate(objective, update(cont_design, params))

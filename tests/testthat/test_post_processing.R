@@ -31,7 +31,7 @@ test_that("Post processing yields to integer sample sizes", {
     #compute optimal design
     suppressWarnings( # suppress that initial design is infeasible
     minimize(
-        objective = ess,# + 0.00001*smth, [TO DO: add smoothness term when this is finally implemented]
+        objective = ess + 0.00001*smth,
         subject_to(
             pow  >= 0.8,
             toer <= .025
@@ -43,7 +43,7 @@ test_that("Post processing yields to integer sample sizes", {
         post_process = T,
         opts = list(algorithm   = "NLOPT_LN_COBYLA",
                     xtol_rel    = 1e-4,
-                    maxeval     = 5000)
+                    maxeval     = 3000)
     ) ->
         optimal_design
     )
@@ -61,16 +61,14 @@ test_that("Post processing yields to integer sample sizes", {
         round(out$design@n2_pivots)
     )
 
-    # To DO: add the following when ContinuousPrior was fixed
-    '
     expect_equal(
-        round(out$scores["power"], 1),
+        round(as.numeric(out$scores["power"]), 1),
         0.8
     )
 
     expect_equal(
-        round(out$scores["toer"], 3),
+        round(as.numeric(out$scores["toer"]), 3),
         0.025
     )
-    '
+
 })
