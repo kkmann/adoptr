@@ -9,6 +9,11 @@
 #' approximation of a binary endpoint.
 #' Currently, only the normal case is implemented with \code{\link{Normal-class}}.
 #'
+#' The logical option \code{two_armed} allows to decide whether a one-arm or
+#' a two-arm (the default) design should be computed. In the case of a two-arm
+#' design the function \code{\link{plot}} and \code{\link{summary}} describe
+#' the sample size per group.
+#'
 #' @slot two_armed Should a two-armed design be used?
 #'
 #' @template DataDistributionTemplate
@@ -56,6 +61,8 @@ setMethod("cumulative_distribution_function", signature("DataDistribution", "num
 #' and stage size.
 #' Standard deviation is 1 and mean \eqn{\theta\sqrt n} where
 #' \eqn{\theta} is the standardized effect size.
+#' The option \code{two_armed} can be set to decide whether a one-arm or a
+#' two-arm design should be computed.
 #' See \code{\link{DataDistribution-class}} for more details.
 #'
 #' @template DataDistributionTemplate

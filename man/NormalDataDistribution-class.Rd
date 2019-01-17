@@ -41,5 +41,7 @@ Implements a normal data distribution for z-values given an observed z-value
 and stage size.
 Standard deviation is 1 and mean \eqn{\theta\sqrt n} where
 \eqn{\theta} is the standardized effect size.
+The option \code{two_armed} can be set to decide whether a one-arm or a
+two-arm design should be computed.
 See \code{\link{DataDistribution-class}} for more details.
 }
