@@ -30,7 +30,7 @@ SmoothnessN2(distribution, prior = ContinuousPrior(pdf = function(x)
 }
 \description{
 \code{SmoothnessN2} is a generic class for implementing a smoothness penalty
-via the average squared first derivative of the stage two sample size function
+via the average squared second derivative of the stage two sample size function
 \code{n2} of a two-stage design.
 The only parameter is the width used for the finite differences, \code{h}.
 The generic implementation only evluates \code{n2} in the interior of the
@@ -44,6 +44,6 @@ continuation region of a design.
 \item{\code{prior}}{Prior distribution}
 
 \item{\code{h}}{positive number giving the width of the central finite difference
-interval for approximating the first derivative.}
+interval for approximating the second derivative.}
 }}
 
