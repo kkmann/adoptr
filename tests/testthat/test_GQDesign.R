@@ -106,5 +106,9 @@ test_that("Optimal design with point prior is computable", {
         -1
     )
 
+    expect_equivalent(sign(diff(d2@c2_pivots)),
+                      rep(-1, (number_knots - 1))
+    )
+
 
 })

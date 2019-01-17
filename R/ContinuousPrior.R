@@ -34,7 +34,7 @@ ContinuousPrior <- function(pdf, support) {
         stop("support must be finite")
     if (diff(support) <= 0)
         stop("support[2] must be larger (not equal) to support[1]")
-    if (abs(stats::integrate(pdf, support[1], support[2], abs.tol = .0005)$value - 1) > .001)
+    if (abs(stats::integrate(pdf, support[1], support[2], abs.tol = .00001)$value - 1) > .001)
         stop("pdf must integrate to one!")
     new("ContinuousPrior", pdf = pdf, support = support)
 }
