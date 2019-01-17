@@ -10,7 +10,6 @@
 #' @param lower_boundary_design design specifying the lower boundary
 #' @param upper_boundary_design design specifying the upper boundary
 #' @param c2_monotone should the c2-function be forced to be monotoneously decreasing?
-#' @param post_process should the sample sizes be integers?
 #' @param opts options list passed to nloptr
 #' @param ... further optional arguments passed to \code{\link{nloptr}}
 #'
@@ -18,7 +17,6 @@
 minimize <- function(objective, subject_to, initial_design,
                      lower_boundary_design, upper_boundary_design,
                      c2_monotone = F,
-                     post_process = F,
                      opts = list(
                          algorithm   = "NLOPT_LN_COBYLA",
                          xtol_rel    = 1e-4,
@@ -35,7 +33,7 @@ minimize <- function(objective, subject_to, initial_design,
                 design@c1f - design@c1e + ifelse( # ensure c1e > c1f if not one-stage
                     is(initial_design, "OneStageDesign"), 0, .1),
                 if(c2_monotone == T) diff(c2(design, scaled_integration_pivots(design))) # make c2() monotone if desired
-                ))
+            ))
         }
 
         if (any(g_cnstr(tunable_parameters(initial_design)) > 0))
@@ -84,7 +82,7 @@ minimize <- function(objective, subject_to, initial_design,
             }
 
             # Re-optimize c-values
-            res <- nloptr::nloptr(
+            res2 <- nloptr::nloptr(
                 x0 = tunable_parameters(cont_design),
                 lb = tunable_parameters(lb_design),
                 ub = tunable_parameters(ub_design),
