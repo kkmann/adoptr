@@ -42,13 +42,13 @@ make_fixed(x, ...)
 
 \S4method{update}{TwoStageDesign}(object, params, ...)
 
-n2(d, x1, ...)
+n2(d, x1, rounded = F, ...)
 
-\S4method{n2}{TwoStageDesign,numeric}(d, x1, ...)
+\S4method{n2}{TwoStageDesign,numeric}(d, x1, rounded = F, ...)
 
-n(d, x1, ...)
+n(d, x1, rounded = F, ...)
 
-\S4method{n}{TwoStageDesign,numeric}(d, x1, ...)
+\S4method{n}{TwoStageDesign,numeric}(d, x1, rounded = F, ...)
 
 c2(d, x1, ...)
 
@@ -87,6 +87,8 @@ by \code{as.numeric(design)})}
 \item{d}{design object}
 
 \item{x1}{stage-one outcome}
+
+\item{rounded}{return rounded n2-values}
 
 \item{y}{not used}
 

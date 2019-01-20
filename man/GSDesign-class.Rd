@@ -17,7 +17,7 @@ GSDesign(n1, c1f, c1e, n2_pivots, c2_pivots, x1_norm_pivots, weights)
 
 \S4method{update}{GSDesign}(object, params, ...)
 
-\S4method{n2}{GSDesign,numeric}(d, x1, ...)
+\S4method{n2}{GSDesign,numeric}(d, x1, rounded = F, ...)
 
 \S4method{TwoStageDesign}{GSDesign}(d, ...)
 
@@ -50,6 +50,8 @@ by \code{as.numeric(design)})}
 \item{d}{object of class \code{GSDesign}}
 
 \item{x1}{stage-one outcome}
+
+\item{rounded}{return rounded n2-values}
 
 \item{s}{an object of class \code{SmoothnessN2}}
 

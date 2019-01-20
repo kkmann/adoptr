@@ -78,11 +78,15 @@ setMethod("update", signature("GSDesign"),
 
 #' @param x1 stage-one outcome
 #' @param d object of class \code{GSDesign}
+#' @param rounded return rounded n2-values
 #'
 #' @rdname GSDesign-class
 #' @export
 setMethod("n2", signature("GSDesign", "numeric"),
-          function(d, x1, ...) ifelse(x1 < d@c1f | x1 > d@c1e, 0, d@n2_pivots) )
+          function(d, x1, rounded, ...)
+              ifelse(x1 < d@c1f | x1 > d@c1e, 0,
+                     ifelse(rounded == T, round(d@n2_pivots), d@n2_pivots) )
+)
 
 
 

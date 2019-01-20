@@ -63,11 +63,12 @@ setMethod("update", signature("OneStageDesign"),
 
 #' @param x1 stage-one outcome
 #' @param d object of class \code{OneStageDesign}
+#' @param rounded can be ignored here
 #'
 #' @rdname OneStageDesign-class
 #' @export
 setMethod("n2", signature("OneStageDesign", "numeric"),
-          function(d, x1, ...) 0 )
+          function(d, x1, rounded, ...) 0 )
 
 
 #' @rdname OneStageDesign-class

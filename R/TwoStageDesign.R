@@ -142,26 +142,33 @@ setMethod("update", signature("TwoStageDesign"),
 
 #' @param x1 stage-one outcome
 #' @param d design object
+#' @param rounded return rounded n2-values
 #'
 #' @rdname TwoStageDesign-class
 #' @export
-setGeneric("n2", function(d, x1, ...) standardGeneric("n2"))
+setGeneric("n2", function(d, x1, rounded = F, ...) standardGeneric("n2"))
 
 #' @rdname TwoStageDesign-class
 #' @export
 setMethod("n2", signature("TwoStageDesign", "numeric"),
-          function(d, x1, ...) ifelse(x1 < d@c1f | x1 > d@c1e, 0, 1) *
-              pmax(0, stats::approx(scaled_integration_pivots(d), d@n2_pivots, xout = x1, method = "linear", rule = 2)$y) )
+          function(d, x1, rounded = F, ...) {
+              res <- ifelse(x1 < d@c1f | x1 > d@c1e, 0, 1) *
+                  pmax(0, stats::approx(scaled_integration_pivots(d), d@n2_pivots, xout = x1, method = "linear", rule = 2)$y)
+              return(ifelse(rounded == T, round(res), res))
+})
 
 
 
 #' @rdname TwoStageDesign-class
 #' @export
-setGeneric("n", function(d, x1, ...) standardGeneric("n"))
+setGeneric("n", function(d, x1, rounded = F, ...) standardGeneric("n"))
 
 #' @describeIn TwoStageDesign overall sample size given stage-one outcome
 #' @export
-setMethod("n", signature("TwoStageDesign", "numeric"), function(d, x1, ...) n2(d, x1, ...) + d@n1 )
+setMethod("n", signature("TwoStageDesign", "numeric"),
+          function(d, x1, rounded = F, ...)
+              n2(d, x1, rounded, ...) + ifelse(rounded == T, round(d@n1), d@n1)
+          )
 
 
 
@@ -225,7 +232,8 @@ setMethod("plot", signature(x = "TwoStageDesign"),
                   stop("optional arguments must be ConditionalScores")
               opts  <- graphics::par(mfrow = c(1, length(scores) + 2))
               x1    <- seq(x@c1f - (x@c1e - x@c1f)/5, x@c1e + (x@c1e - x@c1f)/5, length.out = k)
-              plot(x1, n(x, x1), 'l', ylim = c(0, 1.05 * max(n(x, x1))),
+              plot(x1, sapply(x1, function(z) n(x, z, T)), 'l',
+                   ylim = c(0, 1.05 * max(sapply(x1, function(z) n(x, z, T )))),
                    main = "Overall sample size", ylab = "")
               plot(x1, c2(x, x1), 'l', main = "Stage-two critical value", ylab = "")
               if (length(scores) > 0) {
