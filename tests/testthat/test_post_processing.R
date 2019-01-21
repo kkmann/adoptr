@@ -19,7 +19,7 @@ test_that("Post processing yields to integer sample sizes", {
     alternative <- condition(alternative, c(0, 5))
 
 
-    dist <- Normal()
+    dist <- Normal(two_armed = F)
 
     # Define key figures
     ess  <- integrate(ConditionalSampleSize(dist, alternative))
