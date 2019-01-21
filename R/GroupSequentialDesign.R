@@ -35,57 +35,27 @@ GSDesign <- function(n1, c1f, c1e, n2_pivots, c2_pivots, x1_norm_pivots, weights
         stop("x1_norm_pivots must be in [-1, 1], is scaled automatically")
     if (any(weights <= 0))
         stop("weights must be positive")
-    new("GSDesign", n1 = n1, c1f = c1f, c1e = c1e, n2_pivots = n2_pivots,
-        c2_pivots = c2_pivots, x1_norm_pivots = x1_norm_pivots, weights = weights)
+    tunable <- logical(8) # initialize to all false
+    tunable[1:5] <- TRUE
+    names(tunable) <- c("n1", "c1f", "c1e", "n2_pivots", "c2_pivots", "x1_norm_pivots", "weights", "tunable")
+        new("GSDesign", n1 = n1, c1f = c1f, c1e = c1e, n2_pivots = n2_pivots,
+        c2_pivots = c2_pivots, x1_norm_pivots = x1_norm_pivots, weights = weights,
+        tunable = tunable, rounded = FALSE)
 }
 
 
 
 
-
-#' @param x object to get parameters from
-#'
-#' @rdname GSDesign-class
-#' @export
-setMethod("tunable_parameters", signature("GSDesign"),
-          function(x, ...) c(x@n1, x@c1f, x@c1e, x@n2_pivots, x@c2_pivots))
-
-
-
-
-#' @param params vector of design parameters (must be in same order as returned
-#'     by \code{as.numeric(design)})
-#' @param object object to update
-#'
-#' @rdname GSDesign-class
-#' @export
-setMethod("update", signature("GSDesign"),
-    function(object, params, ...) {
-        k <- length(object@weights)
-        if( (length(params) - 4) != k)
-            stop("parameter length does not fit")
-        new("GSDesign",
-            n1  = params[1],
-            c1f = params[2],
-            c1e = params[3],
-            n2_pivots    = params[4],
-            c2_pivots      = params[5:(length(params))],
-            x1_norm_pivots = object@x1_norm_pivots,
-            weights = object@weights)
-    })
-
-
-
 #' @param x1 stage-one outcome
 #' @param d object of class \code{GSDesign}
-#' @param rounded return rounded n2-values
 #'
 #' @rdname GSDesign-class
 #' @export
 setMethod("n2", signature("GSDesign", "numeric"),
-          function(d, x1, rounded, ...)
-              ifelse(x1 < d@c1f | x1 > d@c1e, 0,
-                     ifelse(rounded == T, round(d@n2_pivots), d@n2_pivots) )
+          function(d, x1, ...) {
+              res <- ifelse(x1 < d@c1f | x1 > d@c1e, 0, d@n2_pivots)
+              return(ifelse(d@rounded == T, round(res), res))
+          }
 )
 
 

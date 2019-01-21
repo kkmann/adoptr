@@ -5,12 +5,14 @@
 \alias{summary,TwoStageDesign-method}
 \title{Summarize TwoStageDesign objects with optional set of scores}
 \usage{
-\S4method{summary}{TwoStageDesign}(object, ...)
+\S4method{summary}{TwoStageDesign}(object, ..., rounded = T)
 }
 \arguments{
-\item{object}{design object to plot}
+\item{object}{design object to summarize}
 
 \item{...}{optinal additional named UnconditionalScores}
+
+\item{rounded}{should rounded n-values be used?}
 }
 \description{
 [TODO]

@@ -4,8 +4,6 @@
 \name{GSDesign-class}
 \alias{GSDesign-class}
 \alias{GSDesign}
-\alias{tunable_parameters,GSDesign-method}
-\alias{update,GSDesign-method}
 \alias{n2,GSDesign,numeric-method}
 \alias{TwoStageDesign,GSDesign-method}
 \alias{evaluate,SmoothnessN2,GSDesign-method}
@@ -13,11 +11,7 @@
 \usage{
 GSDesign(n1, c1f, c1e, n2_pivots, c2_pivots, x1_norm_pivots, weights)
 
-\S4method{tunable_parameters}{GSDesign}(x, ...)
-
-\S4method{update}{GSDesign}(object, params, ...)
-
-\S4method{n2}{GSDesign,numeric}(d, x1, rounded = F, ...)
+\S4method{n2}{GSDesign,numeric}(d, x1, ...)
 
 \S4method{TwoStageDesign}{GSDesign}(d, ...)
 
@@ -38,20 +32,11 @@ GSDesign(n1, c1f, c1e, n2_pivots, c2_pivots, x1_norm_pivots, weights)
 
 \item{weights}{cf. slot}
 
-\item{x}{object to get parameters from}
-
-\item{...}{further optional arguments}
-
-\item{object}{object to update}
-
-\item{params}{vector of design parameters (must be in same order as returned
-by \code{as.numeric(design)})}
-
 \item{d}{object of class \code{GSDesign}}
 
 \item{x1}{stage-one outcome}
 
-\item{rounded}{return rounded n2-values}
+\item{...}{further optional arguments}
 
 \item{s}{an object of class \code{SmoothnessN2}}
 

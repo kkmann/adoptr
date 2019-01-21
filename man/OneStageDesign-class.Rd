@@ -18,7 +18,7 @@ OneStageDesign(n, c)
 
 \S4method{update}{OneStageDesign}(object, params, ...)
 
-\S4method{n2}{OneStageDesign,numeric}(d, x1, rounded = F, ...)
+\S4method{n2}{OneStageDesign,numeric}(d, x1, ...)
 
 \S4method{c2}{OneStageDesign,numeric}(d, x1, ...)
 
@@ -43,8 +43,6 @@ by \code{as.numeric(OneStageDesign)})}
 \item{d}{object of class \code{OneStageDesign}}
 
 \item{x1}{stage-one outcome}
-
-\item{rounded}{can be ignored here}
 
 \item{s}{an object of class \code{SmoothnessN2}}
 

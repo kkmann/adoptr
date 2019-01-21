@@ -16,6 +16,8 @@ test_that("Post processing yields to integer sample sizes", {
     null        <- PointMassPrior(.0, 1)
     dichte_alt  <- function(x) dnorm(x, mean = .3, sd = .1)
     alternative <- ContinuousPrior(dichte_alt, c(-5, 5))
+    alternative <- condition(alternative, c(0, 5))
+
 
     dist <- Normal()
 

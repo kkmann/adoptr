@@ -42,13 +42,13 @@ make_fixed(x, ...)
 
 \S4method{update}{TwoStageDesign}(object, params, ...)
 
-n2(d, x1, rounded = F, ...)
+n2(d, x1, ...)
 
-\S4method{n2}{TwoStageDesign,numeric}(d, x1, rounded = F, ...)
+\S4method{n2}{TwoStageDesign,numeric}(d, x1, ...)
 
-n(d, x1, rounded = F, ...)
+n(d, x1, ...)
 
-\S4method{n}{TwoStageDesign,numeric}(d, x1, rounded = F, ...)
+\S4method{n}{TwoStageDesign,numeric}(d, x1, ...)
 
 c2(d, x1, ...)
 
@@ -58,7 +58,8 @@ scaled_integration_pivots(d, ...)
 
 \S4method{scaled_integration_pivots}{TwoStageDesign}(d, ...)
 
-\S4method{plot}{TwoStageDesign}(x, y = NULL, ..., k = 100)
+\S4method{plot}{TwoStageDesign}(x, y = NULL, rounded = T, ...,
+  k = 100)
 }
 \arguments{
 \item{...}{optional arguments depending on implementation}
@@ -88,9 +89,9 @@ by \code{as.numeric(design)})}
 
 \item{x1}{stage-one outcome}
 
-\item{rounded}{return rounded n2-values}
-
 \item{y}{not used}
+
+\item{rounded}{should n-values be rounded?}
 
 \item{k}{number of points to use for plotting}
 }
@@ -128,5 +129,7 @@ pivot points of the numeric integration rule [TODO: these are not available duri
 approximating the integral over x1.}
 
 \item{\code{tunable}}{named logical vector indicating whether corresponding slot is considered a tunable parameter}
+
+\item{\code{rounded}}{logical that indicates whether rounded n-values should be used}
 }}
 
