@@ -13,6 +13,7 @@
 #' @slot weights weights of conditional score values at x1_norm_pivots for
 #'     approximating the integral over x1.
 #' @slot tunable named logical vector indicating whether corresponding slot is considered a tunable parameter
+#' @slot rounded logical that indicates whether rounded n-values should be used
 #'
 #' @exportClass TwoStageDesign
 setClass("TwoStageDesign", representation(
@@ -23,7 +24,8 @@ setClass("TwoStageDesign", representation(
         c2_pivots = "numeric",
         x1_norm_pivots = "numeric",
         weights   = "numeric",
-        tunable   = "logical"
+        tunable   = "logical",
+        rounded   = "logical"
     ))
 
 
@@ -57,7 +59,7 @@ setMethod("TwoStageDesign", signature("numeric"),
         names(tunable) <- c("n1", "c1f", "c1e", "n2_pivots", "c2_pivots", "x1_norm_pivots", "weights", "tunable")
         new("TwoStageDesign", n1 = n1, c1f = c1f, c1e = c1e, n2_pivots = n2_pivots,
             c2_pivots = c2_pivots, x1_norm_pivots = x1_norm_pivots, weights = weights,
-            tunable = tunable)
+            tunable = tunable, rounded = FALSE)
 })
 
 
@@ -150,8 +152,11 @@ setGeneric("n2", function(d, x1, ...) standardGeneric("n2"))
 #' @rdname TwoStageDesign-class
 #' @export
 setMethod("n2", signature("TwoStageDesign", "numeric"),
-          function(d, x1, ...) ifelse(x1 < d@c1f | x1 > d@c1e, 0, 1) *
-              pmax(0, stats::approx(scaled_integration_pivots(d), d@n2_pivots, xout = x1, method = "linear", rule = 2)$y) )
+          function(d, x1, ...) {
+              res <- ifelse(x1 < d@c1f | x1 > d@c1e, 0, 1) *
+                  pmax(0, stats::approx(scaled_integration_pivots(d), d@n2_pivots, xout = x1, method = "linear", rule = 2)$y)
+              return(ifelse(d@rounded == T, round(res), res))
+})
 
 
 
@@ -161,7 +166,10 @@ setGeneric("n", function(d, x1, ...) standardGeneric("n"))
 
 #' @describeIn TwoStageDesign overall sample size given stage-one outcome
 #' @export
-setMethod("n", signature("TwoStageDesign", "numeric"), function(d, x1, ...) n2(d, x1, ...) + d@n1 )
+setMethod("n", signature("TwoStageDesign", "numeric"),
+          function(d, x1, ...)
+              n2(d, x1, ...) + ifelse(d@rounded == T, round(d@n1), d@n1)
+          )
 
 
 
@@ -214,24 +222,30 @@ setMethod("show", signature(object = "TwoStageDesign"),
 #' [TODO]
 #'
 #' @param y not used
+#' @param rounded should n-values be rounded?
 #' @param k number of points to use for plotting
 #'
 #' @rdname TwoStageDesign-class
 #' @export
 setMethod("plot", signature(x = "TwoStageDesign"),
-          function(x, y = NULL, ..., k = 100) {
+          function(x, y = NULL, rounded = T, ..., k = 100) {
+              if(rounded == T) {
+                  x@rounded = T
+                  x@n1 = round(x@n1)
+              }
               scores <- list(...)
               if (!all(sapply(scores, function(s) is(s, "ConditionalScore"))))
                   stop("optional arguments must be ConditionalScores")
               opts  <- graphics::par(mfrow = c(1, length(scores) + 2))
               x1    <- seq(x@c1f - (x@c1e - x@c1f)/5, x@c1e + (x@c1e - x@c1f)/5, length.out = k)
-              plot(x1, n(x, x1), 'l', ylim = c(0, 1.05 * max(n(x, x1))),
+              plot(x1, sapply(x1, function(z) n(x, z)), 'l',
+                   ylim = c(0, 1.05 * max(sapply(x1, function(z) n(x, z)))),
                    main = "Overall sample size", ylab = "")
               plot(x1, c2(x, x1), 'l', main = "Stage-two critical value", ylab = "")
               if (length(scores) > 0) {
                   for (i in 1:length(scores)) {
-                      plot(x1, evaluate(scores[[i]], x, x1), 'l', main = names(scores[i]),
-                           ylab = "")
+                      plot(x1, evaluate(scores[[i]], x, x1), 'l',
+                           main = names(scores[i]), ylab = "")
                   }
               }
               graphics::par(opts)
@@ -243,12 +257,17 @@ setMethod("plot", signature(x = "TwoStageDesign"),
 #'
 #' [TODO]
 #'
-#' @param object design object to plot
+#' @param object design object to summarize
+#' @param rounded should rounded n-values be used?
 #' @param ... optinal additional named UnconditionalScores
 #'
 #' @export
 setMethod("summary", signature("TwoStageDesign"),
-          function(object, ...) {
+          function(object, ..., rounded = T) {
+              if(rounded == T) {
+                  object@rounded = T
+                  object@n1 = round(object@n1)
+              }
               scores <- list(...)
               if (!all(sapply(scores, function(s) is(s, "UnconditionalScore"))))
                   stop("optional arguments must be UnconditionalScores")
@@ -265,10 +284,15 @@ setMethod("summary", signature("TwoStageDesign"),
 #' Print obejct of class TwoStageDesignSummary
 #'
 #' @param x object to print
+#' @param rounded should rounded n-values be used?
 #' @param ... unused
 #'
 #' @export
-print.TwoStageDesignSummary <- function(x, ...) {
+print.TwoStageDesignSummary <- function(x, ..., rounded = T) {
+    if(rounded == T) {
+        x$design@rounded = T
+        x$design@n1 = round(x$design@n1)
+    }
     cat("TwoStageDesign with:\n\r")
     cat(sprintf("     n1: %6.1f\n\r", x$design@n1))
     cat(sprintf("    c1f: %6.1f\n\r", x$design@c1f))

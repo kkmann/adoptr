@@ -33,7 +33,7 @@ test_that("single point prior", {
 
     expect_equal(
         bounds(cprior),
-        c(.0, .5))
+        c(.001, .5))
 
     expect_equal(
         stats::integrate(

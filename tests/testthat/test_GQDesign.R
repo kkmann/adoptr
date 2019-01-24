@@ -61,7 +61,6 @@ test_that("Optimal design with point prior is computable", {
         d  <- update(design, x)
         evaluate(ess, d) + .0001*evaluate(smth, d)
     }
-    update(design, tunable_parameters(design))
 
     constraint <- function(x) {
         d  <- update(design, x)

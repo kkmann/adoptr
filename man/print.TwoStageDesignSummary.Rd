@@ -4,12 +4,14 @@
 \alias{print.TwoStageDesignSummary}
 \title{Print obejct of class TwoStageDesignSummary}
 \usage{
-\method{print}{TwoStageDesignSummary}(x, ...)
+\method{print}{TwoStageDesignSummary}(x, ..., rounded = T)
 }
 \arguments{
 \item{x}{object to print}
 
 \item{...}{unused}
+
+\item{rounded}{should rounded n-values be used?}
 }
 \description{
 Print obejct of class TwoStageDesignSummary

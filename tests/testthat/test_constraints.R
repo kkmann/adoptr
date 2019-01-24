@@ -5,7 +5,7 @@ context("constraint specifications                                            ")
 test_that("UnconditionalConstraints", {
 
     # create dummy design
-    design <- gq_design(25, 0, 2, rep(40.0, 5), rep( 1.96, 5), 5L)
+    design <- gq_design(25, 0, 2, rep(40.0, 5), rep(1.96, 5), 5L)
 
     # create power as IntegralScore
     pow <- integrate(ConditionalPower(Normal(two_armed=F), PointMassPrior(.4, 1)))
@@ -27,7 +27,7 @@ test_that("UnconditionalConstraints", {
 test_that("ConditionalConstraints", {
 
     # create dummy design
-    design <- gq_design(25, 0, 2, rep(40.0, 5), rep( 1.96, 5), 5L)
+    design <- gq_design(25, 0, 2, rep(40.0, 5), rep(1.96, 5), 5L)
 
     # create power as IntegralScore
     cp <- ConditionalPower(Normal(two_armed=F), PointMassPrior(.4, 1))
@@ -50,7 +50,7 @@ test_that("ConditionalConstraints", {
 test_that("ConditionalConstraints", {
 
     # create dummy design
-    design <- gq_design(25, 0, 2, rep(40.0, 5), rep( 1.96, 5), 5L)
+    design <- gq_design(25, 0, 2, rep(40.5, 5), rep(1.96, 5), 5L)
 
     # create power as IntegralScore
     cp <- ConditionalPower(Normal(two_armed=F), PointMassPrior(.4, 1))
@@ -61,5 +61,21 @@ test_that("ConditionalConstraints", {
             evaluate(subject_to(cp >= .6, cp >= .5), design)
         ),
         10)
+
+    # Compute conditional sample size
+    css <- ConditionalSampleSize(Normal(), PointMassPrior(.4, 1))
+
+    # Use non-rounded values
+    expect_equal(
+        evaluate(css, design, 1),
+        65.5
+    )
+
+    # Use rounded values
+    design@rounded <- TRUE
+    expect_equal(
+        evaluate(css, design, 1),
+        65.0
+    )
 
 })
