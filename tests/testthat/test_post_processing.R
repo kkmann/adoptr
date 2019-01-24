@@ -5,18 +5,18 @@ test_that("Post processing yields to integer sample sizes", {
     order <- 5L # must be integer!
 
     design <- gq_design(
-        n1 = 100,
+        n1  = 100,
         c1f = 0,
         c1e = 2,
-        n2 = 10 * log(seq(600.0, 100.0, length.out = order)), #use something not too smooth
-        c2 = rep( 1.96, order),
+        n2  = 10 * log(seq(600.0, 100.0, length.out = order)), #use something not too smooth
+        c2  = rep( 1.96, order),
         order = order)
 
     # Try a continuous prior
     null        <- PointMassPrior(.0, 1)
-    dichte_alt  <- function(x) dnorm(x, mean = .3, sd = .1)
-    alternative <- ContinuousPrior(dichte_alt, c(-5, 5))
-    alternative <- condition(alternative, c(0, 5))
+    dichte_alt  <- function(x) dnorm(x, mean = .4, sd = .1)
+    alternative <- ContinuousPrior(dichte_alt, c(-.5, 1.5))
+    alternative <- condition(alternative, c(0, 1.5))
 
 
     dist <- Normal(two_armed = F)
@@ -32,15 +32,15 @@ test_that("Post processing yields to integer sample sizes", {
     #compute optimal design
     suppressWarnings( # suppress that initial design is infeasible
     minimize(
-        objective = ess + 0.00001*smth,
+        objective = ess + 0.000001*smth,
         subject_to(
             pow  >= 0.8,
             toer <= .025
         ),
         initial_design = design,
-        lower_boundary_design = update(design, c(10, -2, 1, numeric(order) + 10, numeric(order) - 2)),
+        lower_boundary_design = update(design, c(10, -1, 2, numeric(order) + 10, numeric(order) - 2)),
         upper_boundary_design = update(design, c(500, 2, 4, numeric(order) + 500, numeric(order) + 3)),
-        c2_monotone = F,
+        c2_monotone  = F,
         post_process = T,
         opts = list(algorithm   = "NLOPT_LN_COBYLA",
                     xtol_rel    = 1e-4,
