@@ -22,7 +22,7 @@ minimize <- function(objective, subject_to, initial_design,
                      opts = list(
                          algorithm   = "NLOPT_LN_COBYLA",
                          xtol_rel    = 1e-4,
-                         maxeval     = 2500
+                         maxeval     = 5000
                      ), ...) {
 
         f_obj <- function(params) evaluate(objective, update(initial_design, params))

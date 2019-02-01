@@ -300,7 +300,7 @@ print.TwoStageDesignSummary <- function(x, ..., rounded = T) {
     if (length(x$scores) > 0) {
         cat("Unconditional scores:\n\r")
         for (i in 1:length(x$scores)) {
-            cat(sprintf("    %s: %7.2f\n\r", names(x$scores)[i], x$scores[i]))
+            cat(sprintf("    %s: %7.3f\n\r", names(x$scores)[i], x$scores[i]))
         }
         cat("\n\r")
     }
