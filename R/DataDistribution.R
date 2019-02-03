@@ -84,18 +84,24 @@ Normal <- function(two_armed = TRUE) new("Normal", two_armed = two_armed)
 #' @rdname NormalDataDistribution-class
 #' @export
 setMethod("probability_density_function", signature("Normal", "numeric", "numeric", "numeric"),
-          function(dist, x, n, theta, ...) stats::dnorm(x, mean = sqrt(n) *
-                                                            ifelse(dist@two_armed == T, theta / sqrt(2), theta),
-                                                        sd = 1)
+          function(dist, x, n, theta, ...)
+              apply(cbind(x, n, theta), 1, function(y)
+                  stats::dnorm(y[1], mean = sqrt(y[2]) *
+                                   ifelse(dist@two_armed == T, y[3] / sqrt(2), y[3]),
+                               sd = 1)
+              )
           )
 
 
 #' @rdname NormalDataDistribution-class
 #' @export
 setMethod("cumulative_distribution_function", signature("Normal", "numeric", "numeric", "numeric"),
-          function(dist, x, n, theta, ...) stats::pnorm(x, mean = sqrt(n) *
-                                                            ifelse(dist@two_armed == T, theta / sqrt(2), theta),
-                                                        sd = 1)
+          function(dist, x, n, theta, ...)
+              apply(cbind(x, n, theta), 1, function(y)
+                  stats::pnorm(y[1], mean = sqrt(y[2]) *
+                                   ifelse(dist@two_armed == T, y[3] / sqrt(2), y[3]),
+                               sd = 1)
+              )
           )
 
 
@@ -104,8 +110,10 @@ setMethod("cumulative_distribution_function", signature("Normal", "numeric", "nu
 #' @rdname NormalDataDistribution-class
 #' @export
 setMethod("quantile", signature("Normal"),
-          function(dist, x, probs, n, theta, ...) stats::qnorm(probs, mean = sqrt(n) *
-                                                                   ifelse(dist@two_armed == T, theta / sqrt(2), theta),
-                                                               sd = 1)
-
+          function(dist, x, probs, n, theta, ...)
+              apply(cbind(probs, n, theta), 1, function(y)
+                  stats::qnorm(y[1], mean = sqrt(y[2]) *
+                                   ifelse(dist@two_armed == T, y[3] / sqrt(2), y[3]),
+                               sd = 1)
+              )
           )

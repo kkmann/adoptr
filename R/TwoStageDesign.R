@@ -153,9 +153,11 @@ setGeneric("n2", function(d, x1, ...) standardGeneric("n2"))
 #' @export
 setMethod("n2", signature("TwoStageDesign", "numeric"),
           function(d, x1, ...) {
-              res <- ifelse(x1 < d@c1f | x1 > d@c1e, 0, 1) *
-                  pmax(0, stats::approx(scaled_integration_pivots(d), d@n2_pivots, xout = x1, method = "linear", rule = 2)$y)
-              return(ifelse(d@rounded == T, round(res), res))
+              sapply(x1, function(x1) {
+                  res <- ifelse(x1 < d@c1f | x1 > d@c1e, 0, 1) *
+                      pmax(0, stats::approx(scaled_integration_pivots(d), d@n2_pivots, xout = x1, method = "linear", rule = 2)$y)
+                  return(ifelse(d@rounded == T, round(res), res))
+              })
 })
 
 

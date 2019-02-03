@@ -70,10 +70,10 @@ setMethod("condition", signature("ContinuousPrior", "numeric"),
         if (diff(interval) < 0)
             stop("interval[2] must be larger or equal to interval[1]")
         # Update interval
-        while(dist@pdf(interval[1]) < .Machine$double.eps^2) {
+        while(dist@pdf(interval[1]) < .Machine$double.eps) {
             interval[1] <- interval[1] + .001
         }
-        while(dist@pdf(interval[2]) < .Machine$double.eps^2) {
+        while(dist@pdf(interval[2]) < .Machine$double.eps) {
             interval[2] <- interval[2] - .001
         }
         # compute new normalizing constant
