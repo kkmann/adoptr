@@ -2,7 +2,7 @@
 % Please edit documentation in R/TwoStageDesign.R
 \name{print.TwoStageDesignSummary}
 \alias{print.TwoStageDesignSummary}
-\title{Print obejct of class TwoStageDesignSummary}
+\title{Print object of class TwoStageDesignSummary}
 \usage{
 \method{print}{TwoStageDesignSummary}(x, ..., rounded = T)
 }
@@ -14,5 +14,5 @@
 \item{rounded}{should rounded n-values be used?}
 }
 \description{
-Print obejct of class TwoStageDesignSummary
+Print object of class TwoStageDesignSummary
 }

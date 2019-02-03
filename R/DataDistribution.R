@@ -53,6 +53,17 @@ setMethod("cumulative_distribution_function", signature("DataDistribution", "num
 
 
 
+#' @describeIn DataDistribution sample from distribution given theta
+#'
+#' @param object design to simulate from
+#' @param nsim number of simulation runs
+#' @param seed ranom seed
+#'
+#' @export
+setMethod("simulate", signature("DataDistribution", "numeric"),
+          function(object, nsim, n, theta, seed = NULL, ...) stop("not implemented"))
+
+
 
 
 #' Normal data distribution
@@ -114,4 +125,25 @@ setMethod("quantile", signature("Normal"),
                   theta <- theta / sqrt(2)
               }
               stats::qnorm(probs, mean = sqrt(n) * theta, sd = 1)
+          })
+
+
+
+#' @rdname NormalDataDistribution-class
+#'
+#' @param object design to simulate from
+#' @param nsim number of simulation runs
+#' @param seed random seed
+#'
+#' @export
+setMethod("simulate", signature("Normal", "numeric"),
+          function(object, nsim, n, theta, seed = NULL, ...) {
+              fct <- 1
+              if (object@two_armed)
+                  fct <- 1 / sqrt(2)
+
+              if (!is.null(seed))
+                  set.seed(seed)
+
+              stats::rnorm(nsim, mean = fct * sqrt(n) * theta, sd = 1)
           })

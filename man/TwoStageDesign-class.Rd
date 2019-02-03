@@ -21,6 +21,7 @@
 \alias{scaled_integration_pivots}
 \alias{scaled_integration_pivots,TwoStageDesign-method}
 \alias{plot,TwoStageDesign-method}
+\alias{simulate,TwoStageDesign,numeric-method}
 \title{Two-stage designs}
 \usage{
 TwoStageDesign(...)
@@ -60,6 +61,9 @@ scaled_integration_pivots(d, ...)
 
 \S4method{plot}{TwoStageDesign}(x, y = NULL, rounded = T, ...,
   k = 100)
+
+\S4method{simulate}{TwoStageDesign,numeric}(object, nsim, dist, theta,
+  seed = NULL, ...)
 }
 \arguments{
 \item{...}{optional arguments depending on implementation}
@@ -94,6 +98,14 @@ by \code{as.numeric(design)})}
 \item{rounded}{should n-values be rounded?}
 
 \item{k}{number of points to use for plotting}
+
+\item{nsim}{number of simulation runs}
+
+\item{dist}{data distribution}
+
+\item{theta}{location parameter of the data distribution}
+
+\item{seed}{random seed}
 }
 \description{
 [ToDo]
@@ -106,6 +118,8 @@ by \code{as.numeric(design)})}
 
 \item \code{scaled_integration_pivots}: get the actual pivots points (knots) of the numerical integration routine
 rule.
+
+\item \code{simulate}: simulate from the given design under parameter theta.
 }}
 
 \section{Slots}{

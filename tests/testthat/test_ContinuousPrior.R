@@ -81,7 +81,7 @@ test_that("conditioning on c(0, .5) leads to correct bounds", {
 
     prior_cond <<- condition(prior, c(.0, .5))
     expect_equal(
-        c(0, .5),
+        c(0.001, .5),
         bounds(prior_cond)
     )
 
@@ -179,13 +179,13 @@ test_that("increased n lets posterior expectation converge", {
 
     post_expectations <- sapply(posteriors, function(x) expectation(x, identity))
 
-    expect_all( # sequence of posterior expectation should converge to true theta .5
-        diff(abs(post_expectations - .5)) < 0
+    expect_true( # sequence of posterior expectation should converge to true theta .5
+        all(diff(abs(post_expectations - .5)) < 0)
     )
 
     # two-arm case
     n1 <- c(10, 20, 33, 250)
-    x1 <- .5 * sqrt(n1) # TODO: probably wrong...
+    x1 <- .5 * sqrt(n1) / sqrt(2)
     normal <- Normal(two_armed = TRUE)
     posteriors <- list()
     for (i in 1:length(n1)) {
@@ -194,8 +194,8 @@ test_that("increased n lets posterior expectation converge", {
 
     post_expectations <- sapply(posteriors, function(x) expectation(x, identity))
 
-    expect_all( # sequence of posterior expectation should converge to true theta .5
-        diff(abs(post_expectations - .5)) < 0
+    expect_true( # sequence of posterior expectation should converge to true theta .5
+        all(diff(abs(post_expectations - .5)) < 0)
     )
 
 }) # end '"increased n lets posterior expectation converge"'

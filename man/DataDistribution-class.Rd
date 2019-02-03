@@ -8,9 +8,10 @@
 \alias{probability_density_function,DataDistribution,numeric,numeric,numeric-method}
 \alias{cumulative_distribution_function}
 \alias{cumulative_distribution_function,DataDistribution,numeric,numeric,numeric-method}
+\alias{simulate,DataDistribution,numeric-method}
 \title{Data distributions}
 \usage{
-\S4method{quantile}{DataDistribution}(dist, x, probs, n, theta, ...)
+\S4method{quantile}{DataDistribution}(x, probs, n, theta, ...)
 
 probability_density_function(dist, x, n, theta, ...)
 
@@ -23,10 +24,11 @@ cumulative_distribution_function(dist, x, n, theta, ...)
 
   \S4method{cumulative_distribution_function}{DataDistribution,numeric,numeric,numeric}(dist,
   x, n, theta, ...)
+
+\S4method{simulate}{DataDistribution,numeric}(object, nsim, n, theta,
+  seed = NULL, ...)
 }
 \arguments{
-\item{dist}{data distribution object}
-
 \item{x}{outcome}
 
 \item{probs}{numeric vector of probabilities}
@@ -36,6 +38,14 @@ cumulative_distribution_function(dist, x, n, theta, ...)
 \item{theta}{distribution parameter}
 
 \item{...}{further optional arguments}
+
+\item{dist}{data distribution object}
+
+\item{object}{design to simulate from}
+
+\item{nsim}{number of simulation runs}
+
+\item{seed}{ranom seed}
 }
 \description{
 \code{DataDistribution} is an abstract class used to represent the distribution
@@ -62,6 +72,8 @@ sample size and parameter; must be implemented.
 
 \item \code{cumulative_distribution_function}: cumulative distribution function given outcome,
 sample size and parameter; must be implemented.
+
+\item \code{simulate}: sample from distribution given theta
 }}
 
 \section{Slots}{

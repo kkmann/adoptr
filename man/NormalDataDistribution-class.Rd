@@ -7,6 +7,7 @@
 \alias{probability_density_function,Normal,numeric,numeric,numeric-method}
 \alias{cumulative_distribution_function,Normal,numeric,numeric,numeric-method}
 \alias{quantile,Normal-method}
+\alias{simulate,Normal,numeric-method}
 \title{Normal data distribution}
 \usage{
 Normal(two_armed = TRUE)
@@ -19,7 +20,10 @@ Normal(two_armed = TRUE)
   \S4method{cumulative_distribution_function}{Normal,numeric,numeric,numeric}(dist,
   x, n, theta, ...)
 
-\S4method{quantile}{Normal}(dist, x, probs, n, theta, ...)
+\S4method{quantile}{Normal}(x, probs, n, theta, ...)
+
+\S4method{simulate}{Normal,numeric}(object, nsim, n, theta, seed = NULL,
+  ...)
 }
 \arguments{
 \item{two_armed}{s. slot}
@@ -35,6 +39,12 @@ Normal(two_armed = TRUE)
 \item{...}{further optional arguments}
 
 \item{probs}{vector of probabilities}
+
+\item{object}{design to simulate from}
+
+\item{nsim}{number of simulation runs}
+
+\item{seed}{random seed}
 }
 \description{
 Implements a normal data distribution for z-values given an observed z-value

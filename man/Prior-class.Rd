@@ -28,7 +28,8 @@ posterior(dist, prior, x1, n1, ...)
 
 \item{...}{further optional parameters}
 
-\item{f}{a function of the single model parameter}
+\item{f}{a function of the single model parameter, must be vectorized, i.e.
+accept a vector of paramter values and return the vector of function values.}
 
 \item{interval}{length two numeric vector giving the parameter interval to
 condition on}
