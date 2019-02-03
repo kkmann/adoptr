@@ -2,7 +2,7 @@ context("PointMassPrior                                                       ")
 
 test_that("single point prior", {
 
-    dist <- Normal()
+    dist <- Normal(two_armed=F)
 
     prior <- PointMassPrior(.0, 1.0)
 
@@ -70,7 +70,7 @@ test_that("single point prior", {
 
 test_that("multiple points prior", {
 
-    dist <- Normal()
+    dist <- Normal(two_armed=F)
 
     prior <- PointMassPrior(c(.0, .5), c(.5, .5))
 

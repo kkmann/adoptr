@@ -22,7 +22,8 @@ setClass("OneStageDesign",  contains = "TwoStageDesign")
 #' @export
 OneStageDesign <- function(n, c) {
     new("OneStageDesign", n1 = n, c1f = c, c1e = c, n2_pivots = 0,
-    c2_pivots = NaN, x1_norm_pivots = NaN, weights = NaN)
+    c2_pivots = NaN, x1_norm_pivots = NaN, weights = NaN,
+    tunable = rep(TRUE, 2), rounded = FALSE)
 }
 
 
@@ -56,7 +57,9 @@ setMethod("update", signature("OneStageDesign"),
             n2_pivots    = 0,
             c2_pivots      = NaN,
             x1_norm_pivots = NaN,
-            weights = NaN)
+            weights = NaN,
+            tunable = rep(TRUE, 2),
+            rounded = F)
     })
 
 

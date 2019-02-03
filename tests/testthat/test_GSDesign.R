@@ -31,7 +31,7 @@ test_that("Optimal group-sequential design with point prior is computable", {
     null        <- PointMassPrior(.0, 1)
     alternative <- PointMassPrior(.4, 1)
 
-    dist <- Normal()
+    dist <- Normal(two_armed = F)
 
     ess  <- integrate(ConditionalSampleSize(dist, alternative))
     cp   <- ConditionalPower(dist, alternative)

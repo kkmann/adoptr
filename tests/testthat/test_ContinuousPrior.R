@@ -126,7 +126,7 @@ test_that("conditional unif on c(0, .5) has lower expected value than unconditio
 
 test_that("posterior pdf integrates to 1", {
 
-    delta <- 2
+    delta <- .5
     x1    <- delta * sqrt(n1)
     post  <<- posterior(normal, unif, x1, n1)
 
@@ -163,3 +163,26 @@ test_that("observing positive z value in normal model results in larger expected
     )
 
 }) # end 'observing positive z value in normal model results in larger expected value for posterior'
+
+
+
+test_that("increased n lets posterior expectation converge", {
+
+    n1 <- c(10, 20, 33)
+    x1 <- .5 * sqrt(n1)
+
+    posteriors <- list()
+    for (i in 1:length(n1)) {
+        posteriors[[i]] <- posterior(normal, unif, n1[i], x1[i])
+    }
+
+    post_expectations <- sapply(posteriors, function(x) expectation(x, identity))
+
+    expect_all( # sequence of posterior expectation should converge to true theta .5
+        diff(abs(post_expectations - .5)) < 0
+    )
+
+    # TODO: must also work for up to n1 = 100
+    # TODO: add test case for two_arm = FALSE!
+
+}) # end '"increased n lets posterior expectation converge"'

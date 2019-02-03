@@ -9,10 +9,20 @@
 #' approximation of a binary endpoint.
 #' Currently, only the normal case is implemented with \code{\link{Normal-class}}.
 #'
+#' The logical option \code{two_armed} allows to decide whether a one-arm or
+#' a two-arm (the default) design should be computed. In the case of a two-arm
+#' design the function \code{\link{plot}} and \code{\link{summary}} describe
+#' the sample size per group.
+#'
+#' @slot two_armed Should a two-armed design be used?
+#'
 #' @template DataDistributionTemplate
 #'
 #' @exportClass DataDistribution
-setClass("DataDistribution")
+setClass("DataDistribution", representation(
+    two_armed = "logical")
+)
+
 
 #' @param probs numeric vector of probabilities
 #' @describeIn DataDistribution quantile function of the respective distribution.
@@ -51,6 +61,8 @@ setMethod("cumulative_distribution_function", signature("DataDistribution", "num
 #' and stage size.
 #' Standard deviation is 1 and mean \eqn{\theta\sqrt n} where
 #' \eqn{\theta} is the standardized effect size.
+#' The option \code{two_armed} can be set to decide whether a one-arm or a
+#' two-arm design should be computed.
 #' See \code{\link{DataDistribution-class}} for more details.
 #'
 #' @template DataDistributionTemplate
@@ -58,30 +70,48 @@ setMethod("cumulative_distribution_function", signature("DataDistribution", "num
 #' @rdname NormalDataDistribution-class
 #' @exportClass Normal
 setClass("Normal", representation(
-    dummy = "logical" # needed to make this non-abstract
+    two_armed = "logical"
     ),
     contains = "DataDistribution")
 
-
+#' @param two_armed s. slot
+#'
 #' @rdname NormalDataDistribution-class
 #' @export
-Normal <- function() new("Normal", dummy = FALSE)
+Normal <- function(two_armed = TRUE) new("Normal", two_armed = two_armed)
 
 
 #' @rdname NormalDataDistribution-class
 #' @export
 setMethod("probability_density_function", signature("Normal", "numeric", "numeric", "numeric"),
-          function(dist, x, n, theta, ...) stats::dnorm(x, mean = sqrt(n) * theta, sd = 1) )
+          function(dist, x, n, theta, ...) {
+              if (dist@two_armed) {
+                  theta <- theta / sqrt(2)
+              }
+              stats::dnorm(x, mean = sqrt(n) * theta, sd = 1)
+          })
+
 
 
 #' @rdname NormalDataDistribution-class
 #' @export
 setMethod("cumulative_distribution_function", signature("Normal", "numeric", "numeric", "numeric"),
-          function(dist, x, n, theta, ...) stats::pnorm(x, mean = sqrt(n) * theta, sd = 1) )
+          function(dist, x, n, theta, ...) {
+              if (dist@two_armed) {
+                  theta <- theta / sqrt(2)
+              }
+              stats::pnorm(x, mean = sqrt(n) * theta, sd = 1)
+          })
+
 
 
 #' @param probs vector of probabilities
 #' @rdname NormalDataDistribution-class
 #' @export
 setMethod("quantile", signature("Normal"),
-          function(x, probs, n, theta, ...) stats::qnorm(probs, mean = sqrt(n) * theta, sd = 1) )
+          function(x, probs, n, theta, ...) { # must be x to conform with generic
+              if (x@two_armed) {
+                  theta <- theta / sqrt(2)
+              }
+              stats::qnorm(probs, mean = sqrt(n) * theta, sd = 1)
+          })
