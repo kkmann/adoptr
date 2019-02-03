@@ -184,6 +184,18 @@ test_that("increased n lets posterior expectation converge", {
     )
 
     # two-arm case
-    # TODO:
+    n1 <- c(10, 20, 33, 250)
+    x1 <- .5 * sqrt(n1) # TODO: probably wrong...
+    normal <- Normal(two_armed = TRUE)
+    posteriors <- list()
+    for (i in 1:length(n1)) {
+        posteriors[[i]] <- posterior(normal, prior, x1[i], n1[i])
+    }
+
+    post_expectations <- sapply(posteriors, function(x) expectation(x, identity))
+
+    expect_all( # sequence of posterior expectation should converge to true theta .5
+        diff(abs(post_expectations - .5)) < 0
+    )
 
 }) # end '"increased n lets posterior expectation converge"'
