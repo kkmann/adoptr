@@ -1,43 +1,29 @@
-context("Test ConditionalSampleSize                                          ")
+context("test sample size")
 
 test_that("conditional sample size maps to actual sample size", {
 
-    design <- gq_design(25, 0, 2, rep(40.0, 5), rep( 1.96, 5), 5L)
+    design <- gq_design(25, 0, 2, rep(40.0, 5), rep( 2, 5), 5L)
+    dist   <- Normal()
+    z1     <- seq(-1, 3, .1)
+    prior  <- ContinuousPrior(function(x) rep(1/10, length(x)), c(-4, 6))
 
-    dist <- Normal()
-    z1   <- seq(-1, 3, .1)
-
-    null        <- PointMassPrior(.0, 1)
-    alternative <- PointMassPrior(.6, 1)
-
-    css0 <- ConditionalSampleSize(dist, null)
-    css1 <- ConditionalSampleSize(dist, alternative)
+    css    <<- ConditionalSampleSize(dist, prior)
 
     expect_equal(
-        evaluate(css0, design, z1),
-        n(design, z1))
+        evaluate(css, design, z1),
+        n(design, z1)
+    )
 
+}) # end 'conditional sample size maps to actual sample size'
+
+
+
+test_that("expected sample size works", {
+
+    ess <- integrate(css)
     expect_equal(
-        evaluate(css0, design, z1),
-        evaluate(css1, design, z1))
+        evaluate(ess, design),
 
-    # basic checks on integral score
-    ess0 <- integrate(css0)
-    ess1 <- integrate(css1)
-
-    expect_gt(
-        evaluate(ess0, design),
-        evaluate(ess1, design)
-    )
-
-    expect_gt(
-        n(design, 1),
-        evaluate(ess1, design)
-    )
-
-    expect_gt(
-        evaluate(ess1, design),
-        design@n1
     )
 
 })
