@@ -26,7 +26,8 @@ setGeneric("bounds", function(dist, ...) standardGeneric("bounds"))
 #'     depending on only the parameter value with respect to the prior
 #'     distribution \code{dist}.
 #'
-#' @param f a function of the single model parameter
+#' @param f a function of the single model parameter, must be vectorized, i.e.
+#'     accept a vector of paramter values and return the vector of function values.
 #'
 #' @rdname Prior-class
 #' @export

@@ -154,9 +154,20 @@ setGeneric("n2", function(d, x1, ...) standardGeneric("n2"))
 setMethod("n2", signature("TwoStageDesign", "numeric"),
           function(d, x1, ...) {
               res <- ifelse(x1 < d@c1f | x1 > d@c1e, 0, 1) *
-                  pmax(0, stats::approx(scaled_integration_pivots(d), d@n2_pivots, xout = x1, method = "linear", rule = 2)$y)
-              return(ifelse(d@rounded == T, round(res), res))
-})
+                  pmax(
+                      0,
+                      stats::approx(
+                          scaled_integration_pivots(d),
+                          d@n2_pivots,
+                          xout   = x1,
+                          method = "linear",
+                          rule   = 2
+                      )$y
+                  )
+              if (d@rounded)
+                  res <- round(res)
+              return(res)
+          })
 
 
 
@@ -167,9 +178,12 @@ setGeneric("n", function(d, x1, ...) standardGeneric("n"))
 #' @describeIn TwoStageDesign overall sample size given stage-one outcome
 #' @export
 setMethod("n", signature("TwoStageDesign", "numeric"),
-          function(d, x1, ...)
-              n2(d, x1, ...) + ifelse(d@rounded == T, round(d@n1), d@n1)
-          )
+          function(d, x1, ...) {
+              res <- n2(d, x1, ...) + d@n1
+              if (d@rounded)
+                  res <- round(res)
+              return(res)
+          })
 
 
 
@@ -281,7 +295,7 @@ setMethod("summary", signature("TwoStageDesign"),
           })
 
 
-#' Print obejct of class TwoStageDesignSummary
+#' Print object of class TwoStageDesignSummary
 #'
 #' @param x object to print
 #' @param rounded should rounded n-values be used?
@@ -305,3 +319,41 @@ print.TwoStageDesignSummary <- function(x, ..., rounded = T) {
         cat("\n\r")
     }
 }
+
+
+
+#' @describeIn TwoStageDesign simulate from the given design under parameter theta.
+#'
+#' @param nsim number of simulation runs
+#' @param seed random seed
+#' @param dist data distribution
+#' @param theta location parameter of the data distribution
+#'
+#' @export
+setMethod("simulate", signature("TwoStageDesign", "numeric"),
+          function(object, nsim, dist, theta, seed = NULL, ...){
+              if (!is.null(seed))
+                  set.seed(seed)
+
+              res <- data.frame(
+                  theta  = rep(theta, nsim),
+                  n1     = object@n1,
+                  c1f    = object@c1f,
+                  c1e    = object@c1e
+              )
+
+              if (!(object@n1 == round(object@n1)))
+                  stop("n1 must be integer")
+
+              res$x1     <- simulate(dist, nsim = nsim, n = res$n1, theta = theta)
+              res$n2     <- n2(object, res$x1)
+              res$c2     <- c2(object, res$x1)
+
+              if (!all(res$n2 == round(res$n2)))
+                  stop("n2 must be integer")
+
+              res$x2     <- simulate(dist, nsim = nsim, n = res$n2, theta = theta)
+              res$reject <- res$x2 > res$c2 # check > vs. >=
+
+              return(res)
+          })

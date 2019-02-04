@@ -7,7 +7,7 @@
 #'
 #' @slot pdf function the actual probability density function , only called
 #'     in the interior of support therefore need not be set to zero outside of
-#'     support. [TODO: expose via pdf(prior, theta)!]
+#'     support. Must be vectorized! [TODO: expose via pdf(prior, theta)!]
 #' @slot support numeric vector of length two with the bounds of the compact
 #'     interval on which the pdf is positive.
 #'     The restriction to compact support simplifies numerical integration.
@@ -120,13 +120,17 @@ setMethod("predictive_cdf", signature("DataDistribution", "ContinuousPrior", "nu
 #' @rdname ContinuousPrior-class
 #' @export
 setMethod("posterior", signature("DataDistribution", "ContinuousPrior", "numeric"),
-    function(dist, prior, x1, n1, ...) { # careful, assumed null hypothesis = 0
+    function(dist, prior, x1, n1, ...) {
         if (length(x1) != 1)
             stop("no vectorized version in x1")
-        prop_pdf <- function(theta) probability_density_function(dist, x1, n1, theta) * prior@pdf(theta)
-        z <- stats::integrate(prop_pdf, prior@support[1], prior@support[2], abs.tol = .00001)$value
+        prop_pdf <- function(theta) {
+            probability_density_function(dist, x1, n1, theta) * prior@pdf(theta)
+        }
+        z <- stats::integrate(
+            prop_pdf, prior@support[1], prior@support[2], abs.tol = .00001
+        )$value
         ContinuousPrior(
-            function(theta) prop_pdf(theta)/z,
+            function(theta) prop_pdf(theta) / z,
             prior@support
         )
     })

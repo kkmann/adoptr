@@ -27,7 +27,7 @@ setClass("DataDistribution", representation(
 #' @param probs numeric vector of probabilities
 #' @describeIn DataDistribution quantile function of the respective distribution.
 #' @export
-setMethod("quantile", signature("DataDistribution"), function(dist, x, probs, n, theta, ...) stop("not implemented"))
+setMethod("quantile", signature("DataDistribution"), function(x, probs, n, theta, ...) stop("not implemented"))
 
 
 #' @rdname DataDistribution-class
@@ -51,6 +51,17 @@ setGeneric("cumulative_distribution_function", function(dist, x, n, theta, ...) 
 setMethod("cumulative_distribution_function", signature("DataDistribution", "numeric", "numeric", "numeric"),
           function(dist, x, n, theta, ...) stop("not implemented"))
 
+
+
+#' @describeIn DataDistribution sample from distribution given theta
+#'
+#' @param object design to simulate from
+#' @param nsim number of simulation runs
+#' @param seed ranom seed
+#'
+#' @export
+setMethod("simulate", signature("DataDistribution", "numeric"),
+          function(object, nsim, n, theta, seed = NULL, ...) stop("not implemented"))
 
 
 
@@ -84,19 +95,24 @@ Normal <- function(two_armed = TRUE) new("Normal", two_armed = two_armed)
 #' @rdname NormalDataDistribution-class
 #' @export
 setMethod("probability_density_function", signature("Normal", "numeric", "numeric", "numeric"),
-          function(dist, x, n, theta, ...) stats::dnorm(x, mean = sqrt(n) *
-                                                            ifelse(dist@two_armed == T, theta / sqrt(2), theta),
-                                                        sd = 1)
-          )
+          function(dist, x, n, theta, ...) {
+              if (dist@two_armed) {
+                  theta <- theta / sqrt(2)
+              }
+              stats::dnorm(x, mean = sqrt(n) * theta, sd = 1)
+          })
+
 
 
 #' @rdname NormalDataDistribution-class
 #' @export
 setMethod("cumulative_distribution_function", signature("Normal", "numeric", "numeric", "numeric"),
-          function(dist, x, n, theta, ...) stats::pnorm(x, mean = sqrt(n) *
-                                                            ifelse(dist@two_armed == T, theta / sqrt(2), theta),
-                                                        sd = 1)
-          )
+          function(dist, x, n, theta, ...) {
+              if (dist@two_armed) {
+                  theta <- theta / sqrt(2)
+              }
+              stats::pnorm(x, mean = sqrt(n) * theta, sd = 1)
+          })
 
 
 
@@ -104,8 +120,30 @@ setMethod("cumulative_distribution_function", signature("Normal", "numeric", "nu
 #' @rdname NormalDataDistribution-class
 #' @export
 setMethod("quantile", signature("Normal"),
-          function(dist, x, probs, n, theta, ...) stats::qnorm(probs, mean = sqrt(n) *
-                                                                   ifelse(dist@two_armed == T, theta / sqrt(2), theta),
-                                                               sd = 1)
+          function(x, probs, n, theta, ...) { # must be x to conform with generic
+              if (x@two_armed) {
+                  theta <- theta / sqrt(2)
+              }
+              stats::qnorm(probs, mean = sqrt(n) * theta, sd = 1)
+          })
 
-          )
+
+
+#' @rdname NormalDataDistribution-class
+#'
+#' @param object design to simulate from
+#' @param nsim number of simulation runs
+#' @param seed random seed
+#'
+#' @export
+setMethod("simulate", signature("Normal", "numeric"),
+          function(object, nsim, n, theta, seed = NULL, ...) {
+              fct <- 1
+              if (object@two_armed)
+                  fct <- 1 / sqrt(2)
+
+              if (!is.null(seed))
+                  set.seed(seed)
+
+              stats::rnorm(nsim, mean = fct * sqrt(n) * theta, sd = 1)
+          })

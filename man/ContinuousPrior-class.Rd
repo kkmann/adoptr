@@ -71,7 +71,7 @@ For further details cf. \code{\link{Prior-class}}.
 \describe{
 \item{\code{pdf}}{function the actual probability density function , only called
 in the interior of support therefore need not be set to zero outside of
-support. [TODO: expose via pdf(prior, theta)!]}
+support. Must be vectorized! [TODO: expose via pdf(prior, theta)!]}
 
 \item{\code{support}}{numeric vector of length two with the bounds of the compact
 interval on which the pdf is positive.
