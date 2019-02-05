@@ -14,7 +14,7 @@ design <- gq_design(n1, c1f, c1e, n2_piv, c2_piv, order)
 null        <- PointMassPrior(.0, 1)
 alternative <- PointMassPrior(.4, 1)
 
-dist <- Normal(two_armed = F)
+dist <- Normal(two_armed = FALSE)
 
 ess  <- integrate(ConditionalSampleSize(dist, alternative))
 cp   <- ConditionalPower(dist, alternative)

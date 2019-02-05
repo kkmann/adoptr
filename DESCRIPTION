@@ -15,7 +15,8 @@ Suggests:
     knitr,
     rmarkdown,
     testthat,
-    covr
+    covr,
+    rpact
 Imports:
     nloptr,
     methods
