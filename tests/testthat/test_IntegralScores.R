@@ -67,10 +67,12 @@ test_that("Expected sample size is computed correctly",{
         res$expectedPatientsH0 / 2, # per group!
         evaluate(integrate(ConditionalSampleSize(dist, null)), design_gs),
         tolerance = 0.5)
+
     expect_equal(res$expectedPatientsH0 / 2,
                  evaluate(integrate(ConditionalSampleSize(dist, null)),
                           design_gs, specific = FALSE),
                  tolerance = 0.5)
+
     expect_equal(res$expectedPatientsH0 / 2,
                  mean(sim_null[, "n1"]) + mean(sim_null[,"n2"]),
                  tolerance = 0.5)
@@ -80,16 +82,18 @@ test_that("Expected sample size is computed correctly",{
 
 test_that("Power is computed correctly", {
     # Power
-    alternative <- PointMassPrior(.4, 1)
-    pow <- integrate(ConditionalPower(Normal(), alternative))
+    pow <- integrate(ConditionalPower(Normal(), PointMassPrior(.4, 1)))
+
     expect_equal(
         evaluate(pow, design_gs),
         .8,
         tolerance = .01)
+
     expect_equal(
         evaluate(pow, design_gs, specific = FALSE),
         .8,
         tolerance = .01)
+
     expect_equal(
         mean(sim_alt[, "reject"]),
         .8,
@@ -99,16 +103,18 @@ test_that("Power is computed correctly", {
 
 test_that("Type one error is computed correctly", {
     # Type one error
-    null <- PointMassPrior(.0, 1)
-    toer <- integrate(ConditionalPower(Normal(), null))
+    toer <- integrate(ConditionalPower(Normal(), PointMassPrior(.0, 1)))
+
     expect_equal(
         evaluate(toer, design_gs),
         .05,
         tolerance = .005)
+
     expect_equal(
         evaluate(toer, design_gs, specific = FALSE),
         .05,
         tolerance = .005)
+
     expect_equal(
         mean(sim_null[, "reject"]),
         .05,
