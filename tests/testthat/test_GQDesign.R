@@ -131,7 +131,7 @@ test_that("Optimal design is superior to standard GS design", {
                                             futilityBounds = 0,
                                             typeOfDesign = "P")
 
-    res       <- rpact::getSampleSizeMeans(design_rp, normalApproximation = T,
+    res       <- rpact::getSampleSizeMeans(design_rp, normalApproximation = TRUE,
                                            alternative = .3)
 
     char      <- rpact::getDesignCharacteristics(design_rp)

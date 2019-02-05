@@ -53,7 +53,7 @@ test_that("Expected sample size is computed correctly",{
 
     expect_equal(res$expectedPatientsH1 / 2,
                  evaluate(integrate(ConditionalSampleSize(dist, alternative)),
-                          design_gs, specific = F),
+                          design_gs, specific = FALSE),
                  tolerance = 0.5)
 
     expect_equal(res$expectedPatientsH1 / 2,
@@ -68,7 +68,7 @@ test_that("Expected sample size is computed correctly",{
         tolerance = 0.5)
     expect_equal(res$expectedPatientsH0 / 2,
                  evaluate(integrate(ConditionalSampleSize(dist, null)),
-                          design_gs, specific = F),
+                          design_gs, specific = FALSE),
                  tolerance = 0.5)
     expect_equal(res$expectedPatientsH0 / 2,
                  mean(sim_null[, "n1"]) + mean(sim_null[,"n2"]),
@@ -85,7 +85,7 @@ test_that("Power is computed correctly", {
         .8,
         tolerance = .01)
     expect_equal(
-        evaluate(pow, design_gs, specific = F),
+        evaluate(pow, design_gs, specific = FALSE),
         .8,
         tolerance = .01)
     expect_equal(
@@ -103,7 +103,7 @@ test_that("Type one error is computed correctly", {
         .05,
         tolerance = .005)
     expect_equal(
-        evaluate(toer, design_gs, specific = F),
+        evaluate(toer, design_gs, specific = FALSE),
         .05,
         tolerance = .005)
     expect_equal(
