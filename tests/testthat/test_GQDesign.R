@@ -127,14 +127,19 @@ test_that("Optimal design with point prior is computable", {
 test_that("Optimal design is superior to standard GS design", {
 
     # Create design from rpact
-    design_rp <- rpact::getDesignInverseNormal(kMax = 2, alpha = 0.025, beta = 0.2,
-                                            futilityBounds = 0,
-                                            typeOfDesign = "P")
+    design_rp <- rpact::getDesignInverseNormal(
+        kMax = 2,
+        alpha = 0.025,
+        beta = 0.2,
+        futilityBounds = 0,
+        typeOfDesign = "P"
+    )
 
-    res       <- rpact::getSampleSizeMeans(design_rp, normalApproximation = TRUE,
-                                           alternative = .3)
+    res <- rpact::getSampleSizeMeans(
+        design_rp, normalApproximation = TRUE, alternative = .3
+    )
 
-    char      <- rpact::getDesignCharacteristics(design_rp)
+    char <- rpact::getDesignCharacteristics(design_rp)
 
     n1 <- res$numberOfPatientsGroup1[1,]
     n2 <- res$numberOfPatientsGroup1[2,]
@@ -155,12 +160,14 @@ test_that("Optimal design is superior to standard GS design", {
     h <- (c1e - c1f) / 2
     x <- h * x + (h + c1f)
 
-    design_gs <- gq_design(ceiling(n1),
-                           c1f,
-                           c1e,
-                           rep(ceiling(n2), 5),
-                           sapply(seq(c1f, c1e, length.out = 5), f),
-                           5L)
+    design_gs <- gq_design(
+        ceiling(n1),
+        c1f,
+        c1e,
+        rep(ceiling(n2), 5),
+        sapply(seq(c1f, c1e, length.out = 5), f),
+        5L
+    )
 
     # Define key figures
     ess   <- integrate(ConditionalSampleSize(Normal(), PointMassPrior(.3, 1)))
