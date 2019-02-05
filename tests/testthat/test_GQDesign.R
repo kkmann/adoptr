@@ -162,6 +162,12 @@ test_that("Optimal design is superior to standard GS design", {
                            sapply(seq(c1f, c1e, length.out = 5), f),
                            5L)
 
+    # Define key figures
+    ess   <- integrate(ConditionalSampleSize(Normal(), PointMassPrior(.3, 1)))
+    pow   <- integrate(ConditionalPower(Normal(), PointMassPrior(.3, 1)))
+    toer  <- integrate(ConditionalPower(Normal(), PointMassPrior(.0, 1)))
+
+
     expect_gt(
         evaluate(ess, design_gs),
         evaluate(ess, d2)
