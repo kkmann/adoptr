@@ -39,7 +39,12 @@ test_that("plausible n2() function", {
         )
     )
 
-    expect_known_value(optimal_design, file = "known_values/optimal_design_case_01.rds")
+    expect_known_value(
+        optimal_design,
+        file      = "known_values/optimal_design_case_01.rds",
+        update    = FALSE,
+        tolerance = .001 # 6 minutes of iterations ...
+    )
 
 }) # end 'plausible n2() function'
 
