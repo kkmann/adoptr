@@ -50,12 +50,10 @@ test_that("Conditional Power is monotonous", {
     design2 <- gq_design(25, 0, 2, rep(60.0, 5), seq(2.0, 0.0, length.out = 5), 5L)
 
     dist <- Normal()
-    z1   <- seq(-1, 3, .1)
-
     null        <- PointMassPrior(.0, 1)
     alternative <- PointMassPrior(.4, 1)
 
-    cp <- ConditionalPower(dist, alternative)
+    cp <<- ConditionalPower(dist, alternative)
 
     # Conditional Power is monotonously increasing in n
     expect_gt(evaluate(cp, design2, 1),
@@ -80,15 +78,18 @@ test_that("Conditional power has correct values outside continuation region",{
 }) # end 'Conditional power has correct values outside continuation region'
 
 
-Context("Test vectorization")
+context("Test vectorization")
 
 test_that("Conditional scores are vectorized in z1", {
+    design <- gq_design(25, 0, 2, rep(40.0, 5), rep( 1.96, 5), 5L)
+    z1     <- seq(-1, 3, .1)
+
     expect_length(
         evaluate(css, design, z1),
         length(z1))
 
     expect_length(
-        evaluate(cp, design1, z1),
+        evaluate(cp, design, z1),
         length(z1))
 
 }) # end 'Conditional scores are vectorized in z1'

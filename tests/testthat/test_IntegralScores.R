@@ -6,23 +6,24 @@ test_that("Expected sample size is computed correctly",{
     dist <- Normal()
 
     # Define design from rpact
-    design <- rpact::getDesignInverseNormal(kMax = 2, alpha = 0.05, beta = 0.2,
-                                            futilityBounds = 0, typeOfDesign = "P")
-    res    <- rpact::getSampleSizeMeans(design, normalApproximation = TRUE,
+    design_rp2 <- rpact::getDesignInverseNormal(kMax = 2, alpha = 0.05,
+                                                beta = 0.2, futilityBounds = 0,
+                                                typeOfDesign = "P")
+    res    <- rpact::getSampleSizeMeans(design_rp2, normalApproximation = TRUE,
                                         alternative = .4)
-    char   <- rpact::getDesignCharacteristics(design)
+    char   <- rpact::getDesignCharacteristics(design_rp2)
 
     n1 <- res$numberOfPatientsGroup1[1,]
     n2 <- res$numberOfPatientsGroup1[2,]
 
     c1f <- qnorm(char$futilityProbabilities) +
         sqrt(res$numberOfPatientsGroup1[1]) * .4 / sqrt(2)
-    c1e <- design$criticalValues[1]
+    c1e <- design_rp2$criticalValues[1]
 
     f <- function(z){
         w1 <- 1 / sqrt(2)
         w2 <- sqrt(1 - w1^2)
-        out <- (design$criticalValues[2] - w1 * z) / w2
+        out <- (design_rp2$criticalValues[2] - w1 * z) / w2
         return(out)
     }
 
@@ -30,7 +31,7 @@ test_that("Expected sample size is computed correctly",{
     h <- (c1e - c1f) / 2
     x <- h * x + (h + c1f)
 
-    design_gs <- gq_design(round(n1),
+    design_gs <<- gq_design(round(n1),
                            c1f,
                            c1e,
                            rep(round(n2), 5),
@@ -79,7 +80,8 @@ test_that("Expected sample size is computed correctly",{
 
 test_that("Power is computed correctly", {
     # Power
-    pow <- integrate(ConditionalPower(dist, alternative))
+    alternative <- PointMassPrior(.4, 1)
+    pow <- integrate(ConditionalPower(Normal(), alternative))
     expect_equal(
         evaluate(pow, design_gs),
         .8,
@@ -97,7 +99,8 @@ test_that("Power is computed correctly", {
 
 test_that("Type one error is computed correctly", {
     # Type one error
-    toer <- integrate(ConditionalPower(dist, null))
+    null <- PointMassPrior(.0, 1)
+    toer <- integrate(ConditionalPower(Normal(), null))
     expect_equal(
         evaluate(toer, design_gs),
         .05,
