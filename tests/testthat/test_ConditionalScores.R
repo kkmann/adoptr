@@ -14,11 +14,6 @@ test_that("conditional sample size maps to actual sample size", {
         n(design, z1)
     )
 
-    # Check that conditional sample size is vectorized in z1
-    expect_length(
-        evaluate(css, design, z1),
-        length(z1))
-
 
 }) # end 'conditional sample size maps to actual sample size'
 
@@ -70,12 +65,11 @@ test_that("Conditional Power is monotonous", {
     expect_gt(evaluate(cp, design1, 1.5),
               evaluate(cp, design1, 0.5))
 
-    # Conditional Power is vectorized
-    expect_length(
-        evaluate(cp, design1, z1),
-        length(z1))
+}) # end "Conditional Power is monotonous"
 
-    # Test values outside continuation region equal 0 resp. 1
+
+
+test_that("Conditional power has correct values outside continuation region",{
     expect_equal(
         evaluate(cp, design1, -1),
         0)
@@ -83,5 +77,18 @@ test_that("Conditional Power is monotonous", {
     expect_equal(
         evaluate(cp, design1, 3),
         1)
+}) # end 'Conditional power has correct values outside continuation region'
 
-}) # end "Conditional Power is monotonous"
+
+Context("Test vectorization")
+
+test_that("Conditional scores are vectorized in z1", {
+    expect_length(
+        evaluate(css, design, z1),
+        length(z1))
+
+    expect_length(
+        evaluate(cp, design1, z1),
+        length(z1))
+
+}) # end 'Conditional scores are vectorized in z1'
