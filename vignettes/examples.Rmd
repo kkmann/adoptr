@@ -15,7 +15,7 @@ editor_options:
 knitr::opts_chunk$set(
   collapse  = TRUE,
   comment   = "#>",
-  fig.width = 8
+  fig.width = 8,
   eval = FALSE
 )
 ```
@@ -41,7 +41,7 @@ At first we specify the distribution of the data and that a two-armed trial
 is regarded
 
 ```{r normal distribution}
-dist <- Normal(two_armed = T)
+dist <- Normal(two_armed = TRUE)
 ```
 
 This distritbution will be used during the next examples. 
@@ -401,8 +401,36 @@ of 75\%.
 
 ```{r}
 cp <- ConditionalPower(dist, alternative)
-
 ```
+
+```{r, warning = F}
+minimize(
+    objective = ess + 1e-6*smth,
+    subject_to(
+        pow  >= 0.8,
+        toer <= 0.025,
+        cp   >= 0.75
+    ),
+    initial_design = design,
+    lower_boundary_design = update(design, c(10, -2, 2, numeric(order) + 2, numeric(order) - 1)),
+    upper_boundary_design = update(design, c(500, 2, 5, numeric(order) + 500, numeric(order) + 3)),
+    opts = list(algorithm   = "NLOPT_LN_COBYLA",
+                xtol_rel    = 1e-4,
+                maxeval     = 5000)
+
+) ->
+    optimal_design_5
+```
+
+
+```{r}
+plot(optimal_design_5, "Conditional Power" = ConditionalPower(dist, alternative))
+```
+
+```{r}
+summary(optimal_design_5, "Power" = pow, "Type One Error" = toer)
+```
+
 
 ## Definition of new performance measure
 
