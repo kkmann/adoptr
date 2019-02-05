@@ -273,3 +273,76 @@ setMethod(".evaluate", signature("IntegralScore", "OneStageDesign"),
                   )
               return(res)
           })
+
+
+
+
+
+#' Smoothness of a design
+#'
+#' Unconditional score class to evaluate the smoothness of
+#' a design's sample size function
+#'
+#' @exportClass SmoothnessScore
+setClass("SmoothnessScore", representation(
+    dummy = 'logical'
+    ),
+    contains = "UnconditionalScore")
+
+
+#' @describeIn SmoothnessScore not implemented, just raises a 'not implemented'
+setMethod("evaluate", signature("SmoothnessScore", "TwoStageDesign"),
+          function(s, design, ...) stop("not implemented"))
+
+
+
+#' Smoothness via L1 norm
+#'
+#' Implements the smoothness of a design by computing the
+#' L1-norm of the stage-two sample size function.
+#'
+#' @rdname SmoothnessL1-class
+#'
+#' @exportClass SmoothnessL1
+setClass("SmoothnessL1", representation(
+    dummy = 'logical'
+    ),
+    contains = "SmoothnessScore")
+
+
+
+#' @rdname SmoothnessL1-class
+#' @export
+SmoothnessL1 <- function() new("SmoothnessL1", dummy = FALSE)
+
+#' Evaluation of a SmoothnessL1 score
+#'
+#' @param specific logical, flag for switching to design-specific implementation.
+#' @param ... further optimal arguments
+#'
+#' @describeIn SmoothnessL1 generic implementation of evaluating a smoothness
+#'     score. Uses adaptive Gaussian quadrature for integration and might be
+#'     more efficiently implemented by specific \code{TwoStageDesign}-classes
+#'     (cf. \code{\link{.evaluate}}).
+setMethod("evaluate", signature("SmoothnessL1", "TwoStageDesign"),
+          function(s, design, specific = TRUE, ...) {
+              if (specific) { # use design-specific implementation
+                  return(.evaluate(s, design, ...))
+              } else {
+                  res <- stats::integrate(
+                      function(x) n2(design, x),
+                      design@c1f,
+                      design@c1e
+                      )$value
+                  res <- res / (design@c1e - design@c1f)
+                  return(res)
+              }
+          })
+
+
+# not user facing!
+setMethod(".evaluate", signature("SmoothnessL1", "TwoStageDesign"),
+          function(s, design, ...) {
+              sum(design@n2_pivots * design@weights) / (design@c1e - design@c1f)
+              }
+          )
