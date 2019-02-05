@@ -53,7 +53,7 @@ test_that("Conditional Power is monotonous", {
     null        <- PointMassPrior(.0, 1)
     alternative <- PointMassPrior(.4, 1)
 
-    cp <<- ConditionalPower(dist, alternative)
+    cp <- ConditionalPower(dist, alternative)
 
     # Conditional Power is monotonously increasing in n
     expect_gt(evaluate(cp, design2, 1),
@@ -68,6 +68,8 @@ test_that("Conditional Power is monotonous", {
 
 
 test_that("Conditional power has correct values outside continuation region",{
+    cp <- ConditionalPower(Normal(), PointMassPrior(.4, 1))
+
     expect_equal(
         evaluate(cp, design1, -1),
         0)

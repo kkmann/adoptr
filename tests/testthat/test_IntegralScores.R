@@ -40,9 +40,9 @@ test_that("Expected sample size is computed correctly",{
 
 
     # Simulation
-    sim_alt  <- simulate(design_gs, nsim = 10000, dist = Normal(),
+    sim_alt  <<- simulate(design_gs, nsim = 10000, dist = Normal(),
                          theta = .4, seed = 59)
-    sim_null <- simulate(design_gs, nsim = 10000, dist = Normal(),
+    sim_null <<- simulate(design_gs, nsim = 10000, dist = Normal(),
                          theta = .0, seed = 59)
 
 

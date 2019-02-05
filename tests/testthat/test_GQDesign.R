@@ -88,7 +88,7 @@ test_that("Optimal design with point prior is computable", {
         )
     )
 
-    d2 <- update(design, res$solution)
+    d2 <<- update(design, res$solution)
 
     expect_equal(
         round(evaluate(pow, d2), 1),
