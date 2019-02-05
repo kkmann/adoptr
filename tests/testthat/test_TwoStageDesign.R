@@ -45,7 +45,7 @@ test_that("simulate works (as last time)", {
 
     expect_known_value(
         simulate(design, nsim = 50, dist = Normal(), theta = .5, seed = 42),
-        file = "known_value_simulate.rds"
+        file = "known_values/simulate.rds"
     )
 
 }) # end 'simulate works'
