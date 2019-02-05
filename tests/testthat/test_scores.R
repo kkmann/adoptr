@@ -18,17 +18,6 @@ test_that("conditional sample size maps to actual sample size", {
 
 
 
-test_that("expected sample size works", {
-
-    ess <- integrate(css)
-    expect_equal(
-        evaluate(ess, design),
-
-    )
-
-})
-
-
 
 test_that("conditional score arithmetic works", {
 
