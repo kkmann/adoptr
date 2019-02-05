@@ -37,7 +37,7 @@ test_that("Optimal design with point prior is computable", {
     cp   <- ConditionalPower(dist, alternative)
     pow  <- integrate(cp)
     toer <- integrate(ConditionalPower(dist, null))
-    smth <- SmoothnessL1()
+    smth <- AverageN2()
 
     expect_equal(
         round(evaluate(ess, design), 1),

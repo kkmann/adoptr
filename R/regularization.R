@@ -1,3 +1,59 @@
+#' Regularization via L1 norm
+#'
+#' Implements the L1-norm of the design's stage-two sample size function.
+#'
+#' @param s an \code{RegularizationScore}
+#' @param design a \code{TwoStageDesign}
+#'
+#' @rdname AverageN2-class
+#'
+#' @exportClass AverageN2
+setClass("AverageN2", representation(
+    dummy = 'logical'
+    ),
+    contains = "UnconditionalScore")
+
+
+
+#' @rdname AverageN2-class
+#' @export
+AverageN2 <- function() new("AverageN2", dummy = FALSE)
+
+#' Evaluation of a AverageN2 score
+#'
+#' @param specific logical, flag for switching to design-specific implementation.
+#' @param ... further optimal arguments
+#'
+#' @describeIn AverageN2 generic implementation of evaluating a smoothness
+#'     score. Uses adaptive Gaussian quadrature for integration and might be
+#'     more efficiently implemented by specific \code{TwoStageDesign}-classes
+#'     (cf. \code{\link{.evaluate}}).
+setMethod("evaluate", signature("AverageN2", "TwoStageDesign"),
+          function(s, design, specific = TRUE, ...) {
+              if (specific) { # use design-specific implementation
+                  return(.evaluate(s, design, ...))
+              } else {
+                  res <- stats::integrate(
+                      function(x) n2(design, x),
+                      design@c1f,
+                      design@c1e
+                  )$value
+                  res <- res / (design@c1e - design@c1f)
+                  return(res)
+              }
+          }
+)
+
+
+# not user facing!
+setMethod(".evaluate", signature("AverageN2", "TwoStageDesign"),
+          function(s, design, ...) {
+              sum(design@n2_pivots * design@weights) / (design@c1e - design@c1f)
+          }
+)
+
+
+
 #' Quadratic smoothness penalty term
 #'
 #' \code{SmoothnessN2} is a generic class for implementing a smoothness penalty
@@ -7,33 +63,23 @@
 #' The generic implementation only evluates \code{n2} in the interior of the
 #' continuation region of a design.
 #'
-#' @slot distribution Data distribution
-#' @slot prior Prior distribution
 #' @slot h positive number giving the width of the central finite difference
 #'     interval for approximating the second derivative.
 #'
 #' @exportClass SmoothnessN2
 setClass("SmoothnessN2", representation(
-        distribution = "DataDistribution",
-        prior = "Prior",
-        h = "numeric"
+    h = "numeric"
     ),
-    contains = "ConditionalScore")
+    contains = "UnconditionalScore")
 
 
 
-#' @param distribution see slot
-#' @param prior see slot
 #' @param h positive number, see slot \code{h}
 #'
 #' @rdname SmoothnessN2-class
 #' @export
-SmoothnessN2 <- function(distribution,
-                         prior = ContinuousPrior(
-                             pdf = function(x) stats::dunif(x, -5, 5),
-                             support = c(-5, 5)),
-                         h = .1)
-    new("SmoothnessN2", distribution = distribution, prior = prior, h = h)
+SmoothnessN2 <- function(h = .1)
+    new("SmoothnessN2", h = h)
 
 
 
@@ -68,7 +114,8 @@ setMethod("evaluate", signature("SmoothnessN2", "TwoStageDesign"),
                   return(1 / diff(x1_bounds) *
                              stats::integrate(integrand, x1_bounds[1], x1_bounds[2], subdivisions = 1000)$value)
               }
-          })
+          }
+)
 
 # specific method for class TwoStageDesign
 setMethod(".evaluate", signature("SmoothnessN2", "TwoStageDesign"),
@@ -80,7 +127,8 @@ setMethod(".evaluate", signature("SmoothnessN2", "TwoStageDesign"),
               # Approximate L2 norm of second derivative
               res <- mean(((-dif1 + dif2) / (piv[-leng+1] * piv[-1]))^2)
               return(res)
-              } )
+          }
+)
 
 
 

@@ -38,7 +38,7 @@ test_that("Optimal one-stage design with point prior is computable", {
     cp   <- ConditionalPower(dist, alternative)
     pow  <- integrate(cp)
     toer <- integrate(ConditionalPower(dist, null))
-    smth <- integrate(SmoothnessN2(dist))
+    smth <- SmoothnessN2()
 
 
 
