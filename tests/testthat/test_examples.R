@@ -2,7 +2,7 @@ context("test point alternative point ESS design (case 01)")
 
 test_that("plausible n2() function", {
 
-    order <- 9L
+    order <- 7L
 
     design <- gq_design(
         n1 = 25,
