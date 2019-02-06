@@ -43,24 +43,33 @@ test_that("Arithmetic for unconditional scores works", {
         evaluate(pow, design)
     ) # shifting by 0 does not change anything
 
-
     incpt  <- 1
     afunsc <- AffineUnconditionalScore(c(afpow, ess), c(.7, 1.3), -.1)
 
     expect_equal(
+        evaluate(afunsc, design),
+        .7 * evaluate(afpow, design) + 1.3 * evaluate(ess, design) - .1
+    ) # arithmetic works
+
+    expect_equal(
         afunsc + incpt,
         incpt + afunsc
-    ) # addition is commutative
+    ) # addition with numeric is commutative
 
     expect_equal(
         afunsc * incpt,
         afunsc
-    ) # multiplication by 1 does not change
+    ) # multiplication by 1 does not change anything
 
     expect_equal(
         incpt * afunsc,
         afunsc
-    ) # multipilcation is commutative
+    ) # multiplication is commutative
+
+    expect_equal(
+        evaluate(2 * afpow + afunsc, design),
+        2 * evaluate(afpow, design) + evaluate(afunsc, design)
+    ) # add two AffineUnconditionalScores
 
 }) # end 'Arithmetic for unconditional scores works'
 
@@ -77,19 +86,35 @@ test_that("Arithmetic for conditional scores works", {
     afcosc <- AffineConditionalScore(c(afcp, css), c(20, .1), 1.1)
 
     expect_equal(
+        evaluate(afcosc, design, z1),
+        20 * evaluate(afcp, design, z1) + .1 * evaluate(css, design, z1) + 1.1
+    ) # arithmetic works
+
+    expect_equal(
+        evaluate(afcp + css, design, z1),
+        evaluate(css + afcp, design, z1)
+    ) # addition is commutative
+
+    expect_equal(
         afcosc + incpt,
         incpt + afcosc
-    ) # addition is commutative
+    ) # addition with numeric is commutative
 
     expect_equal(
         afcosc * incpt,
         afcosc
-    ) # multiplication by 1 does not change
+    ) # multiplication by 1 does not change anything
 
     expect_equal(
         incpt * afcosc,
         afcosc
-    ) # multipilcation is commutative
+    ) # multiplication is commutative
+
+    expect_equal(
+        evaluate((-1) * afcp + afcosc, design, z1),
+        (-1) * evaluate(afcp, design, z1) + evaluate(afcosc, design, z1)
+    ) # add two AffineConditionalScores
+
 
 })
 
