@@ -20,7 +20,7 @@ ess  <- integrate(ConditionalSampleSize(dist, alternative))
 cp   <- ConditionalPower(dist, alternative)
 pow  <- integrate(cp)
 toer <- integrate(ConditionalPower(dist, null))
-smth <- integrate(SmoothnessN2(dist))
+smth <- AverageN2()
 
 
 
