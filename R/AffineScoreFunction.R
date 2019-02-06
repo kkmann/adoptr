@@ -29,7 +29,7 @@ AffineScore <- function(scores, coefs, intercept) {
         stop("intercept must have length 1")
     if (any(!is.finite(c(coefs, intercept))))
         stop("scores and intercept must be finite")
-    new("AffineScore", scores = scores, coefs = coefs, intercept = intercept)
+    new("AffineScore", scores = c(scores), coefs = coefs, intercept = intercept)
 }
 
 
@@ -54,9 +54,9 @@ setMethod("evaluate", signature("AffineScore", "TwoStageDesign"),
 setClass("AffineUnconditionalScore", contains = c("AffineScore", "UnconditionalScore"))
 
 AffineUnconditionalScore <- function(scores, coefs, intercept = 0) {
-    if (!all(sapply(scores, function(s) is(s, "UnconditionalScore"))))
+    if (!all(sapply(c(scores), function(s) is(s, "UnconditionalScore"))))
         stop("all scores must be unconditional scores")
-    res <- AffineScore(scores, coefs, intercept)
+    res <- AffineScore(c(scores), coefs, intercept)
     class(res) <- "AffineUnconditionalScore"
     return(res)
 }
@@ -89,12 +89,12 @@ setMethod("*", signature("numeric", "AffineUnconditionalScore"),
 
 
 
-setClass("AffineConditionalScore", contains = c("AffineScore", "AbstractConditionalScore"))
+setClass("AffineConditionalScore", contains = c("AffineScore", "AbstractConditionalScore", "ConditionalScore"))
 
 AffineConditionalScore <- function(scores, coefs, intercept = 0) {
-    if (!all(sapply(scores, function(s) is(s, "ConditionalScore"))))
+    if (!all(sapply(c(scores), function(s) is(s, "ConditionalScore"))))
         stop("all scores must be conditional scores")
-    res <- AffineScore(scores, coefs, intercept)
+    res <- AffineScore(c(scores), coefs, intercept)
     class(res) <- "AffineConditionalScore"
     return(res)
 }
