@@ -111,8 +111,8 @@ test_that("Arithmetic for conditional scores works", {
     ) # multiplication is commutative
 
     expect_equal(
-        evaluate((-1) * afcp + afcosc, design, z1),
-        (-1) * evaluate(afcp, design, z1) + evaluate(afcosc, design, z1)
+        evaluate(-1 * afcp + afcosc, design, z1),
+        -1 * evaluate(afcp, design, z1) + evaluate(afcosc, design, z1)
     ) # add two AffineConditionalScores
 
 
