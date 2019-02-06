@@ -46,7 +46,7 @@ Currently, only constraints of the form 'score <=/>= x' are admissable.
 [TODO: conditional constraints are only evaluated at the continuation area]
 }
 \examples{
-cp          <- ConditionalPower(Normal, PointMassPrior(0.4, 1))
+cp          <- ConditionalPower(Normal(), PointMassPrior(0.4, 1))
 pow         <- integrate(cp)
 constraint1 <- pow >= 0.8 # an unconditional power constraint
 constraint2 <- cp >= 0.7 # a conditional power constraint
