@@ -37,7 +37,7 @@ Collate:
     minimize.R
     ConditionalPower.R
     ConditionalSampleSize.R
-    SmoothnessN2.R
+    regularization.R
     gq_design.R
 RoxygenNote: 6.1.1
 BugReports: https://github.com/kkmann/otsd/issues
