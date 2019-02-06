@@ -2,7 +2,7 @@
 title: "otsd examples"
 author: "Maximilian Pilz"
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+output: github_document
 vignette: >
   %\VignetteIndexEntry{examples}
   %\VignetteEncoding{UTF-8}
