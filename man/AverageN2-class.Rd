@@ -13,7 +13,7 @@ AverageN2()
   ...)
 }
 \arguments{
-\item{s}{an \code{RegularizationScore}}
+\item{s}{a score of class \code{AverageN2}}
 
 \item{design}{a \code{TwoStageDesign}}
 
@@ -23,6 +23,12 @@ AverageN2()
 }
 \description{
 Implements the L1-norm of the design's stage-two sample size function.
+The average of the stage-two sample size without weighting with
+the data distribution is computed.
+This can be interpreted as integration over a unifrom prior on
+the continuation region.
+Adding the L1-norm with a small regularization parameter can make
+the optimization more stable.
 }
 \section{Methods (by generic)}{
 \itemize{
