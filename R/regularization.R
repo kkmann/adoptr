@@ -1,3 +1,71 @@
+#' Regularization via L1 norm
+#'
+#' Implements the L1-norm of the design's stage-two sample size function.
+#' The average of the stage-two sample size without weighting with
+#' the data distribution is computed.
+#' This can be interpreted as integration over a unifrom prior on
+#' the continuation region.
+#' Adding the L1-norm with a small regularization parameter can make
+#' the optimization more stable.
+#'
+#' @param s a score of class \code{AverageN2}
+#' @param design a \code{TwoStageDesign}
+#'
+#' @rdname AverageN2-class
+#'
+#' @exportClass AverageN2
+setClass("AverageN2", representation(
+    dummy = 'logical'
+    ),
+    contains = "UnconditionalScore")
+
+
+
+#' @rdname AverageN2-class
+#' @export
+AverageN2 <- function() new("AverageN2", dummy = FALSE)
+
+#' Evaluation of a AverageN2 score
+#'
+#' @param specific logical, flag for switching to design-specific implementation.
+#' @param ... further optimal arguments
+#'
+#' @describeIn AverageN2 generic implementation of evaluating a smoothness
+#'     score. Uses adaptive Gaussian quadrature for integration and might be
+#'     more efficiently implemented by specific \code{TwoStageDesign}-classes
+#'     (cf. \code{\link{.evaluate}}).
+setMethod("evaluate", signature("AverageN2", "TwoStageDesign"),
+          function(s, design, specific = TRUE, ...) {
+              if (specific) { # use design-specific implementation
+                  return(.evaluate(s, design, ...))
+              } else {
+                  res <- stats::integrate(
+                      function(x) n2(design, x),
+                      design@c1f,
+                      design@c1e
+                  )$value
+                  res <- res / (design@c1e - design@c1f)
+                  return(res)
+              }
+          }
+)
+
+
+# not user facing!
+setMethod(".evaluate", signature("AverageN2", "TwoStageDesign"),
+          function(s, design, ...) {
+              integrate_rule(
+                  function(x) n2(design, x),
+                  design@c1f,
+                  design@c1e,
+                  design@x1_norm_pivots,
+                  design@weights
+                ) / (design@c1e - design@c1f)
+          }
+)
+
+
+
 #' Quadratic smoothness penalty term
 #'
 #' \code{SmoothnessN2} is a generic class for implementing a smoothness penalty
@@ -7,33 +75,23 @@
 #' The generic implementation only evluates \code{n2} in the interior of the
 #' continuation region of a design.
 #'
-#' @slot distribution Data distribution
-#' @slot prior Prior distribution
 #' @slot h positive number giving the width of the central finite difference
 #'     interval for approximating the second derivative.
 #'
 #' @exportClass SmoothnessN2
 setClass("SmoothnessN2", representation(
-        distribution = "DataDistribution",
-        prior = "Prior",
-        h = "numeric"
+    h = "numeric"
     ),
-    contains = "ConditionalScore")
+    contains = "UnconditionalScore")
 
 
 
-#' @param distribution see slot
-#' @param prior see slot
 #' @param h positive number, see slot \code{h}
 #'
 #' @rdname SmoothnessN2-class
 #' @export
-SmoothnessN2 <- function(distribution,
-                         prior = ContinuousPrior(
-                             pdf = function(x) stats::dunif(x, -5, 5),
-                             support = c(-5, 5)),
-                         h = .1)
-    new("SmoothnessN2", distribution = distribution, prior = prior, h = h)
+SmoothnessN2 <- function(h = .1)
+    new("SmoothnessN2", h = h)
 
 
 
@@ -41,8 +99,8 @@ SmoothnessN2 <- function(distribution,
 #' A generic implementation for arbitrary two-stage designs based on adaptive
 #' Gaussian quadrature integration of the finite-differences approximation to
 #' the second derivative is provided.
-#' Custom subclasses of \code{Design} might implement this slightly different
-#' (cf. [TODO: link to GQDesign implementation]).
+#' For \code{TwoStageDesign} and its subclasses a specific implementation
+#' is avaible which is recommended to use.
 #'
 #' @param s an object of class \code{SmoothnessN2}
 #' @param design the design to compute the smoothness term for
@@ -60,15 +118,18 @@ setMethod("evaluate", signature("SmoothnessN2", "TwoStageDesign"),
                   # use generic approach
                   # integrand is the finite difference approximation of the
                   # squared second derivative
-                  integrand <- function(x1) ((n2(design, x1 + s@h) - 2 * n2(design, x1) + n2(design, x1 - s@h)) / s@h^2)^2
+                  integrand <- function(x1) {
+                      ((n2(design, x1 + s@h) - 2 * n2(design, x1) + n2(design, x1 - s@h)) / s@h^2)^2
+                  }
                   x1_bounds <- c(design@c1f + s@h, design@c1e - s@h)
                   # use adaptive quadrature to integrate - only relies on generic interface
                   # provided by 'Design', no special optimization for particular
                   # design implementation
                   return(1 / diff(x1_bounds) *
-                             stats::integrate(integrand, x1_bounds[1], x1_bounds[2], subdivisions = 1000)$value)
+                             stats::integrate(integrand, x1_bounds[1], x1_bounds[2])$value)
               }
-          })
+          }
+)
 
 # specific method for class TwoStageDesign
 setMethod(".evaluate", signature("SmoothnessN2", "TwoStageDesign"),
@@ -80,7 +141,8 @@ setMethod(".evaluate", signature("SmoothnessN2", "TwoStageDesign"),
               # Approximate L2 norm of second derivative
               res <- mean(((-dif1 + dif2) / (piv[-leng+1] * piv[-1]))^2)
               return(res)
-              } )
+          }
+)
 
 
 
