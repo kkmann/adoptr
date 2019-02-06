@@ -1,11 +1,29 @@
 #' Affine functions of scores
 #'
-#' [TODO]
+#' These methods allow to add and multiplicate two or several
+#' conditional resp. unconditional scores.
+#' They can also be weighted by numeric coefficients and shifted
+#' by a numeric intercept.
+#' This yields to new scores as sum of scores and is therefore a useful
+#' tool to combine scores.
 #'
 #' @slot scores the list of scores
 #' @slot coefs numeric vector of the same length as \code{scores}, holding the
 #'     coefficients
 #' @slot intercept the intercept for the affine function
+#'
+#' \code{AffineScore} allows to add scores of arbitrary class and shift
+#' them by the \code{intercept}.
+#' \code{AffineUnconditionalScore} allows the same for scores of class
+#' \code{UnconditionalScore} and \code{AffineConditionalScore} for
+#' scores of class \code{ConditionalScore}.
+#' By the methods \code{+} and \code{*} scores can be added and multiplicated,
+#' respectively.
+#' Note that it is not possible to use these methods for a mixture of
+#' \code{ConditionalScore} and \code{UnconditionalScore} as these
+#' require different evaluation techniques.
+#' However, for both score classes multiplication and addition with
+#' numerics is provided.
 #'
 #' @exportClass AffineScore
 setClass("AffineScore", representation(
@@ -29,7 +47,7 @@ AffineScore <- function(scores, coefs, intercept) {
         stop("intercept must have length 1")
     if (any(!is.finite(c(coefs, intercept))))
         stop("scores and intercept must be finite")
-    new("AffineScore", scores = scores, coefs = coefs, intercept = intercept)
+    new("AffineScore", scores = c(scores), coefs = coefs, intercept = intercept)
 }
 
 
@@ -54,9 +72,9 @@ setMethod("evaluate", signature("AffineScore", "TwoStageDesign"),
 setClass("AffineUnconditionalScore", contains = c("AffineScore", "UnconditionalScore"))
 
 AffineUnconditionalScore <- function(scores, coefs, intercept = 0) {
-    if (!all(sapply(scores, function(s) is(s, "UnconditionalScore"))))
+    if (!all(sapply(c(scores), function(s) is(s, "UnconditionalScore"))))
         stop("all scores must be unconditional scores")
-    res <- AffineScore(scores, coefs, intercept)
+    res <- AffineScore(c(scores), coefs, intercept)
     class(res) <- "AffineUnconditionalScore"
     return(res)
 }
@@ -89,12 +107,12 @@ setMethod("*", signature("numeric", "AffineUnconditionalScore"),
 
 
 
-setClass("AffineConditionalScore", contains = c("AffineScore", "AbstractConditionalScore"))
+setClass("AffineConditionalScore", contains = c("AffineScore", "AbstractConditionalScore", "ConditionalScore"))
 
 AffineConditionalScore <- function(scores, coefs, intercept = 0) {
-    if (!all(sapply(scores, function(s) is(s, "ConditionalScore"))))
+    if (!all(sapply(c(scores), function(s) is(s, "ConditionalScore"))))
         stop("all scores must be conditional scores")
-    res <- AffineScore(scores, coefs, intercept)
+    res <- AffineScore(c(scores), coefs, intercept)
     class(res) <- "AffineConditionalScore"
     return(res)
 }
