@@ -28,7 +28,7 @@ and a two-armed design is regarded.
 
 
 ```{r load package, echo = F}
-#devtools::install_github("kkmann/otsd")
+devtools::install_github("kkmann/otsd")
 library(otsd)
 ```
 
@@ -111,12 +111,17 @@ summary(optimal_design, "Power" = pow, "Type One Error" = toer)
 Check power and type one error via `simulate`.
 
 ```{r}
-sim_null_1 <- simulate(optimal_design, 10000, dist, .0, seed = 1)
-sim_alt_1  <- simulate(optimal_design, 10000, dist, .4, seed = 1)
+optimal_design@n1      <- round(optimal_design@n1)
+optimal_design@rounded <- TRUE
+
+sim_null_1 <- simulate(object = optimal_design, nsim = 100000, dist = dist, 
+                       theta = .0, seed = 1)
+sim_alt_1  <- simulate(object = optimal_design, nsim = 100000, dist = dist, 
+                       theta = .4, seed = 1)
 ```
 
-We obtaina type one error of `r mean(sim_null_1["reject"])`
-and a power of `r mean(sim_alt_1["reject"])`
+We obtaina type one error of `r mean(sim_null_1[,"reject"])`
+and a power of `r mean(sim_alt_1[,"reject"])`
 
 
 ### Expected sample size under null hypothesis
@@ -157,12 +162,17 @@ summary(optimal_design_2, "Power" = pow, "Type One Error" = toer)
 Check power and type one error via `simulate`.
 
 ```{r}
-sim_null_2 <- simulate(optimal_design, 10000, dist, .0, seed = 2)
-sim_alt_2  <- simulate(optimal_design, 10000, dist, .4, seed = 2)
+optimal_design_2@n1      <- round(optimal_design_2@n1)
+optimal_design_2@rounded <- TRUE
+
+sim_null_2 <- simulate(object = optimal_design_2, nsim =  100000, dist =  dist, 
+                       theta = .0, seed = 2)
+sim_alt_2  <- simulate(object = optimal_design_2, nsim =  100000, dist =  dist, 
+                       theta = .4, seed = 2)
 ```
 
-We obtaina type one error of `r mean(sim_null_2["reject"])`
-and a power of `r mean(sim_alt_2["reject"])`
+We obtaina type one error of `r mean(sim_null_2[,"reject"])`
+and a power of `r mean(sim_alt_2[,"reject"])`
 
 
 
@@ -208,12 +218,17 @@ summary(optimal_design_3, "Power" = pow, "Type One Error" = toer)
 Check power and type one error via `simulate`.
 
 ```{r}
-sim_null_3 <- simulate(optimal_design_3, 10000, dist, .0, seed = 3)
-sim_alt_3  <- simulate(optimal_design_3, 10000, dist, .4, seed = 3)
+optimal_design_3@n1      <- round(optimal_design_3@n1)
+optimal_design_3@rounded <- TRUE
+
+sim_null_3 <- simulate(object = optimal_design_3, nsim =  100000, dist =  dist, 
+                       theta = .0, seed = 3)
+sim_alt_3  <- simulate(object = optimal_design_3, nsim =  100000, dist =  dist, 
+                       theta = .2, seed = 3)
 ```
 
-We obtaina type one error of `r mean(sim_null_3["reject"])`
-and a power of `r mean(sim_alt_3["reject"])`
+We obtaina type one error of `r mean(sim_null_3[,"reject"])`
+and a power of `r mean(sim_alt_3[,"reject"])`
 
 
 ### Expected sample size under null hypothesis
@@ -254,12 +269,17 @@ summary(optimal_design_4, "Power" = pow, "Type One Error" = toer)
 Check power and type one error via `simulate`.
 
 ```{r}
-sim_null_4 <- simulate(optimal_design_4, 10000, dist, .0, seed = 4)
-sim_alt_4  <- simulate(optimal_design_4, 10000, dist, .4, seed = 4)
+optimal_design_4@n1      <- round(optimal_design_4@n1)
+optimal_design_4@rounded <- TRUE
+
+sim_null_4 <- simulate(object = optimal_design_4, nsim = 100000, dist =  dist, 
+                       theta = .0, seed = 4)
+sim_alt_4  <- simulate(object = optimal_design_4, nsim = 100000, dist = dist,
+                       theta = .2, seed = 4)
 ```
 
-We obtaina type one error of `r mean(sim_null_4["reject"])`
-and a power of `r mean(sim_alt_4["reject"])`
+We obtaina type one error of `r mean(sim_null_4[,"reject"])`
+and a power of `r mean(sim_alt_4[,"reject"])`
 
 
 
@@ -312,10 +332,14 @@ summary(optimal_design_5, "Power" = pow, "Type One Error" = toer)
 
 Simulation is only possible for type one error rate.
 ```{r}
-sim_null_5 <- simulate(optimal_design_5, 10000, dist, .0, seed = 5)
+optimal_design_5@n1      <- round(optimal_design_5@n1)
+optimal_design_5@rounded <- TRUE
+
+sim_null_5 <- simulate(object = optimal_design_5, nsim = 100000, dist =  dist, 
+                       theta = .0, seed = 5)
 ```
 
-We obtain a type one error of `r mean(sim_null_5["reject"])`.
+We obtain a type one error of `r mean(sim_null_5[,"reject"])`.
 
 ## Expected sample size under null hypothesis
 
@@ -355,10 +379,14 @@ summary(optimal_design_6, "Power" = pow, "Type One Error" = toer)
 
 Simulation is only possible for type one error rate.
 ```{r}
-sim_null_6 <- simulate(optimal_design_6, 10000, dist, .0, seed = 6)
+optimal_design_6@n1      <- round(optimal_design_6@n1)
+optimal_design_6@rounded <- TRUE
+
+sim_null_6 <- simulate(object = optimal_design_6, nsim = 100000, dist =  dist, 
+                       theta = .0, seed = 6)
 ```
 
-We obtain a type one error of `r mean(sim_null_6["reject"])`.
+We obtain a type one error of `r mean(sim_null_6[,"reject"])`.
 
 
 
@@ -410,10 +438,14 @@ summary(optimal_design_7, "Power" = pow, "Type One Error" = toer)
 
 Simulation is only possible for type one error rate.
 ```{r}
-sim_null_7 <- simulate(optimal_design_7, 10000, dist, .0, seed = 7)
+optimal_design_7@n1      <- round(optimal_design_7@n1)
+optimal_design_7@rounded <- TRUE
+
+sim_null_7 <- simulate(object = optimal_design_7, nsim = 100000, dist = dist, 
+                       theta = .0, seed = 7)
 ```
 
-We obtain a type one error of `r mean(sim_null_7["reject"])`.
+We obtain a type one error of `r mean(sim_null_7[,"reject"])`.
 
 
 
@@ -455,10 +487,14 @@ summary(optimal_design_8, "Power" = pow, "Type One Error" = toer)
 
 Simulation is only possible for type one error rate.
 ```{r}
-sim_null_8 <- simulate(optimal_design_8, 10000, dist, .0, seed = 8)
+optimal_design_8@n1      <- round(optimal_design_8@n1)
+optimal_design_8@rounded <- TRUE
+
+sim_null_8 <- simulate(object = optimal_design_8, nsim = 100000, dist = dist, 
+                       theta = .0, seed = 8)
 ```
 
-We obtain a type one error of `r mean(sim_null_8["reject"])`.
+We obtain a type one error of `r mean(sim_null_8[,"reject"])`.
 
 
 
@@ -500,16 +536,16 @@ minimize(
                 maxeval     = 5000)
 
 ) ->
-    optimal_design_5
+    optimal_design_9
 ```
 
 
 ```{r}
-plot(optimal_design_5, "Conditional Power" = ConditionalPower(dist, alternative))
+plot(optimal_design_9, "Conditional Power" = ConditionalPower(dist, alternative))
 ```
 
 ```{r}
-summary(optimal_design_5, "Power" = pow, "Type One Error" = toer)
+summary(optimal_design_9, "Power" = pow, "Type One Error" = toer)
 ```
 
 
