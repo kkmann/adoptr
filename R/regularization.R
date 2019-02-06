@@ -54,7 +54,6 @@ setMethod("evaluate", signature("AverageN2", "TwoStageDesign"),
 # not user facing!
 setMethod(".evaluate", signature("AverageN2", "TwoStageDesign"),
           function(s, design, ...) {
-              #sum(design@n2_pivots * design@weights) / (design@c1e - design@c1f)
               integrate_rule(
                   function(x) n2(design, x),
                   design@c1f,
