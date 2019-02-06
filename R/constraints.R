@@ -2,7 +2,7 @@
 #'
 #' Conceptually, constraints work very similar to scores (any score can be put in
 #' a constraint).
-#' Currently, only constraints of the form 'score <=/>= x' are admissable.#'
+#' Currently, only constraints of the form 'score <=/>= x' are admissable.
 #'
 #' [TODO: currently we only support scores on the LHS - this can be easily extended!]
 #'
@@ -15,7 +15,7 @@
 #' @template dotdotdotTemplate
 #'
 #' @examples
-#' cp          <- ConditionalPower(Normal, PointMassPrior(0.4))
+#' cp          <- ConditionalPower(Normal, PointMassPrior(0.4, 1))
 #' pow         <- integrate(cp)
 #' constraint1 <- pow >= 0.8 # an unconditional power constraint
 #' constraint2 <- cp >= 0.7 # a conditional power constraint
