@@ -60,8 +60,7 @@ Currently, only the normal case is implemented with \code{\link{Normal-class}}.
 
 The logical option \code{two_armed} allows to decide whether a one-arm or
 a two-arm (the default) design should be computed. In the case of a two-arm
-design the function \code{\link{plot}} and \code{\link{summary}} describe
-the sample size per group.
+design all sample sizes are per group.
 }
 \section{Methods (by generic)}{
 \itemize{

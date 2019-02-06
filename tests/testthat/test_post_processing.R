@@ -19,20 +19,20 @@ test_that("Post processing yields to integer sample sizes", {
     alternative <- condition(alternative, c(0, 1.5))
 
 
-    dist <- Normal(two_armed = F)
+    dist <- Normal(two_armed = FALSE)
 
     # Define key figures
     ess  <- integrate(ConditionalSampleSize(dist, alternative))
     cp   <- ConditionalPower(dist, alternative)
     pow  <- integrate(cp)
     toer <- integrate(ConditionalPower(dist, null))
-    smth <- integrate(SmoothnessN2(dist))
+    avn2 <- AverageN2()
 
 
     #compute optimal design
     suppressWarnings( # suppress that initial design is infeasible
     minimize(
-        objective = ess + 0.000001*smth,
+        objective = ess + 0.000001*avn2,
         subject_to(
             pow  >= 0.8,
             toer <= .025

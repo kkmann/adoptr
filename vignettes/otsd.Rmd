@@ -56,7 +56,7 @@ ess  <- integrate(ConditionalSampleSize(dist, alternative))
 cp   <- ConditionalPower(dist, alternative)
 pow  <- integrate(cp)
 toer <- integrate(ConditionalPower(dist, null))
-smth <- integrate(SmoothnessN2(dist))
+smth <- AverageN2()
 
 # print TODO: need nice functionality like summary(design, ess, pow, toer)
 do.call(sprintf, c(
