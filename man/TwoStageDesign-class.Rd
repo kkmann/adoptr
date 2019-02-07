@@ -59,7 +59,7 @@ scaled_integration_pivots(d, ...)
 
 \S4method{scaled_integration_pivots}{TwoStageDesign}(d, ...)
 
-\S4method{plot}{TwoStageDesign}(x, y = NULL, rounded = T, ...,
+\S4method{plot}{TwoStageDesign}(x, y = NULL, rounded = TRUE, ...,
   k = 100)
 
 \S4method{simulate}{TwoStageDesign,numeric}(object, nsim, dist, theta,
@@ -108,7 +108,7 @@ by \code{as.numeric(design)})}
 \item{seed}{random seed}
 }
 \description{
-[ToDo]
+\code{TwoStageDesign} is the fundamental design class of this package.
 
 [TODO]
 }

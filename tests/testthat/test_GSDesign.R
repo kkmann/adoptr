@@ -99,3 +99,42 @@ test_that("Optimal group-sequential design with point prior is computable", {
 
 
 })
+
+
+test_that("Error definition works", {
+    expect_error(
+        GSDesign(50, 0, 2, 50, c(2, 2), c(.1, .5, .9), rep(1/3, 3))
+    ) # pivots length must fit
+
+    expect_error(
+        GSDesign(50, 0, 2, 50, rep(2, 3), c(0, 1, 2), rep(1/3, 3))
+    ) # x1_norm_pivots must not be scaled
+
+    expect_error(
+        GSDesign(50, 0, 2, 50, rep(2,3), c(-.5, 0, .5), c(1, 0, 1))
+    ) # positive weights
+
+}) # end 'error definition works'
+
+
+test_that("GSDesign can be converted to TwoStageDesign", {
+    int_pars <- GaussLegendreRule(5L)
+    design1  <- GSDesign(50, 0, 2, 50, rep(2, 5), int_pars$nodes, int_pars$weights)
+    design2  <- TwoStageDesign(design1)
+
+    pow <- integrate(ConditionalPower(Normal(), PointMassPrior(.3, 1)))
+
+    expect_equal(
+        evaluate(pow, design1),
+        evaluate(pow, design2)
+    ) # power remains equal
+
+
+    ess <- integrate(ConditionalSampleSize(Normal(), PointMassPrior(.3, 1)))
+
+    expect_equal(
+        evaluate(ess, design1),
+        evaluate(ess, design2)
+    ) # ess remains equal
+
+}) # end 'GSDesign can be converted to TwoStageDesign'

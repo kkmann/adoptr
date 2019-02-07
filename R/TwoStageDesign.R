@@ -1,6 +1,7 @@
 #' Two-stage designs
 #'
-#' [ToDo]
+#' \code{TwoStageDesign} is the fundamental design class of this package.
+#'
 #'
 #' @slot n1 stage-one sample size
 #' @slot c1f early stopping for futility boundary
@@ -242,9 +243,9 @@ setMethod("show", signature(object = "TwoStageDesign"),
 #' @rdname TwoStageDesign-class
 #' @export
 setMethod("plot", signature(x = "TwoStageDesign"),
-          function(x, y = NULL, rounded = T, ..., k = 100) {
-              if(rounded == T) {
-                  x@rounded = T
+          function(x, y = NULL, rounded = TRUE, ..., k = 100) {
+              if(rounded == TRUE) {
+                  x@rounded = TRUE
                   x@n1 = round(x@n1)
               }
               scores <- list(...)
@@ -269,11 +270,24 @@ setMethod("plot", signature(x = "TwoStageDesign"),
 
 #' Summarize TwoStageDesign objects with optional set of scores
 #'
-#' [TODO]
+#' \code{summary} summarizes the first-stage of a \code{TwoStageDesign}
+#' and objects of class \code{UnconditionalScore} that have to be
+#' defined by the user.
+#'
+#' The first stage sample size and the two continuation decsion boundaries
+#' are printed.
+#' Furthermore, the user can define unconditional scores and these will be
+#' evaluated and listed.
 #'
 #' @param object design object to summarize
 #' @param rounded should rounded n-values be used?
 #' @param ... optinal additional named UnconditionalScores
+#'
+#' @examples
+#' order  <- 5L
+#' design <- gq_design(50, 0, 2, rep(50.0, order), rep(2.0, order), order)
+#' pow    <- integrate(ConditionalPower(dist = Normal(), prior = PointMassPrior(.4, 1)))
+#' summary(design, "Power" = pow)
 #'
 #' @export
 setMethod("summary", signature("TwoStageDesign"),
