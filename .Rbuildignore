@@ -9,3 +9,4 @@
 ^doc$
 ^.*\.Rproj$
 ^\.Rproj\.user$
+sticker.R

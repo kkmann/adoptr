@@ -10,6 +10,9 @@
     <loc>https://kkmann.github.io/otsd//reference/AffineScore-class.html</loc>
   </url>
   <url>
+    <loc>https://kkmann.github.io/otsd//reference/AverageN2-class.html</loc>
+  </url>
+  <url>
     <loc>https://kkmann.github.io/otsd//reference/ConditionalPower-class.html</loc>
   </url>
   <url>
@@ -31,6 +34,9 @@
     <loc>https://kkmann.github.io/otsd//reference/DataDistribution-class.html</loc>
   </url>
   <url>
+    <loc>https://kkmann.github.io/otsd//reference/GSDesign-class.html</loc>
+  </url>
+  <url>
     <loc>https://kkmann.github.io/otsd//reference/GaussLegendreIntegral.html</loc>
   </url>
   <url>
@@ -43,16 +49,16 @@
     <loc>https://kkmann.github.io/otsd//reference/NormalDataDistribution-class.html</loc>
   </url>
   <url>
+    <loc>https://kkmann.github.io/otsd//reference/OneStageDesign-class.html</loc>
+  </url>
+  <url>
     <loc>https://kkmann.github.io/otsd//reference/PointMassPrior-class.html</loc>
   </url>
   <url>
     <loc>https://kkmann.github.io/otsd//reference/Prior-class.html</loc>
   </url>
   <url>
-    <loc>https://kkmann.github.io/otsd//reference/Smoothness_n2-class.html</loc>
-  </url>
-  <url>
-    <loc>https://kkmann.github.io/otsd//reference/TwoStagDesign-class.html</loc>
+    <loc>https://kkmann.github.io/otsd//reference/SmoothnessN2-class.html</loc>
   </url>
   <url>
     <loc>https://kkmann.github.io/otsd//reference/TwoStageDesign-class.html</loc>
@@ -62,6 +68,9 @@
   </url>
   <url>
     <loc>https://kkmann.github.io/otsd//reference/dot-evaluate.html</loc>
+  </url>
+  <url>
+    <loc>https://kkmann.github.io/otsd//reference/gq_design.html</loc>
   </url>
   <url>
     <loc>https://kkmann.github.io/otsd//reference/minimize.html</loc>
