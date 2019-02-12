@@ -65,12 +65,28 @@ test_that("errors are returned correctly", {
         TwoStageDesign(50, 0, 2, rep(50, 3), rep(2,3), c(-.5, 0, .5), c(1, 0, 1))
     ) # positive weights
 
-    pow    <- integrate(ConditionalPower(Normal(), PointMassPrior(.4, 1)))
+    cp  <- ConditionalPower(Normal(), PointMassPrior(.4, 1))
+    pow <- integrate(cp)
     order  = 5L
-    design <- gq_design(50, 0, 2, rep(50, order), rep(2, order), order)
+    design  <- gq_design(50.1, 0, 2, rep(50, order), rep(2, order), order)
+    design2 <- gq_design(50, 0, 2, rep(50.1, order), rep(2, order), order)
 
     expect_error(
         plot(design, rounded = TRUE, "Power" = pow)
     ) # unconditional scores are not plotted
 
+    expect_error(
+        summary(design, rounded = TRUE, "Conditional Power" = cp)
+    ) # Conditional scores cannot be summarized
+
+
+    expect_error(
+        simulate(design, nsim = 50, dist = Normal(), theta = .5, seed = 42)
+    ) # simulate requires integer n1 values
+
+    expect_error(
+        simulate(design2, nsim = 50, dist = Normal(), theta = .5, seed = 42)
+    ) # simulate requires integer n2 values
+
 }) # end 'errors are returned correctly'
+

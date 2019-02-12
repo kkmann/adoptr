@@ -214,4 +214,9 @@ test_that("errors are returned correctly", {
         integrate_rule(f, 0, 1, c(.3, .6), c(0, 1))
     ) # weights must be positive
 
+    order = 3L
+    expect_error(
+        gq_design(50, 0, 2, rep(50, 2), rep(3, order), order)
+    ) # parameters length must fit
+
 }) # end 'errors are returned correctly'
