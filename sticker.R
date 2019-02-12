@@ -40,6 +40,8 @@ optimal_design <- minimize(
     )
 )
 
+optimal_design@rounded <- TRUE
+
 
 dat   <- data.frame(t=seq(0, 2*pi, by=0.1) )
 xhrt  <- function(t) 16*sin(t)^3
