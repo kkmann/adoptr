@@ -154,8 +154,8 @@ test_that("arithmetic works", {
     ess <- integrate(ConditionalSampleSize(Normal(), PointMassPrior(.35, 1)))
 
     expect_equal(
-        evaluate(2 * pow + ess, design_gs),
-        2 * evaluate(pow, design_gs) + evaluate(ess, design_gs)
+        evaluate(pow + ess, design_gs),
+        evaluate(pow, design_gs) + evaluate(ess, design_gs)
     )
 
     expect_equal(
