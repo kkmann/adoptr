@@ -1,19 +1,29 @@
 #' Formulating constraints
 #'
-#' [TODO]
+#' Conceptually, constraints work very similar to scores (any score can be put in
+#' a constraint).
+#' Currently, only constraints of the form 'score <=/>= x' are admissable.
 #'
 #' [TODO: currently we only support scores on the LHS - this can be easily extended!]
 #'
 #' [TODO: do we also want to support scores vs scores comparisons?]
 #'
+#' [TODO: conditional constraints are only evaluated at the continuation area]
+#'
 #' @param e1 first comparator
 #' @param e2 second comparator
 #' @template dotdotdotTemplate
 #'
+#' @examples
+#' cp          <- ConditionalPower(Normal(), PointMassPrior(0.4, 1))
+#' pow         <- integrate(cp)
+#' constraint1 <- pow >= 0.8 # an unconditional power constraint
+#' constraint2 <- cp >= 0.7 # a conditional power constraint
+#'
 #' @exportClass Constraint
 setClass("Constraint")
 
-#' @param s constraint to evaluate [TODO make naming of arguments for evaluate more generic!]
+#' @param s constraint to evaluate
 #' @param design TwoStageDesign to evaluate
 #'
 #' @rdname Constraint-class
@@ -41,9 +51,7 @@ setMethod("<=", signature("AbstractConditionalScore", "numeric"),
 #' @rdname Constraint-class
 #' @export
 setMethod(">=", signature("AbstractConditionalScore", "numeric"),
-          function(e1, e2) new("ConditionalConstraint", score = -1 * e1, rhs = - e2))
-# TODO: don't be too dogmatic, we can implement all constructors for Scores if
-# we define a new abstract class Score...
+          function(e1, e2) new("ConditionalConstraint", score = -1 * e1, rhs = -e2))
 
 
 
@@ -65,7 +73,7 @@ setMethod("<=", signature("UnconditionalScore", "numeric"),
 #' @rdname Constraint-class
 #' @export
 setMethod(">=", signature("UnconditionalScore", "numeric"),
-          function(e1, e2) new("UnconditionalConstraint", score = -1 * e1, rhs = - e2))
+          function(e1, e2) new("UnconditionalConstraint", score = -1 * e1, rhs = -e2))
 
 
 
