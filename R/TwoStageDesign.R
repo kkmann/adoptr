@@ -1,6 +1,34 @@
 #' Two-stage designs
 #'
-#' [ToDo]
+#' \code{TwoStageDesign} is the fundamental design class of this package.
+#' It consits of three first-stage parameters, two-stage two vectors
+#' and additional parameters for implementation.
+#'
+#' \code{n1} denotes the sample size of the first stage.
+#' \code{c1f} and \code{c1e} define decision boundary.
+#' If the first-stage test statistic \code{Z_1} is larger than \code{c1e},
+#' than the trial is stopped early for efficacy and the null hypothesis is
+#' rejected.
+#' If \code{Z_1} is smaller than \code{c1f}, than the null hypothesis is
+#' accpected and the trial is stopped early for futility.
+#' Otherwise, the trial enters in the second stage. In this case,
+#' the stage-two sample size function \code{n2(Z_1)} and the stage-two
+#' rejection boundary \code{c2(Z_1)} are computed.
+#' As these are functions, they are approximated by a vector of pivots
+#' denoted by \code{n2_pivots} and \code{c2_pivots}, respectively.
+#' The slots \code{x1_norm_pivots} and \code{weights} are defined
+#' for numerical implementation rules.
+#' The generic implementation of this package is a Gaussian quadrature and
+#' a corresponding design can be built by means of \link{gq_design}.
+#' The user is free to implement own integration rules.
+#' He has to be aware that all elements of \code{x1_norm_pivots} have
+#' to be inside the interval [-1, 1] and have to be scaled by the
+#' applied integration rule.
+#' The parameter \code{tunable} is a logical one and indicates which
+#' design parameters should be tunable for use in optimization.
+#' Rounded sample size values can be applied by the logical parameter
+#' \code{rounded}.
+#'
 #'
 #' @slot n1 stage-one sample size
 #' @slot c1f early stopping for futility boundary
@@ -232,18 +260,27 @@ setMethod("show", signature(object = "TwoStageDesign"),
 
 #' Plot TwoStageDesign with optional set of conditional scores
 #'
-#' [TODO]
+#' This function allows to plot the stage-two sample size and decision boundary
+#' functions of a \code{TwoStageDesign} and
+#' user-defined elements of the class \code{ConditionalScore}.
+#'
 #'
 #' @param y not used
 #' @param rounded should n-values be rounded?
 #' @param k number of points to use for plotting
 #'
+#' @examples
+#' order  <- 5L
+#' design <- gq_design(50, 0, 2, rep(50.0, order), rep(2.0, order), order)
+#' cp     <- ConditionalPower(dist = Normal(), prior = PointMassPrior(.4, 1))
+#' plot(design, "Conditional Power" = cp)
+#'
 #' @rdname TwoStageDesign-class
 #' @export
 setMethod("plot", signature(x = "TwoStageDesign"),
-          function(x, y = NULL, rounded = T, ..., k = 100) {
-              if(rounded == T) {
-                  x@rounded = T
+          function(x, y = NULL, rounded = TRUE, ..., k = 100) {
+              if(rounded == TRUE) {
+                  x@rounded = TRUE
                   x@n1 = round(x@n1)
               }
               scores <- list(...)
@@ -268,11 +305,24 @@ setMethod("plot", signature(x = "TwoStageDesign"),
 
 #' Summarize TwoStageDesign objects with optional set of scores
 #'
-#' [TODO]
+#' \code{summary} summarizes the first-stage of a \code{TwoStageDesign}
+#' and objects of class \code{UnconditionalScore} that have to be
+#' defined by the user.
+#'
+#' The first stage sample size and the two continuation decsion boundaries
+#' are printed.
+#' Furthermore, the user can define unconditional scores and these will be
+#' evaluated and listed.
 #'
 #' @param object design object to summarize
 #' @param rounded should rounded n-values be used?
 #' @param ... optinal additional named UnconditionalScores
+#'
+#' @examples
+#' order  <- 5L
+#' design <- gq_design(50, 0, 2, rep(50.0, order), rep(2.0, order), order)
+#' pow    <- integrate(ConditionalPower(dist = Normal(), prior = PointMassPrior(.4, 1)))
+#' summary(design, "Power" = pow)
 #'
 #' @export
 setMethod("summary", signature("TwoStageDesign"),

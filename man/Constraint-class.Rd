@@ -23,7 +23,7 @@
 \S4method{>=}{UnconditionalScore,numeric}(e1, e2)
 }
 \arguments{
-\item{s}{constraint to evaluate [TODO make naming of arguments for evaluate more generic!]}
+\item{s}{constraint to evaluate}
 
 \item{design}{TwoStageDesign to evaluate}
 
@@ -34,10 +34,21 @@
 \item{e2}{second comparator}
 }
 \description{
-[TODO]
+Conceptually, constraints work very similar to scores (any score can be put in
+a constraint).
+Currently, only constraints of the form 'score <=/>= x' are admissable.
 }
 \details{
 [TODO: currently we only support scores on the LHS - this can be easily extended!]
 
 [TODO: do we also want to support scores vs scores comparisons?]
+
+[TODO: conditional constraints are only evaluated at the continuation area]
+}
+\examples{
+cp          <- ConditionalPower(Normal(), PointMassPrior(0.4, 1))
+pow         <- integrate(cp)
+constraint1 <- pow >= 0.8 # an unconditional power constraint
+constraint2 <- cp >= 0.7 # a conditional power constraint
+
 }

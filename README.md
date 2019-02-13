@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# otsd
+# otsd <a href='https://github.com/kkmann/otsd'><img src='man/figures/logo.png' align="right" height="139" /></a>
 
 <!-- badges: start -->
 
@@ -25,13 +25,3 @@ devtools::install_github("kkmann/otsd")
 ## Documentation
 
 the docs are at <https://kkmann.github.io/otsd/>
-
-## Example
-
-This is a basic example which shows you how to solve a common problem:
-
-``` r
-library(otsd)
-
-[TODO example]
-```

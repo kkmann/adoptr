@@ -37,9 +37,28 @@ test_that("conditional score arithmetic works", {
         evaluate(2*css0 + css1, design, z1),
         2*evaluate(css0, design, z1) + evaluate(css1, design, z1))
 
-    # more test cases!
+    cp   <- ConditionalPower(dist, alternative)
+
+    expect_equal(
+        evaluate(css1 + cp, design, z1),
+        evaluate(css1, design, z1) + evaluate(cp, design, z1)
+    )
+
+
+    expect_equal(
+        evaluate(css0 + 5, design, z1),
+        evaluate(css0, design, z1) + 5
+    )
+
+
+    expect_equal(
+        evaluate(7.1 + cp, design, z1),
+        7.1 + evaluate(cp, design, z1)
+    )
 
 })
+
+
 
 
 context("Test Conditional Power")
