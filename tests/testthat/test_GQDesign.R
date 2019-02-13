@@ -237,4 +237,9 @@ test_that("plot and print methods", {
         "TwoStageDesign"
     )
 
+    expect_known_output(
+        pr,
+        file = "known_values/print.rds",
+    )
+
 })
