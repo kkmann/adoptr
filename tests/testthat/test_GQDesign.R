@@ -220,3 +220,26 @@ test_that("errors are returned correctly", {
     ) # parameters length must fit
 
 }) # end 'errors are returned correctly'
+
+
+
+
+test_that("plot and print methods", {
+    'vdiffr::expect_doppelganger(
+        "Design plot",
+        plot(d2),
+    )
+'
+    pr <- print(d2)
+
+    expect_equal(
+        class(pr)[1],
+        "TwoStageDesign"
+    )
+
+    expect_known_output(
+        pr,
+        file = "known_values/print.rds",
+    )
+
+})

@@ -117,6 +117,7 @@ test_that("Error definition works", {
 }) # end 'error definition works'
 
 
+
 test_that("GSDesign can be converted to TwoStageDesign", {
     int_pars <- GaussLegendreRule(5L)
     design1  <- GSDesign(50, 0, 2, 50, rep(2, 5), int_pars$nodes, int_pars$weights)
@@ -138,3 +139,17 @@ test_that("GSDesign can be converted to TwoStageDesign", {
     ) # ess remains equal
 
 }) # end 'GSDesign can be converted to TwoStageDesign'
+
+
+
+test_that("Rounding works", {
+    int_pars <- GaussLegendreRule(5L)
+    design1  <- GSDesign(50, 0, 2, 50.2, rep(2, 5), int_pars$nodes, int_pars$weights)
+
+    design1@rounded = TRUE
+
+    expect_equal(
+        n2(design1, 1),
+        50.0
+    ) # end 'roundig works'
+})
