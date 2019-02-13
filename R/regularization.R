@@ -168,3 +168,40 @@ setMethod("evaluate", signature("SmoothnessN2", "GSDesign"),
 setMethod("evaluate", signature("SmoothnessN2", "OneStageDesign"),
           function(s, design, ...) 0 )
 
+
+
+
+#' Penalize n1
+#'
+#' \code{PenaltyN1} is a class that penalizes the \code{n1} value of
+#' a design.
+#'
+#'
+#' @exportClass PenaltyN1
+setClass("PenaltyN1", representation(
+    dummy = 'logical'
+),
+contains = "UnconditionalScore")
+
+
+
+#' @rdname PenaltyN1-class
+#' @export
+PenaltyN1 <- function() new("PenaltyN1", dummy = FALSE)
+
+
+#' Returns the n1-value of a \code{TwoStageDesign}.
+#' This can be used as penalty term in the optimization.
+#'
+#' @param s an object of class \code{PenaltyN1}
+#' @param design the design to compute the smoothness term for
+#' @template dotdotdotTemplate
+#'
+#' @rdname PenaltyN1-class
+#' @export
+setMethod("evaluate", signature("PenaltyN1", "TwoStageDesign"),
+          function(s, design, ...) {
+              design@n1
+          }
+)
+
