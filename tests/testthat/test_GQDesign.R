@@ -225,9 +225,11 @@ test_that("errors are returned correctly", {
 
 
 test_that("plot and print methods", {
-    vdiffr::expect_doppelganger(
+    skip(
+        vdiffr::expect_doppelganger(
         "Design plot",
         plot(d2),
+        )
     )
 
     pr <- print(d2)
