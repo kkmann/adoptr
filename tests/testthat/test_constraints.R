@@ -38,6 +38,13 @@ test_that("UnconditionalConstraints", {
     )
 
 
+    # Check syntax
+    expect_equal(
+        evaluate(subject_to(.05 >= toer), design),
+        evaluate(subject_to(toer <= .05), design)
+    )
+
+
 })
 
 test_that("ConditionalConstraints", {
@@ -68,7 +75,7 @@ test_that("ConditionalConstraints", {
     # create dummy design
     design <- gq_design(25, 0, 2, rep(40.5, 5), rep(1.96, 5), 5L)
 
-    # create power as IntegralScore
+    # create conditional power
     cp <- ConditionalPower(Normal(two_armed = FALSE), PointMassPrior(.4, 1))
 
     # construct a constraint set and see if it is at least of the right length
@@ -101,6 +108,13 @@ test_that("ConditionalConstraints", {
         evaluate(subject_to(.8 <= cp), design)
     )
 
+
+    # Check syntax
+    expect_equal(
+        evaluate(subject_to(css <= 500), design),
+        evaluate(subject_to(500 >= css), design)
+    )
+
 })
 
 
@@ -109,4 +123,31 @@ test_that("subject_to throws correct error", {
 
     expect_error(subject_to(1))
 
-})
+}) # end 'subject_to throws correct error'
+
+
+
+test_that("score vs score inequalities", {
+    # create dummy design
+    design <- gq_design(25, 0, 2, rep(40.5, 5), rep(1.96, 5), 5L)
+
+    # create conditional scores
+    cp    <- ConditionalPower(Normal(), PointMassPrior(.28, 1))
+    ctoer <- ConditionalPower(Normal(), PointMassPrior(.0, 1))
+
+    expect_equal(
+        evaluate(subject_to(ctoer <= cp), design),
+        evaluate(subject_to(cp >= ctoer), design)
+    )
+
+
+    # create unconditional scores
+    pow  <- integrate(cp)
+    toer <- integrate(ctoer)
+
+    expect_equal(
+        evaluate(subject_to(toer <= pow), design),
+        evaluate(subject_to(pow >= toer), design)
+    )
+
+}) # end 'score vs score inequalities'
