@@ -225,11 +225,11 @@ test_that("errors are returned correctly", {
 
 
 test_that("plot and print methods", {
-    'vdiffr::expect_doppelganger(
+    vdiffr::expect_doppelganger(
         "Design plot",
-        plot(d2)
+        otsd::plot(d2)
     )
-'
+
     vdiffr::expect_doppelganger(
         "Design print",
         print.TwoStageDesignSummary(summary(d2))
