@@ -232,11 +232,3 @@ test_that("print methods", {
 
 })
 
-
-test_that("plot methods", {
-    vdiffr::expect_doppelganger(
-        "Design plot",
-        otsd::plot(d2)
-    )
-
-})
