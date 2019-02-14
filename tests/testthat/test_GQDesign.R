@@ -232,7 +232,7 @@ test_that("plot and print methods", {
 '
     vdiffr::expect_doppelganger(
         "Design print",
-        print(d2, rounded = TRUE)
+        print.TwoStageDesignSummary(summary(d2))
     )
 
 })
