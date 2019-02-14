@@ -230,5 +230,15 @@ test_that("print methods", {
         print.TwoStageDesignSummary(summary(d2))
     )
 
-})
+}) # end 'print methods'
+
+
+test_that("plot produces correct number of columns", {
+    pic <- plot(d2, "ConditionalPower" = cp)
+
+    expect_equal(
+        pic$mfrow[2],
+        3
+    )
+}) # end 'plot produces correct number of columns'
 
