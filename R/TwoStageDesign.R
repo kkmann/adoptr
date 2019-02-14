@@ -222,13 +222,11 @@ setGeneric("c2", function(d, x1, ...) standardGeneric("c2"))
 #' @rdname TwoStageDesign-class
 #' @export
 setMethod("c2", signature("TwoStageDesign", "numeric"),
-    function(d, x1, ...) ifelse(x1 < d@c1f, Inf,
-                                ifelse(x1 > d@c1e, -Inf,
-                                       stats::approx(scaled_integration_pivots(d), d@c2_pivots, xout = x1, method = "linear", rule = 2)$y)
-                                       )
-                                )
+          function(d, x1, ...) ifelse(x1 < d@c1f, Inf,
+                                      ifelse(x1 > d@c1e, -Inf,
+                                             stats::approx(scaled_integration_pivots(d), d@c2_pivots, xout = x1, method = "linear", rule = 2)$y)
+          )
 )
-
 
 
 #' @rdname TwoStageDesign-class
