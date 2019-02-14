@@ -22,7 +22,7 @@ OneStageDesign(n, c)
 
 \S4method{c2}{OneStageDesign,numeric}(d, x1, ...)
 
-\S4method{TwoStageDesign}{OneStageDesign}(d, ...)
+\S4method{TwoStageDesign}{OneStageDesign}(d, rounded = FALSE, ...)
 
 \S4method{evaluate}{SmoothnessN2,OneStageDesign}(s, design, ...)
 }
@@ -44,12 +44,18 @@ by \code{as.numeric(OneStageDesign)})}
 
 \item{x1}{stage-one outcome}
 
+\item{rounded}{c.f. slot}
+
 \item{s}{an object of class \code{SmoothnessN2}}
 
 \item{design}{an object of class \code{OneStageDesign}}
 }
 \description{
-[ToDo]
+\code{OneStageDesign} allows the usage of a single-stage design.
+In this case without a second stage, there only exist the first-stage sample
+size \code{n1} and the first-stage rejection boundary \code{c1f}.
+No other parameters have to be set.
+\code{OneStageDesign} is a subclass of \link{TwoStageDesign}.
 }
 \section{Slots}{
 
@@ -67,5 +73,9 @@ by \code{as.numeric(OneStageDesign)})}
 \item{\code{x1_norm_pivots}}{is ignored for OneStageDesign}
 
 \item{\code{weights}}{is ignored for OneStageDesign}
+
+\item{\code{tunable}}{is ignored for OneStageDesign}
+
+\item{\code{rounded}}{logical that indicates whether rounded n1-value should be used}
 }}
 

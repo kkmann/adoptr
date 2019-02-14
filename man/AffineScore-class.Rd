@@ -25,7 +25,12 @@ AffineScore(scores, coefs, intercept)
 \item{...}{further optional arguments}
 }
 \description{
-[TODO]
+These methods allow to add and multiplicate two or several
+conditional resp. unconditional scores.
+They can also be weighted by numeric coefficients and shifted
+by a numeric intercept.
+This yields to new scores as sum of scores and is therefore a useful
+tool to combine scores.
 }
 \section{Slots}{
 
@@ -35,6 +40,19 @@ AffineScore(scores, coefs, intercept)
 \item{\code{coefs}}{numeric vector of the same length as \code{scores}, holding the
 coefficients}
 
-\item{\code{intercept}}{the intercept for the affine function}
+\item{\code{intercept}}{the intercept for the affine function
+
+\code{AffineScore} allows to add scores of arbitrary class and shift
+them by the \code{intercept}.
+\code{AffineUnconditionalScore} allows the same for scores of class
+\code{UnconditionalScore} and \code{AffineConditionalScore} for
+scores of class \code{ConditionalScore}.
+By the methods \code{+} and \code{*} scores can be added and multiplicated,
+respectively.
+Note that it is not possible to use these methods for a mixture of
+\code{ConditionalScore} and \code{UnconditionalScore} as these
+require different evaluation techniques.
+However, for both score classes multiplication and addition with
+numerics is provided.}
 }}
 

@@ -110,3 +110,40 @@ test_that("Optimal one-stage design with point prior is computable", {
 
 
 })
+
+
+
+test_that("error definition works", {
+    expect_error(
+        OneStageDesign(100)
+    )
+
+    design <- OneStageDesign(50, 2)
+
+    expect_error(
+        update(design, 2)
+    )
+
+}) # end 'error definition works'
+
+
+
+test_that("OneStageDesign can be converted to TwoStageDesign", {
+    design1 <- OneStageDesign(87.21, 1.96)
+    design2 <- TwoStageDesign(design1)
+
+    pow <- integrate(ConditionalPower(Normal(two_armed = FALSE), PointMassPrior(.3, 1)))
+
+    expect_equal(
+        evaluate(pow, design1),
+        evaluate(pow, design2),
+        tolerance = .001
+    )
+
+    expect_equal(
+        evaluate(pow, design1),
+        .8,
+        tolerance = .01
+    ) # power works for OneStageDesign
+
+}) # end 'OneStageDesign can be converted to TwoStageDesign'

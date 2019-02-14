@@ -1,6 +1,11 @@
 #' Group-sequential design
 #'
-#' [ToDo]
+#' The class \code{GroupSequentialDesign} allows the implementation
+#' and usage of group-sequential designs. These are two-stage designs
+#' with a constant stage-two sample size function.
+#' Therefore, the length of \code{n2_pivots} is required to be 1 in this
+#' class.
+#' \code{GroupSequentialDesign} is a subclass of \link{TwoStageDesign}.
 #'
 #' @slot n1 stage-one sample size
 #' @slot c1f early stopping for futility boundary
@@ -11,6 +16,8 @@
 #' @slot x1_norm_pivots normalized pivots for integration rule (in [-1, 1])
 #' @slot weights weights of conditional score values at x1_norm_pivots for
 #'     approximating the integral over x1.
+#' @slot tunable named logical vector indicating whether corresponding slot is considered a tunable parameter
+#' @slot rounded logical that indicates whether rounded n-values should be used
 #'
 #' @exportClass GSDesign
 setClass("GSDesign",  contains = "TwoStageDesign")
@@ -54,7 +61,9 @@ GSDesign <- function(n1, c1f, c1e, n2_pivots, c2_pivots, x1_norm_pivots, weights
 setMethod("n2", signature("GSDesign", "numeric"),
           function(d, x1, ...) {
               res <- ifelse(x1 < d@c1f | x1 > d@c1e, 0, d@n2_pivots)
-              return(ifelse(d@rounded == T, round(res), res))
+              if(d@rounded)
+                  res <- round(res)
+              return(res)
           }
 )
 
@@ -62,13 +71,20 @@ setMethod("n2", signature("GSDesign", "numeric"),
 
 #' Convert a group-sequential design to a two-stage design
 #'
+#' @param tunable c.f. slot
+#' @param rounded c.f. slot
+#'
 #' @rdname GSDesign-class
 #' @export
 setMethod("TwoStageDesign", signature("GSDesign"),
-     function(d, ...){
-        new("TwoStageDesign", n1 = d@n1, c1f = d@c1f, c1e = d@c1e,
+     function(d, tunable, rounded = FALSE, ...){
+         tunable <- logical(8) # initialize to all false
+         tunable[1:5] <- TRUE
+         names(tunable) <- c("n1", "c1f", "c1e", "n2_pivots", "c2_pivots", "x1_norm_pivots", "weights", "tunable")
+         new("TwoStageDesign", n1 = d@n1, c1f = d@c1f, c1e = d@c1e,
                         n2_pivots = rep(d@n2_pivots, length(d@weights)),
                         c2_pivots = d@c2_pivots,
-                        x1_norm_pivots = d@x1_norm_pivots, weights = d@weights)
+                        x1_norm_pivots = d@x1_norm_pivots, weights = d@weights,
+                        tunable = tunable, rounded = rounded)
 })
 
