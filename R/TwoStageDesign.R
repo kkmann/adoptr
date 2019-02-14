@@ -287,15 +287,21 @@ setMethod("plot", signature(x = "TwoStageDesign"),
               scores <- list(...)
               if (!all(sapply(scores, function(s) is(s, "ConditionalScore"))))
                   stop("optional arguments must be ConditionalScores")
-              opts  <- graphics::par(mfrow = c(1, length(scores) + 2))
-              x1    <- seq(x@c1f - (x@c1e - x@c1f)/5, x@c1e + (x@c1e - x@c1f)/5, length.out = k)
+              opts <- graphics::par(mfrow = c(1, length(scores) + 2))
+              x1   <- seq(x@c1f, x@c1e, length.out = k)
+              x2   <- seq(x@c1f - (x@c1e - x@c1f)/5, x@c1f - .01*(x@c1e - x@c1f)/5, length.out = k)
+              x3   <- seq(x@c1e + .01*(x@c1e - x@c1f)/5, x@c1e + (x@c1e - x@c1f)/5, length.out = k)
+              x4   <- seq(x@c1f - (x@c1e - x@c1f)/5, x@c1e + (x@c1e - x@c1f)/5, length.out = k)
               plot(x1, sapply(x1, function(z) n(x, z)), 'l',
+                   xlim = c(min(x4), max(x4)),
                    ylim = c(0, 1.05 * max(sapply(x1, function(z) n(x, z)))),
                    main = "Overall sample size", ylab = "")
-              plot(x1, c2(x, x1), 'l', main = "Stage-two critical value", ylab = "")
+              lines(x2, sapply(x2, function(z) n(x, z)))
+              lines(x3, sapply(x3, function(z) n(x, z)))
+              plot(x4, c2(x, x4), 'l', main = "Stage-two critical value", ylab = "")
               if (length(scores) > 0) {
                   for (i in 1:length(scores)) {
-                      plot(x1, evaluate(scores[[i]], x, x1), 'l',
+                      plot(x4, evaluate(scores[[i]], x, x4), 'l',
                            main = names(scores[i]), ylab = "")
                   }
               }
