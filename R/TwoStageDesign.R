@@ -184,9 +184,13 @@ setMethod("n2", signature("TwoStageDesign", "numeric"),
               res <- ifelse(x1 < d@c1f | x1 > d@c1e, 0, 1) *
                   pmax(
                       0,
-                      stats::splinefun(
-                          scaled_integration_pivots(d), d@n2_pivots
-                          )(x1)
+                      stats::approx(
+                          scaled_integration_pivots(d),
+                          d@n2_pivots,
+                          xout   = x1,
+                          method = "linear",
+                          rule   = 2
+                      )$y
                   )
               if (d@rounded)
                   res <- round(res)
@@ -220,9 +224,7 @@ setGeneric("c2", function(d, x1, ...) standardGeneric("c2"))
 setMethod("c2", signature("TwoStageDesign", "numeric"),
     function(d, x1, ...) ifelse(x1 < d@c1f, Inf,
                                 ifelse(x1 > d@c1e, -Inf,
-                                       stats::splinefun(
-                                           scaled_integration_pivots(d), d@c2_pivots
-                                       )(x1)
+                                       stats::approx(scaled_integration_pivots(d), d@c2_pivots, xout = x1, method = "linear", rule = 2)$y)
                                        )
                                 )
 )
