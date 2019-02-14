@@ -1,7 +1,5 @@
 context("constraint specifications                                            ")
 
-# TODO: values are ad-hoc, come up with a way to actually verify them!
-
 test_that("UnconditionalConstraints", {
 
     # create dummy design
@@ -13,14 +11,32 @@ test_that("UnconditionalConstraints", {
     # construct actual constraint
     cnstr <- pow >= 0.8
 
+    # compute true value
+    pow_true <-  mean(otsd::simulate
+                      (design, nsim = 10^6, dist = Normal(two_armed = FALSE),
+                          theta = .4, seed = 42)$reject)
+
     # see if it evaluates to the right value
     expect_equal(
-        evaluate(cnstr, design), -0.0415, tolerance = .001)
+        evaluate(cnstr, design), (.8 - pow_true), tolerance = .001)
 
     # check other direction
     toer <- integrate(ConditionalPower(Normal(two_armed = FALSE), PointMassPrior(.0, 1)))
+    # compute true value
+    toer_true <-  mean(otsd::simulate
+                      (design, nsim = 10^6, dist = Normal(two_armed = FALSE),
+                          theta = .0, seed = 142)$reject)
+
     expect_equal(
-        evaluate(toer <= .05, design), -.0153, tolerance = .001)
+        evaluate(toer <= .05, design), (toer_true - .05), tolerance = .001)
+
+
+    # Check syntax
+    expect_equal(
+        evaluate(subject_to(pow >= .8), design),
+        evaluate(subject_to(.8 <= pow), design)
+    )
+
 
 })
 
@@ -76,6 +92,13 @@ test_that("ConditionalConstraints", {
     expect_equal(
         evaluate(css, design, 1),
         65.0
+    )
+
+
+    # Check syntax
+    expect_equal(
+        evaluate(subject_to(cp >= .8), design),
+        evaluate(subject_to(.8 <= cp), design)
     )
 
 })
