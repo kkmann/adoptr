@@ -224,22 +224,22 @@ test_that("errors are returned correctly", {
 
 
 
-test_that("plot and print methods", {
-    'vdiffr::expect_doppelganger(
-        "Design plot",
-        plot(d2),
+test_that("print methods", {
+    vdiffr::expect_doppelganger(
+        "Design print",
+        print.TwoStageDesignSummary(summary(d2))
     )
-'
-    pr <- print(d2)
+
+}) # end 'print methods'
+
+
+test_that("plot produces correct number of columns", {
+    cp  <- ConditionalPower(Normal(), PointMassPrior(.3, 1))
+    pic <- plot(d2, "ConditionalPower" = cp)
 
     expect_equal(
-        class(pr)[1],
-        "TwoStageDesign"
+        pic$mfrow[2],
+        3
     )
+}) # end 'plot produces correct number of columns'
 
-    expect_known_output(
-        pr,
-        file = "known_values/print.rds",
-    )
-
-})
