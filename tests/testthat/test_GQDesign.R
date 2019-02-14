@@ -234,6 +234,7 @@ test_that("print methods", {
 
 
 test_that("plot produces correct number of columns", {
+    cp  <- ConditionalPower(Normal(), PointMassPrior(.3, 1))
     pic <- plot(d2, "ConditionalPower" = cp)
 
     expect_equal(
