@@ -2,11 +2,8 @@
 #'
 #' Conceptually, constraints work very similar to scores (any score can be put in
 #' a constraint).
-#' Currently, only constraints of the form 'score <=/>= x' are admissable.
-#'
-#' [TODO: currently we only support scores on the LHS - this can be easily extended!]
-#'
-#' [TODO: do we also want to support scores vs scores comparisons?]
+#' Currently,  constraints of the form 'score <=/>= x',
+#' 'x <=/>= score' and 'score <=/>= score' are admissable.
 #'
 #' [TODO: conditional constraints are only evaluated at the continuation area]
 #'
@@ -19,6 +16,7 @@
 #' pow         <- integrate(cp)
 #' constraint1 <- pow >= 0.8 # an unconditional power constraint
 #' constraint2 <- cp >= 0.7 # a conditional power constraint
+#' constraint3 <- 0.7 <= cp # yields the same as constraint2
 #'
 #' @exportClass Constraint
 setClass("Constraint")
@@ -52,6 +50,22 @@ setMethod("<=", signature("AbstractConditionalScore", "numeric"),
 #' @export
 setMethod(">=", signature("AbstractConditionalScore", "numeric"),
           function(e1, e2) new("ConditionalConstraint", score = -1 * e1, rhs = -e2))
+#' @rdname Constraint-class
+#' @export
+setMethod("<=", signature("numeric", "AbstractConditionalScore"),
+          function(e1, e2) new("ConditionalConstraint", score = -1 * e2, rhs = -e1))
+#' @rdname Constraint-class
+#' @export
+setMethod(">=", signature("numeric", "AbstractConditionalScore"),
+          function(e1, e2) new("ConditionalConstraint", score = e2, rhs = e1))
+#' @rdname Constraint-class
+#' @export
+setMethod("<=", signature("AbstractConditionalScore", "AbstractConditionalScore"),
+          function(e1, e2) new("ConditionalConstraint", score = e1 + (-1) * e2, rhs = 0))
+#' @rdname Constraint-class
+#' @export
+setMethod(">=", signature("AbstractConditionalScore", "AbstractConditionalScore"),
+          function(e1, e2) new("ConditionalConstraint", score = e2 + (-1) * e1, rhs = 0))
 
 
 
@@ -74,6 +88,22 @@ setMethod("<=", signature("UnconditionalScore", "numeric"),
 #' @export
 setMethod(">=", signature("UnconditionalScore", "numeric"),
           function(e1, e2) new("UnconditionalConstraint", score = -1 * e1, rhs = -e2))
+#' @rdname Constraint-class
+#' @export
+setMethod("<=", signature("numeric", "UnconditionalScore"),
+          function(e1, e2) new("UnconditionalConstraint", score = -1 * e2, rhs = -e1))
+#' @rdname Constraint-class
+#' @export
+setMethod(">=", signature("numeric", "UnconditionalScore"),
+          function(e1, e2) new("UnconditionalConstraint", score = e2, rhs = e1))
+#' @rdname Constraint-class
+#' @export
+setMethod("<=", signature("UnconditionalScore", "UnconditionalScore"),
+          function(e1, e2) new("UnconditionalConstraint", score = e1 + (-1) * e2, rhs = 0))
+#' @rdname Constraint-class
+#' @export
+setMethod(">=", signature("UnconditionalScore", "UnconditionalScore"),
+          function(e1, e2) new("UnconditionalConstraint", score = e2 + (-1) * e1, rhs = 0))
 
 
 
