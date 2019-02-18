@@ -10,10 +10,8 @@
 #' @export
 GaussLegendreRule <- function(order) {
     order <- as.integer(order)
-    if (order < 0)
-        stop("Must be a non-negative number of nodes!")
-    if (order == 0)
-        return(list(x = numeric(0), w = numeric(0)))
+    if (order < 2)
+        stop("At least two nodes are necessary for integration!")
     j   <- 1:(order - 1)
     mu0 <- 2
     b   <- j / (4 * j^2 - 1)^0.5
