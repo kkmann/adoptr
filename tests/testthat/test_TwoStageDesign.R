@@ -44,7 +44,7 @@ test_that("simulate works (as last time)", {
     design@rounded <- TRUE
 
     expect_known_value(
-        simulate(design, nsim = 50, dist = Normal(), theta = .5, seed = 42),
+        adoptr::simulate(design, nsim = 50, dist = Normal(), theta = .5, seed = 42),
         file = "known_values/simulate.rds"
     )
 

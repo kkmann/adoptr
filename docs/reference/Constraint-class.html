@@ -6,15 +6,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Formulating constraints — Constraint-class • otsd</title>
+<title>Formulating constraints — Constraint-class • adoptr</title>
 
-<!-- favicons -->
-<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
-<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png" />
-<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
-<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
-<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
@@ -41,9 +34,10 @@
 
 <meta property="og:description" content="Conceptually, constraints work very similar to scores (any score can be put in
 a constraint).
-Currently, only constraints of the form 'score &amp;lt;=/&amp;gt;= x' are admissable." />
+Currently,  constraints of the form 'score &amp;lt;=/&amp;gt;= x',
+'x &amp;lt;=/&amp;gt;= score' and 'score &amp;lt;=/&amp;gt;= score' are admissable." />
 
-<meta property="og:image" content="https://kkmann.github.io/otsd/logo.png" />
+<meta property="og:image" content="https://kkmann.github.io/adoptr/logo.png" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -73,7 +67,7 @@ Currently, only constraints of the form 'score &amp;lt;=/&amp;gt;= x' are admiss
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">otsd</a>
+        <a class="navbar-link" href="../index.html">adoptr</a>
         <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
@@ -87,7 +81,7 @@ Currently, only constraints of the form 'score &amp;lt;=/&amp;gt;= x' are admiss
   </a>
 </li>
 <li>
-  <a href="../articles/otsd.html">Get started</a>
+  <a href="../articles/adoptr.html">Get started</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -96,7 +90,7 @@ Currently, only constraints of the form 'score &amp;lt;=/&amp;gt;= x' are admiss
       
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/kkmann/otsd">
+  <a href="https://github.com/kkmann/adoptr">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -114,7 +108,7 @@ Currently, only constraints of the form 'score &amp;lt;=/&amp;gt;= x' are admiss
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Formulating constraints</h1>
-    <small class="dont-index">Source: <a href='https://github.com/kkmann/otsd/blob/master/R/constraints.R'><code>R/constraints.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/kkmann/adoptr/blob/master/R/constraints.R'><code>R/constraints.R</code></a></small>
     <div class="hidden name"><code>Constraint-class.Rd</code></div>
     </div>
 
@@ -122,7 +116,8 @@ Currently, only constraints of the form 'score &amp;lt;=/&amp;gt;= x' are admiss
     
     <p>Conceptually, constraints work very similar to scores (any score can be put in
 a constraint).
-Currently, only constraints of the form 'score &lt;=/&gt;= x' are admissable.</p>
+Currently,  constraints of the form 'score &lt;=/&gt;= x',
+'x &lt;=/&gt;= score' and 'score &lt;=/&gt;= score' are admissable.</p>
     
     </div>
 
@@ -135,10 +130,34 @@ evaluate(s, design, ...)
 # S4 method for AbstractConditionalScore,numeric
 &gt;=(e1, e2)
 
+# S4 method for numeric,AbstractConditionalScore
+&lt;=(e1, e2)
+
+# S4 method for numeric,AbstractConditionalScore
+&gt;=(e1, e2)
+
+# S4 method for AbstractConditionalScore,AbstractConditionalScore
+&lt;=(e1, e2)
+
+# S4 method for AbstractConditionalScore,AbstractConditionalScore
+&gt;=(e1, e2)
+
 # S4 method for UnconditionalScore,numeric
 &lt;=(e1, e2)
 
 # S4 method for UnconditionalScore,numeric
+&gt;=(e1, e2)
+
+# S4 method for numeric,UnconditionalScore
+&lt;=(e1, e2)
+
+# S4 method for numeric,UnconditionalScore
+&gt;=(e1, e2)
+
+# S4 method for UnconditionalScore,UnconditionalScore
+&lt;=(e1, e2)
+
+# S4 method for UnconditionalScore,UnconditionalScore
 &gt;=(e1, e2)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -168,16 +187,15 @@ evaluate(s, design, ...)
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>[TODO: currently we only support scores on the LHS - this can be easily extended!]</p>
-<p>[TODO: do we also want to support scores vs scores comparisons?]</p>
-<p>[TODO: conditional constraints are only evaluated at the continuation area]</p>
+    <p>[TODO: conditional constraints are only evaluated at the continuation area]</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>cp</span>          <span class='kw'>&lt;-</span> <span class='fu'><a href='ConditionalPower-class.html'>ConditionalPower</a></span>(<span class='fu'><a href='NormalDataDistribution-class.html'>Normal</a></span>(), <span class='fu'><a href='PointMassPrior-class.html'>PointMassPrior</a></span>(<span class='fl'>0.4</span>, <span class='fl'>1</span>))
 <span class='no'>pow</span>         <span class='kw'>&lt;-</span> <span class='fu'><a href='working-with-scores.html'>integrate</a></span>(<span class='no'>cp</span>)
 <span class='no'>constraint1</span> <span class='kw'>&lt;-</span> <span class='no'>pow</span> <span class='kw'>&gt;=</span> <span class='fl'>0.8</span> <span class='co'># an unconditional power constraint</span>
-<span class='no'>constraint2</span> <span class='kw'>&lt;-</span> <span class='no'>cp</span> <span class='kw'>&gt;=</span> <span class='fl'>0.7</span> <span class='co'># a conditional power constraint</span></div></pre>
+<span class='no'>constraint2</span> <span class='kw'>&lt;-</span> <span class='no'>cp</span> <span class='kw'>&gt;=</span> <span class='fl'>0.7</span> <span class='co'># a conditional power constraint</span>
+<span class='no'>constraint3</span> <span class='kw'>&lt;-</span> <span class='fl'>0.7</span> <span class='kw'>&lt;=</span> <span class='no'>cp</span> <span class='co'># yields the same as constraint2</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

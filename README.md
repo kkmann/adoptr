@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# adoptr <a href='https://github.com/kkmann/otsd'><img src='man/figures/logo.png' align="right" height="139" /></a>
+# adoptr <a href='https://github.com/kkmann/adoptr'><img src='man/figures/logo.png' align="right" height="139" /></a>
 
 <!-- badges: start -->
 

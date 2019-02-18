@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Design with Gaussian quadrature integration rule — gq_design • adoptr</title>
+<title>Adaptive Optimal Two-Stage Designs — adoptr • adoptr</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,11 +30,11 @@
 
 
 
-<meta property="og:title" content="Design with Gaussian quadrature integration rule — gq_design" />
+<meta property="og:title" content="Adaptive Optimal Two-Stage Designs — adoptr" />
 
-<meta property="og:description" content="gq_design simply creates a TwoStageDesign object with a Gaussian
-    quadrature numerical integration rule. If length(n2) = 1 and
-    length(c2) &amp;gt; 1 an object of class GSDesign is created." />
+<meta property="og:description" content="This package provides functionality to compute and analyze optimal
+two-stage designs for two-stage superiority tests based on a Z statistic.
+A range of pre-implemented objective/constraint functions are provided." />
 
 <meta property="og:image" content="https://kkmann.github.io/adoptr/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -106,75 +106,54 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Design with Gaussian quadrature integration rule</h1>
-    <small class="dont-index">Source: <a href='https://github.com/kkmann/adoptr/blob/master/R/gq_design.R'><code>R/gq_design.R</code></a></small>
-    <div class="hidden name"><code>gq_design.Rd</code></div>
+    <h1>Adaptive Optimal Two-Stage Designs</h1>
+    <small class="dont-index">Source: <a href='https://github.com/kkmann/adoptr/blob/master/R/adoptr.R'><code>R/adoptr.R</code></a></small>
+    <div class="hidden name"><code>adoptr.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>gq_design simply creates a TwoStageDesign object with a Gaussian
-    quadrature numerical integration rule. If length(n2) = 1 and
-    length(c2) &gt; 1 an object of class <code>GSDesign</code> is created.</p>
+    <p>This package provides functionality to compute and analyze optimal
+two-stage designs for two-stage superiority tests based on a Z statistic.
+A range of pre-implemented objective/constraint functions are provided.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>gq_design</span>(<span class='no'>n1</span>, <span class='no'>c1f</span>, <span class='no'>c1e</span>, <span class='no'>n2</span>, <span class='no'>c2</span>, <span class='no'>order</span>, <span class='no'>...</span>)
+        
+    <h2 class="hasAnchor" id="quickstart"><a class="anchor" href="#quickstart"></a>Quickstart</h2>
 
-<span class='co'># S4 method for numeric,numeric,numeric,numeric,numeric,integer</span>
-<span class='fu'>gq_design</span>(<span class='no'>n1</span>,
-  <span class='no'>c1f</span>, <span class='no'>c1e</span>, <span class='no'>n2</span>, <span class='no'>c2</span>, <span class='no'>order</span>, <span class='no'>...</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>n1</th>
-      <td><p>stage-one sample size</p></td>
-    </tr>
-    <tr>
-      <th>c1f</th>
-      <td><p>early stopping for futility boundary</p></td>
-    </tr>
-    <tr>
-      <th>c1e</th>
-      <td><p>early stopping for efficacy boundary</p></td>
-    </tr>
-    <tr>
-      <th>n2</th>
-      <td><p>second-stage sample size. vector for adaptive and
-integer for group-sequential design</p></td>
-    </tr>
-    <tr>
-      <th>c2</th>
-      <td><p>secnod-stage decision boundary</p></td>
-    </tr>
-    <tr>
-      <th>order</th>
-      <td><p>order (i.e. number of pivot points in the interior of [c1f, c1e])
-of the Gaussian quadrature rule to use for integration</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>futher arguments</p></td>
-    </tr>
-    </table>
+    <p>For a sample workflow and a quick demo of the capabilities, see the
+vignette .</p>
     
-    <h2 class="hasAnchor" id="methods-by-class-"><a class="anchor" href="#methods-by-class-"></a>Methods (by class)</h2>
+    <h2 class="hasAnchor" id="designs"><a class="anchor" href="#designs"></a>Designs</h2>
 
-    <ul>
-<li><p><code>n1 = numeric,c1f = numeric,c1e = numeric,n2 = numeric,c2 = numeric,order = integer</code>: Method to create design with Gaussian quadrature rule
-and Legendre nodes</p></li>
-</ul>
+    
+    <p>list designs</p>
+    
+    <h2 class="hasAnchor" id="prios"><a class="anchor" href="#prios"></a>Prios</h2>
+
+    
+    <p>List prior classes</p>
+    
+    <h2 class="hasAnchor" id="scores"><a class="anchor" href="#scores"></a>Scores</h2>
+
+    
+    <p>list score classes</p>
     
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#methods-by-class-">Methods (by class)</a></li>
+      <li><a href="#quickstart">Quickstart</a></li>
+
+      <li><a href="#designs">Designs</a></li>
+
+      <li><a href="#prios">Prios</a></li>
+
+      <li><a href="#scores">Scores</a></li>
           </ul>
 
   </div>

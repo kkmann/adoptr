@@ -1,5 +1,5 @@
 ---
-title: "OTSD quickstart"
+title: "adoptr quickstart"
 author: "Kevin Kunzmann"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
   comment   = "#>",
   fig.width = 8
 )
-library(otsd)
+library(adoptr)
 ```
 
 Create some more or less random start design.

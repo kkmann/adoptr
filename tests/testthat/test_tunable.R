@@ -45,6 +45,8 @@ test_that("two stage design can be optimized with fixed first stage", {
 
     tmp <- make_fixed(design, n1, c1f, c1e)
 
+
+
     opt_design <- minimize(
         ess + 0.0001 * smth,
         subject_to(

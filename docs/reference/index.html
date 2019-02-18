@@ -6,15 +6,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • otsd</title>
+<title>Function reference • adoptr</title>
 
-<!-- favicons -->
-<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
-<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png" />
-<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
-<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
-<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
@@ -39,7 +32,7 @@
 
 <meta property="og:title" content="Function reference" />
 
-<meta property="og:image" content="https://kkmann.github.io/otsd/logo.png" />
+<meta property="og:image" content="https://kkmann.github.io/adoptr/logo.png" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -69,7 +62,7 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">otsd</a>
+        <a class="navbar-link" href="../index.html">adoptr</a>
         <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
@@ -83,7 +76,7 @@
   </a>
 </li>
 <li>
-  <a href="../articles/otsd.html">Get started</a>
+  <a href="../articles/adoptr.html">Get started</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -92,7 +85,7 @@
       
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/kkmann/otsd">
+  <a href="https://github.com/kkmann/adoptr">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -166,7 +159,7 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="Constraint-class.html">evaluate(<i>&lt;Constraint&gt;</i>,<i>&lt;TwoStageDesign&gt;</i>)</a></code> <code><a href="Constraint-class.html">`<=`(<i>&lt;AbstractConditionalScore&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="Constraint-class.html">`>=`(<i>&lt;AbstractConditionalScore&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="Constraint-class.html">`<=`(<i>&lt;UnconditionalScore&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="Constraint-class.html">`>=`(<i>&lt;UnconditionalScore&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> </p>
+          <p><code><a href="Constraint-class.html">evaluate(<i>&lt;Constraint&gt;</i>,<i>&lt;TwoStageDesign&gt;</i>)</a></code> <code><a href="Constraint-class.html">`<=`(<i>&lt;AbstractConditionalScore&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="Constraint-class.html">`>=`(<i>&lt;AbstractConditionalScore&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="Constraint-class.html">`<=`(<i>&lt;numeric&gt;</i>,<i>&lt;AbstractConditionalScore&gt;</i>)</a></code> <code><a href="Constraint-class.html">`>=`(<i>&lt;numeric&gt;</i>,<i>&lt;AbstractConditionalScore&gt;</i>)</a></code> <code><a href="Constraint-class.html">`<=`(<i>&lt;AbstractConditionalScore&gt;</i>,<i>&lt;AbstractConditionalScore&gt;</i>)</a></code> <code><a href="Constraint-class.html">`>=`(<i>&lt;AbstractConditionalScore&gt;</i>,<i>&lt;AbstractConditionalScore&gt;</i>)</a></code> <code><a href="Constraint-class.html">`<=`(<i>&lt;UnconditionalScore&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="Constraint-class.html">`>=`(<i>&lt;UnconditionalScore&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="Constraint-class.html">`<=`(<i>&lt;numeric&gt;</i>,<i>&lt;UnconditionalScore&gt;</i>)</a></code> <code><a href="Constraint-class.html">`>=`(<i>&lt;numeric&gt;</i>,<i>&lt;UnconditionalScore&gt;</i>)</a></code> <code><a href="Constraint-class.html">`<=`(<i>&lt;UnconditionalScore&gt;</i>,<i>&lt;UnconditionalScore&gt;</i>)</a></code> <code><a href="Constraint-class.html">`>=`(<i>&lt;UnconditionalScore&gt;</i>,<i>&lt;UnconditionalScore&gt;</i>)</a></code> </p>
         </td>
         <td><p>Formulating constraints</p></td>
       </tr><tr>
@@ -256,6 +249,12 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="adoptr.html">adoptr</a></code> </p>
+        </td>
+        <td><p>Adaptive Optimal Two-Stage Designs</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="dot-evaluate.html">.evaluate()</a></code> </p>
         </td>
         <td><p>Design specific implementation for evaluating integral scores</p></td>
@@ -271,12 +270,6 @@
           <p><code><a href="minimize.html">minimize()</a></code> </p>
         </td>
         <td><p>Find optimal two-stage design by constraint minimization</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="otsd.html">otsd</a></code> </p>
-        </td>
-        <td><p>Optimal Two-Stage Designs</p></td>
       </tr><tr>
         
         <td>
