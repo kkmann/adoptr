@@ -295,14 +295,14 @@ setMethod("plot", signature(x = "TwoStageDesign"),
               plot(x1, sapply(x1, function(z) n(x, z)), 'l',
                    xlim = c(min(x4), max(x4)),
                    ylim = c(0, 1.05 * max(sapply(x1, function(z) n(x, z)))),
-                   main = "Overall sample size", ylab = "")
+                   main = "Overall sample size", ylab = "" , xlab = expression("x"[1]))
               lines(x2, sapply(x2, function(z) n(x, z)))
               lines(x3, sapply(x3, function(z) n(x, z)))
-              plot(x4, c2(x, x4), 'l', main = "Stage-two critical value", ylab = "")
+              plot(x4, c2(x, x4), 'l', main = "Stage-two critical value", ylab = "", xlab = expression("x"[1]))
               if (length(scores) > 0) {
                   for (i in 1:length(scores)) {
                       plot(x4, evaluate(scores[[i]], x, x4), 'l',
-                           main = names(scores[i]), ylab = "")
+                           main = names(scores[i]), ylab = "", , xlab = expression("x"[1]))
                   }
               }
               graphics::par(opts)
