@@ -12,7 +12,7 @@ test_that("UnconditionalConstraints", {
     cnstr <- pow >= 0.8
 
     # compute true value
-    pow_true <-  mean(otsd::simulate
+    pow_true <-  mean(adoptr::simulate
                       (design, nsim = 10^6, dist = Normal(two_armed = FALSE),
                           theta = .4, seed = 42)$reject)
 
@@ -23,7 +23,7 @@ test_that("UnconditionalConstraints", {
     # check other direction
     toer <- integrate(ConditionalPower(Normal(two_armed = FALSE), PointMassPrior(.0, 1)))
     # compute true value
-    toer_true <-  mean(otsd::simulate
+    toer_true <-  mean(adoptr::simulate
                       (design, nsim = 10^6, dist = Normal(two_armed = FALSE),
                           theta = .0, seed = 142)$reject)
 

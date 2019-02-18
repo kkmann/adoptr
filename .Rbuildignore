@@ -3,6 +3,7 @@
 ^codecov\.yml$
 ^\.travis\.yml$
 ^_pkgdown\.yml$
+^pkgdown$
 ^docs$
 ^man-roxygen$
 ^Meta$
@@ -10,4 +11,3 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 sticker.R
-^pkgdown$
