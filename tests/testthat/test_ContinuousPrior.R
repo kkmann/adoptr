@@ -199,3 +199,51 @@ test_that("increased n lets posterior expectation converge", {
     )
 
 }) # end '"increased n lets posterior expectation converge"'
+
+
+
+test_that("Errors are defined correctly", {
+    expect_error(
+        ContinuousPrior(function(x) 2*x, 1)
+    ) # support must be of length 2
+
+    expect_error(
+        ContinuousPrior(function(x) 1/x^2, c(1, Inf))
+    ) # support must be finite
+
+    expect_error(
+        ContinuousPrior(function(x) 2*x, c(1, 0))
+    ) # support[2] must be greater or equal than support[1]
+
+    # the same in 'condition'
+    prior <- ContinuousPrior(function(x) dnorm(x, mean = 0, sd = .1), c(-5, 5))
+
+    expect_error(
+        condition(prior, 1)
+    ) # interval must be of length 2
+
+    expect_error(
+        condition(prior, c(0, Inf))
+    ) # interval must be finite
+
+    expect_error(
+        condition(prior, c(3, 0))
+    ) # interval[2] must be greater or equal than interval[1]
+
+    condprior <- condition(prior, c(0,3))
+
+    expect_equal(
+        stats::integrate(function(x) condprior@pdf(x), 0, 3)$value,
+        1
+    ) # conditioning works when defined correctly
+
+
+    expect_error(
+        posterior(Normal(), prior, c(1,2), 50)
+    ) # posterior not vectorized in x1
+
+}) # end 'errors are defined correctly'
+
+
+
+

@@ -191,5 +191,55 @@ test_that("Optimal design is superior to standard GS design", {
         tolerance = .005
     )
 
+}) # end 'Optimal design is superior to standard GS design'
 
-})
+
+
+test_that("errors are returned correctly", {
+    expect_error(
+        GaussLegendreRule(-1)
+    )
+
+    f <- function(x) x
+
+    expect_error(
+        integrate_rule(f, 0, 1, .5, c(1, 1))
+    ) # pivots and weigths of same length
+
+    expect_error(
+        integrate_rule(f, 0, 3, c(1, 2), c(1, 1))
+    ) # x is scaled automatically
+
+    expect_error(
+        integrate_rule(f, 0, 1, c(.3, .6), c(0, 1))
+    ) # weights must be positive
+
+    order = 3L
+    expect_error(
+        gq_design(50, 0, 2, rep(50, 2), rep(3, order), order)
+    ) # parameters length must fit
+
+}) # end 'errors are returned correctly'
+
+
+
+
+test_that("print methods", {
+    vdiffr::expect_doppelganger(
+        "Design print",
+        print.TwoStageDesignSummary(summary(d2))
+    )
+
+}) # end 'print methods'
+
+
+test_that("plot produces correct number of columns", {
+    cp  <- ConditionalPower(Normal(), PointMassPrior(.3, 1))
+    pic <- plot(d2, "ConditionalPower" = cp)
+
+    expect_equal(
+        pic$mfrow[2],
+        3
+    )
+}) # end 'plot produces correct number of columns'
+

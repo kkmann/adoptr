@@ -13,7 +13,7 @@ GSDesign(n1, c1f, c1e, n2_pivots, c2_pivots, x1_norm_pivots, weights)
 
 \S4method{n2}{GSDesign,numeric}(d, x1, ...)
 
-\S4method{TwoStageDesign}{GSDesign}(d, ...)
+\S4method{TwoStageDesign}{GSDesign}(d, tunable, rounded = FALSE, ...)
 
 \S4method{evaluate}{SmoothnessN2,GSDesign}(s, design, ...)
 }
@@ -38,12 +38,21 @@ GSDesign(n1, c1f, c1e, n2_pivots, c2_pivots, x1_norm_pivots, weights)
 
 \item{...}{further optional arguments}
 
+\item{tunable}{c.f. slot}
+
+\item{rounded}{c.f. slot}
+
 \item{s}{an object of class \code{SmoothnessN2}}
 
 \item{design}{an object of class \code{GSDesign}}
 }
 \description{
-[ToDo]
+The class \code{GroupSequentialDesign} allows the implementation
+and usage of group-sequential designs. These are two-stage designs
+with a constant stage-two sample size function.
+Therefore, the length of \code{n2_pivots} is required to be 1 in this
+class.
+\code{GroupSequentialDesign} is a subclass of \link{TwoStageDesign}.
 }
 \section{Slots}{
 
@@ -63,5 +72,9 @@ pivot points of the numeric integration rule [TODO: these are not available duri
 
 \item{\code{weights}}{weights of conditional score values at x1_norm_pivots for
 approximating the integral over x1.}
+
+\item{\code{tunable}}{named logical vector indicating whether corresponding slot is considered a tunable parameter}
+
+\item{\code{rounded}}{logical that indicates whether rounded n-values should be used}
 }}
 
