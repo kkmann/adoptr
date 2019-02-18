@@ -21,3 +21,4 @@ implementation.
 This is mostly exploited during optiization to allow more efficient and
 stable evaluation of integral scores.
 }
+\keyword{internal}
