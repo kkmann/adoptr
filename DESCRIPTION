@@ -1,4 +1,4 @@
-Package: adoptr
+Package: otsd
 Type: Package
 Title: Adaptive Optimal Designs
 Version: 0.1.0
@@ -40,5 +40,5 @@ Collate:
     regularization.R
     gq_design.R
 RoxygenNote: 6.1.1
-BugReports: https://github.com/kkmann/adoptr/issues
-URL: https://github.com/kkmann/adoptr
+BugReports: https://github.com/kkmann/otsd/issues
+URL: https://github.com/kkmann/otsd
