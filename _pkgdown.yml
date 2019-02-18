@@ -32,8 +32,8 @@ reference:
     Classes and methods for formulating prior assumptions about the
     location parameter to be tested.
   contents:
-  - '`PointMassPrior-class`'
   - '`Prior-class`'
+  - '`PointMassPrior-class`'
   - '`ContinuousPrior-class`'
 - title: Data distribution classes
   desc: >
@@ -47,14 +47,14 @@ reference:
   desc: >
     Abstract interface for defining conditional and unconditional scores.
   contents:
+  - '`working-with-scores`'
   - '`UnconditionalScore-class`'
   - '`ConditionalScore-class`'
   - '`IntegralScore-class`'
   - '`score-arithmetic`'
-  - '`working-with-scores`'
 - title: Pre-implemented scores
   desc: >
-    A collection of
+    A collection of commonly used pre-implemented scores.
   contents:
   - '`SmoothnessN2-class`'
   - '`AverageN2-class`'

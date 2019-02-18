@@ -146,15 +146,15 @@
       <tr>
         
         <td>
-          <p><code><a href="PointMassPrior-class.html">PointMassPrior()</a></code> <code><a href="PointMassPrior-class.html">bounds(<i>&lt;PointMassPrior&gt;</i>)</a></code> <code><a href="PointMassPrior-class.html">expectation(<i>&lt;PointMassPrior&gt;</i>,<i>&lt;function&gt;</i>)</a></code> <code><a href="PointMassPrior-class.html">condition(<i>&lt;PointMassPrior&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="PointMassPrior-class.html">predictive_pdf(<i>&lt;DataDistribution&gt;</i>,<i>&lt;PointMassPrior&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="PointMassPrior-class.html">predictive_cdf(<i>&lt;DataDistribution&gt;</i>,<i>&lt;PointMassPrior&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="PointMassPrior-class.html">posterior(<i>&lt;DataDistribution&gt;</i>,<i>&lt;PointMassPrior&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Point-mass prior</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="Prior-class.html">bounds()</a></code> <code><a href="Prior-class.html">expectation()</a></code> <code><a href="Prior-class.html">condition()</a></code> <code><a href="Prior-class.html">predictive_pdf()</a></code> <code><a href="Prior-class.html">predictive_cdf()</a></code> <code><a href="Prior-class.html">posterior()</a></code> </p>
         </td>
         <td><p>Abstract univariate prior on model parameter</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="PointMassPrior-class.html">PointMassPrior()</a></code> <code><a href="PointMassPrior-class.html">bounds(<i>&lt;PointMassPrior&gt;</i>)</a></code> <code><a href="PointMassPrior-class.html">expectation(<i>&lt;PointMassPrior&gt;</i>,<i>&lt;function&gt;</i>)</a></code> <code><a href="PointMassPrior-class.html">condition(<i>&lt;PointMassPrior&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="PointMassPrior-class.html">predictive_pdf(<i>&lt;DataDistribution&gt;</i>,<i>&lt;PointMassPrior&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="PointMassPrior-class.html">predictive_cdf(<i>&lt;DataDistribution&gt;</i>,<i>&lt;PointMassPrior&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="PointMassPrior-class.html">posterior(<i>&lt;DataDistribution&gt;</i>,<i>&lt;PointMassPrior&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Point-mass prior</p></td>
       </tr><tr>
         
         <td>
@@ -192,7 +192,13 @@
       <tr>
         
         <td>
-          <p><code><a href="UnconditionalScore-class.html">evaluate(<i>&lt;UnconditionalScore&gt;</i>,<i>&lt;TwoStageDesign&gt;</i>)</a></code> <code><a href="UnconditionalScore-class.html">.evaluate(<i>&lt;UnconditionalScore&gt;</i>,<i>&lt;TwoStageDesign&gt;</i>)</a></code> </p>
+          <p><code><a href="working-with-scores.html">evaluate()</a></code> <code><a href="working-with-scores.html">integrate()</a></code> </p>
+        </td>
+        <td><p>Working with scores</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="UnconditionalScore-class.html">evaluate(<i>&lt;UnconditionalScore&gt;</i>,<i>&lt;TwoStageDesign&gt;</i>)</a></code> </p>
         </td>
         <td><p>Abstract class for unconditional scoring function</p></td>
       </tr><tr>
@@ -213,18 +219,12 @@
           <p><code><a href="score-arithmetic.html">`+`(<i>&lt;ConditionalScore&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="score-arithmetic.html">`+`(<i>&lt;numeric&gt;</i>,<i>&lt;ConditionalScore&gt;</i>)</a></code> <code><a href="score-arithmetic.html">`+`(<i>&lt;ConditionalScore&gt;</i>,<i>&lt;ConditionalScore&gt;</i>)</a></code> <code><a href="score-arithmetic.html">`*`(<i>&lt;ConditionalScore&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="score-arithmetic.html">`*`(<i>&lt;numeric&gt;</i>,<i>&lt;ConditionalScore&gt;</i>)</a></code> <code><a href="score-arithmetic.html">`+`(<i>&lt;UnconditionalScore&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="score-arithmetic.html">`+`(<i>&lt;numeric&gt;</i>,<i>&lt;UnconditionalScore&gt;</i>)</a></code> <code><a href="score-arithmetic.html">`+`(<i>&lt;UnconditionalScore&gt;</i>,<i>&lt;UnconditionalScore&gt;</i>)</a></code> <code><a href="score-arithmetic.html">`*`(<i>&lt;UnconditionalScore&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="score-arithmetic.html">`*`(<i>&lt;numeric&gt;</i>,<i>&lt;UnconditionalScore&gt;</i>)</a></code> <code><a href="score-arithmetic.html">`+`(<i>&lt;AffineUnconditionalScore&gt;</i>,<i>&lt;UnconditionalScore&gt;</i>)</a></code> <code><a href="score-arithmetic.html">`+`(<i>&lt;UnconditionalScore&gt;</i>,<i>&lt;AffineUnconditionalScore&gt;</i>)</a></code> <code><a href="score-arithmetic.html">`+`(<i>&lt;AffineUnconditionalScore&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="score-arithmetic.html">`+`(<i>&lt;numeric&gt;</i>,<i>&lt;AffineUnconditionalScore&gt;</i>)</a></code> <code><a href="score-arithmetic.html">`+`(<i>&lt;AffineUnconditionalScore&gt;</i>,<i>&lt;AffineUnconditionalScore&gt;</i>)</a></code> <code><a href="score-arithmetic.html">`*`(<i>&lt;AffineUnconditionalScore&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="score-arithmetic.html">`*`(<i>&lt;numeric&gt;</i>,<i>&lt;AffineUnconditionalScore&gt;</i>)</a></code> <code><a href="score-arithmetic.html">`+`(<i>&lt;AffineConditionalScore&gt;</i>,<i>&lt;ConditionalScore&gt;</i>)</a></code> <code><a href="score-arithmetic.html">`+`(<i>&lt;ConditionalScore&gt;</i>,<i>&lt;AffineConditionalScore&gt;</i>)</a></code> <code><a href="score-arithmetic.html">`+`(<i>&lt;AffineConditionalScore&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="score-arithmetic.html">`+`(<i>&lt;numeric&gt;</i>,<i>&lt;AffineConditionalScore&gt;</i>)</a></code> <code><a href="score-arithmetic.html">`+`(<i>&lt;AffineConditionalScore&gt;</i>,<i>&lt;AffineConditionalScore&gt;</i>)</a></code> <code><a href="score-arithmetic.html">`*`(<i>&lt;AffineConditionalScore&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="score-arithmetic.html">`*`(<i>&lt;numeric&gt;</i>,<i>&lt;AffineConditionalScore&gt;</i>)</a></code> </p>
         </td>
         <td><p>Score arithmetic</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="working-with-scores.html">evaluate()</a></code> <code><a href="working-with-scores.html">integrate()</a></code> </p>
-        </td>
-        <td><p>Working with scores</p></td>
       </tr>
     </tbody><tbody>
       <tr>
         <th colspan="2">
           <h2 id="section-pre-implemented-scores" class="hasAnchor"><a href="#section-pre-implemented-scores" class="anchor"></a>Pre-implemented scores</h2>
-          <p class="section-desc"><p>A collection of</p></p>
+          <p class="section-desc"><p>A collection of commonly used pre-implemented scores.</p></p>
         </th>
       </tr>
       <tr>

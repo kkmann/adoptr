@@ -23,20 +23,7 @@ setGeneric("evaluate", function(s, design, ...) standardGeneric("evaluate"))
 setGeneric("integrate", function(s, ...) standardGeneric("integrate"))
 
 
-#' Design specific implementation for evaluating integral scores
-#'
-#' This generic is not exported and for internal use only.
-#' It allows \code{\link{evaluate}} which is implemented generically via
-#' adaptive Gaussian quadrature to selectively dispatch to a design-specific
-#' implementation.
-#' This is mostly exploited during optiization to allow more efficient and
-#' stable evaluation of integral scores.
-#'
-#' @param s score object
-#' @param design design object
-#' @template dotdotdotTemplate
-#'
-#' @keywords internal
+# not user facing
 setGeneric(".evaluate", function(s, design, ...) standardGeneric(".evaluate"))
 
 
@@ -132,7 +119,7 @@ setMethod("evaluate", signature("UnconditionalScore", "TwoStageDesign"),
           function(s, design, ...) stop("not implemented") )
 
 
-#' @rdname UnconditionalScore-class
+# not user facing
 setMethod(".evaluate", signature("UnconditionalScore", "TwoStageDesign"),
           function(s, design, ...) stop("not implemented") )
 
