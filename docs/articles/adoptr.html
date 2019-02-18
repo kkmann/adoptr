@@ -5,11 +5,11 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>adoptr quickstart • adoptr</title>
+<title>Get started with adoptr • adoptr</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="adoptr quickstart">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Get started with adoptr">
 <meta property="og:description" content="">
 <meta property="og:image" content="https://kkmann.github.io/adoptr/logo.png">
 <meta name="twitter:card" content="summary">
@@ -47,6 +47,15 @@
   <a href="../articles/adoptr.html">Get started</a>
 </li>
 <li>
+  <a href="../articles/working-with-priors.html">Working with priors</a>
+</li>
+<li>
+  <a href="../articles/score-and-constraints-arithmetic.html">Score and constraints arithmetic</a>
+</li>
+<li>
+  <a href="../articles/defining-new-scores.html">Defining new scores</a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
 </li>
       </ul>
@@ -69,7 +78,7 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>adoptr quickstart</h1>
+      <h1>Get started with adoptr</h1>
                         <h4 class="author">Kevin Kunzmann</h4>
             
             <h4 class="date">2019-02-18</h4>
@@ -81,71 +90,86 @@
 
     
     
-<p>Create some more or less random start design.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">order &lt;-<span class="st"> </span>5L <span class="co"># must be integer!</span></a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb1-3" data-line-number="3">design &lt;-<span class="st"> </span><span class="kw"><a href="../reference/gq_design.html">gq_design</a></span>(</a>
-<a class="sourceLine" id="cb1-4" data-line-number="4">  <span class="dt">n1 =</span> <span class="dv">25</span>, </a>
-<a class="sourceLine" id="cb1-5" data-line-number="5">  <span class="dt">c1f =</span> <span class="dv">0</span>,</a>
-<a class="sourceLine" id="cb1-6" data-line-number="6">  <span class="dt">c1e =</span> <span class="dv">2</span>,</a>
-<a class="sourceLine" id="cb1-7" data-line-number="7">  <span class="dt">n2 =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="fl">40.0</span>, order), </a>
-<a class="sourceLine" id="cb1-8" data-line-number="8">  <span class="dt">c2 =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>( <span class="fl">1.96</span>, order), </a>
-<a class="sourceLine" id="cb1-9" data-line-number="9">  <span class="dt">order =</span> order)</a>
-<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="co">#TODO we need nice output for out designs...</span></a></code></pre></div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">z1 &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq</a></span>(<span class="op">-</span><span class="dv">2</span>, <span class="dv">4</span>, <span class="fl">.01</span>)</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(design)</a></code></pre></div>
+<div id="the-core-problem" class="section level2">
+<h2 class="hasAnchor">
+<a href="#the-core-problem" class="anchor"></a>The core problem</h2>
+<p><code>adoptr</code> addresses the problem of finding optimal two-stage designs for clinical trials. Currently, only (asymptotically) normal test statistics are supported. Both Z-tests for a single arm versus a fixed value or one-sided tests comparing the means of two arms are supported. In all cases known variance is assumed and in the two-arm case homogeneity of variances is required, additionally.</p>
+<p>Consider the simplest case of a two-stage design for a single-arm trial aiming to reject the null hypothesis that <span class="math inline">\(\delta\leq 0\)</span> where <span class="math inline">\(\delta\)</span> is the mean of the population response. Further assume that a power of 80% at <span class="math inline">\(\delta=0.4\)</span> and a type one error rate of 5% on the boundary of the null hypothesis is required (<span class="math inline">\(\delta=0.0\)</span>).</p>
+<p>We can start with a a more or less arbitrary initial design [ToDo: can we start with a single stage design fulfilling the power and type one error rate constraints here?]. <code>adoptr</code> internally represents designs as tuples of <span class="math inline">\((n_1, c_{1f}, c_{1f}, n_2(\cdot), c_2(\cdot))\)</span>. Here, <span class="math inline">\(n_2\)</span> and <span class="math inline">\(c_2\)</span> are the functions returning the stage-two sample size and critical values given the stage-one test statitic <span class="math inline">\(x_1\)</span> (z-score in our case). For any given objective function, the design parameters can be identified via a variational problem. To numerically solve this problem <span class="math inline">\(n_2\)</span> and <span class="math inline">\(c_2\)</span> are integrated using a Gaussian quadrature rule. The order of the rule determines the number of pivot points for both functions. Since, both <span class="math inline">\(n_2\)</span> and <span class="math inline">\(c_2\)</span> are usually fairly smooth on the continuation region, a quadrature rule of order 7 is sufficiently flexible:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">order &lt;-<span class="st"> </span>7L</a></code></pre></div>
+<p>The initial design may then be defined as follows:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">design &lt;-<span class="st"> </span><span class="kw"><a href="../reference/gq_design.html">gq_design</a></span>(</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">    <span class="dt">n1    =</span> <span class="dv">25</span>, </a>
+<a class="sourceLine" id="cb2-3" data-line-number="3">    <span class="dt">c1f   =</span> <span class="dv">0</span>,</a>
+<a class="sourceLine" id="cb2-4" data-line-number="4">    <span class="dt">c1e   =</span> <span class="dv">2</span>,</a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">    <span class="dt">n2    =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="fl">40.0</span>, order), </a>
+<a class="sourceLine" id="cb2-6" data-line-number="6">    <span class="dt">c2    =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>( <span class="fl">1.96</span>, order), </a>
+<a class="sourceLine" id="cb2-7" data-line-number="7">    <span class="dt">order =</span> order</a>
+<a class="sourceLine" id="cb2-8" data-line-number="8">  )</a></code></pre></div>
+<p>[comment: I don’t like the gq_design function. If we only use GQ, we should implement this as default constructor of the TwoStageDesign class even though the implementation is more generic.] The design can be visualized using the provided <code><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot()</a></code> method.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(design)</a></code></pre></div>
 <p><img src="adoptr_files/figure-html/plot-design-1.png" width="768"></p>
-<div id="define-scores" class="section level1">
-<h1 class="hasAnchor">
-<a href="#define-scores" class="anchor"></a>Define scores</h1>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co"># define null and alternative as point mass distributions</span></a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">null        &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PointMassPrior-class.html">PointMassPrior</a></span>(.<span class="dv">0</span>, <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3">alternative &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PointMassPrior-class.html">PointMassPrior</a></span>(.<span class="dv">4</span>, <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb3-4" data-line-number="4">dist        &lt;-<span class="st"> </span><span class="kw"><a href="../reference/NormalDataDistribution-class.html">Normal</a></span>()<span class="co"># data distribution</span></a></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">ess  &lt;-<span class="st"> </span><span class="kw"><a href="../reference/working-with-scores.html">integrate</a></span>(<span class="kw"><a href="../reference/ConditionalSampleSize-class.html">ConditionalSampleSize</a></span>(dist, alternative))</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2">cp   &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ConditionalPower-class.html">ConditionalPower</a></span>(dist, alternative)</a>
-<a class="sourceLine" id="cb4-3" data-line-number="3">pow  &lt;-<span class="st"> </span><span class="kw"><a href="../reference/working-with-scores.html">integrate</a></span>(cp)</a>
-<a class="sourceLine" id="cb4-4" data-line-number="4">toer &lt;-<span class="st"> </span><span class="kw"><a href="../reference/working-with-scores.html">integrate</a></span>(<span class="kw"><a href="../reference/ConditionalPower-class.html">ConditionalPower</a></span>(dist, null))</a>
-<a class="sourceLine" id="cb4-5" data-line-number="5">smth &lt;-<span class="st"> </span><span class="kw"><a href="../reference/AverageN2-class.html">AverageN2</a></span>()</a>
-<a class="sourceLine" id="cb4-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co"># print </span><span class="al">TODO</span><span class="co">: need nice functionality like summary(design, ess, pow, toer)</span></a>
-<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/do.call">do.call</a></span>(sprintf, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(</a>
-<a class="sourceLine" id="cb4-9" data-line-number="9">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="st">"ESS: %.1f, power: %.3f, maximal type one error rate: %.3f"</span>), </a>
-<a class="sourceLine" id="cb4-10" data-line-number="10">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/lapply">lapply</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(ess, pow, toer), <span class="cf">function</span>(s) <span class="kw"><a href="../reference/working-with-scores.html">evaluate</a></span>(s, design))</a>
-<a class="sourceLine" id="cb4-11" data-line-number="11">))</a>
-<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="co">#&gt; [1] "ESS: 50.7, power: 0.557, maximal type one error rate: 0.035"</span></a></code></pre></div>
+<p>In the next step, we define a simple optimization problem for improving this initial design.</p>
 </div>
-<div id="optimize" class="section level1">
-<h1 class="hasAnchor">
-<a href="#optimize" class="anchor"></a>Optimize</h1>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="../reference/minimize.html">minimize</a></span>(</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2">  ess <span class="op">+</span><span class="st"> </span><span class="fl">0.0001</span><span class="op">*</span>smth,</a>
-<a class="sourceLine" id="cb5-3" data-line-number="3">  <span class="kw"><a href="../reference/ConstraintsCollection-class.html">subject_to</a></span>(</a>
-<a class="sourceLine" id="cb5-4" data-line-number="4">    pow  <span class="op">&gt;=</span><span class="st"> </span><span class="fl">0.8</span>,</a>
-<a class="sourceLine" id="cb5-5" data-line-number="5">    toer <span class="op">&lt;=</span><span class="st"> </span><span class="fl">.05</span></a>
-<a class="sourceLine" id="cb5-6" data-line-number="6">  ),</a>
-<a class="sourceLine" id="cb5-7" data-line-number="7">  <span class="dt">initial_design =</span> design,</a>
-<a class="sourceLine" id="cb5-8" data-line-number="8">  <span class="dt">lower_boundary_design =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/update">update</a></span>(design, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">10</span>, <span class="dv">-1</span>, <span class="dv">1</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/numeric">numeric</a></span>(order) <span class="op">+</span><span class="st"> </span><span class="dv">2</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/numeric">numeric</a></span>(order) <span class="op">-</span><span class="st"> </span><span class="dv">5</span>)),</a>
-<a class="sourceLine" id="cb5-9" data-line-number="9">  <span class="dt">upper_boundary_design =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/update">update</a></span>(design, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">50</span>, <span class="dv">1</span>, <span class="dv">4</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/numeric">numeric</a></span>(order) <span class="op">+</span><span class="st"> </span><span class="dv">50</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/numeric">numeric</a></span>(order) <span class="op">+</span><span class="st"> </span><span class="dv">5</span>))</a>
-<a class="sourceLine" id="cb5-10" data-line-number="10">) -&gt;</a>
-<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="st">  </span>optimal_design</a>
-<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="co">#&gt; Warning in minimize(ess + 1e-04 * smth, subject_to(pow &gt;= 0.8, toer &lt;=</span></a>
-<a class="sourceLine" id="cb5-13" data-line-number="13"><span class="co">#&gt; 0.05), : initial design is infeasible!</span></a>
-<a class="sourceLine" id="cb5-14" data-line-number="14"></a>
-<a class="sourceLine" id="cb5-15" data-line-number="15"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(optimal_design, <span class="st">"Conditional power"</span> =<span class="st"> </span>cp)</a></code></pre></div>
-<p><img src="adoptr_files/figure-html/unnamed-chunk-1-1.png" width="768"></p>
-<p>Compute the scores using fast internal representation (Gauss quadrature).</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/do.call">do.call</a></span>(sprintf, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(</a>
-<a class="sourceLine" id="cb6-2" data-line-number="2">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="st">"ESS: %.1f, power: %.3f, maximal type one error rate: %.3f"</span>), </a>
-<a class="sourceLine" id="cb6-3" data-line-number="3">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/lapply">lapply</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(ess, pow, toer), <span class="cf">function</span>(s) <span class="kw"><a href="../reference/working-with-scores.html">evaluate</a></span>(s, optimal_design, <span class="dt">specific =</span> <span class="ot">TRUE</span>))</a>
-<a class="sourceLine" id="cb6-4" data-line-number="4">))</a>
-<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co">#&gt; [1] "ESS: 62.8, power: 0.800, maximal type one error rate: 0.050"</span></a></code></pre></div>
-<p>Compute the scores using adaptive quadrature rules (increased precision but slow).</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/do.call">do.call</a></span>(sprintf, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(</a>
-<a class="sourceLine" id="cb7-2" data-line-number="2">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="st">"ESS: %.1f, power: %.3f, maximal type one error rate: %.3f"</span>), </a>
-<a class="sourceLine" id="cb7-3" data-line-number="3">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/lapply">lapply</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(ess, pow, toer), <span class="cf">function</span>(s) <span class="kw"><a href="../reference/working-with-scores.html">evaluate</a></span>(s, optimal_design, <span class="dt">specific =</span> <span class="ot">FALSE</span>))</a>
-<a class="sourceLine" id="cb7-4" data-line-number="4">))</a>
-<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt; [1] "ESS: 62.7, power: 0.800, maximal type one error rate: 0.050"</span></a></code></pre></div>
+<div id="define-hypotheses-and-data-generating-mechanism" class="section level2">
+<h2 class="hasAnchor">
+<a href="#define-hypotheses-and-data-generating-mechanism" class="anchor"></a>Define hypotheses and data-generating mechanism</h2>
+<p>First, we define the null and alternative hypotheses as prior distributions over the unknown <span class="math inline">\(\delta\)</span>.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">null        &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PointMassPrior-class.html">PointMassPrior</a></span>(.<span class="dv">0</span>, <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">alternative &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PointMassPrior-class.html">PointMassPrior</a></span>(.<span class="dv">4</span>, <span class="dv">1</span>)</a></code></pre></div>
+<p>Next, we define the data-generating mechanism. Currently, only normally distributed test statistics with known variance are supported. For medium to large sample sizes, the assumption of known variance introduces little error even if the true distribution is, e.g., a t-distribution due to estimation of the unknown variance. Here we simply define a normal-model. The default is a two-arm trial, but for the sake of simplicity, we consider a single-arm trial first.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">datadist &lt;-<span class="st"> </span><span class="kw"><a href="../reference/NormalDataDistribution-class.html">Normal</a></span>(<span class="dt">two_armed =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<p>Note that when using two-armed designs, all sample sizes are given <em>per-arm</em>!</p>
+</div>
+<div id="define-scores" class="section level2">
+<h2 class="hasAnchor">
+<a href="#define-scores" class="anchor"></a>Define scores</h2>
+<p>To define the optimization problem we specify a few quantities of interest. The overall objective could, e.g., be to minimize the expected sample size of the design under the alternative hypothesis subject to the given power and type one error rate constraints. Let to this end</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">ess  &lt;-<span class="st"> </span><span class="kw"><a href="../reference/working-with-scores.html">integrate</a></span>(<span class="kw"><a href="../reference/ConditionalSampleSize-class.html">ConditionalSampleSize</a></span>(datadist, alternative))</a></code></pre></div>
+<p>be the expected sample size under the alternative. Note that the <code>ess</code> object is created by integrating a simple, conditional score - the conditional sample size given <span class="math inline">\(X_1 = x_1\)</span> is just <span class="math inline">\(n_1 + n_2(x_1)\)</span> and pre-implemented.</p>
+<p>Similarly, we can define the power and type one error rate by integrating conditional power with respect to the alternative or null hypothesis respectively:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">power  &lt;-<span class="st"> </span><span class="kw"><a href="../reference/working-with-scores.html">integrate</a></span>(<span class="kw"><a href="../reference/ConditionalPower-class.html">ConditionalPower</a></span>(datadist, alternative))</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">toer   &lt;-<span class="st"> </span><span class="kw"><a href="../reference/working-with-scores.html">integrate</a></span>(<span class="kw"><a href="../reference/ConditionalPower-class.html">ConditionalPower</a></span>(datadist, null))</a></code></pre></div>
+</div>
+<div id="optimize-the-design" class="section level2">
+<h2 class="hasAnchor">
+<a href="#optimize-the-design" class="anchor"></a>Optimize the design</h2>
+<p>We can now proceed with defining and solving the optimization problem. Before doing so, we need to define box-constraints by providing a lower and upper boundary design.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">lb_design &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/update">update</a></span>(</a>
+<a class="sourceLine" id="cb8-2" data-line-number="2">    design, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">10</span>, <span class="dv">-1</span>, <span class="dv">1</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/numeric">numeric</a></span>(order) <span class="op">+</span><span class="st"> </span><span class="dv">2</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/numeric">numeric</a></span>(order) <span class="op">-</span><span class="st"> </span><span class="dv">5</span>)</a>
+<a class="sourceLine" id="cb8-3" data-line-number="3">)</a>
+<a class="sourceLine" id="cb8-4" data-line-number="4">ub_design &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/update">update</a></span>(</a>
+<a class="sourceLine" id="cb8-5" data-line-number="5">  design, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">50</span>, <span class="dv">1</span>, <span class="dv">4</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/numeric">numeric</a></span>(order) <span class="op">+</span><span class="st"> </span><span class="dv">50</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/numeric">numeric</a></span>(order) <span class="op">+</span><span class="st"> </span><span class="dv">5</span>)</a>
+<a class="sourceLine" id="cb8-6" data-line-number="6">)</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">optimal_design &lt;-<span class="st"> </span><span class="kw"><a href="../reference/minimize.html">minimize</a></span>(</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2">  ess,</a>
+<a class="sourceLine" id="cb9-3" data-line-number="3">  <span class="kw"><a href="../reference/ConstraintsCollection-class.html">subject_to</a></span>(</a>
+<a class="sourceLine" id="cb9-4" data-line-number="4">    power <span class="op">&gt;=</span><span class="st"> </span><span class="fl">0.8</span>,</a>
+<a class="sourceLine" id="cb9-5" data-line-number="5">    toer  <span class="op">&lt;=</span><span class="st"> </span><span class="fl">.05</span></a>
+<a class="sourceLine" id="cb9-6" data-line-number="6">  ),</a>
+<a class="sourceLine" id="cb9-7" data-line-number="7">  <span class="dt">initial_design        =</span> design,</a>
+<a class="sourceLine" id="cb9-8" data-line-number="8">  <span class="dt">lower_boundary_design =</span> lb_design,</a>
+<a class="sourceLine" id="cb9-9" data-line-number="9">  <span class="dt">upper_boundary_design =</span> ub_design,</a>
+<a class="sourceLine" id="cb9-10" data-line-number="10">  <span class="dt">opts =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(</a>
+<a class="sourceLine" id="cb9-11" data-line-number="11">      <span class="dt">algorithm   =</span> <span class="st">"NLOPT_LN_COBYLA"</span>,</a>
+<a class="sourceLine" id="cb9-12" data-line-number="12">      <span class="dt">xtol_rel    =</span> <span class="fl">1e-5</span>,</a>
+<a class="sourceLine" id="cb9-13" data-line-number="13">      <span class="dt">maxeval     =</span> <span class="dv">25000</span></a>
+<a class="sourceLine" id="cb9-14" data-line-number="14">  )</a>
+<a class="sourceLine" id="cb9-15" data-line-number="15">)</a></code></pre></div>
+<p>Here, we override the internal defaults to allow a more precise solution. Note that since COBYLA is a generic derivative-free optimizer, the process may take quite a while. In general it is important to check convergence since partial solutions might be non-smooth or otherwise non-intuitive. [TODO how?] The resulting optimized design may again be plotted together with its conditional power.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(</a>
+<a class="sourceLine" id="cb10-2" data-line-number="2">  optimal_design, </a>
+<a class="sourceLine" id="cb10-3" data-line-number="3">  <span class="st">"Conditional power"</span> =<span class="st"> </span><span class="kw"><a href="../reference/ConditionalPower-class.html">ConditionalPower</a></span>(datadist, alternative),</a>
+<a class="sourceLine" id="cb10-4" data-line-number="4">  <span class="st">"Conditional TOER"</span> =<span class="st"> </span><span class="kw"><a href="../reference/ConditionalPower-class.html">ConditionalPower</a></span>(datadist, null)</a>
+<a class="sourceLine" id="cb10-5" data-line-number="5">)</a></code></pre></div>
+<p><img src="adoptr_files/figure-html/plot-optimal-design-1.png" width="768"></p>
+<p>This class of designs was previously discussed in [SIM article] where an indirect method solving the Euler-Lagrange equation was used to find the optimal <span class="math inline">\(n_2\)</span> and <span class="math inline">\(c_2\)</span> functions.</p>
+</div>
+<div id="variations" class="section level2">
+<h2 class="hasAnchor">
+<a href="#variations" class="anchor"></a>Variations</h2>
+<p>The purpose of <code>adoptr</code> is to provide a high-level interface for exploring and comparing different designs and to experiment with different combinations of objective functions and constraints.</p>
+<p>[…]</p>
 </div>
   </div>
 
@@ -154,8 +178,11 @@
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-<li><a href="#define-scores">Define scores</a></li>
-      <li><a href="#optimize">Optimize</a></li>
+<li><a href="#the-core-problem">The core problem</a></li>
+      <li><a href="#define-hypotheses-and-data-generating-mechanism">Define hypotheses and data-generating mechanism</a></li>
+      <li><a href="#define-scores">Define scores</a></li>
+      <li><a href="#optimize-the-design">Optimize the design</a></li>
+      <li><a href="#variations">Variations</a></li>
       </ul>
 </div>
       </div>
