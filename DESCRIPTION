@@ -1,6 +1,6 @@
-Package: otsd
+Package: adoptr
 Type: Package
-Title: Optimal Two-Stage Designs
+Title: Adaptive Optimal Two-Stage Designs
 Version: 0.1.0
 Authors@R: c(
         person("Kevin", "Kunzmann", role = c("aut", "cre"), email = "kevin.kunzmann@mrc-bsu.cam.uk"),
@@ -22,7 +22,7 @@ Imports:
     methods
 VignetteBuilder: knitr
 Collate: 
-    otsd.R
+    adoptr.R
     util.R
     DataDistribution.R
     Prior.R
@@ -40,5 +40,5 @@ Collate:
     regularization.R
     gq_design.R
 RoxygenNote: 6.1.1
-BugReports: https://github.com/kkmann/otsd/issues
-URL: https://github.com/kkmann/otsd
+BugReports: https://github.com/kkmann/adoptr/issues
+URL: https://github.com/kkmann/adoptr

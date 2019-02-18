@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Optimal Two-Stage Designs • otsd</title>
+<title>Adaptive Optimal Two-Stage Designs • adoptr</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="apple-touch-icon.png">
@@ -15,7 +15,7 @@
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script><meta property="og:title" content="Optimal Two-Stage Designs">
+<script src="pkgdown.js"></script><meta property="og:title" content="Adaptive Optimal Two-Stage Designs">
 <meta property="og:description" content="Optimize two-stage designs for clinical trials for tests based on
     Z statistics. ">
 <meta property="og:image" content="https://kkmann.github.io/otsd/logo.png">
@@ -37,7 +37,7 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="index.html">otsd</a>
+        <a class="navbar-link" href="index.html">adoptr</a>
         <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
@@ -51,7 +51,7 @@
   </a>
 </li>
 <li>
-  <a href="articles/otsd.html">Get started</a>
+  <a href="articles/adoptr.html">Get started</a>
 </li>
 <li>
   <a href="reference/index.html">Reference</a>
@@ -59,7 +59,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/kkmann/otsd">
+  <a href="https://github.com/kkmann/adoptr">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -80,9 +80,9 @@
     
     
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-<div id="otsd" class="section level1">
+<div id="adoptr" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#otsd" class="anchor"></a>otsd <a href="https://github.com/kkmann/otsd"><img src="reference/figures/logo.png" align="right" height="139"></a>
+<a href="#adoptr" class="anchor"></a>adoptr <a href="https://github.com/kkmann/adoptr"><img src="reference/figures/logo.png" align="right" height="139"></a>
 </h1></div>
 <!-- badges: start -->
 
@@ -92,12 +92,12 @@
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>install directly from <a href="https://github.com/">GitHub</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># install.packages("devtools")</span></a>
-<a class="sourceLine" id="cb1-2" data-line-number="2">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"kkmann/otsd"</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb1-2" data-line-number="2">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"kkmann/adoptr"</span>)</a></code></pre></div>
 </div>
 <div id="documentation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#documentation" class="anchor"></a>Documentation</h2>
-<p>the docs are at <a href="https://kkmann.github.io/otsd/" class="uri">https://kkmann.github.io/otsd/</a></p>
+<p>the docs are at <a href="https://kkmann.github.io/adoptr/" class="uri">https://kkmann.github.io/adoptr/</a></p>
 </div>
 </div>
   </div>
@@ -106,9 +106,9 @@
     <div class="links">
 <h2>Links</h2>
 <ul class="list-unstyled">
-<li>Browse source code at <br><a href="https://github.com/kkmann/otsd">https://​github.com/​kkmann/​otsd</a>
+<li>Browse source code at <br><a href="https://github.com/kkmann/adoptr">https://​github.com/​kkmann/​adoptr</a>
 </li>
-<li>Report a bug at <br><a href="https://github.com/kkmann/otsd/issues">https://​github.com/​kkmann/​otsd/​issues</a>
+<li>Report a bug at <br><a href="https://github.com/kkmann/adoptr/issues">https://​github.com/​kkmann/​adoptr/​issues</a>
 </li>
 </ul>
 </div>
@@ -130,8 +130,8 @@
       <div class="dev-status">
 <h2>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://travis-ci.org/kkmann/otsd"><img src="https://travis-ci.org/kkmann/otsd.svg?branch=master" alt="Travis build status"></a></li>
-<li><a href="https://codecov.io/gh/kkmann/otsd?branch=master"><img src="https://codecov.io/gh/kkmann/otsd/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
+<li><a href="https://travis-ci.org/kkmann/adoptr"><img src="https://travis-ci.org/kkmann/adoptr.svg?branch=master" alt="Travis build status"></a></li>
+<li><a href="https://codecov.io/gh/kkmann/adoptr?branch=master"><img src="https://codecov.io/gh/kkmann/adoptr/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
 </ul>
 </div>
 </div>

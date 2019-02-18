@@ -67,6 +67,9 @@
     <loc>https://kkmann.github.io/otsd//reference/UnconditionalScore-class.html</loc>
   </url>
   <url>
+    <loc>https://kkmann.github.io/otsd//reference/adoptr.html</loc>
+  </url>
+  <url>
     <loc>https://kkmann.github.io/otsd//reference/dot-evaluate.html</loc>
   </url>
   <url>
@@ -74,9 +77,6 @@
   </url>
   <url>
     <loc>https://kkmann.github.io/otsd//reference/minimize.html</loc>
-  </url>
-  <url>
-    <loc>https://kkmann.github.io/otsd//reference/otsd.html</loc>
   </url>
   <url>
     <loc>https://kkmann.github.io/otsd//reference/print.TwoStageDesignSummary.html</loc>
@@ -94,6 +94,6 @@
     <loc>https://kkmann.github.io/otsd//reference/working-with-scores.html</loc>
   </url>
   <url>
-    <loc>https://kkmann.github.io/otsd//articles/otsd.html</loc>
+    <loc>https://kkmann.github.io/otsd//articles/adoptr.html</loc>
   </url>
 </urlset>
