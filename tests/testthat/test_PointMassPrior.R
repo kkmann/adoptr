@@ -11,11 +11,11 @@ test_that("single point prior", {
         c(0, 0))
 
     expect_equal(
-        otsd::expectation(prior, function(x) x),
+        adoptr::expectation(prior, function(x) x),
         0)
 
     expect_equal(
-        otsd::expectation(prior, function(x) x + 1),
+        adoptr::expectation(prior, function(x) x + 1),
         1)
 
     n1    <- 20
@@ -79,11 +79,11 @@ test_that("multiple points prior", {
         c(0, .5))
 
     expect_equal(
-        otsd::expectation(prior, function(x) x),
+        adoptr::expectation(prior, function(x) x),
         .25)
 
     expect_equal(
-        otsd::expectation(prior, function(x) x + 1),
+        adoptr::expectation(prior, function(x) x + 1),
         1.25)
 
     n1 <- 20

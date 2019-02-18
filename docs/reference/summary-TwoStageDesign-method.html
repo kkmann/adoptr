@@ -8,13 +8,6 @@
 
 <title>Summarize TwoStageDesign objects with optional set of scores — summary,TwoStageDesign-method • adoptr</title>
 
-<!-- favicons -->
-<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
-<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png" />
-<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
-<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
-<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
@@ -39,9 +32,11 @@
 
 <meta property="og:title" content="Summarize TwoStageDesign objects with optional set of scores — summary,TwoStageDesign-method" />
 
-<meta property="og:description" content="[TODO]" />
+<meta property="og:description" content="summary summarizes the first-stage of a TwoStageDesign
+and objects of class UnconditionalScore that have to be
+defined by the user." />
 
-<meta property="og:image" content="https://kkmann.github.io/otsd/logo.png" />
+<meta property="og:image" content="https://kkmann.github.io/adoptr/logo.png" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -118,7 +113,9 @@
 
     <div class="ref-description">
     
-    <p>[TODO]</p>
+    <p><code>summary</code> summarizes the first-stage of a <code>TwoStageDesign</code>
+and objects of class <code>UnconditionalScore</code> that have to be
+defined by the user.</p>
     
     </div>
 
@@ -142,13 +139,37 @@
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
+    <p>The first stage sample size and the two continuation decsion boundaries
+are printed.
+Furthermore, the user can define unconditional scores and these will be
+evaluated and listed.</p>
+    
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>order</span>  <span class='kw'>&lt;-</span> <span class='fl'>5L</span>
+<span class='no'>design</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='gq_design.html'>gq_design</a></span>(<span class='fl'>50</span>, <span class='fl'>0</span>, <span class='fl'>2</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/rep'>rep</a></span>(<span class='fl'>50.0</span>, <span class='no'>order</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/rep'>rep</a></span>(<span class='fl'>2.0</span>, <span class='no'>order</span>), <span class='no'>order</span>)
+<span class='no'>pow</span>    <span class='kw'>&lt;-</span> <span class='fu'><a href='working-with-scores.html'>integrate</a></span>(<span class='fu'><a href='ConditionalPower-class.html'>ConditionalPower</a></span>(<span class='kw'>dist</span> <span class='kw'>=</span> <span class='fu'><a href='NormalDataDistribution-class.html'>Normal</a></span>(), <span class='kw'>prior</span> <span class='kw'>=</span> <span class='fu'><a href='PointMassPrior-class.html'>PointMassPrior</a></span>(<span class='fl'>.4</span>, <span class='fl'>1</span>)))
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/summary'>summary</a></span>(<span class='no'>design</span>, <span class='st'>"Power"</span> <span class='kw'>=</span> <span class='no'>pow</span>)</div><div class='output co'>#&gt; TwoStageDesign with:
+#&gt;      n1:   50.0
+#&gt;     c1f:    0.0
+#&gt;     c1e:    2.0
+#&gt; Unconditional scores:
+#&gt;     Power:    0.74
+#&gt; 
+#&gt; </div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+      
+      <li><a href="#details">Details</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

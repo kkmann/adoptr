@@ -4,6 +4,6 @@ pkgdown_sha: ~
 articles:
   adoptr: adoptr.html
 urls:
-  reference: https://kkmann.github.io/otsd//reference
-  article: https://kkmann.github.io/otsd//articles
+  reference: https://kkmann.github.io/adoptr//reference
+  article: https://kkmann.github.io/adoptr//articles
 

@@ -8,13 +8,6 @@
 
 <title>One-stage design — OneStageDesign-class • adoptr</title>
 
-<!-- favicons -->
-<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
-<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png" />
-<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
-<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
-<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
@@ -39,9 +32,13 @@
 
 <meta property="og:title" content="One-stage design — OneStageDesign-class" />
 
-<meta property="og:description" content="[ToDo]" />
+<meta property="og:description" content="OneStageDesign allows the usage of a single-stage design.
+In this case without a second stage, there only exist the first-stage sample
+size n1 and the first-stage rejection boundary c1f.
+No other parameters have to be set.
+OneStageDesign is a subclass of TwoStageDesign." />
 
-<meta property="og:image" content="https://kkmann.github.io/otsd/logo.png" />
+<meta property="og:image" content="https://kkmann.github.io/adoptr/logo.png" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -118,7 +115,11 @@
 
     <div class="ref-description">
     
-    <p>[ToDo]</p>
+    <p><code>OneStageDesign</code> allows the usage of a single-stage design.
+In this case without a second stage, there only exist the first-stage sample
+size <code>n1</code> and the first-stage rejection boundary <code>c1f</code>.
+No other parameters have to be set.
+<code>OneStageDesign</code> is a subclass of <a href='TwoStageDesign-class.html'>TwoStageDesign</a>.</p>
     
     </div>
 
@@ -137,7 +138,7 @@
 <span class='fu'><a href='TwoStageDesign-class.html'>c2</a></span>(<span class='no'>d</span>, <span class='no'>x1</span>, <span class='no'>...</span>)
 
 <span class='co'># S4 method for OneStageDesign</span>
-<span class='fu'><a href='TwoStageDesign-class.html'>TwoStageDesign</a></span>(<span class='no'>d</span>, <span class='no'>...</span>)
+<span class='fu'><a href='TwoStageDesign-class.html'>TwoStageDesign</a></span>(<span class='no'>d</span>, <span class='kw'>rounded</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
 
 <span class='co'># S4 method for SmoothnessN2,OneStageDesign</span>
 <span class='fu'><a href='working-with-scores.html'>evaluate</a></span>(<span class='no'>s</span>, <span class='no'>design</span>, <span class='no'>...</span>)</pre>
@@ -179,6 +180,10 @@ by <code><a href='https://www.rdocumentation.org/packages/base/topics/numeric'>a
       <td><p>stage-one outcome</p></td>
     </tr>
     <tr>
+      <th>rounded</th>
+      <td><p>c.f. slot</p></td>
+    </tr>
+    <tr>
       <th>s</th>
       <td><p>an object of class <code>SmoothnessN2</code></p></td>
     </tr>
@@ -199,6 +204,8 @@ by <code><a href='https://www.rdocumentation.org/packages/base/topics/numeric'>a
     <dt><code>c2_pivots</code></dt><dd><p><code>+/- Inf</code></p></dd>
     <dt><code>x1_norm_pivots</code></dt><dd><p>is ignored for OneStageDesign</p></dd>
     <dt><code>weights</code></dt><dd><p>is ignored for OneStageDesign</p></dd>
+    <dt><code>tunable</code></dt><dd><p>is ignored for OneStageDesign</p></dd>
+    <dt><code>rounded</code></dt><dd><p>logical that indicates whether rounded n1-value should be used</p></dd>
 </dl>
     
 
