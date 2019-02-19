@@ -73,8 +73,8 @@ test_that("Post processing yields to integer sample sizes", {
     )
 
     expect_equal(
-        optimal_design$design@n2_pivots,
-        optimal_design$nlpotr_output_post_process$solution[(order + 3) : (2 * order + 2)]
+        optimal_design$design@c2_pivots,
+        optimal_design$nloptr_output_post_processing$solution[3 : (2+order)]
     ) # test if nloptr output works
 
 })
