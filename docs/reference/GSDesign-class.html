@@ -6,15 +6,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Group-sequential design — GSDesign-class • otsd</title>
+<title>Group-sequential design — GSDesign-class • adoptr</title>
 
-<!-- favicons -->
-<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
-<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png" />
-<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
-<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
-<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
@@ -39,9 +32,14 @@
 
 <meta property="og:title" content="Group-sequential design — GSDesign-class" />
 
-<meta property="og:description" content="[ToDo]" />
+<meta property="og:description" content="The class GroupSequentialDesign allows the implementation
+and usage of group-sequential designs. These are two-stage designs
+with a constant stage-two sample size function.
+Therefore, the length of n2_pivots is required to be 1 in this
+class.
+GroupSequentialDesign is a subclass of TwoStageDesign." />
 
-<meta property="og:image" content="https://kkmann.github.io/otsd/logo.png" />
+<meta property="og:image" content="https://kkmann.github.io/adoptr/logo.png" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -71,7 +69,7 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">otsd</a>
+        <a class="navbar-link" href="../index.html">adoptr</a>
         <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
@@ -85,7 +83,16 @@
   </a>
 </li>
 <li>
-  <a href="../articles/otsd.html">Get started</a>
+  <a href="../articles/adoptr.html">Get started</a>
+</li>
+<li>
+  <a href="../articles/working-with-priors.html">Working with priors</a>
+</li>
+<li>
+  <a href="../articles/score-and-constraints-arithmetic.html">Score and constraints arithmetic</a>
+</li>
+<li>
+  <a href="../articles/defining-new-scores.html">Defining new scores</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -94,7 +101,7 @@
       
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/kkmann/otsd">
+  <a href="https://github.com/kkmann/adoptr">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -112,13 +119,18 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Group-sequential design</h1>
-    <small class="dont-index">Source: <a href='https://github.com/kkmann/otsd/blob/master/R/GroupSequentialDesign.R'><code>R/GroupSequentialDesign.R</code></a>, <a href='https://github.com/kkmann/otsd/blob/master/R/regularization.R'><code>R/regularization.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/kkmann/adoptr/blob/master/R/GroupSequentialDesign.R'><code>R/GroupSequentialDesign.R</code></a>, <a href='https://github.com/kkmann/adoptr/blob/master/R/regularization.R'><code>R/regularization.R</code></a></small>
     <div class="hidden name"><code>GSDesign-class.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>[ToDo]</p>
+    <p>The class <code>GroupSequentialDesign</code> allows the implementation
+and usage of group-sequential designs. These are two-stage designs
+with a constant stage-two sample size function.
+Therefore, the length of <code>n2_pivots</code> is required to be 1 in this
+class.
+<code>GroupSequentialDesign</code> is a subclass of <a href='TwoStageDesign-class.html'>TwoStageDesign</a>.</p>
     
     </div>
 
@@ -128,7 +140,7 @@
 <span class='fu'><a href='TwoStageDesign-class.html'>n2</a></span>(<span class='no'>d</span>, <span class='no'>x1</span>, <span class='no'>...</span>)
 
 <span class='co'># S4 method for GSDesign</span>
-<span class='fu'><a href='TwoStageDesign-class.html'>TwoStageDesign</a></span>(<span class='no'>d</span>, <span class='no'>...</span>)
+<span class='fu'><a href='TwoStageDesign-class.html'>TwoStageDesign</a></span>(<span class='no'>d</span>, <span class='no'>tunable</span>, <span class='kw'>rounded</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
 
 <span class='co'># S4 method for SmoothnessN2,GSDesign</span>
 <span class='fu'><a href='working-with-scores.html'>evaluate</a></span>(<span class='no'>s</span>, <span class='no'>design</span>, <span class='no'>...</span>)</pre>
@@ -177,6 +189,14 @@
       <td><p>further optional arguments</p></td>
     </tr>
     <tr>
+      <th>tunable</th>
+      <td><p>c.f. slot</p></td>
+    </tr>
+    <tr>
+      <th>rounded</th>
+      <td><p>c.f. slot</p></td>
+    </tr>
+    <tr>
       <th>s</th>
       <td><p>an object of class <code>SmoothnessN2</code></p></td>
     </tr>
@@ -199,6 +219,8 @@ pivot points of the numeric integration rule [TODO: these are not available duri
     <dt><code>x1_norm_pivots</code></dt><dd><p>normalized pivots for integration rule (in [-1, 1])</p></dd>
     <dt><code>weights</code></dt><dd><p>weights of conditional score values at x1_norm_pivots for
 approximating the integral over x1.</p></dd>
+    <dt><code>tunable</code></dt><dd><p>named logical vector indicating whether corresponding slot is considered a tunable parameter</p></dd>
+    <dt><code>rounded</code></dt><dd><p>logical that indicates whether rounded n-values should be used</p></dd>
 </dl>
     
 

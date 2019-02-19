@@ -1,7 +1,5 @@
 context("constraint specifications                                            ")
 
-# TODO: values are ad-hoc, come up with a way to actually verify them!
-
 test_that("UnconditionalConstraints", {
 
     # create dummy design
@@ -13,14 +11,39 @@ test_that("UnconditionalConstraints", {
     # construct actual constraint
     cnstr <- pow >= 0.8
 
+    # compute true value
+    pow_true <-  mean(adoptr::simulate
+                      (design, nsim = 10^6, dist = Normal(two_armed = FALSE),
+                          theta = .4, seed = 42)$reject)
+
     # see if it evaluates to the right value
     expect_equal(
-        evaluate(cnstr, design), -0.0415, tolerance = .001)
+        evaluate(cnstr, design), (.8 - pow_true), tolerance = .001)
 
     # check other direction
     toer <- integrate(ConditionalPower(Normal(two_armed = FALSE), PointMassPrior(.0, 1)))
+    # compute true value
+    toer_true <-  mean(adoptr::simulate
+                      (design, nsim = 10^6, dist = Normal(two_armed = FALSE),
+                          theta = .0, seed = 142)$reject)
+
     expect_equal(
-        evaluate(toer <= .05, design), -.0153, tolerance = .001)
+        evaluate(toer <= .05, design), (toer_true - .05), tolerance = .001)
+
+
+    # Check syntax
+    expect_equal(
+        evaluate(subject_to(pow >= .8), design),
+        evaluate(subject_to(.8 <= pow), design)
+    )
+
+
+    # Check syntax
+    expect_equal(
+        evaluate(subject_to(.05 >= toer), design),
+        evaluate(subject_to(toer <= .05), design)
+    )
+
 
 })
 
@@ -52,7 +75,7 @@ test_that("ConditionalConstraints", {
     # create dummy design
     design <- gq_design(25, 0, 2, rep(40.5, 5), rep(1.96, 5), 5L)
 
-    # create power as IntegralScore
+    # create conditional power
     cp <- ConditionalPower(Normal(two_armed = FALSE), PointMassPrior(.4, 1))
 
     # construct a constraint set and see if it is at least of the right length
@@ -78,6 +101,20 @@ test_that("ConditionalConstraints", {
         65.0
     )
 
+
+    # Check syntax
+    expect_equal(
+        evaluate(subject_to(cp >= .8), design),
+        evaluate(subject_to(.8 <= cp), design)
+    )
+
+
+    # Check syntax
+    expect_equal(
+        evaluate(subject_to(css <= 500), design),
+        evaluate(subject_to(500 >= css), design)
+    )
+
 })
 
 
@@ -86,4 +123,31 @@ test_that("subject_to throws correct error", {
 
     expect_error(subject_to(1))
 
-})
+}) # end 'subject_to throws correct error'
+
+
+
+test_that("score vs score inequalities", {
+    # create dummy design
+    design <- gq_design(25, 0, 2, rep(40.5, 5), rep(1.96, 5), 5L)
+
+    # create conditional scores
+    cp    <- ConditionalPower(Normal(), PointMassPrior(.28, 1))
+    ctoer <- ConditionalPower(Normal(), PointMassPrior(.0, 1))
+
+    expect_equal(
+        evaluate(subject_to(ctoer <= cp), design),
+        evaluate(subject_to(cp >= ctoer), design)
+    )
+
+
+    # create unconditional scores
+    pow  <- integrate(cp)
+    toer <- integrate(ctoer)
+
+    expect_equal(
+        evaluate(subject_to(toer <= pow), design),
+        evaluate(subject_to(pow >= toer), design)
+    )
+
+}) # end 'score vs score inequalities'

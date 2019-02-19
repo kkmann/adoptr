@@ -1,4 +1,4 @@
-#' Optimal Two-Stage Designs
+#' Adaptive Optimal Two-Stage Designs
 #'
 #' This package provides functionality to compute and analyze optimal
 #' two-stage designs for two-stage superiority tests based on a Z statistic.
@@ -23,5 +23,5 @@
 #'
 #' @import methods
 #' @docType package
-#' @name otsd
+#' @name adoptr
 NULL
