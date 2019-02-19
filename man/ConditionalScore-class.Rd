@@ -5,7 +5,7 @@
 \alias{ConditionalScore-class}
 \alias{evaluate,ConditionalScore,TwoStageDesign-method}
 \alias{integrate,ConditionalScore-method}
-\title{Abstract class for conditional scoring function}
+\title{Class for conditional scoring function}
 \usage{
 \S4method{evaluate}{ConditionalScore,TwoStageDesign}(s, design, x1, ...)
 

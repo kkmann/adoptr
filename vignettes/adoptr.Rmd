@@ -1,0 +1,208 @@
+---
+title: "Get started with adoptr"
+author: "Kevin Kunzmann"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{quickstart}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse  = TRUE,
+  comment   = "#>",
+  fig.width = 8
+)
+library(adoptr)
+```
+
+
+
+## The core problem
+
+`adoptr` addresses the problem of finding optimal two-stage designs
+for clinical trials.
+Currently, only (asymptotically) normal test statistics are supported.
+Both Z-tests for a single arm versus a fixed value or one-sided 
+tests comparing the means of two arms are supported.
+In all cases known variance is assumed and in the two-arm case homogeneity
+of variances is required, additionally.
+
+Consider the simplest case of a two-stage design for a single-arm trial
+aiming to reject the null hypothesis that $\delta\leq 0$ where $\delta$ is
+the mean of the population response. 
+Further assume that a power of 80% at $\delta=0.4$ and a type one error rate
+of 5% on the boundary of the null hypothesis is required ($\delta=0.0$).
+
+We can start with a a more or less arbitrary initial design [ToDo: can we start with a single stage design fulfilling the power and type one error rate constraints here?].
+`adoptr` internally represents designs as tuples of $(n_1, c_{1f}, c_{1f}, n_2(\cdot), c_2(\cdot))$.
+Here, $n_2$ and $c_2$ are the functions returning the stage-two sample size 
+and critical values given the stage-one test statitic $x_1$ (z-score in our case).
+For any given objective function, the design parameters can be identified via
+a variational problem.
+To numerically solve this problem $n_2$ and $c_2$ are integrated using
+a Gaussian quadrature rule.
+The order of the rule determines the number of pivot points for both functions.
+Since, both $n_2$ and $c_2$ are usually fairly smooth on the continuation
+region, a quadrature rule of order 7 is sufficiently flexible:
+
+```{r define-order-of-gq-rule}
+order <- 7L
+```
+
+The initial design may then be defined as follows:
+
+```{r create-design}
+design <- gq_design(
+    n1    = 25, 
+    c1f   = 0,
+    c1e   = 2,
+    n2    = rep(40.0, order), 
+    c2    = rep( 1.96, order), 
+    order = order
+  )
+```
+
+[comment: I don't like the gq_design function. If we only use GQ, we should implement this as default constructor of the TwoStageDesign class even though the implementation is more generic.]
+The design can be visualized using the provided `plot()` method.
+
+```{r plot-design}
+plot(design)
+```
+
+In the next step, we define a simple optimization problem for 
+improving this initial design.
+
+
+
+## Define hypotheses and data-generating mechanism
+
+First, we define the null and alternative hypotheses as
+prior distributions over the unknown $\delta$.
+
+```{r define-hypotheses}
+null        <- PointMassPrior(.0, 1)
+alternative <- PointMassPrior(.4, 1)
+```
+
+Next, we define the data-generating mechanism.
+Currently, only normally distributed test statistics with known
+variance are supported.
+For medium to large sample sizes, the assumption of known variance
+introduces little error even if the true distribution is, e.g.,
+a t-distribution due to estimation of the unknown variance.
+Here we simply define a normal-model.
+The default is a two-arm trial, but for the sake of simplicity,
+we consider a single-arm trial first.
+
+```{r define data-gernerating-mechanism}
+datadist <- Normal(two_armed = FALSE)
+```
+
+Note that when using two-armed designs, all sample sizes are given 
+*per-arm*!
+
+
+## Define scores
+
+To define the optimization problem we specify a few quantities of interest.
+The overall objective could, e.g., be to minimize the expected sample
+size of the design under the alternative hypothesis subject to 
+the given power and type one error rate constraints.
+Let to this end
+
+```{r define-ess}
+ess  <- integrate(ConditionalSampleSize(datadist, alternative))
+```
+
+be the expected sample size under the alternative. 
+Note that the `ess` object is created by integrating a simple, conditional
+score - the conditional sample size given $X_1 = x_1$ is just $n_1 + n_2(x_1)$ and pre-implemented.
+
+Similarly, we can define the power and type one error rate by
+integrating conditional power with respect to the alternative or 
+null hypothesis respectively:
+
+```{r define-power-toer}
+power  <- integrate(ConditionalPower(datadist, alternative))
+toer   <- integrate(ConditionalPower(datadist, null))
+```
+
+
+
+## Optimize the design
+
+We can now proceed with defining and solving the optimization problem.
+Before doing so, we need to define box-constraints by providing a
+lower and upper boundary design.
+
+```{r boundary-designs}
+lb_design <- update(
+    design, c(10, -1, 1, numeric(order) + 2, numeric(order) - 5)
+)
+ub_design <- update(
+  design, c(50, 1, 4, numeric(order) + 50, numeric(order) + 5)
+)
+```
+
+```{r optimize}
+optimal_result <- minimize(
+  ess,
+  subject_to(
+    power >= 0.8,
+    toer  <= .05
+  ),
+  initial_design        = design,
+  lower_boundary_design = lb_design,
+  upper_boundary_design = ub_design,
+  opts = list(
+      algorithm   = "NLOPT_LN_COBYLA",
+      xtol_rel    = 1e-5,
+      maxeval     = 25000
+  )
+)
+
+optimal_design <- optimal_result$design
+```
+
+Here, we override the internal defaults to allow a more precise solution.
+Note that since COBYLA is a generic derivative-free optimizer, the process
+may take quite a while. 
+In general it is important to check convergence since partial solutions
+might be non-smooth or otherwise non-intuitive. 
+If the algorithm would not have converged, the function `minimize`
+would have thrown a warning message.
+All the output that was created by `nloptr` can be regarded by
+
+```{r nloptr-output, eval = FALSE}
+optimal_result$details$nloptr_return
+```
+
+The resulting optimized design may again be plotted together with its
+conditional power.
+
+```{r plot-optimal-design}
+plot(
+  optimal_design, 
+  "Conditional power" = ConditionalPower(datadist, alternative),
+  "Conditional TOER" = ConditionalPower(datadist, null)
+)
+```
+
+This class of designs was previously discussed in [SIM article] where
+an indirect method solving the Euler-Lagrange equation was used to find
+the optimal $n_2$ and $c_2$ functions.
+
+
+
+## Variations
+
+The purpose of `adoptr` is to provide a high-level interface for exploring 
+and comparing different designs and to experiment with different 
+combinations of objective functions and constraints.
+
+[...]

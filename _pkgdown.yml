@@ -1,3 +1,81 @@
 destination: docs
 
-url: https://kkmann.github.io/otsd/
+url: https://kkmann.github.io/adoptr/
+
+navbar:
+  left:
+  - icon: fa-home fa-lg
+    href: index.html
+  - text: Get started
+    href: articles/adoptr.html
+  - text: Working with priors
+    href: articles/working-with-priors.html
+  - text: Score and constraints arithmetic
+    href: articles/score-and-constraints-arithmetic.html
+  - text: Defining new scores
+    href: articles/defining-new-scores.html
+  - text: Reference
+    href: reference/index.html
+  right:
+  - icon: fa-github fa-lg
+    href: https://github.com/kkmann/adoptr
+
+
+
+reference:
+- title: Package top-level documentation
+  desc: ~
+  contents:
+  - '`adoptr`'
+- title: Location parameter prior classes
+  desc: >
+    Classes and methods for formulating prior assumptions about the
+    location parameter to be tested.
+  contents:
+  - '`Prior-class`'
+  - '`PointMassPrior-class`'
+  - '`ContinuousPrior-class`'
+- title: Data distribution classes
+  desc: >
+    Classes and methods for defining the distribution of observed data
+    (in terms of a sufficient statistic) given a location parameter and sample
+    size.
+  contents:
+  - '`DataDistribution-class`'
+  - '`Normal-class`'
+- title: Conditional- and unconditional score classes
+  desc: >
+    Abstract interface for defining conditional and unconditional scores.
+  contents:
+  - '`working-with-scores`'
+  - '`UnconditionalScore-class`'
+  - '`ConditionalScore-class`'
+  - '`IntegralScore-class`'
+  - '`score-arithmetic`'
+- title: Pre-implemented scores
+  desc: >
+    A collection of commonly used pre-implemented scores.
+  contents:
+  - '`SmoothnessN2-class`'
+  - '`AverageN2-class`'
+  - '`ConditionalPower-class`'
+  - '`ConditionalSampleSize-class`'
+- title: Design classes and methods
+  desc: >
+    Although the foucus of the package lies on generic two-stage designs,
+    it also supports group-sequential designs and single-stage designs
+  contents:
+  - '`TwoStageDesign-class`'
+  - '`GSDesign-class`'
+  - '`OneStageDesign-class`'
+  - '`gq_design`'
+  - '`show,TwoStageDesign-method`'
+  - '`summary,TwoStageDesign-method`'
+  - '`print.TwoStageDesignSummary`'
+  - '`minimize`'
+- title: Optimization constraints
+  desc: >
+    Formulation of optimization constraints based on scores.
+  contents:
+  - '`Constraint-class`'
+  - '`ConstraintsCollection-class`'

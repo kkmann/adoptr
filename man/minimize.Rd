@@ -5,9 +5,9 @@
 \title{Find optimal two-stage design by constraint minimization}
 \usage{
 minimize(objective, subject_to, initial_design, lower_boundary_design,
-  upper_boundary_design, c2_monotone = F, post_process = F,
-  opts = list(algorithm = "NLOPT_LN_COBYLA", xtol_rel = 1e-04, maxeval =
-  2500), ...)
+  upper_boundary_design, c2_monotone = FALSE, post_process = FALSE,
+  opts = list(algorithm = "NLOPT_LN_COBYLA", xtol_rel = 1e-05, maxeval =
+  5000), ...)
 }
 \arguments{
 \item{objective}{objective function}
@@ -28,8 +28,24 @@ minimize(objective, subject_to, initial_design, lower_boundary_design,
 
 \item{...}{further optional arguments passed to \code{\link{nloptr}}}
 }
+\value{
+\item{design}{ The resulting optimal design}
+        \item{details}{ A list with the following arguments
+        \itemize{
+        \item{design}{ The optimal design without rounded n-values}
+        \item{design_post}{ The optimal design after post-processing.
+        Returns \code{NULL} if post_process was set to \code{FALSE}.}
+        \item{nloptr_return}{ The return of the nloptr call for the
+        non-post-processed design.}
+        \item{nloptr_return_post}{ The return of the nloptr call for the
+        post-processed design.
+        Returns \code{NULL} if post_process was set to \code{FALSE}.}
+        }
+        }
+}
 \description{
-\code{minimize} takes an unconditioonal score [TODO: need joint superclass for UnconditionalDesign and AffineScores...]
-and a constraint set (or single constraint) and solves the corresponding
-constraint minimization problem using \code{nloptr} (using COBYLA by default).
+\code{minimize} takes an unconditioonal score
+and a constraint set (or single constraint) of conditional and/or unconditional
+scores and solves the corresponding constraint minimization problem
+using \code{nloptr} (using COBYLA by default).
 }

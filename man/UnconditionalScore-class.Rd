@@ -4,12 +4,9 @@
 \name{UnconditionalScore-class}
 \alias{UnconditionalScore-class}
 \alias{evaluate,UnconditionalScore,TwoStageDesign-method}
-\alias{.evaluate,UnconditionalScore,TwoStageDesign-method}
 \title{Abstract class for unconditional scoring function}
 \usage{
 \S4method{evaluate}{UnconditionalScore,TwoStageDesign}(s, design, ...)
-
-\S4method{.evaluate}{UnconditionalScore,TwoStageDesign}(s, design, ...)
 }
 \arguments{
 \item{s}{an \code{IntegralScore}}

@@ -14,3 +14,4 @@ Implementation of Gauss Legendre integration rule and computation of integral
 based on implementation at https://rdrr.io/cran/SMR/src/R/GaussLegendre.R
 \code{GaussLegendreRule} gives the nodes and weights for the interval \eqn{(-1, 1)}.
 }
+\keyword{internal}
