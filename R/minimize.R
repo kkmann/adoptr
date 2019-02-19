@@ -67,8 +67,10 @@ minimize <- function(objective, subject_to, initial_design,
             ...
         )
 
-        if(res$status == 5){
-            warning("Maximum number of iterations reached! Algorithm did probably not converge.")
+        if(res$status < 0){
+            stop("Convergence was not successful!")
+        } else if(res$status == 5 | res$status == 6){
+            warning("Algorithm did probably not converge!")
         }
 
 
