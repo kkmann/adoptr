@@ -20,3 +20,4 @@ integrate_rule(f, low, up, x, weights)
 \description{
 Integration via the Gauss-Legendre quadrature
 }
+\keyword{internal}

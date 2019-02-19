@@ -23,45 +23,22 @@ setGeneric("evaluate", function(s, design, ...) standardGeneric("evaluate"))
 setGeneric("integrate", function(s, ...) standardGeneric("integrate"))
 
 
-#' Design specific implementation for evaluating integral scores
-#'
-#' This generic is not exported and for internal use only.
-#' It allows \code{\link{evaluate}} which is implemented generically via
-#' adaptive Gaussian quadrature to selectively dispatch to a design-specific
-#' implementation.
-#' This is mostly exploited during optiization to allow more efficient and
-#' stable evaluation of integral scores.
-#'
-#' @param s score object
-#' @param design design object
-#' @template dotdotdotTemplate
-#'
-#' @name .evaluate
+# not user facing
 setGeneric(".evaluate", function(s, design, ...) standardGeneric(".evaluate"))
 
 
 
-#' [ToDO]
-#'
-#' [ToDo]
-#'
-#' @exportClass AbstractConditionalScore
+# internal use only
 setClass("AbstractConditionalScore")
 
-#' @param s score
-#' @param design design
-#' @param x1 stage-one outcome
-#' @template dotdotdotTemplate
-#'
-#' @rdname AbstractConditionalScore-class
-#' @export
-setMethod("evaluate", signature("AbstractConditionalScore", "TwoStageDesign"),
-          function(s, design, x1, ...) stop("not implemented"))
+# needs to implement:
+# setMethod("evaluate", signature("AbstractConditionalScore", "TwoStageDesign"),
+#          function(s, design, x1, ...) stop("not implemented"))
 
 
 
 
-#' Abstract class for conditional scoring function
+#' Class for conditional scoring function
 #'
 #' [ToDo]
 #'
@@ -103,19 +80,19 @@ NULL
 #' @rdname score-arithmetic
 setMethod("+", signature("ConditionalScore", "numeric"),
           function(e1, e2) AffineConditionalScore(list(e1), 1, e2) )
-#'@rdname score-arithmetic
+#' @rdname score-arithmetic
 setMethod("+", signature("numeric", "ConditionalScore"),
           function(e1, e2) e2 + e1 )
 ## TODO: check for duplicate scores and combine!
-#'@rdname score-arithmetic
+#' @rdname score-arithmetic
 setMethod("+", signature("ConditionalScore", "ConditionalScore"),
           function(e1, e2) AffineConditionalScore(list(e1, e2), c(1, 1), 0) )
 
 
-#'@rdname score-arithmetic
+#' @rdname score-arithmetic
 setMethod("*", signature("ConditionalScore", "numeric"),
           function(e1, e2) AffineConditionalScore(list(e1), e2, 0) )
-#'@rdname score-arithmetic
+#' @rdname score-arithmetic
 setMethod("*", signature("numeric", "ConditionalScore"),
           function(e1, e2) e2 * e1 )
 
@@ -142,27 +119,30 @@ setMethod("evaluate", signature("UnconditionalScore", "TwoStageDesign"),
           function(s, design, ...) stop("not implemented") )
 
 
-#' @rdname UnconditionalScore-class
+# not user facing
 setMethod(".evaluate", signature("UnconditionalScore", "TwoStageDesign"),
           function(s, design, ...) stop("not implemented") )
 
 
-#'@rdname score-arithmetic
+#' @rdname score-arithmetic
 setMethod("+", signature("UnconditionalScore", "numeric"),
           function(e1, e2) AffineUnconditionalScore(list(e1), 1, e2) )
-#'@rdname score-arithmetic
+
+#' @rdname score-arithmetic
 setMethod("+", signature("numeric", "UnconditionalScore"),
           function(e1, e2) e2 + e1 )
 ## TODO: check for duplicate scores and combine!
-#'@rdname score-arithmetic
+
+#' @rdname score-arithmetic
 setMethod("+", signature("UnconditionalScore", "UnconditionalScore"),
           function(e1, e2) AffineUnconditionalScore(list(e1, e2), c(1, 1), 0) )
 
 
-#'@rdname score-arithmetic
+#' @rdname score-arithmetic
 setMethod("*", signature("UnconditionalScore", "numeric"),
           function(e1, e2) AffineUnconditionalScore(list(e1), e2, 0) )
-#'@rdname score-arithmetic
+
+#' @rdname score-arithmetic
 setMethod("*", signature("numeric", "UnconditionalScore"),
           function(e1, e2) e2 * e1 )
 
