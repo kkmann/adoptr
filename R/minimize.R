@@ -67,9 +67,7 @@ minimize <- function(objective, subject_to, initial_design,
             ...
         )
 
-        if(res$status < 0){
-            stop("Convergence was not successful!")
-        } else if(res$status == 5 | res$status == 6){
+        if(res$status == 5 | res$status == 6){
             warning("Algorithm did probably not converge!")
         }
 
@@ -119,6 +117,11 @@ minimize <- function(objective, subject_to, initial_design,
                 opts = opts,
                 ...
             )
+
+            if(res2$status == 5 | res2$status == 6){
+                warning("Algorithm did probably not converge!")
+            }
+
 
             # Re-make parameters tunable for further use
             cont_design <- update(cont_design, res2$solution)

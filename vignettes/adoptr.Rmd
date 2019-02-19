@@ -178,8 +178,8 @@ If the algorithm would not have converged, the function `minimize`
 would have thrown a warning message.
 All the output that was created by `nloptr` can be regarded by
 
-```{r nloptr output, eval = FALSE}
-optimal_result$nloptr_output
+```{r nloptr-output, eval = FALSE}
+optimal_result$details$nloptr_return
 ```
 
 The resulting optimized design may again be plotted together with its

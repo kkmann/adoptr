@@ -92,7 +92,7 @@ test_that("errors are returned correctly", {
 
 
 
-test_that("Warnings are returned correctly", {
+test_that("nloptr messages are returned correctly", {
     order <- 5L
 
     design <- gq_design(25, 0, 2, rep(40.0, order), rep(1.96, order), order)
@@ -127,5 +127,25 @@ test_that("Warnings are returned correctly", {
             )
     )
 
-}) # end 'warnings are returned correctly'
+    lb_design@n1 <- design@n1 + 1
+
+    expect_error(
+        minimize(
+            ess,
+            subject_to(
+                pow  >= 0.8,
+                toer <= 0.05
+            ),
+            initial_design        = design,
+            lower_boundary_design = lb_design,
+            upper_boundary_design = ub_design,
+            opts = list(
+                algorithm   = "NLOPT_LN_COBYLA",
+                xtol_rel    = 1e-5,
+                maxeval     = 100
+            )
+        )
+    )
+
+}) # end 'nloptr messages are returned correctly'
 
