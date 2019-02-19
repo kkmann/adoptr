@@ -17,12 +17,12 @@
 #' @export
 minimize <- function(objective, subject_to, initial_design,
                      lower_boundary_design, upper_boundary_design,
-                     c2_monotone = F,
-                     post_process = F,
+                     c2_monotone = FALSE,
+                     post_process = FALSE,
                      opts = list(
                          algorithm   = "NLOPT_LN_COBYLA",
-                         xtol_rel    = 1e-4,
-                         maxeval     = 2500
+                         xtol_rel    = 1e-5,
+                         maxeval     = (200 * length(initial_design@c2_pivots)^2)
                      ), ...) {
 
         f_obj <- function(params) evaluate(objective, update(initial_design, params))
@@ -34,7 +34,7 @@ minimize <- function(objective, subject_to, initial_design,
                 user_cnstr,
                 design@c1f - design@c1e + ifelse( # ensure c1e > c1f if not one-stage
                     is(initial_design, "OneStageDesign"), 0, .1),
-                if(c2_monotone == T) diff(c2(design, scaled_integration_pivots(design))) # make c2() monotone if desired
+                if(c2_monotone == TRUE) diff(c2(design, scaled_integration_pivots(design))) # make c2() monotone if desired
             ))
         }
 
@@ -82,7 +82,7 @@ minimize <- function(objective, subject_to, initial_design,
                     user_cnstr,
                     design@c1f - design@c1e + ifelse( # ensure c1e > c1f if not one-stage
                         is(cont_design, "OneStageDesign"), 0, .1),
-                    if(c2_monotone == T) diff(c2(design, scaled_integration_pivots(design))) # make c2() monotone if desired
+                    if(c2_monotone == TRUE) diff(c2(design, scaled_integration_pivots(design))) # make c2() monotone if desired
                 ))
             }
 
@@ -101,12 +101,31 @@ minimize <- function(objective, subject_to, initial_design,
             cont_design <- update(cont_design, res2$solution)
             cont_design <- make_tunable(cont_design, n1, n2_pivots)
 
-            return(cont_design)
+            out <- list(
+                "design" = cont_design,
+                "nloptr_output" = res,
+                "nloptr_output_post_processing" = res2
+                )
 
+            if(res$iterations == opts$maxeval){
+                warning("Maximum number of iterations reached! Algorithm did probably not converge.")
+            }
+
+            return(out)
 
         } else{
 
-        return(update(initial_design, res$solution))
+            out <- list(
+                "design" = update(initial_design, res$solution),
+                "nloptr_output" = res
+                )
+
+            if(res$iterations == opts$maxeval){
+                warning("Maximum number of iterations reached! Algorithm did probably not converge.")
+            }
+
+
+            return(out)
         }
 
         # TODO: error handling

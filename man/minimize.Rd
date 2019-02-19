@@ -5,9 +5,9 @@
 \title{Find optimal two-stage design by constraint minimization}
 \usage{
 minimize(objective, subject_to, initial_design, lower_boundary_design,
-  upper_boundary_design, c2_monotone = F, post_process = F,
-  opts = list(algorithm = "NLOPT_LN_COBYLA", xtol_rel = 1e-04, maxeval =
-  2500), ...)
+  upper_boundary_design, c2_monotone = FALSE, post_process = FALSE,
+  opts = list(algorithm = "NLOPT_LN_COBYLA", xtol_rel = 1e-05, maxeval =
+  (200 * length(initial_design@c2_pivots)^2)), ...)
 }
 \arguments{
 \item{objective}{objective function}

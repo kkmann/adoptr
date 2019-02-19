@@ -40,8 +40,8 @@ test_that("Post processing yields to integer sample sizes", {
         initial_design = design,
         lower_boundary_design = update(design, c(10, -1, 2, numeric(order) + 10, numeric(order) - 2)),
         upper_boundary_design = update(design, c(500, 2, 4, numeric(order) + 500, numeric(order) + 3)),
-        c2_monotone  = F,
-        post_process = T,
+        c2_monotone  = FALSE,
+        post_process = TRUE,
         opts = list(algorithm   = "NLOPT_LN_COBYLA",
                     xtol_rel    = 1e-4,
                     maxeval     = 3000)
@@ -50,7 +50,7 @@ test_that("Post processing yields to integer sample sizes", {
     )
 
     # Test outcome by using the specific summary function
-    out <- summary(optimal_design, "power" = pow, "toer" = toer)
+    out <- summary(optimal_design$design, "power" = pow, "toer" = toer)
 
     expect_equal(
         out$design@n1,
@@ -71,5 +71,10 @@ test_that("Post processing yields to integer sample sizes", {
         round(as.numeric(out$scores["toer"]), 3),
         0.025
     )
+
+    expect_equal(
+        optimal_design$design@n2_pivots,
+        optimal_design$nlpotr_output_post_process$solution[(order + 3) : (2 * order + 2)]
+    ) # test if nloptr output works
 
 })

@@ -73,8 +73,9 @@ test_that("Optimal group-sequential design with point prior is computable", {
         lower_boundary_design = update(design, c(10, -1, 1, 2, numeric(order) - 5)),
         upper_boundary_design = update(design, c(50, 1, 4, 50, numeric(order) + 5))
     ) ->
-        d2
+        result
 
+    d2 <- result$design
 
     expect_equal(
         round(evaluate(pow, d2), 1),
@@ -87,7 +88,7 @@ test_that("Optimal group-sequential design with point prior is computable", {
     )
 
     expect_equal(
-        sign(evaluate(ess, d2) - 32),
+        sign(evaluate(ess, d2) - evaluate(ess, design)),
         -1
     )
 
@@ -96,6 +97,11 @@ test_that("Optimal group-sequential design with point prior is computable", {
         n2(d2, d2@c1f),
         n2(d2, d2@c1e)
     )
+
+    expect_equal(
+        result$nloptr_output$solution[1],
+        d2@n1
+    ) # test if nloptr output works
 
 
 })
