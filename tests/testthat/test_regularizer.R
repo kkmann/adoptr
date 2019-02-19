@@ -92,3 +92,18 @@ test_that("SmoothnessN2 is defined sensitive", {
 
 }) # end 'SmoothnessN2 is defined sensitive'
 
+
+
+test_that("PenaltyN1 works", {
+    order = 7L
+    design1 <- gq_design(25, 0, 2, rep(40.0, order), rep(2, order), order)
+    design2 <- gq_design(55, 0, 2, rep(40.0, order), rep(2, order), order)
+
+    pN1 <- PenaltyN1()
+
+    expect_gt(
+        evaluate(pN1, design2),
+        evaluate(pN1, design1)
+    )
+
+}) # end 'PenaltyN1 works'
