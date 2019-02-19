@@ -90,3 +90,42 @@ test_that("errors are returned correctly", {
 
 }) # end 'errors are returned correctly'
 
+
+
+test_that("Warnings are returned correctly", {
+    order <- 5L
+
+    design <- gq_design(25, 0, 2, rep(40.0, order), rep(1.96, order), order)
+    lb_design <- update(design, c(10, -1, 2, numeric(order) + 2, numeric(order) - 2))
+    ub_design <- update(design, c(500, 2, 5, numeric(order) + 500, numeric(order) + 5))
+
+    null        <- PointMassPrior(.0, 1)
+    alternative <- PointMassPrior(.4, 1)
+    datadist    <- Normal(two_armed = TRUE)
+
+    ess   <- integrate(ConditionalSampleSize(datadist, alternative))
+    cp    <- ConditionalPower(datadist, alternative)
+    pow   <- integrate(cp)
+    toer  <- integrate(ConditionalPower(datadist, null))
+
+
+    expect_warning(
+        minimize(
+            ess,
+            subject_to(
+                pow  >= 0.8,
+                toer <= 0.05
+                ),
+            initial_design        = design,
+            lower_boundary_design = lb_design,
+            upper_boundary_design = ub_design,
+            opts = list(
+                algorithm   = "NLOPT_LN_COBYLA",
+                xtol_rel    = 1e-5,
+                maxeval     = 100
+                )
+            )
+    )
+
+}) # end 'warnings are returned correctly'
+

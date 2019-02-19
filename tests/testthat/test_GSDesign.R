@@ -99,7 +99,7 @@ test_that("Optimal group-sequential design with point prior is computable", {
     )
 
     expect_equal(
-        result$nloptr_output$solution[1],
+        result$details$nloptr_return$solution[1],
         d2@n1
     ) # test if nloptr output works
 

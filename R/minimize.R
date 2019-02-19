@@ -1,8 +1,9 @@
 #' Find optimal two-stage design by constraint minimization
 #'
-#' \code{minimize} takes an unconditioonal score [TODO: need joint superclass for UnconditionalDesign and AffineScores...]
-#' and a constraint set (or single constraint) and solves the corresponding
-#' constraint minimization problem using \code{nloptr} (using COBYLA by default).
+#' \code{minimize} takes an unconditioonal score
+#' and a constraint set (or single constraint) of conditional and/or unconditional
+#' scores and solves the corresponding constraint minimization problem
+#' using \code{nloptr} (using COBYLA by default).
 #'
 #' @param objective objective function
 #' @param subject_to constraint collection
@@ -14,6 +15,21 @@
 #' @param opts options list passed to nloptr
 #' @param ... further optional arguments passed to \code{\link{nloptr}}
 #'
+#' @return \item{design}{ The resulting optimal design}
+#'         \item{details}{ A list with the following arguments
+#'         \itemize{
+#'         \item{design}{ The optimal design without rounded n-values}
+#'         \item{design_post}{ The optimal design after post-processing.
+#'         Returns \code{NULL} if post_process was set to \code{FALSE}.}
+#'         \item{nloptr_return}{ The return of the nloptr call for the
+#'         non-post-processed design.}
+#'         \item{nloptr_return_post}{ The return of the nloptr call for the
+#'         post-processed design.
+#'         Returns \code{NULL} if post_process was set to \code{FALSE}.}
+#'         }
+#'         }
+#'
+#'
 #' @export
 minimize <- function(objective, subject_to, initial_design,
                      lower_boundary_design, upper_boundary_design,
@@ -22,7 +38,7 @@ minimize <- function(objective, subject_to, initial_design,
                      opts = list(
                          algorithm   = "NLOPT_LN_COBYLA",
                          xtol_rel    = 1e-5,
-                         maxeval     = (200 * length(initial_design@c2_pivots)^2)
+                         maxeval     = 10000 # TODO: adjust in dependence of default order
                      ), ...) {
 
         f_obj <- function(params) evaluate(objective, update(initial_design, params))
@@ -50,6 +66,11 @@ minimize <- function(objective, subject_to, initial_design,
             opts = opts,
             ...
         )
+
+        if(res$status == 5){
+            warning("Maximum number of iterations reached! Algorithm did probably not converge.")
+        }
+
 
         if(post_process == TRUE){
             n1 <- NULL
@@ -102,33 +123,31 @@ minimize <- function(objective, subject_to, initial_design,
             cont_design <- make_tunable(cont_design, n1, n2_pivots)
 
             out <- list(
-                "design" = cont_design,
-                "nloptr_output" = res,
-                "nloptr_output_post_processing" = res2
+                "design"  = cont_design,
+                "details" = list(
+                    "design" = update(initial_design, res$solution),
+                    "design_post"   = cont_design,
+                    "nloptr_return" = res,
+                    "nloptr_return_post" = res2
+                    )
                 )
 
-            if(res$iterations == opts$maxeval){
-                warning("Maximum number of iterations reached! Algorithm did probably not converge.")
-            }
-
-            return(out)
 
         } else{
 
             out <- list(
-                "design" = update(initial_design, res$solution),
-                "nloptr_output" = res
+                "design"  = update(initial_design, res$solution),
+                "details" = list(
+                    "design" = update(initial_design, res$solution),
+                    "design_post"   = NULL,
+                    "nloptr_return" = res,
+                    "nloptr_return_post" = NULL
+                )
                 )
 
-            if(res$iterations == opts$maxeval){
-                warning("Maximum number of iterations reached! Algorithm did probably not converge.")
-            }
-
-
-            return(out)
         }
 
-        # TODO: error handling
 
+        return(out)
 
     }
