@@ -46,7 +46,7 @@ test_that("two stage design can be optimized with fixed first stage", {
     tmp <- make_fixed(design, n1, c1f, c1e)
 
 
-
+    suppressWarnings(
     opt_design <- minimize(
         ess + 0.0001 * smth,
         subject_to(
@@ -56,6 +56,7 @@ test_that("two stage design can be optimized with fixed first stage", {
         initial_design        = tmp,
         lower_boundary_design = update(tmp, c(numeric(order) + 2, numeric(order) - 5)),
         upper_boundary_design = update(tmp, c(numeric(order) + 50, numeric(order) + 5))
+    )$design
     )
 
     expect_equal(opt_design@n1, tmp@n1)
@@ -69,6 +70,7 @@ test_that("two stage design can be optimized with fixed first stage", {
 test_that("two stage design can be optimized with fixed sample sizes", {
 
     # minimize design over all parameters
+    suppressWarnings(
     opt_design <- minimize(
         ess + 0.0001*smth,
         subject_to(
@@ -78,6 +80,7 @@ test_that("two stage design can be optimized with fixed sample sizes", {
         initial_design = design,
         lower_boundary_design = update(design, c(10, -1, 1, numeric(order) + 2, numeric(order) - 5)),
         upper_boundary_design = update(design, c(50, 1, 4, numeric(order) + 50, numeric(order) + 5))
+    )$design
     )
 
     # round sample sizes to nearest integers
@@ -98,7 +101,8 @@ test_that("two stage design can be optimized with fixed sample sizes", {
         initial_design        = tmp,
         lower_boundary_design = update(tmp, c(-1, 1, numeric(order) - 5)),
         upper_boundary_design = update(tmp, c(1, 4, numeric(order) + 5))
-    ))
+    )$design
+    )
 
     expect_equal(opt_design@n1, tmp@n1)
     expect_equal(opt_design@n2_pivots, tmp@n2_pivots)

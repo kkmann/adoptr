@@ -1,8 +1,9 @@
 #' Find optimal two-stage design by constraint minimization
 #'
-#' \code{minimize} takes an unconditioonal score [TODO: need joint superclass for UnconditionalDesign and AffineScores...]
-#' and a constraint set (or single constraint) and solves the corresponding
-#' constraint minimization problem using \code{nloptr} (using COBYLA by default).
+#' \code{minimize} takes an unconditioonal score
+#' and a constraint set (or single constraint) of conditional and/or unconditional
+#' scores and solves the corresponding constraint minimization problem
+#' using \code{nloptr} (using COBYLA by default).
 #'
 #' @param objective objective function
 #' @param subject_to constraint collection
@@ -14,15 +15,30 @@
 #' @param opts options list passed to nloptr
 #' @param ... further optional arguments passed to \code{\link{nloptr}}
 #'
+#' @return \item{design}{ The resulting optimal design}
+#'         \item{details}{ A list with the following arguments
+#'         \itemize{
+#'         \item{design}{ The optimal design without rounded n-values}
+#'         \item{design_post}{ The optimal design after post-processing.
+#'         Returns \code{NULL} if post_process was set to \code{FALSE}.}
+#'         \item{nloptr_return}{ The return of the nloptr call for the
+#'         non-post-processed design.}
+#'         \item{nloptr_return_post}{ The return of the nloptr call for the
+#'         post-processed design.
+#'         Returns \code{NULL} if post_process was set to \code{FALSE}.}
+#'         }
+#'         }
+#'
+#'
 #' @export
 minimize <- function(objective, subject_to, initial_design,
                      lower_boundary_design, upper_boundary_design,
-                     c2_monotone = F,
-                     post_process = F,
+                     c2_monotone = FALSE,
+                     post_process = FALSE,
                      opts = list(
                          algorithm   = "NLOPT_LN_COBYLA",
-                         xtol_rel    = 1e-4,
-                         maxeval     = 2500
+                         xtol_rel    = 1e-5,
+                         maxeval     = 10000 # TODO: adjust in dependence of default order
                      ), ...) {
 
         f_obj <- function(params) evaluate(objective, update(initial_design, params))
@@ -34,7 +50,7 @@ minimize <- function(objective, subject_to, initial_design,
                 user_cnstr,
                 design@c1f - design@c1e + ifelse( # ensure c1e > c1f if not one-stage
                     is(initial_design, "OneStageDesign"), 0, .1),
-                if(c2_monotone == T) diff(c2(design, scaled_integration_pivots(design))) # make c2() monotone if desired
+                if(c2_monotone == TRUE) diff(c2(design, scaled_integration_pivots(design))) # make c2() monotone if desired
             ))
         }
 
@@ -50,6 +66,11 @@ minimize <- function(objective, subject_to, initial_design,
             opts = opts,
             ...
         )
+
+        if(res$status == 5 | res$status == 6){
+            warning("Algorithm did probably not converge!")
+        }
+
 
         if(post_process == TRUE){
             n1 <- NULL
@@ -82,7 +103,7 @@ minimize <- function(objective, subject_to, initial_design,
                     user_cnstr,
                     design@c1f - design@c1e + ifelse( # ensure c1e > c1f if not one-stage
                         is(cont_design, "OneStageDesign"), 0, .1),
-                    if(c2_monotone == T) diff(c2(design, scaled_integration_pivots(design))) # make c2() monotone if desired
+                    if(c2_monotone == TRUE) diff(c2(design, scaled_integration_pivots(design))) # make c2() monotone if desired
                 ))
             }
 
@@ -97,19 +118,41 @@ minimize <- function(objective, subject_to, initial_design,
                 ...
             )
 
+            if(res2$status == 5 | res2$status == 6){
+                warning("Algorithm did probably not converge!")
+            }
+
+
             # Re-make parameters tunable for further use
             cont_design <- update(cont_design, res2$solution)
             cont_design <- make_tunable(cont_design, n1, n2_pivots)
 
-            return(cont_design)
+            out <- list(
+                "design"  = cont_design,
+                "details" = list(
+                    "design" = update(initial_design, res$solution),
+                    "design_post"   = cont_design,
+                    "nloptr_return" = res,
+                    "nloptr_return_post" = res2
+                    )
+                )
 
 
         } else{
 
-        return(update(initial_design, res$solution))
+            out <- list(
+                "design"  = update(initial_design, res$solution),
+                "details" = list(
+                    "design" = update(initial_design, res$solution),
+                    "design_post"   = NULL,
+                    "nloptr_return" = res,
+                    "nloptr_return_post" = NULL
+                )
+                )
+
         }
 
-        # TODO: error handling
 
+        return(out)
 
     }

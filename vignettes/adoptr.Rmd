@@ -150,7 +150,7 @@ ub_design <- update(
 ```
 
 ```{r optimize}
-optimal_design <- minimize(
+optimal_result <- minimize(
   ess,
   subject_to(
     power >= 0.8,
@@ -165,6 +165,8 @@ optimal_design <- minimize(
       maxeval     = 25000
   )
 )
+
+optimal_design <- optimal_result$design
 ```
 
 Here, we override the internal defaults to allow a more precise solution.
@@ -172,7 +174,14 @@ Note that since COBYLA is a generic derivative-free optimizer, the process
 may take quite a while. 
 In general it is important to check convergence since partial solutions
 might be non-smooth or otherwise non-intuitive. 
-[TODO how?]
+If the algorithm would not have converged, the function `minimize`
+would have thrown a warning message.
+All the output that was created by `nloptr` can be regarded by
+
+```{r nloptr-output, eval = FALSE}
+optimal_result$details$nloptr_return
+```
+
 The resulting optimized design may again be plotted together with its
 conditional power.
 
@@ -197,4 +206,3 @@ and comparing different designs and to experiment with different
 combinations of objective functions and constraints.
 
 [...]
-
