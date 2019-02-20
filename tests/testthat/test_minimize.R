@@ -14,7 +14,8 @@ alternative <- PointMassPrior(.4, 1)
 datadist    <- Normal(two_armed = FALSE)
 
 ess   <- integrate(ConditionalSampleSize(datadist, alternative))
-pow   <- integrate(ConditionalPower(datadist, alternative))
+cp    <- ConditionalPower(datadist, alternative)
+pow   <- integrate(cp)
 toer  <- integrate(ConditionalPower(datadist, null))
 
 
@@ -149,5 +150,62 @@ test_that("base-case satisfies constraints", {
 }) # end base-case respects constraints
 
 
-# TODO: test base case with high precision and check vs simulated results!
-# TODO: base case should include CP constraint to check that this is working as well!
+test_that("base-case results are consistent", {
+
+    opt_os <- minimize(
+
+        ess,
+        subject_to(
+            pow  >= 0.8,
+            toer <= .05
+        ),
+
+        post_process          = FALSE,
+        initial_design        = OneStageDesign(100, 1.97),
+        lower_boundary_design = OneStageDesign(1, -5),
+        upper_boundary_design = OneStageDesign(200, 5)
+
+    )
+
+
+
+    initial_design_gs <- gq_design(25, 0, 2, 40, rep(1.96, order), order)
+
+    opt_gs <- minimize(
+
+        ess,
+        subject_to(
+            pow  >= 0.8,
+            toer <= .05
+        ),
+
+        post_process          = TRUE,
+        initial_design        = initial_design_gs,
+        lower_boundary_design = update(initial_design_gs, c(10, -1, 1, 2, numeric(order) - 5)),
+        upper_boundary_design = update(initial_design_gs, c(50, 1, 4, 50, numeric(order) + 5))
+
+    )
+
+    opt_ts <- minimize(
+
+        ess,
+        subject_to(
+            pow  >= 0.8,
+            toer <= .05
+        ),
+
+        post_process          = TRUE,
+        initial_design        = initial_design,
+        lower_boundary_design = lb_design,
+        upper_boundary_design = ub_design
+
+    )
+
+    # TODO: check vs simulated results!
+
+    # TODO: check for consistency ts better gs better os!
+
+})
+
+
+# TODO: one more case (no post processing) checking that conditional constraints work too!
