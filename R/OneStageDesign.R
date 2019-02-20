@@ -109,3 +109,17 @@ setMethod("TwoStageDesign", signature("OneStageDesign"),
              rounded = rounded)
 })
 
+
+
+#' @param y not used
+#' @param rounded should n-values be rounded?
+#' @param k number of points to use for plotting
+#'
+#' @rdname OneStageDesign-class
+#' @export
+setMethod("plot", signature("OneStageDesign"),
+          function(x, y = NULL, rounded = TRUE, ..., k = 100)
+              stop("Plot function is only defined for two-stage designs!")
+          )
+
+

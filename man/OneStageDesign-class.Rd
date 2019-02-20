@@ -9,6 +9,7 @@
 \alias{n2,OneStageDesign,numeric-method}
 \alias{c2,OneStageDesign,numeric-method}
 \alias{TwoStageDesign,OneStageDesign-method}
+\alias{plot,OneStageDesign-method}
 \alias{evaluate,SmoothnessN2,OneStageDesign-method}
 \title{One-stage design}
 \usage{
@@ -23,6 +24,9 @@ OneStageDesign(n, c)
 \S4method{c2}{OneStageDesign,numeric}(d, x1, ...)
 
 \S4method{TwoStageDesign}{OneStageDesign}(d, rounded = FALSE, ...)
+
+\S4method{plot}{OneStageDesign}(x, y = NULL, rounded = TRUE, ...,
+  k = 100)
 
 \S4method{evaluate}{SmoothnessN2,OneStageDesign}(s, design, ...)
 }
@@ -46,9 +50,15 @@ by \code{as.numeric(OneStageDesign)})}
 
 \item{rounded}{c.f. slot}
 
+\item{y}{not used}
+
+\item{k}{number of points to use for plotting}
+
 \item{s}{an object of class \code{SmoothnessN2}}
 
 \item{design}{an object of class \code{OneStageDesign}}
+
+\item{rounded}{should n-values be rounded?}
 }
 \description{
 \code{OneStageDesign} allows the usage of a single-stage design.

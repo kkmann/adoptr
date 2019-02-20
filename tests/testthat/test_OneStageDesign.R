@@ -125,6 +125,10 @@ test_that("error definition works", {
         update(design, 2)
     )
 
+    expect_error(
+        plot(design)
+    )
+
 }) # end 'error definition works'
 
 
