@@ -27,21 +27,27 @@ setClass("OneStageDesign",  contains = "TwoStageDesign")
 #' @rdname OneStageDesign-class
 #' @export
 OneStageDesign <- function(n, c) {
+    tunable <- logical(8)
+    tunable[1:2] <- TRUE
+    names(tunable) <- c("n1", "c1f", "c1e", "n2_pivots", "c2_pivots", "x1_norm_pivots", "weights", "tunable")
     new("OneStageDesign", n1 = n, c1f = c, c1e = c, n2_pivots = 0,
     c2_pivots = NaN, x1_norm_pivots = NaN, weights = NaN,
-    tunable = rep(TRUE, 2), rounded = FALSE)
+    tunable = tunable, rounded = FALSE)
 }
 
-
-
-#' @param x object to get parameters from
-#'
-#' @rdname OneStageDesign-class
-#' @export
-setMethod("tunable_parameters", signature("OneStageDesign"),
-          function(x, ...) c(x@n1, x@c1f))
-
-
+setMethod("update", signature("TwoStageDesign"),
+          function(object, params, ...) {
+              tunable_names <- names(object@tunable)[object@tunable]
+              res <- object
+              idx <- 1
+              for (i in 1:length(tunable_names)) {
+                  slotname <- tunable_names[i]
+                  k <- length(slot(object, name = slotname))
+                  slot(res, name = slotname) <- params[idx:(idx + k - 1)]
+                  idx <- idx + k
+              }
+              return(res)
+          })
 
 
 #' @param params vector of design parameters (must be in same order as returned
@@ -51,20 +57,19 @@ setMethod("tunable_parameters", signature("OneStageDesign"),
 #' @rdname OneStageDesign-class
 #' @export
 setMethod("update", signature("OneStageDesign"),
-    function(object, params, ...) {
-        if(length(params) != 2)
-            stop("parameter length does not fit")
-        new("OneStageDesign",
-            n1  = params[1],
-            c1f = params[2],
-            c1e = params[2],
-            n2_pivots    = 0,
-            c2_pivots      = NaN,
-            x1_norm_pivots = NaN,
-            weights = NaN,
-            tunable = rep(TRUE, 2),
-            rounded = F)
-    })
+          function(object, params, ...) {
+              tunable_names <- names(object@tunable)[object@tunable]
+              res <- object
+              idx <- 1
+              for (i in 1:length(tunable_names)) {
+                  slotname <- tunable_names[i]
+                  k <- length(slot(object, name = slotname))
+                  slot(res, name = slotname) <- params[idx:(idx + k - 1)]
+                  idx <- idx + k
+              }
+              res@c1e <- res@c1f
+              return(res)
+          })
 
 
 

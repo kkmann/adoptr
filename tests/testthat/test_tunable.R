@@ -37,7 +37,24 @@ test_that("tunability of parameters can be changed", {
 
 })
 
-# TODO: does make_tunable work as well?
+
+
+test_that("make_tunable works as desired",{
+    tmp <- make_fixed(initial_design, n1, c1f, c1e, n2_pivots, c2_pivots)
+
+    expect_true(!tmp@tunable["n1"])
+    expect_true(!tmp@tunable["c1f"])
+    expect_true(!tmp@tunable["c1e"])
+    expect_true(!tmp@tunable["n2_pivots"])
+    expect_true(!tmp@tunable["c2_pivots"])
+
+    tmp <- make_tunable(initial_design, n1, c2_pivots)
+
+    expect_true(tmp@tunable["n1"])
+    expect_true(tmp@tunable["c2_pivots"])
+    expect_equal(tmp@tunable["c2_pivots"], initial_design@tunable["c2_pivots"])
+
+}) # end 'make_tunable works as desired'
 
 
 
@@ -117,8 +134,74 @@ test_that("two stage design can be optimized with fixed sample sizes", {
     expect_equal(res$design@n1, tmp@n1)
     expect_equal(res$design@n2_pivots, tmp@n2_pivots)
 
-})
+})  # end 'two-stage design can be optimized with fixed sample sizes'
 
 
 
-# TODO: Test that this also works for GS and OS designs!
+
+test_that("group-sequential design can be optimized with fixed sample sizes", {
+
+    initial_gs_design <- gq_design(25, .0, 2.0, 50.0, rep(2.0, order), order)
+
+    tmp_gs <- make_fixed(initial_gs_design, n1, n2_pivots)
+
+    lb_design      <- update(tmp_gs, c(-1, 1, numeric(order) - 3))
+    ub_design      <- update(tmp_gs, c(1, 4, numeric(order) + 5))
+
+    res <- minimize(
+
+        ess,
+        subject_to(
+            pow  >= 0.8,
+            toer <= .05
+        ),
+
+        post_process          = FALSE,
+        initial_design        = tmp_gs,
+        lower_boundary_design = lb_design,
+        upper_boundary_design = ub_design,
+        opts = list(
+            algorithm   = "NLOPT_LN_COBYLA",
+            xtol_abs    = 1 # we do not need convergence,
+            # only see if it works technically!
+        )
+
+    )
+
+    # make sure that the lax convergence still leads to function evaluations!
+    expect_true(res$details$nloptr_return$iterations >= 10)
+
+    # check that fixed params did not change
+    expect_equal(res$design@n1, tmp_gs@n1)
+    expect_equal(res$design@n2_pivots, tmp_gs@n2_pivots)
+
+}) # end 'group-sequential design can be optimized with fixed sample sizes'
+
+
+
+test_that("one-stage design can be optimized with fixed sample sizes", {
+
+    initial_os_design <- OneStageDesign(60.0, qnorm(1 - 0.025))
+
+    tmp_os <- make_fixed(initial_os_design, c1f)
+
+    lb_design      <- update(tmp_os, 2.0)
+    ub_design      <- update(tmp_os, 100.0)
+
+    res <- minimize(
+
+        ess,
+        subject_to(
+            pow >= 0.8 # just one constraint possible because only one parameter
+            ),
+
+        post_process          = FALSE,
+        initial_design        = tmp_os,
+        lower_boundary_design = lb_design,
+        upper_boundary_design = ub_design
+    )
+
+    # check that fixed params did not change
+    expect_equal(res$design@c1f, tmp_os@c1f)
+
+}) # end 'one-stage design can be optimized with fixed sample sizes'
