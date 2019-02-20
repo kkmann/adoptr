@@ -181,7 +181,7 @@ test_that("group-sequential design can be optimized with fixed sample sizes", {
 
 test_that("one-stage design can be optimized with fixed sample sizes", {
 
-    initial_os_design <- OneStageDesign(60.0, qnorm(1 - 0.025))
+    initial_os_design <- OneStageDesign(60.0, 2.0)
 
     tmp_os <- make_fixed(initial_os_design, c1f)
 
@@ -192,7 +192,8 @@ test_that("one-stage design can be optimized with fixed sample sizes", {
 
         ess,
         subject_to(
-            pow >= 0.8 # just one constraint possible because only one parameter
+            pow >= 0.8,
+            toer <= 0.025
             ),
 
         post_process          = FALSE,

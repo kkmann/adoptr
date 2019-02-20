@@ -74,25 +74,41 @@ minimize <- function(objective, subject_to, initial_design,
 
         if(post_process == TRUE){
             n1 <- NULL
-            n2_pivots <- NULL
 
-            # Define continuous design as starting value and fix rounded sample sizes
-            cont_design <- update(initial_design, res$solution)
-            cont_design@n1 <- round(cont_design@n1)
-            cont_design@n2_pivots <- round(cont_design@n2_pivots)
-            cont_design <- make_fixed(cont_design, n1, n2_pivots)
+            if(is(initial_design, "OneStageDesign")) {
+                # Define continuous design as starting value and fix rounded sample sizes
+                cont_design <- update(initial_design, res$solution)
+                cont_design@n1 <- round(cont_design@n1)
+                cont_design <- make_fixed(cont_design, n1)
 
-            # Define new lower boundary design and fix rounded sample sizes
-            lb_design <- lower_boundary_design
-            lb_design@n1 <- cont_design@n1
-            lb_design@n2_pivots <- cont_design@n2_pivots
-            lb_design  <- make_fixed(lb_design, n1, n2_pivots)
+                # Define new lower boundary design and fix rounded sample sizes
+                lb_design <- update(cont_design, lower_boundary_design@c1f)
 
-            # Define new upper boundary design and fix rounded sample sizes
-            ub_design <- upper_boundary_design
-            ub_design@n1 <- cont_design@n1
-            ub_design@n2_pivots <- cont_design@n2_pivots
-            ub_design  <- make_fixed(ub_design, n1, n2_pivots)
+                # Define new upper boundary design and fix rounded sample sizes
+                ub_design <- update(cont_design, upper_boundary_design@c1f)
+
+
+            } else {
+                n2_pivots <- NULL
+
+                # Define continuous design as starting value and fix rounded sample sizes
+                cont_design <- update(initial_design, res$solution)
+                cont_design@n1 <- round(cont_design@n1)
+                cont_design@n2_pivots <- round(cont_design@n2_pivots)
+                cont_design <- make_fixed(cont_design, n1, n2_pivots)
+
+                # Define new lower boundary design and fix rounded sample sizes
+                lb_design <- lower_boundary_design
+                lb_design@n1 <- cont_design@n1
+                lb_design@n2_pivots <- cont_design@n2_pivots
+                lb_design  <- make_fixed(lb_design, n1, n2_pivots)
+
+                # Define new upper boundary design and fix rounded sample sizes
+                ub_design <- upper_boundary_design
+                ub_design@n1 <- cont_design@n1
+                ub_design@n2_pivots <- cont_design@n2_pivots
+                ub_design  <- make_fixed(ub_design, n1, n2_pivots)
+            }
 
             f_obj <- function(params) evaluate(objective, update(cont_design, params))
 
@@ -125,7 +141,11 @@ minimize <- function(objective, subject_to, initial_design,
 
             # Re-make parameters tunable for further use
             cont_design <- update(cont_design, res2$solution)
-            cont_design <- make_tunable(cont_design, n1, n2_pivots)
+            if(is(cont_design, "OneStageDesign")) {
+                cont_design <- make_tunable(cont_design, n1)
+            } else{
+                cont_design <- make_tunable(cont_design, n1, n2_pivots)
+            }
             cont_design@rounded <- TRUE
 
             out <- list(

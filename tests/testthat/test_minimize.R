@@ -161,7 +161,7 @@ test_that("base-case results are consistent", {
             toer <= .05
         ),
 
-        post_process          = FALSE,
+        post_process          = TRUE,
         initial_design        = OneStageDesign(100, 1.97),
         lower_boundary_design = OneStageDesign(1, -5),
         upper_boundary_design = OneStageDesign(200, 5)
