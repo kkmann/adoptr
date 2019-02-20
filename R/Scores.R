@@ -168,8 +168,7 @@ setClass("IntegralScore", representation(
 #'
 #' @describeIn IntegralScore generic implementation of evaluating an integral
 #'     score. Uses adaptive Gaussian quadrature for integration and might be
-#'     more efficiently implemented by specific \code{TwoStageDesign}-classes
-#'     (cf. \code{\link{.evaluate}}).
+#'     more efficiently implemented by specific \code{TwoStageDesign}-classes.
 setMethod("evaluate", signature("IntegralScore", "TwoStageDesign"),
           function(s, design, specific = TRUE, ...) {
               # TODO: currently ignores the possibility of early stopping/uncontinuus
