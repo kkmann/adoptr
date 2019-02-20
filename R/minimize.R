@@ -126,6 +126,7 @@ minimize <- function(objective, subject_to, initial_design,
             # Re-make parameters tunable for further use
             cont_design <- update(cont_design, res2$solution)
             cont_design <- make_tunable(cont_design, n1, n2_pivots)
+            cont_design@rounded <- TRUE
 
             out <- list(
                 "design"  = cont_design,

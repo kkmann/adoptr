@@ -14,6 +14,7 @@ alternative <- PointMassPrior(.4, 1)
 datadist    <- Normal(two_armed = FALSE)
 
 ess   <- integrate(ConditionalSampleSize(datadist, alternative))
+ess_0 <- integrate(ConditionalSampleSize(datadist, null))
 cp    <- ConditionalPower(datadist, alternative)
 pow   <- integrate(cp)
 toer  <- integrate(ConditionalPower(datadist, null))
@@ -201,11 +202,84 @@ test_that("base-case results are consistent", {
 
     )
 
-    # TODO: check vs simulated results!
 
-    # TODO: check for consistency ts better gs better os!
+    # Compare designs
+    expect_lt(
+        evaluate(ess, opt_ts$design),
+        evaluate(ess, opt_gs$design)
+    ) # optimal two-stage design better than optimal group-sequential design
 
-})
+    expect_lt(
+        evaluate(ess, opt_gs$design),
+        evaluate(ess, opt_os$design)
+    ) # optimal group-sequential design better than optimal one-stage design
 
 
-# TODO: one more case (no post processing) checking that conditional constraints work too!
+    # Simulate
+    sim_null <- adoptr::simulate(
+        opt_ts$design, nsim = 10^6, dist = datadist, theta = .0, seed = 54
+        )
+
+    expect_equal(mean(sim_null$reject), 0.05, tolerance = 0.005) # type one error
+
+    expect_equal(
+        mean(sim_null$n2 + sim_null$n1),
+        evaluate(ess_0, opt_ts$design),
+        tolerance = 1
+        ) # expected sample size under null
+
+    sim_alt  <- adoptr::simulate(
+        opt_ts$design, nsim = 10^6, dist = datadist, theta = .4, seed = 54
+        )
+
+    expect_equal(mean(sim_alt$reject), 0.8, tolerance = 0.01) # power
+
+    expect_equal(
+        mean(sim_alt$n2 + sim_alt$n1),
+        evaluate(ess, opt_ts$design),
+        tolerance = 1
+    ) # expected sample size under alternative
+
+
+
+}) # end 'base-case results are consistent'
+
+
+
+
+test_that("conditional constraints work", {
+    suppressWarnings( # initial design is infeasible
+    opt_ts <- minimize(
+
+        ess,
+        subject_to(
+            pow  >= 0.8,
+            toer <= .05,
+            cp   >= 0.75,
+            cp   <= 0.95
+        ),
+
+        post_process          = FALSE,
+        initial_design        = initial_design,
+        lower_boundary_design = lb_design,
+        upper_boundary_design = ub_design,
+        opts = list(
+            algorithm   = "NLOPT_LN_COBYLA",
+            xtol_rel    = 1e-3,
+            maxeval     = 1000
+        )
+    )
+
+    )
+
+    expect_gte(
+        evaluate(cp, opt_ts$design, opt_ts$design@c1f),
+        .749 # rounding
+    ) # lower bound is hold
+
+    expect_lte(
+        evaluate(cp, opt_ts$design, opt_ts$design@c1e),
+        .951 # rounding
+    ) # upper bound is hold
+
+}) # end 'conditional constraints work'
