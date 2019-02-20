@@ -122,8 +122,9 @@ test_that("error definition works", {
 
     design <- OneStageDesign(50, 2)
 
+
     expect_error(
-        update(design, 2)
+        plot(design)
     )
 
 }) # end 'error definition works'

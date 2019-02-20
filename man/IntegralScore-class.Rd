@@ -25,8 +25,7 @@ Unconditional score class obtained by integration of a \code{ConditionalScore}
 \itemize{
 \item \code{evaluate}: generic implementation of evaluating an integral
 score. Uses adaptive Gaussian quadrature for integration and might be
-more efficiently implemented by specific \code{TwoStageDesign}-classes
-(cf. \code{\link{.evaluate}}).
+more efficiently implemented by specific \code{TwoStageDesign}-classes.
 }}
 
 \section{Slots}{
