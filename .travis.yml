@@ -12,14 +12,14 @@ r_packages:
   - devtools
   
 install:
-- R -e 'devtools::install_deps(dep = T)'
+  - R -e 'devtools::install_deps(dep = T)'
 
 script:
-- R CMD build .
-- travis_wait 60 R CMD check *tar.gz
+  - R CMD build .
+  - travis_wait 60 R CMD check *tar.gz
 
 after_success:
-    - travis_wait 60 Rscript -e 'library(covr); covr::codecov()'
+  - travis_wait 60 Rscript -e 'library(covr); covr::codecov()'
 
 before_deploy: Rscript -e 'remotes::install_cran("pkgdown")'
 deploy:
