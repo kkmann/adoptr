@@ -17,10 +17,7 @@ install:
 script:
   - R CMD build .
   - travis_wait 60 R CMD check *tar.gz
-  - tarball_script =
-      '$version = $1 if (/^Version:\s(\S+)/);'\
-      '$package = $1 if (/^Package:\s*(\S+)/);'\
-      'END { print "${package}_$version.tar.gz" }'\
+  - tarball_script='$version = $1 if (/^Version:\s(\S+)/); $package = $1 if (/^Package:\s*(\S+)/); END { print "${package}_$version.tar.gz" }'
   - export 'PKG_TARBALL', "$(perl -ne '#{tarball_script}' DESCRIPTION)"
   - ls
   - echo $PKG_TARBALL
