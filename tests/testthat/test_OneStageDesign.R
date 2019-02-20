@@ -72,7 +72,8 @@ test_that("Optimal one-stage design with point prior is computable", {
         ),
         initial_design = design,
         lower_boundary_design = update(design, c(5, -5)),
-        upper_boundary_design = update(design, c(500, 5))
+        upper_boundary_design = update(design, c(500, 5)),
+        post_process = FALSE
     ) -> d2
 
     d2 <- d2$design

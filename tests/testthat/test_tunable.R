@@ -55,7 +55,8 @@ test_that("two stage design can be optimized with fixed first stage", {
         ),
         initial_design        = tmp,
         lower_boundary_design = update(tmp, c(numeric(order) + 2, numeric(order) - 5)),
-        upper_boundary_design = update(tmp, c(numeric(order) + 50, numeric(order) + 5))
+        upper_boundary_design = update(tmp, c(numeric(order) + 50, numeric(order) + 5)),
+        post_process = FALSE
     )$design
     )
 
@@ -79,7 +80,8 @@ test_that("two stage design can be optimized with fixed sample sizes", {
         ),
         initial_design = design,
         lower_boundary_design = update(design, c(10, -1, 1, numeric(order) + 2, numeric(order) - 5)),
-        upper_boundary_design = update(design, c(50, 1, 4, numeric(order) + 50, numeric(order) + 5))
+        upper_boundary_design = update(design, c(50, 1, 4, numeric(order) + 50, numeric(order) + 5)),
+        post_process = FALSE
     )$design
     )
 
@@ -100,7 +102,8 @@ test_that("two stage design can be optimized with fixed sample sizes", {
         ),
         initial_design        = tmp,
         lower_boundary_design = update(tmp, c(-1, 1, numeric(order) - 5)),
-        upper_boundary_design = update(tmp, c(1, 4, numeric(order) + 5))
+        upper_boundary_design = update(tmp, c(1, 4, numeric(order) + 5)),
+        post_process = FALSE
     )$design
     )
 
