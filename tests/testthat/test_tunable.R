@@ -124,7 +124,6 @@ test_that("two stage design can be optimized with fixed sample sizes", {
             xtol_abs    = 1 # we do not need convergence,
                             # only see if it works technically!
         )
-
     )
 
     # make sure that the lax convergence still leads to function evaluations!
@@ -155,7 +154,6 @@ test_that("group-sequential design can be optimized with fixed sample sizes", {
             pow  >= 0.8,
             toer <= .05
         ),
-
         post_process          = FALSE,
         initial_design        = tmp_gs,
         lower_boundary_design = lb_design,
@@ -165,7 +163,6 @@ test_that("group-sequential design can be optimized with fixed sample sizes", {
             xtol_abs    = 1 # we do not need convergence,
             # only see if it works technically!
         )
-
     )
 
     # make sure that the lax convergence still leads to function evaluations!
