@@ -150,3 +150,4 @@ test_that("base-case satisfies constraints", {
 
 
 # TODO: test base case with high precision and check vs simulated results!
+# TODO: base case should include CP constraint to check that this is working as well!
