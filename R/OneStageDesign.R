@@ -35,6 +35,8 @@ OneStageDesign <- function(n, c) {
     tunable = tunable, rounded = FALSE)
 }
 
+
+
 setMethod("update", signature("TwoStageDesign"),
           function(object, params, ...) {
               tunable_names <- names(object@tunable)[object@tunable]
@@ -48,6 +50,7 @@ setMethod("update", signature("TwoStageDesign"),
               }
               return(res)
           })
+
 
 
 #' @param params vector of design parameters (must be in same order as returned
@@ -90,11 +93,9 @@ setMethod("c2", signature("OneStageDesign", "numeric"),
 
 
 
-
-
 #' Convert a one-stage design to a two-stage design
 #'
-#' @param rounded c.f. slot
+#' @param rounded logical that indicates whether rounded n1-value should be used
 #'
 #' @rdname OneStageDesign-class
 #' @export
@@ -116,15 +117,15 @@ setMethod("TwoStageDesign", signature("OneStageDesign"),
 
 
 
+#' plot() is not defined for one stage designs - what should be plotted?
+#'
+#' @param x not used
 #' @param y not used
-#' @param rounded should n-values be rounded?
 #' @param k number of points to use for plotting
 #'
 #' @rdname OneStageDesign-class
 #' @export
 setMethod("plot", signature("OneStageDesign"),
           function(x, y = NULL, rounded = TRUE, ..., k = 100)
-              stop("Plot function is only defined for two-stage designs!")
+              stop("plot method is only defined for two-stage designs!")
           )
-
-
