@@ -279,13 +279,14 @@ setMethod("show", signature(object = "TwoStageDesign"),
 #' @export
 setMethod("plot", signature(x = "TwoStageDesign"),
           function(x, y = NULL, rounded = TRUE, ..., k = 100) {
-              if(rounded == TRUE) {
+              if (rounded == TRUE) {
                   x@rounded = TRUE
                   x@n1 = round(x@n1)
               }
               scores <- list(...)
               if (!all(sapply(scores, function(s) is(s, "ConditionalScore"))))
                   stop("optional arguments must be ConditionalScores")
+
               opts <- graphics::par(mfrow = c(1, length(scores) + 2))
               x1   <- seq(x@c1f, x@c1e, length.out = k)
               x2   <- seq(x@c1f - (x@c1e - x@c1f)/5, x@c1f - .01*(x@c1e - x@c1f)/5, length.out = k)

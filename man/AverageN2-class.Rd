@@ -34,7 +34,6 @@ the optimization more stable.
 \itemize{
 \item \code{evaluate}: generic implementation of evaluating a smoothness
 score. Uses adaptive Gaussian quadrature for integration and might be
-more efficiently implemented by specific \code{TwoStageDesign}-classes
-(cf. \code{\link{.evaluate}}).
+more efficiently implemented by specific \code{TwoStageDesign}-classes.
 }}
 

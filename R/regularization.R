@@ -32,8 +32,7 @@ AverageN2 <- function() new("AverageN2", dummy = FALSE)
 #'
 #' @describeIn AverageN2 generic implementation of evaluating a smoothness
 #'     score. Uses adaptive Gaussian quadrature for integration and might be
-#'     more efficiently implemented by specific \code{TwoStageDesign}-classes
-#'     (cf. \code{\link{.evaluate}}).
+#'     more efficiently implemented by specific \code{TwoStageDesign}-classes.
 setMethod("evaluate", signature("AverageN2", "TwoStageDesign"),
           function(s, design, specific = TRUE, ...) {
               if (specific) { # use design-specific implementation
