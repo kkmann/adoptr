@@ -62,6 +62,21 @@ test_that("predictive_pdf integrates to 1", {
 
 
 
+test_that("predictice_cdf is monotonously increasing", {
+    pcdf <- function(x1) predictive_cdf(normal, prior, x1, n1)
+
+    x <- seq(0.0, 2.0, length.out = 10)
+    y <- sapply(x, pcdf)
+
+    expect_equal(
+        sign(diff(y)),
+        rep(1, length(y) - 1)
+    )
+
+}) # end 'predicitive_cdf is monotonously increasing'
+
+
+
 test_that("predictive expectation under prior is larger than 0", {
 
     expect_gt(

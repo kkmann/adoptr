@@ -225,9 +225,11 @@ test_that("errors are returned correctly", {
 
 
 test_that("print methods", {
+    pow   <- integrate(ConditionalPower(Normal(), PointMassPrior(.3, 1)))
+
     vdiffr::expect_doppelganger(
         "Design print",
-        print.TwoStageDesignSummary(summary(d2))
+        print.TwoStageDesignSummary(summary(d2, "Power" = pow))
     )
 
 }) # end 'print methods'
