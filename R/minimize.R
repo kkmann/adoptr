@@ -11,7 +11,6 @@
 #' @param lower_boundary_design design specifying the lower boundary
 #' @param upper_boundary_design design specifying the upper boundary
 #' @param c2_monotone should the c2-function be forced to be monotoneously decreasing?
-#' @param post_process should post processing be performed to obtain exact boundaries for integer sample sizes?
 #' @param opts options list passed to nloptr
 #' @param ... further optional arguments passed to \code{\link{nloptr}}
 #'
@@ -38,8 +37,7 @@ minimize <- function(
     lower_boundary_design,
     upper_boundary_design,
     c2_monotone  = FALSE,
-    post_process = TRUE,
-    opts = list(
+    opts         = list(
         algorithm   = "NLOPT_LN_COBYLA",
         xtol_rel    = 1e-5,
         maxeval     = 10000
@@ -62,7 +60,8 @@ minimize <- function(
                 user_cnstr,
                 design@c1f - design@c1e + ifelse( # ensure c1e > c1f if not one-stage
                     is(initial_design, "OneStageDesign"), 0, .1),
-                if (c2_monotone == TRUE) diff(c2(design, scaled_integration_pivots(design))) # make c2() monotone if desired
+                if (c2_monotone == TRUE)
+                    diff(c2(design, scaled_integration_pivots(design)))
             ))
         }
 
@@ -75,113 +74,104 @@ minimize <- function(
             ub = tunable_parameters(upper_boundary_design),
             eval_f      = f_obj,
             eval_g_ineq = g_cnstr,
-            opts = opts,
+            opts        = opts,
             ...
         )
 
         if (res$status == 5 | res$status == 6)
             warning(res$message)
 
-        if (post_process == TRUE) {
-            n1 <- NULL
-
-            if (is(initial_design, "OneStageDesign")) {
-                # Define continuous design as starting value and fix rounded sample sizes
-                cont_design <- update(initial_design, res$solution)
-                cont_design@n1 <- round(cont_design@n1)
-                cont_design <- make_fixed(cont_design, n1)
-
-                # Define new lower boundary design and fix rounded sample sizes
-                lb_design <- update(cont_design, lower_boundary_design@c1f)
-
-                # Define new upper boundary design and fix rounded sample sizes
-                ub_design <- update(cont_design, upper_boundary_design@c1f)
-
-
-            } else {
-                # initial_design is not a one stage design
-                n2_pivots <- NULL
-
-                # Define continuous design as starting value and fix rounded sample sizes
-                cont_design <- update(initial_design, res$solution)
-                cont_design@n1 <- round(cont_design@n1)
-                cont_design@n2_pivots <- round(cont_design@n2_pivots)
-                cont_design <- make_fixed(cont_design, n1, n2_pivots)
-
-                # Define new lower boundary design and fix rounded sample sizes
-                lb_design <- lower_boundary_design
-                lb_design@n1 <- cont_design@n1
-                lb_design@n2_pivots <- cont_design@n2_pivots
-                lb_design  <- make_fixed(lb_design, n1, n2_pivots)
-
-                # Define new upper boundary design and fix rounded sample sizes
-                ub_design <- upper_boundary_design
-                ub_design@n1 <- cont_design@n1
-                ub_design@n2_pivots <- cont_design@n2_pivots
-                ub_design  <- make_fixed(ub_design, n1, n2_pivots)
-            }
-
-            f_obj <- function(params) evaluate(objective, update(cont_design, params), optimization = TRUE)
-
-            g_cnstr <- function(params) {
-                design <- update(cont_design, params)
-                user_cnstr <- evaluate(subject_to, design, optimization = TRUE)
-                return(c(
-                    user_cnstr,
-                    design@c1f - design@c1e + ifelse( # ensure c1e > c1f if not one-stage
-                        is(cont_design, "OneStageDesign"), 0, .1),
-                    if (c2_monotone == TRUE) diff(c2(design, scaled_integration_pivots(design))) # make c2() monotone if desired
-                ))
-            }
-
-            # Re-optimize c-values
-            res2 <- nloptr::nloptr(
-                x0 = tunable_parameters(cont_design),
-                lb = tunable_parameters(lb_design),
-                ub = tunable_parameters(ub_design),
-                eval_f      = f_obj,
-                eval_g_ineq = g_cnstr,
-                opts = opts,
-                ...
-            )
-
-            if(res2$status == 5 | res2$status == 6)
-                warning(res2$message)
-
-            # re-make parameters tunable for further use
-            cont_design <- update(cont_design, res2$solution)
-            if (is(cont_design, "OneStageDesign")) {
-                cont_design <- make_tunable(cont_design, n1)
-            } else{
-                cont_design <- make_tunable(cont_design, n1, n2_pivots)
-            }
-
-            out <- list(
-                "design"                 = cont_design,
-                "details"                = list(
-                    "design"             = update(initial_design, res$solution),
-                    "design_post"        = cont_design,
-                    "nloptr_return"      = res,
-                    "nloptr_return_post" = res2
-                    )
-                )
-
-
-        } else { # post_processing == FALSE
-
-            out <- list(
-                "design"  = update(initial_design, res$solution),
-                "details" = list(
-                    "design"             = update(initial_design, res$solution),
-                    "design_post"        = NULL,
-                    "nloptr_return"      = res,
-                    "nloptr_return_post" = NULL
-                )
-                )
-
-        }
-
-
-        return(out)
+        return(list(
+            "design"        = update(initial_design, res$solution),
+            "nloptr_status" = res
+        ))
 
     }
+
+
+# if (post_process == TRUE) {
+#     n1 <- NULL
+#
+#     if (is(initial_design, "OneStageDesign")) {
+#         # Define continuous design as starting value and fix rounded sample sizes
+#         cont_design <- update(initial_design, res$solution)
+#         cont_design@n1 <- round(cont_design@n1)
+#         cont_design <- make_fixed(cont_design, n1)
+#
+#         # Define new lower boundary design and fix rounded sample sizes
+#         lb_design <- update(cont_design, lower_boundary_design@c1f)
+#
+#         # Define new upper boundary design and fix rounded sample sizes
+#         ub_design <- update(cont_design, upper_boundary_design@c1f)
+#
+#
+#     } else {
+#         # initial_design is not a one stage design
+#         n2_pivots <- NULL
+#
+#         # Define continuous design as starting value and fix rounded sample sizes
+#         cont_design <- update(initial_design, res$solution)
+#         cont_design@n1 <- round(cont_design@n1)
+#         cont_design@n2_pivots <- round(cont_design@n2_pivots)
+#         cont_design <- make_fixed(cont_design, n1, n2_pivots)
+#
+#         # Define new lower boundary design and fix rounded sample sizes
+#         lb_design <- lower_boundary_design
+#         lb_design@n1 <- cont_design@n1
+#         lb_design@n2_pivots <- cont_design@n2_pivots
+#         lb_design  <- make_fixed(lb_design, n1, n2_pivots)
+#
+#         # Define new upper boundary design and fix rounded sample sizes
+#         ub_design <- upper_boundary_design
+#         ub_design@n1 <- cont_design@n1
+#         ub_design@n2_pivots <- cont_design@n2_pivots
+#         ub_design  <- make_fixed(ub_design, n1, n2_pivots)
+#     }
+#
+#     f_obj <- function(params) evaluate(objective, update(cont_design, params), optimization = TRUE)
+#
+#     g_cnstr <- function(params) {
+#         design <- update(cont_design, params)
+#         user_cnstr <- evaluate(subject_to, design, optimization = TRUE)
+#         return(c(
+#             user_cnstr,
+#             design@c1f - design@c1e + ifelse( # ensure c1e > c1f if not one-stage
+#                 is(cont_design, "OneStageDesign"), 0, .1),
+#             if (c2_monotone == TRUE) diff(c2(design, scaled_integration_pivots(design))) # make c2() monotone if desired
+#         ))
+#     }
+#
+#     # Re-optimize c-values
+#     res2 <- nloptr::nloptr(
+#         x0 = tunable_parameters(cont_design),
+#         lb = tunable_parameters(lb_design),
+#         ub = tunable_parameters(ub_design),
+#         eval_f      = f_obj,
+#         eval_g_ineq = g_cnstr,
+#         opts = opts,
+#         ...
+#     )
+#
+#     if(res2$status == 5 | res2$status == 6)
+#         warning(res2$message)
+#
+#     # re-make parameters tunable for further use
+#     cont_design <- update(cont_design, res2$solution)
+#     if (is(cont_design, "OneStageDesign")) {
+#         cont_design <- make_tunable(cont_design, n1)
+#     } else{
+#         cont_design <- make_tunable(cont_design, n1, n2_pivots)
+#     }
+#
+#     out <- list(
+#         "design"                 = cont_design,
+#         "details"                = list(
+#             "design"             = update(initial_design, res$solution),
+#             "design_post"        = cont_design,
+#             "nloptr_return"      = res,
+#             "nloptr_return_post" = res2
+#         )
+#     )
+#
+#
+# } else { # post_processing == FALSE
