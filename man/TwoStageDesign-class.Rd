@@ -12,6 +12,8 @@
 \alias{make_fixed}
 \alias{make_fixed,TwoStageDesign-method}
 \alias{update,TwoStageDesign-method}
+\alias{n1}
+\alias{n1,TwoStageDesign-method}
 \alias{n2}
 \alias{n2,TwoStageDesign,numeric-method}
 \alias{n}
@@ -43,13 +45,17 @@ make_fixed(x, ...)
 
 \S4method{update}{TwoStageDesign}(object, params, ...)
 
+n1(d, ...)
+
+\S4method{n1}{TwoStageDesign}(d, round = TRUE, ...)
+
 n2(d, x1, ...)
 
-\S4method{n2}{TwoStageDesign,numeric}(d, x1, ...)
+\S4method{n2}{TwoStageDesign,numeric}(d, x1, round = TRUE, ...)
 
 n(d, x1, ...)
 
-\S4method{n}{TwoStageDesign,numeric}(d, x1, ...)
+\S4method{n}{TwoStageDesign,numeric}(d, x1, round = TRUE, ...)
 
 c2(d, x1, ...)
 
@@ -91,6 +97,9 @@ by \code{as.numeric(design)})}
 
 \item{d}{design object}
 
+\item{round}{logical, should sample size be rounded to next integer or
+internal real be returned?}
+
 \item{x1}{stage-one outcome}
 
 \item{y}{not used}
@@ -106,6 +115,8 @@ by \code{as.numeric(design)})}
 \item{theta}{location parameter of the data distribution}
 
 \item{seed}{random seed}
+
+\item{d}{design object}
 }
 \description{
 \code{TwoStageDesign} is the fundamental design class of this package.

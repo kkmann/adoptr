@@ -35,11 +35,12 @@ AverageN2 <- function() new("AverageN2", dummy = FALSE)
 #'     more efficiently implemented by specific \code{TwoStageDesign}-classes.
 setMethod("evaluate", signature("AverageN2", "TwoStageDesign"),
           function(s, design, specific = TRUE, ...) {
-              if (specific) { # use design-specific implementation
+              if (specific) {
+                  # use design-specific implementation
                   return(.evaluate(s, design, ...))
               } else {
                   res <- stats::integrate(
-                      function(x) n2(design, x),
+                      function(x) n2(design, x, round = TRUE),
                       design@c1f,
                       design@c1e
                   )$value
@@ -54,7 +55,9 @@ setMethod("evaluate", signature("AverageN2", "TwoStageDesign"),
 setMethod(".evaluate", signature("AverageN2", "TwoStageDesign"),
           function(s, design, ...) {
               integrate_rule(
-                  function(x) n2(design, x),
+                  # only used during optimization, must use continues value
+                  # to keep things smooth!
+                  function(x) n2(design, x, round = FALSE),
                   design@c1f,
                   design@c1e,
                   design@x1_norm_pivots,
@@ -118,14 +121,15 @@ setMethod("evaluate", signature("SmoothnessN2", "TwoStageDesign"),
                   # integrand is the finite difference approximation of the
                   # squared second derivative
                   integrand <- function(x1) {
-                      ((n2(design, x1 + s@h) - 2 * n2(design, x1) + n2(design, x1 - s@h)) / s@h^2)^2
+                      ((n2(design, x1 + s@h, round = TRUE) - 2 * n2(design, x1, round = TRUE) + n2(design, x1 - s@h, round = TRUE)) / s@h^2)^2
                   }
                   x1_bounds <- c(design@c1f + s@h, design@c1e - s@h)
                   # use adaptive quadrature to integrate - only relies on generic interface
                   # provided by 'Design', no special optimization for particular
                   # design implementation
                   return(1 / diff(x1_bounds) *
-                             stats::integrate(integrand, x1_bounds[1], x1_bounds[2])$value)
+                      stats::integrate(integrand, x1_bounds[1], x1_bounds[2])$value
+                  )
               }
           }
 )
@@ -138,7 +142,7 @@ setMethod(".evaluate", signature("SmoothnessN2", "TwoStageDesign"),
               dif2 <- diff(design@n2_pivots[-1]) # increments of n2
               piv  <- diff(scaled_integration_pivots(design)) # increments of pivots
               # Approximate L2 norm of second derivative
-              res <- mean(((-dif1 + dif2) / (piv[-leng+1] * piv[-1]))^2)
+              res <- mean(((-dif1 + dif2) / (piv[-leng + 1] * piv[-1]))^2)
               return(res)
           }
 )
@@ -172,7 +176,7 @@ setMethod("evaluate", signature("SmoothnessN2", "OneStageDesign"),
 
 #' Regularize n1
 #'
-#' \code{PenaltyN1} is a class that penalizes the \code{n1} value of
+#' \code{N1} is a class that penalizes the \code{n1} value of
 #' a design.
 #'
 #'
@@ -186,7 +190,7 @@ contains = "UnconditionalScore")
 
 #' @rdname N1-class
 #' @export
-PenaltyN1 <- function() new("N1", dummy = FALSE)
+N1 <- function() new("N1", dummy = FALSE)
 
 
 #' Returns the n1-value of a \code{TwoStageDesign}.
@@ -199,8 +203,12 @@ PenaltyN1 <- function() new("N1", dummy = FALSE)
 #' @rdname N1-class
 #' @export
 setMethod("evaluate", signature("N1", "TwoStageDesign"),
-          function(s, design, ...) {
-              design@n1
+          function(s, design, specific = FALSE, ...) {
+              if (specific) {
+                  # use design-specific implementation
+                  return(n1(design, round = FALSE))
+              } else {
+                  return(n1(design, round = TRUE))
+              }
           }
 )
-

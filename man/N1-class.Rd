@@ -3,13 +3,13 @@
 \docType{class}
 \name{N1-class}
 \alias{N1-class}
-\alias{PenaltyN1}
+\alias{N1}
 \alias{evaluate,N1,TwoStageDesign-method}
 \title{Regularize n1}
 \usage{
-PenaltyN1()
+N1()
 
-\S4method{evaluate}{N1,TwoStageDesign}(s, design, ...)
+\S4method{evaluate}{N1,TwoStageDesign}(s, design, specific = FALSE, ...)
 }
 \arguments{
 \item{s}{an object of class \code{N1}}
@@ -19,6 +19,6 @@ PenaltyN1()
 \item{...}{further optional arguments}
 }
 \description{
-\code{PenaltyN1} is a class that penalizes the \code{n1} value of
+\code{N1} is a class that penalizes the \code{n1} value of
 a design.
 }

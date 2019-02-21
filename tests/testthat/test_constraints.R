@@ -88,14 +88,7 @@ test_that("ConditionalConstraints", {
     # Compute conditional sample size
     css <- ConditionalSampleSize(Normal(), PointMassPrior(.4, 1))
 
-    # Use non-rounded values
-    expect_equal(
-        evaluate(css, design, 1),
-        65.5
-    )
-
     # Use rounded values
-    design@rounded <- TRUE
     expect_equal(
         evaluate(css, design, 1),
         65.0

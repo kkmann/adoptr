@@ -170,6 +170,28 @@ setMethod("update", signature("TwoStageDesign"),
     })
 
 
+
+#' @param d design object
+#' @param round logical, should sample size be rounded to next integer or
+#'     internal real be returned?
+#'
+#' @rdname TwoStageDesign-class
+#' @export
+setGeneric("n1", function(d, ...) standardGeneric("n1"))
+
+#' @rdname TwoStageDesign-class
+#' @export
+setMethod("n1", signature("TwoStageDesign"),
+          function(d, round = TRUE, ...) {
+              n1 <- design@n1
+              if (round)
+                  n1 <- max(1, round(n1))
+
+              return(n1)
+          })
+
+
+
 #' @param x1 stage-one outcome
 #' @param d design object
 #'
@@ -180,21 +202,20 @@ setGeneric("n2", function(d, x1, ...) standardGeneric("n2"))
 #' @rdname TwoStageDesign-class
 #' @export
 setMethod("n2", signature("TwoStageDesign", "numeric"),
-          function(d, x1, ...) {
-              res <- ifelse(x1 < d@c1f | x1 > d@c1e, 0, 1) *
-                  pmax(
-                      0,
-                      stats::approx(
-                          scaled_integration_pivots(d),
-                          d@n2_pivots,
-                          xout   = x1,
-                          method = "linear",
-                          rule   = 2
-                      )$y
-                  )
-              if (d@rounded)
-                  res <- round(res)
-              return(res)
+          function(d, x1, round = TRUE, ...) {
+              n2 <- stats::approx(
+                  scaled_integration_pivots(d),
+                  d@n2_pivots,
+                  xout   = x1,
+                  method = "linear",
+                  rule   = 2
+              )$y
+              n2 <- pmax(n2, 1) # must be positive
+              # set to 0 outside continuation region
+              n2 <- ifelse(x1 < d@c1f | x1 > d@c1e, 0, n2)
+              if (round) # optional rounding to integer
+                  n2 <- round(n2)
+              return(n2)
           })
 
 
@@ -206,11 +227,11 @@ setGeneric("n", function(d, x1, ...) standardGeneric("n"))
 #' @describeIn TwoStageDesign overall sample size given stage-one outcome
 #' @export
 setMethod("n", signature("TwoStageDesign", "numeric"),
-          function(d, x1, ...) {
-              res <- n2(d, x1, ...) + d@n1
-              if (d@rounded)
-                  res <- round(res)
-              return(res)
+          function(d, x1, round = TRUE, ...) {
+              n <- n2(d, x1, ...) + d@n1
+              if (round) # optional rounding to integer
+                  n <- round(n)
+              return(n)
           })
 
 

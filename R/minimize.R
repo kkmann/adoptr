@@ -31,15 +31,21 @@
 #'
 #'
 #' @export
-minimize <- function(objective, subject_to, initial_design,
-                     lower_boundary_design, upper_boundary_design,
-                     c2_monotone = FALSE,
-                     post_process = TRUE,
-                     opts = list(
-                         algorithm   = "NLOPT_LN_COBYLA",
-                         xtol_rel    = 1e-5,
-                         maxeval     = 10000 # TODO: adjust in dependence of default order
-                     ), ...) {
+minimize <- function(
+    objective,
+    subject_to,
+    initial_design,
+    lower_boundary_design,
+    upper_boundary_design,
+    c2_monotone  = FALSE,
+    post_process = TRUE,
+    opts         = list(
+        algorithm   = "NLOPT_LN_COBYLA",
+        xtol_rel    = 1e-5,
+        maxeval     = 10000 # TODO: adjust in dependence of default order
+    ),
+    ...
+) {
 
         f_obj <- function(params) evaluate(objective, update(initial_design, params))
 
@@ -67,7 +73,7 @@ minimize <- function(objective, subject_to, initial_design,
             ...
         )
 
-        if(res$status == 5 | res$status == 6)
+        if (res$status == 5 | res$status == 6)
             warning(res$message)
 
         if (post_process == TRUE) {
@@ -86,26 +92,27 @@ minimize <- function(objective, subject_to, initial_design,
                 ub_design <- update(cont_design, upper_boundary_design@c1f)
 
 
-            } else { # initial_desing is not a one stage design
+            } else {
+                # initial_desing is not a one stage design
                 n2_pivots <- NULL
 
                 # Define continuous design as starting value and fix rounded sample sizes
-                cont_design <- update(initial_design, res$solution)
-                cont_design@n1 <- round(cont_design@n1)
+                cont_design           <- update(initial_design, res$solution)
+                cont_design@n1        <- n1(cont_design, round = TRUE)
                 cont_design@n2_pivots <- round(cont_design@n2_pivots)
-                cont_design <- make_fixed(cont_design, n1, n2_pivots)
+                cont_design           <- make_fixed(cont_design, n1, n2_pivots)
 
                 # Define new lower boundary design and fix rounded sample sizes
-                lb_design <- lower_boundary_design
-                lb_design@n1 <- cont_design@n1
-                lb_design@n2_pivots <- cont_design@n2_pivots
-                lb_design  <- make_fixed(lb_design, n1, n2_pivots)
+                lb_design             <- lower_boundary_design
+                lb_design@n1          <- n1(cont_design, round = TRUE)
+                lb_design@n2_pivots   <- cont_design@n2_pivots
+                lb_design             <- make_fixed(lb_design, n1, n2_pivots)
 
                 # Define new upper boundary design and fix rounded sample sizes
-                ub_design <- upper_boundary_design
-                ub_design@n1 <- cont_design@n1
-                ub_design@n2_pivots <- cont_design@n2_pivots
-                ub_design  <- make_fixed(ub_design, n1, n2_pivots)
+                ub_design             <- upper_boundary_design
+                ub_design@n1          <- n1(cont_design, round = TRUE)
+                ub_design@n2_pivots   <- cont_design@n2_pivots
+                ub_design             <- make_fixed(ub_design, n1, n2_pivots)
             }
 
             f_obj <- function(params) evaluate(objective, update(cont_design, params))
@@ -132,7 +139,7 @@ minimize <- function(objective, subject_to, initial_design,
                 ...
             )
 
-            if(res2$status == 5 | res2$status == 6)
+            if (res2$status == 5 | res2$status == 6)
                 warning(res2$message)
 
             # re-make parameters tunable for further use
@@ -155,8 +162,8 @@ minimize <- function(objective, subject_to, initial_design,
                 )
 
 
-        } else { # post_processing == FALSE
-
+        } else {
+            # post_processing == FALSE
             out <- list(
                 "design"  = update(initial_design, res$solution),
                 "details" = list(
