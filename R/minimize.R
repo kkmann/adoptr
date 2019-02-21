@@ -11,7 +11,7 @@
 #' @param lower_boundary_design design specifying the lower boundary
 #' @param upper_boundary_design design specifying the upper boundary
 #' @param c2_monotone should the c2-function be forced to be monotoneously decreasing?
-#' @param post_process should the sample sizes be integers?
+#' @param post_process should post processing be performed to obtain exact boundaries for integer sample sizes?
 #' @param opts options list passed to nloptr
 #' @param ... further optional arguments passed to \code{\link{nloptr}}
 #'
@@ -34,7 +34,7 @@
 minimize <- function(objective, subject_to, initial_design,
                      lower_boundary_design, upper_boundary_design,
                      c2_monotone = FALSE,
-                     post_process = FALSE,
+                     post_process = TRUE,
                      opts = list(
                          algorithm   = "NLOPT_LN_COBYLA",
                          xtol_rel    = 1e-5,
@@ -69,7 +69,6 @@ minimize <- function(objective, subject_to, initial_design,
 
         if(res$status == 5 | res$status == 6)
             warning(res$message)
-
 
         if (post_process == TRUE) {
             n1 <- NULL
@@ -135,7 +134,6 @@ minimize <- function(objective, subject_to, initial_design,
 
             if(res2$status == 5 | res2$status == 6)
                 warning(res2$message)
-
 
             # re-make parameters tunable for further use
             cont_design <- update(cont_design, res2$solution)

@@ -10,13 +10,21 @@ notifications:
 r_packages:
   - covr
   - devtools
-  
+
 install:
-- R -e 'devtools::install_deps(dep = T)'
+  - R -e 'devtools::install_deps(dep = T)'
 
 script:
-- R CMD build .
-- travis_wait 60 R CMD check *tar.gz
+  - R CMD build .
+  - travis_wait 60 R CMD check *tar.gz
+  - export PKG_TARBALL="$(find *.tar.gz)"
+  - echo $PKG_TARBALL
 
 after_success:
-    - travis_wait 60 Rscript -e 'library(covr); covr::codecov()'
+  - travis_wait 60 Rscript -e 'library(covr); covr::codecov()'
+
+before_deploy: Rscript -e 'remotes::install_cran("pkgdown")'
+deploy:
+  provider: script
+  script: bash deploy.sh
+  skip_cleanup: true

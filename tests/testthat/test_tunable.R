@@ -122,7 +122,7 @@ test_that("two stage design can be optimized with fixed sample sizes", {
         opts = list(
             algorithm   = "NLOPT_LN_COBYLA",
             xtol_abs    = 1 # we do not need convergence,
-            # only see if it works technically!
+                            # only see if it works technically!
         )
     )
 
@@ -191,7 +191,7 @@ test_that("one-stage design can be optimized with fixed sample sizes", {
         subject_to(
             pow >= 0.8,
             toer <= 0.025
-        ),
+            ),
 
         post_process          = FALSE,
         initial_design        = tmp_os,

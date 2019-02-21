@@ -71,7 +71,8 @@ test_that("Optimal group-sequential design with point prior is computable", {
         ),
         initial_design = design,
         lower_boundary_design = update(design, c(10, -1, 1, 2, numeric(order) - 5)),
-        upper_boundary_design = update(design, c(50, 1, 4, 50, numeric(order) + 5))
+        upper_boundary_design = update(design, c(50, 1, 4, 50, numeric(order) + 5)),
+        post_process = FALSE
     ) ->
         result
 
