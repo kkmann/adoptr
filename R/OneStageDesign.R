@@ -94,7 +94,6 @@ setMethod("c2", signature("OneStageDesign", "numeric"),
 
 #' Convert a one-stage design to a two-stage design
 #'
-#' @param rounded logical that indicates whether rounded n1-value should be used
 #'
 #' @rdname OneStageDesign-class
 #' @export
@@ -103,7 +102,7 @@ setMethod("TwoStageDesign", signature("OneStageDesign"),
          tunable <- rep(TRUE, 2)
          names(tunable) <- c("n1", "c1f")
          new("TwoStageDesign",
-             n1 = d@n1,
+             n1  = d@n1,
              c1f = d@c1f - .01, # needs to be done for interpolation
              c1e = d@c1f + .01, # needs to be done for interpolation
              n2_pivots = rep(0, 2),
@@ -119,7 +118,6 @@ setMethod("TwoStageDesign", signature("OneStageDesign"),
 #'
 #' @param x not used
 #' @param y not used
-#' @param k number of points to use for plotting
 #'
 #' @rdname OneStageDesign-class
 #' @export

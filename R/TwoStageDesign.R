@@ -175,6 +175,9 @@ setMethod("update", signature("TwoStageDesign"),
 #' @export
 setGeneric("n1", function(d, ...) standardGeneric("n1"))
 
+#' @param round logical, should integer sample size or real sample size be
+#'    returned?
+#'
 #' @rdname TwoStageDesign-class
 #' @export
 setMethod("n1", signature("TwoStageDesign"),
@@ -182,6 +185,8 @@ setMethod("n1", signature("TwoStageDesign"),
               n1 <- d@n1
               if (round)
                   n1 <- round(n1)
+              # if (round)
+              #     n1 <- round(n1)
               return(n1)
           })
 

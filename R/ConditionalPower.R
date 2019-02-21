@@ -18,6 +18,8 @@ setClass("ConditionalPower", contains = "ConditionalScore")
 #' @export
 ConditionalPower <- function(dist, prior) new("ConditionalPower", distribution = dist, prior = prior)
 
+#' @param optimization logical, if TRUE uses a relaxation to real parameters of
+#'    the underlying design; used for smooth optimization.
 #' @rdname ConditionalPower-class
 setMethod("evaluate", signature("ConditionalPower", "TwoStageDesign"),
           function(s, design, x1, optimization = FALSE, ...) {

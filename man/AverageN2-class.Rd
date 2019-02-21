@@ -17,9 +17,13 @@ AverageN2()
 
 \item{design}{a \code{TwoStageDesign}}
 
-\item{...}{further optimal arguments}
+\item{optimization}{logical, if TRUE uses a relaxation to real parameters of
+the underlying design; used for smooth optimization.}
 
-\item{specific}{logical, flag for switching to design-specific implementation.}
+\item{subdivisions}{integer, maxima number of subdivisions used for daptive
+integration.}
+
+\item{...}{further optimal arguments}
 }
 \description{
 Implements the L1-norm of the design's stage-two sample size function.

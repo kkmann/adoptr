@@ -17,6 +17,9 @@ subject_to(...)
 
 \item{design}{design}
 
+\item{optimization}{logical, if TRUE uses a relaxation to real parameters of
+the underlying design; used for smooth optimization.}
+
 \item{...}{arbitrary number of (un)conditional constraints}
 }
 \description{

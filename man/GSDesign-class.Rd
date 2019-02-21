@@ -13,7 +13,7 @@ GSDesign(n1, c1f, c1e, n2_pivots, c2_pivots, x1_norm_pivots, weights)
 
 \S4method{n2}{GSDesign,numeric}(d, x1, round = TRUE, ...)
 
-\S4method{TwoStageDesign}{GSDesign}(d, tunable, rounded = FALSE, ...)
+\S4method{TwoStageDesign}{GSDesign}(d, tunable, ...)
 
 \S4method{evaluate}{SmoothnessN2,GSDesign}(s, design, ...)
 }
@@ -36,11 +36,12 @@ GSDesign(n1, c1f, c1e, n2_pivots, c2_pivots, x1_norm_pivots, weights)
 
 \item{x1}{stage-one outcome}
 
+\item{round}{logical, should integer sample size or real sample size be
+returned?}
+
 \item{...}{further optional arguments}
 
 \item{tunable}{c.f. slot}
-
-\item{rounded}{c.f. slot}
 
 \item{s}{an object of class \code{SmoothnessN2}}
 

@@ -7,16 +7,19 @@
 \title{Unconditional score class obtained by integration of a \code{ConditionalScore}}
 \usage{
 \S4method{evaluate}{IntegralScore,TwoStageDesign}(s, design,
-  optimization = FALSE, ...)
+  optimization = FALSE, subdivisions = 10000L, ...)
 }
 \arguments{
 \item{s}{an \code{IntegralScore}}
 
 \item{design}{a \code{TwoStageDesign}}
 
-\item{...}{further optimal arguments}
+\item{optimization}{logical, if TRUE uses a relaxation to real parameters of
+the underlying design; used for smooth optimization.}
 
-\item{specific}{logical, flag for switching to design-specific implementation.}
+\item{subdivisions}{integer, [TODO]}
+
+\item{...}{further optimal arguments}
 }
 \description{
 Unconditional score class obtained by integration of a \code{ConditionalScore}

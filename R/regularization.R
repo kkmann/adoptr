@@ -27,7 +27,10 @@ AverageN2 <- function() new("AverageN2", dummy = FALSE)
 
 #' Evaluation of a AverageN2 score
 #'
-#' @param specific logical, flag for switching to design-specific implementation.
+#' @param optimization logical, if TRUE uses a relaxation to real parameters of
+#'    the underlying design; used for smooth optimization.
+#' @param subdivisions integer, maxima number of subdivisions used for daptive
+#'    integration.
 #' @param ... further optimal arguments
 #'
 #' @describeIn AverageN2 generic implementation of evaluating a smoothness
@@ -108,7 +111,10 @@ SmoothnessN2 <- function(h = .1)
 #'
 #' @param s an object of class \code{SmoothnessN2}
 #' @param design the design to compute the smoothness term for
-#' @param specific should a specific implementation be used?
+#' @param optimization logical, if TRUE uses a relaxation to real parameters of
+#'    the underlying design; used for smooth optimization.
+#' @param subdivisions integer, maxima number of subdivisions used for daptive
+#'    integration.
 #' @template dotdotdotTemplate
 #'
 #' @rdname SmoothnessN2-class
@@ -199,6 +205,8 @@ N1 <- function() new("N1", dummy = FALSE)
 #'
 #' @param s an object of class \code{N1}
 #' @param design the design to compute the smoothness term for
+#' @param optimization logical, if TRUE uses a relaxation to real parameters of
+#'    the underlying design; used for smooth optimization.
 #' @template dotdotdotTemplate
 #'
 #' @rdname N1-class

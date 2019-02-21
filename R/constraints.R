@@ -23,6 +23,8 @@ setClass("Constraint")
 
 #' @param s constraint to evaluate
 #' @param design TwoStageDesign to evaluate
+#' @param optimization logical, if TRUE uses a relaxation to real parameters of
+#'       the underlying design; used for smooth optimization.
 #'
 #' @rdname Constraint-class
 #' @export
@@ -125,6 +127,8 @@ setClass("ConstraintsCollection", representation(
         conditional_constraints = "list"))
 
 
+#' @param optimization logical, if TRUE uses a relaxation to real parameters of
+#'    the underlying design; used for smooth optimization.
 #' @rdname ConstraintsCollection-class
 #' @export
 setMethod("evaluate", signature("ConstraintsCollection", "TwoStageDesign"),

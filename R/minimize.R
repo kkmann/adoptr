@@ -31,17 +31,29 @@
 #'
 #'
 #' @export
-minimize <- function(objective, subject_to, initial_design,
-                     lower_boundary_design, upper_boundary_design,
-                     c2_monotone = FALSE,
-                     post_process = TRUE,
-                     opts = list(
-                         algorithm   = "NLOPT_LN_COBYLA",
-                         xtol_rel    = 1e-5,
-                         maxeval     = 10000 # TODO: adjust in dependence of default order
-                     ), ...) {
+minimize <- function(
+    objective,
+    subject_to,
+    initial_design,
+    lower_boundary_design,
+    upper_boundary_design,
+    c2_monotone  = FALSE,
+    post_process = TRUE,
+    opts = list(
+        algorithm   = "NLOPT_LN_COBYLA",
+        xtol_rel    = 1e-5,
+        maxeval     = 10000
+    ),
+    ...
+) {
 
-        f_obj <- function(params) evaluate(objective, update(initial_design, params), optimization = TRUE)
+        f_obj <- function(params) {
+            evaluate(
+                objective,
+                update(initial_design, params),
+                optimization = TRUE # evaluate in optimization context!
+            )
+        }
 
         g_cnstr <- function(params) {
             design <- update(initial_design, params)
@@ -67,7 +79,7 @@ minimize <- function(objective, subject_to, initial_design,
             ...
         )
 
-        if(res$status == 5 | res$status == 6)
+        if (res$status == 5 | res$status == 6)
             warning(res$message)
 
         if (post_process == TRUE) {
@@ -86,7 +98,8 @@ minimize <- function(objective, subject_to, initial_design,
                 ub_design <- update(cont_design, upper_boundary_design@c1f)
 
 
-            } else { # initial_desing is not a one stage design
+            } else {
+                # initial_design is not a one stage design
                 n2_pivots <- NULL
 
                 # Define continuous design as starting value and fix rounded sample sizes

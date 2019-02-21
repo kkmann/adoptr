@@ -52,6 +52,9 @@
 
 \item{design}{TwoStageDesign to evaluate}
 
+\item{optimization}{logical, if TRUE uses a relaxation to real parameters of
+the underlying design; used for smooth optimization.}
+
 \item{...}{further optional arguments}
 
 \item{e1}{first comparator}

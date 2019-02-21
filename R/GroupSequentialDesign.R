@@ -54,6 +54,8 @@ GSDesign <- function(n1, c1f, c1e, n2_pivots, c2_pivots, x1_norm_pivots, weights
 
 #' @param x1 stage-one outcome
 #' @param d object of class \code{GSDesign}
+#' @param round logical, should integer sample size or real sample size be
+#'    returned?
 #'
 #' @rdname GSDesign-class
 #' @export
@@ -71,12 +73,11 @@ setMethod("n2", signature("GSDesign", "numeric"),
 #' Convert a group-sequential design to a two-stage design
 #'
 #' @param tunable c.f. slot
-#' @param rounded c.f. slot
 #'
 #' @rdname GSDesign-class
 #' @export
 setMethod("TwoStageDesign", signature("GSDesign"),
-     function(d, tunable, rounded = FALSE, ...){
+     function(d, tunable, ...){
          tunable <- logical(8) # initialize to all false
          tunable[1:5] <- TRUE
          names(tunable) <- c("n1", "c1f", "c1e", "n2_pivots", "c2_pivots", "x1_norm_pivots", "weights", "tunable")

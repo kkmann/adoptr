@@ -49,10 +49,6 @@ by \code{as.numeric(OneStageDesign)})}
 \item{s}{an object of class \code{SmoothnessN2}}
 
 \item{design}{an object of class \code{OneStageDesign}}
-
-\item{rounded}{logical that indicates whether rounded n1-value should be used}
-
-\item{k}{number of points to use for plotting}
 }
 \description{
 \code{OneStageDesign} allows the usage of a single-stage design.

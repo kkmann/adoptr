@@ -272,7 +272,7 @@ test_that("conditional constraints work", {
         upper_boundary_design = ub_design,
         opts = list(
             algorithm   = "NLOPT_LN_COBYLA",
-            xtol_rel    = 1e-3,
+            xtol_rel    = 1e-4,
             maxeval     = 10000
         )
     ))
@@ -295,3 +295,6 @@ test_that("conditional constraints work", {
 
 
 # TODO: check post-processing
+# TODO: check GS vs rpact
+# TODO: check OneStage vs sth
+# (don't compute new designs, use existing ones!)

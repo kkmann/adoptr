@@ -19,9 +19,13 @@ SmoothnessN2(h = 0.1)
 
 \item{design}{the design to compute the smoothness term for}
 
-\item{...}{further optional arguments}
+\item{optimization}{logical, if TRUE uses a relaxation to real parameters of
+the underlying design; used for smooth optimization.}
 
-\item{specific}{should a specific implementation be used?}
+\item{subdivisions}{integer, maxima number of subdivisions used for daptive
+integration.}
+
+\item{...}{further optional arguments}
 }
 \description{
 \code{SmoothnessN2} is a generic class for implementing a smoothness penalty

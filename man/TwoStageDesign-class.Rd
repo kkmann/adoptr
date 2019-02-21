@@ -97,6 +97,9 @@ by \code{as.numeric(design)})}
 
 \item{d}{design object}
 
+\item{round}{logical, should integer sample size or real sample size be
+returned?}
+
 \item{x1}{stage-one outcome}
 
 \item{y}{not used}

@@ -14,6 +14,9 @@
 
 \item{design}{a \code{TwoStageDesign}}
 
+\item{optimization}{logical, if TRUE uses a relaxation to real parameters of
+the underlying design; used for smooth optimization.}
+
 \item{...}{further optional arguments}
 }
 \description{
