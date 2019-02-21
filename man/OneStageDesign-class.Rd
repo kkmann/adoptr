@@ -4,7 +4,6 @@
 \name{OneStageDesign-class}
 \alias{OneStageDesign-class}
 \alias{OneStageDesign}
-\alias{tunable_parameters,OneStageDesign-method}
 \alias{update,OneStageDesign-method}
 \alias{n2,OneStageDesign,numeric-method}
 \alias{c2,OneStageDesign,numeric-method}
@@ -14,8 +13,6 @@
 \title{One-stage design}
 \usage{
 OneStageDesign(n, c)
-
-\S4method{tunable_parameters}{OneStageDesign}(x, ...)
 
 \S4method{update}{OneStageDesign}(object, params, ...)
 
@@ -35,20 +32,20 @@ OneStageDesign(n, c)
 
 \item{c}{rejection boundary (c = c1f = c1e)}
 
-\item{x}{object to get parameters from}
-
-\item{...}{further optional arguments}
-
 \item{object}{object to update}
 
 \item{params}{vector of design parameters (must be in same order as returned
 by \code{as.numeric(OneStageDesign)})}
 
+\item{...}{further optional arguments}
+
 \item{d}{object of class \code{OneStageDesign}}
 
 \item{x1}{stage-one outcome}
 
-\item{rounded}{c.f. slot}
+\item{rounded}{logical that indicates whether rounded n1-value should be used}
+
+\item{x}{not used}
 
 \item{y}{not used}
 
@@ -57,8 +54,6 @@ by \code{as.numeric(OneStageDesign)})}
 \item{s}{an object of class \code{SmoothnessN2}}
 
 \item{design}{an object of class \code{OneStageDesign}}
-
-\item{rounded}{should n-values be rounded?}
 }
 \description{
 \code{OneStageDesign} allows the usage of a single-stage design.

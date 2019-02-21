@@ -2,7 +2,7 @@ context("check minimize()")
 
 
 
-#preliminaries
+# preliminaries
 order <- 5L
 
 initial_design <- gq_design(25, 0, 2, rep(40.0, order), rep(1.96, order), order)
@@ -130,7 +130,7 @@ test_that("base-case satisfies constraints", {
             algorithm   = "NLOPT_LN_COBYLA",
             xtol_rel    = 1e-3, # we use reduced precision, not optimal but should
                                 # respect constraints!
-            maxeval     = 1000
+            maxeval     = 10000
         )
 
     )
@@ -203,42 +203,49 @@ test_that("base-case results are consistent", {
     )
 
 
-    # Compare designs
+
+    # optimal two-stage design better than optimal group-sequential design
     expect_lt(
         evaluate(ess, opt_ts$design),
         evaluate(ess, opt_gs$design)
-    ) # optimal two-stage design better than optimal group-sequential design
+    )
 
+    # optimal group-sequential design better than optimal one-stage design
     expect_lt(
         evaluate(ess, opt_gs$design),
         evaluate(ess, opt_os$design)
-    ) # optimal group-sequential design better than optimal one-stage design
+    )
 
 
-    # Simulate
-    sim_null <- adoptr::simulate(
+    # simulate on boundary of null
+    sim_null <- simulate(
         opt_ts$design, nsim = 10^6, dist = datadist, theta = .0, seed = 54
-        )
+    )
 
-    expect_equal(mean(sim_null$reject), 0.05, tolerance = 0.005) # type one error
+    # check type one error rate on boundary of null
+    expect_equal(mean(sim_null$reject), 0.05, tolerance = 0.005)
 
+    # expected sample size on boundary of null
     expect_equal(
         mean(sim_null$n2 + sim_null$n1),
         evaluate(ess_0, opt_ts$design),
         tolerance = 1
-        ) # expected sample size under null
+    )
 
-    sim_alt  <- adoptr::simulate(
+    # simulate under alternative
+    sim_alt  <- simulate(
         opt_ts$design, nsim = 10^6, dist = datadist, theta = .4, seed = 54
-        )
+    )
 
-    expect_equal(mean(sim_alt$reject), 0.8, tolerance = 0.01) # power
+    # check power constraint
+    expect_equal(mean(sim_alt$reject), 0.8, tolerance = 0.005)
 
+    # check expected sample size under alternative
     expect_equal(
         mean(sim_alt$n2 + sim_alt$n1),
         evaluate(ess, opt_ts$design),
         tolerance = 1
-    ) # expected sample size under alternative
+    )
 
 
 
@@ -248,8 +255,8 @@ test_that("base-case results are consistent", {
 
 
 test_that("conditional constraints work", {
-    suppressWarnings( # initial design is infeasible
-    opt_ts <- minimize(
+
+    opt_ts <- suppressWarnings(minimize( # ignore: initial design is infeasible
 
         ess,
         subject_to(
@@ -266,20 +273,22 @@ test_that("conditional constraints work", {
         opts = list(
             algorithm   = "NLOPT_LN_COBYLA",
             xtol_rel    = 1e-3,
-            maxeval     = 1000
+            maxeval     = 10000
         )
-    )
+    ))
 
-    )
+    tol <- .001
 
+    # check lower boundary on conditional power
     expect_gte(
         evaluate(cp, opt_ts$design, opt_ts$design@c1f),
-        .749 # rounding
-    ) # lower bound is hold
+        .75 - tol
+    )
 
+    # check lower boundary on conditional power
     expect_lte(
         evaluate(cp, opt_ts$design, opt_ts$design@c1e),
-        .951 # rounding
-    ) # upper bound is hold
+        .95 + tol
+    )
 
 }) # end 'conditional constraints work'

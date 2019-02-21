@@ -50,7 +50,7 @@ minimize <- function(objective, subject_to, initial_design,
                 user_cnstr,
                 design@c1f - design@c1e + ifelse( # ensure c1e > c1f if not one-stage
                     is(initial_design, "OneStageDesign"), 0, .1),
-                if(c2_monotone == TRUE) diff(c2(design, scaled_integration_pivots(design))) # make c2() monotone if desired
+                if (c2_monotone == TRUE) diff(c2(design, scaled_integration_pivots(design))) # make c2() monotone if desired
             ))
         }
 
@@ -67,15 +67,20 @@ minimize <- function(objective, subject_to, initial_design,
             ...
         )
 
+<<<<<<< HEAD
         if(res$status == 5 | res$status == 6){
             warning(res$message)
+=======
+        if (res$status == 5 | res$status == 6) {
+            warning("Algorithm did probably not converge!")
+>>>>>>> f766dffe5b10615009a358aba6a67363eddfd537
         }
 
 
-        if(post_process == TRUE){
+        if (post_process == TRUE) {
             n1 <- NULL
 
-            if(is(initial_design, "OneStageDesign")) {
+            if (is(initial_design, "OneStageDesign")) {
                 # Define continuous design as starting value and fix rounded sample sizes
                 cont_design <- update(initial_design, res$solution)
                 cont_design@n1 <- round(cont_design@n1)
@@ -88,7 +93,7 @@ minimize <- function(objective, subject_to, initial_design,
                 ub_design <- update(cont_design, upper_boundary_design@c1f)
 
 
-            } else {
+            } else { # initial_desing is not a one stage design
                 n2_pivots <- NULL
 
                 # Define continuous design as starting value and fix rounded sample sizes
@@ -119,7 +124,7 @@ minimize <- function(objective, subject_to, initial_design,
                     user_cnstr,
                     design@c1f - design@c1e + ifelse( # ensure c1e > c1f if not one-stage
                         is(cont_design, "OneStageDesign"), 0, .1),
-                    if(c2_monotone == TRUE) diff(c2(design, scaled_integration_pivots(design))) # make c2() monotone if desired
+                    if (c2_monotone == TRUE) diff(c2(design, scaled_integration_pivots(design))) # make c2() monotone if desired
                 ))
             }
 
@@ -134,14 +139,19 @@ minimize <- function(objective, subject_to, initial_design,
                 ...
             )
 
+<<<<<<< HEAD
             if(res2$status == 5 | res2$status == 6){
                 warning(res2$message)
+=======
+            if (res2$status == 5 | res2$status == 6) {
+                warning("Algorithm did probably not converge!")
+>>>>>>> f766dffe5b10615009a358aba6a67363eddfd537
             }
 
 
-            # Re-make parameters tunable for further use
+            # re-make parameters tunable for further use
             cont_design <- update(cont_design, res2$solution)
-            if(is(cont_design, "OneStageDesign")) {
+            if (is(cont_design, "OneStageDesign")) {
                 cont_design <- make_tunable(cont_design, n1)
             } else{
                 cont_design <- make_tunable(cont_design, n1, n2_pivots)
@@ -149,24 +159,24 @@ minimize <- function(objective, subject_to, initial_design,
             cont_design@rounded <- TRUE
 
             out <- list(
-                "design"  = cont_design,
-                "details" = list(
-                    "design" = update(initial_design, res$solution),
-                    "design_post"   = cont_design,
-                    "nloptr_return" = res,
+                "design"                 = cont_design,
+                "details"                = list(
+                    "design"             = update(initial_design, res$solution),
+                    "design_post"        = cont_design,
+                    "nloptr_return"      = res,
                     "nloptr_return_post" = res2
                     )
                 )
 
 
-        } else{
+        } else { # post_processing == FALSE
 
             out <- list(
                 "design"  = update(initial_design, res$solution),
                 "details" = list(
-                    "design" = update(initial_design, res$solution),
-                    "design_post"   = NULL,
-                    "nloptr_return" = res,
+                    "design"             = update(initial_design, res$solution),
+                    "design_post"        = NULL,
+                    "nloptr_return"      = res,
                     "nloptr_return_post" = NULL
                 )
                 )
