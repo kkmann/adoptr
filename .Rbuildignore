@@ -12,3 +12,5 @@
 ^\.Rproj\.user$
 sticker.R
 vignettes
+^deploy.sh$
+

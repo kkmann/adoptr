@@ -72,7 +72,6 @@ test_that("two stage design can be optimized with fixed first stage", {
             pow  >= 0.8,
             toer <= .05
         ),
-
         post_process          = FALSE, # if we can do it without post
                                        # processing, by design, it also
                                        # works with
@@ -112,7 +111,6 @@ test_that("two stage design can be optimized with fixed sample sizes", {
             pow  >= 0.8,
             toer <= .05
         ),
-
         post_process          = FALSE, # if we can do it without post
                                        # processing, by design, it also
                                        # works with
@@ -155,7 +153,6 @@ test_that("group-sequential design can be optimized with fixed sample sizes", {
             pow  >= 0.8,
             toer <= .05
         ),
-
         post_process          = FALSE,
         initial_design        = tmp_gs,
         lower_boundary_design = lb_design,
