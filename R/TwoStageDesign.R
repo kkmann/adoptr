@@ -183,7 +183,7 @@ setGeneric("n1", function(d, ...) standardGeneric("n1"))
 #' @export
 setMethod("n1", signature("TwoStageDesign"),
           function(d, round = TRUE, ...) {
-              n1 <- design@n1
+              n1 <- d@n1
               if (round)
                   n1 <- max(1, round(n1))
 

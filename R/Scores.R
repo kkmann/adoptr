@@ -47,7 +47,7 @@ setClass("AbstractConditionalScore")
 #' @exportClass ConditionalScore
 setClass("ConditionalScore", representation(
         distribution = "DataDistribution",
-        prior = "Prior"
+        prior        = "Prior"
     ),
     contains = "AbstractConditionalScore")
 
@@ -55,7 +55,7 @@ setClass("ConditionalScore", representation(
 #' @describeIn ConditionalScore not implemented, just raises a 'not implemented'
 #'     error.
 setMethod("evaluate", signature("ConditionalScore", "TwoStageDesign"),
-          function(s, design, x1, ...) stop("not implemented"))
+          function(s, design, x1, optimization = FALSE, ...) stop("not implemented"))
 
 
 #' @describeIn ConditionalScore integrate a \code{ConditionalScore} over the
@@ -214,7 +214,7 @@ setMethod(".evaluate", signature("IntegralScore", "TwoStageDesign"),
               poef <- predictive_cdf(s@cs@distribution, s@cs@prior, design@c1f, design@n1)
               poee <- 1 - predictive_cdf(s@cs@distribution, s@cs@prior, design@c1e, design@n1)
               # continuation region
-              integrand   <- function(x1) evaluate(s@cs, design, x1, ...) *
+              integrand   <- function(x1) evaluate(s@cs, design, x1, optimization = TRUE, ...) *
                   predictive_pdf(s@cs@distribution, s@cs@prior, x1, design@n1, ...)
               mid_section <- integrate_rule(
                   integrand, design@c1f, design@c1e, design@x1_norm_pivots, design@weights
@@ -222,12 +222,14 @@ setMethod(".evaluate", signature("IntegralScore", "TwoStageDesign"),
               # compose
               res <- poef * evaluate( # score is constant on early stopping region
                   s@cs, design,
-                  design@c1f - sqrt(.Machine$double.eps) # slightly smaller than stopping for futility
+                  design@c1f - sqrt(.Machine$double.eps), # slightly smaller than stopping for futility
+                  optimization = TRUE, ...
               ) +
               mid_section +
               poee * evaluate(
                   s@cs, design,
-                  design@c1e + sqrt(.Machine$double.eps)
+                  design@c1e + sqrt(.Machine$double.eps),
+                  optimization = TRUE, ...
               )
               return(res)
           })
@@ -244,11 +246,13 @@ setMethod(".evaluate", signature("IntegralScore", "OneStageDesign"),
               poee <- 1 - predictive_cdf(s@cs@distribution, s@cs@prior, design@c1e, design@n1)
               res  <- poef * evaluate( # score is constant on early stopping region
                       s@cs, design,
-                      design@c1f - sqrt(.Machine$double.eps) # slightly smaller than stopping for futility
+                      design@c1f - sqrt(.Machine$double.eps), # slightly smaller than stopping for futility
+                      optimization = TRUE, ...
                   ) +
                   poee * evaluate(
                       s@cs, design,
-                      design@c1e + sqrt(.Machine$double.eps)
+                      design@c1e + sqrt(.Machine$double.eps),
+                      optimization = TRUE, ...
                   )
               return(res)
           })

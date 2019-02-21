@@ -20,7 +20,7 @@ ConditionalPower <- function(dist, prior) new("ConditionalPower", distribution =
 
 #' @rdname ConditionalPower-class
 setMethod("evaluate", signature("ConditionalPower", "TwoStageDesign"),
-          function(s, design, x1, ...) {
+          function(s, design, x1, optimization = FALSE, ...) {
               sapply(x1,
                   function(x1) expectation(
                       posterior(s@distribution, s@prior, x1, design@n1, ...),

@@ -120,15 +120,13 @@ setMethod(">=", signature("UnconditionalScore", "UnconditionalScore"),
 #' @exportClass ConstraintsCollection
 setClass("ConstraintsCollection", representation(
         unconditional_constraints = "list",
-        conditional_constraints = "list"))
+        conditional_constraints   = "list"))
 
 
 #' @rdname ConstraintsCollection-class
 #' @export
 setMethod("evaluate", signature("ConstraintsCollection", "TwoStageDesign"),
           function(s, design, ...) {
-              # TODO: we will want to allow users to chose where the conditional constraints should apply,
-              # e.g.  continuation, early efficacy etc.
               x1_cont <- scaled_integration_pivots(design)
               unconditional <- as.numeric(sapply(
                   s@unconditional_constraints,

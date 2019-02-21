@@ -19,4 +19,9 @@ ConditionalSampleSize <- function(dist, prior) new("ConditionalSampleSize", dist
 
 #' @rdname ConditionalSampleSize-class
 setMethod("evaluate", signature("ConditionalSampleSize", "TwoStageDesign"),
-          function(s, design, x1, ...) n(design, x1) )
+          function(s, design, x1, optimization = FALSE, ...) {
+              if (optimization)
+                  return( n(design, x1, round = FALSE) )
+              else
+                  return( n(design, x1, round = TRUE) )
+          })
