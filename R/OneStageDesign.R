@@ -14,7 +14,6 @@
 #' @slot x1_norm_pivots is ignored for OneStageDesign
 #' @slot weights is ignored for OneStageDesign
 #' @slot tunable is ignored for OneStageDesign
-#' @slot rounded logical that indicates whether rounded n1-value should be used
 #'
 #' @exportClass OneStageDesign
 setClass("OneStageDesign",  contains = "TwoStageDesign")
@@ -32,7 +31,7 @@ OneStageDesign <- function(n, c) {
     names(tunable) <- c("n1", "c1f", "c1e", "n2_pivots", "c2_pivots", "x1_norm_pivots", "weights", "tunable")
     new("OneStageDesign", n1 = n, c1f = c, c1e = c, n2_pivots = 0,
     c2_pivots = NaN, x1_norm_pivots = NaN, weights = NaN,
-    tunable = tunable, rounded = FALSE)
+    tunable = tunable)
 }
 
 
@@ -100,7 +99,7 @@ setMethod("c2", signature("OneStageDesign", "numeric"),
 #' @rdname OneStageDesign-class
 #' @export
 setMethod("TwoStageDesign", signature("OneStageDesign"),
-     function(d, rounded = FALSE, ...){
+     function(d, ...){
          tunable <- rep(TRUE, 2)
          names(tunable) <- c("n1", "c1f")
          new("TwoStageDesign",
@@ -111,8 +110,7 @@ setMethod("TwoStageDesign", signature("OneStageDesign"),
              c2_pivots = c(10, -10),
              x1_norm_pivots = c(-.5, .5),
              weights = c(1, 1),
-             tunable = tunable,
-             rounded = rounded)
+             tunable = tunable)
 })
 
 
@@ -126,6 +124,6 @@ setMethod("TwoStageDesign", signature("OneStageDesign"),
 #' @rdname OneStageDesign-class
 #' @export
 setMethod("plot", signature("OneStageDesign"),
-          function(x, y = NULL, rounded = TRUE, ..., k = 100)
+          function(x, ...)
               stop("plot method is only defined for two-stage designs!")
           )

@@ -20,7 +20,8 @@
 \alias{>=,UnconditionalScore,UnconditionalScore-method}
 \title{Formulating constraints}
 \usage{
-\S4method{evaluate}{Constraint,TwoStageDesign}(s, design, ...)
+\S4method{evaluate}{Constraint,TwoStageDesign}(s, design,
+  optimization = FALSE, ...)
 
 \S4method{<=}{AbstractConditionalScore,numeric}(e1, e2)
 

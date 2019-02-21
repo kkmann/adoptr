@@ -7,7 +7,8 @@
 \alias{subject_to}
 \title{Collection of constraints}
 \usage{
-\S4method{evaluate}{ConstraintsCollection,TwoStageDesign}(s, design, ...)
+\S4method{evaluate}{ConstraintsCollection,TwoStageDesign}(s, design,
+  optimization = FALSE, ...)
 
 subject_to(...)
 }

@@ -31,11 +31,6 @@ setGeneric(".evaluate", function(s, design, ...) standardGeneric(".evaluate"))
 # internal use only
 setClass("AbstractConditionalScore")
 
-# needs to implement:
-# setMethod("evaluate", signature("AbstractConditionalScore", "TwoStageDesign"),
-#          function(s, design, x1, ...) stop("not implemented"))
-
-
 
 
 #' Class for conditional scoring function
@@ -55,7 +50,7 @@ setClass("ConditionalScore", representation(
 #' @describeIn ConditionalScore not implemented, just raises a 'not implemented'
 #'     error.
 setMethod("evaluate", signature("ConditionalScore", "TwoStageDesign"),
-          function(s, design, x1, ...) stop("not implemented"))
+          function(s, design, x1, optimization = FALSE, ...) stop("not implemented"))
 
 
 #' @describeIn ConditionalScore integrate a \code{ConditionalScore} over the
@@ -116,7 +111,7 @@ setClass("UnconditionalScore")
 #' @rdname UnconditionalScore-class
 #' @export
 setMethod("evaluate", signature("UnconditionalScore", "TwoStageDesign"),
-          function(s, design, ...) stop("not implemented") )
+          function(s, design, optimization = FALSE, ...) stop("not implemented") )
 
 
 # not user facing
@@ -170,11 +165,11 @@ setClass("IntegralScore", representation(
 #'     score. Uses adaptive Gaussian quadrature for integration and might be
 #'     more efficiently implemented by specific \code{TwoStageDesign}-classes.
 setMethod("evaluate", signature("IntegralScore", "TwoStageDesign"),
-          function(s, design, specific = TRUE, ...) {
+          function(s, design, optimization = FALSE, ...) {
               # TODO: currently ignores the possibility of early stopping/uncontinuus
               # conditional scores - might get better when checking for early stopping
               # and integrating separately!
-              if (specific) { # use design-specific implementation
+              if (optimization) { # use design-specific implementation
                   return(.evaluate(s, design, ...))
               } else {
                   # use generic approach

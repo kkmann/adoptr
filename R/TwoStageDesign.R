@@ -41,7 +41,6 @@
 #' @slot weights weights of conditional score values at x1_norm_pivots for
 #'     approximating the integral over x1.
 #' @slot tunable named logical vector indicating whether corresponding slot is considered a tunable parameter
-#' @slot rounded logical that indicates whether rounded n-values should be used
 #'
 #' @exportClass TwoStageDesign
 setClass("TwoStageDesign", representation(
@@ -52,8 +51,7 @@ setClass("TwoStageDesign", representation(
         c2_pivots = "numeric",
         x1_norm_pivots = "numeric",
         weights   = "numeric",
-        tunable   = "logical",
-        rounded   = "logical"
+        tunable   = "logical"
     ))
 
 
@@ -87,7 +85,7 @@ setMethod("TwoStageDesign", signature("numeric"),
         names(tunable) <- c("n1", "c1f", "c1e", "n2_pivots", "c2_pivots", "x1_norm_pivots", "weights", "tunable")
         new("TwoStageDesign", n1 = n1, c1f = c1f, c1e = c1e, n2_pivots = n2_pivots,
             c2_pivots = c2_pivots, x1_norm_pivots = x1_norm_pivots, weights = weights,
-            tunable = tunable, rounded = FALSE)
+            tunable = tunable)
 })
 
 
@@ -170,8 +168,26 @@ setMethod("update", signature("TwoStageDesign"),
     })
 
 
-#' @param x1 stage-one outcome
+
 #' @param d design object
+#'
+#' @rdname TwoStageDesign-class
+#' @export
+setGeneric("n1", function(d, ...) standardGeneric("n1"))
+
+#' @rdname TwoStageDesign-class
+#' @export
+setMethod("n1", signature("TwoStageDesign"),
+          function(d, round = TRUE, ...) {
+              n1 <- d@n1
+              if (round)
+                  n1 <- round(n1)
+              return(n1)
+          })
+
+
+
+#' @param x1 stage-one outcome
 #'
 #' @rdname TwoStageDesign-class
 #' @export
@@ -180,7 +196,7 @@ setGeneric("n2", function(d, x1, ...) standardGeneric("n2"))
 #' @rdname TwoStageDesign-class
 #' @export
 setMethod("n2", signature("TwoStageDesign", "numeric"),
-          function(d, x1, ...) {
+          function(d, x1, round = TRUE, ...) {
               res <- ifelse(x1 < d@c1f | x1 > d@c1e, 0, 1) *
                   pmax(
                       0,
@@ -192,7 +208,7 @@ setMethod("n2", signature("TwoStageDesign", "numeric"),
                           rule   = 2
                       )$y
                   )
-              if (d@rounded)
+              if (round)
                   res <- round(res)
               return(res)
           })
@@ -206,12 +222,7 @@ setGeneric("n", function(d, x1, ...) standardGeneric("n"))
 #' @describeIn TwoStageDesign overall sample size given stage-one outcome
 #' @export
 setMethod("n", signature("TwoStageDesign", "numeric"),
-          function(d, x1, ...) {
-              res <- n2(d, x1, ...) + d@n1
-              if (d@rounded)
-                  res <- round(res)
-              return(res)
-          })
+          function(d, x1, round = TRUE, ...) n2(d, x1, round, ...) + n1(d, round, ...))
 
 
 
@@ -279,10 +290,6 @@ setMethod("show", signature(object = "TwoStageDesign"),
 #' @export
 setMethod("plot", signature(x = "TwoStageDesign"),
           function(x, y = NULL, rounded = TRUE, ..., k = 100) {
-              if (rounded == TRUE) {
-                  x@rounded = TRUE
-                  x@n1 = round(x@n1)
-              }
               scores <- list(...)
               if (!all(sapply(scores, function(s) is(s, "ConditionalScore"))))
                   stop("optional arguments must be ConditionalScores")
@@ -292,12 +299,12 @@ setMethod("plot", signature(x = "TwoStageDesign"),
               x2   <- seq(x@c1f - (x@c1e - x@c1f)/5, x@c1f - .01*(x@c1e - x@c1f)/5, length.out = k)
               x3   <- seq(x@c1e + .01*(x@c1e - x@c1f)/5, x@c1e + (x@c1e - x@c1f)/5, length.out = k)
               x4   <- seq(x@c1f - (x@c1e - x@c1f)/5, x@c1e + (x@c1e - x@c1f)/5, length.out = k)
-              graphics::plot(x1, sapply(x1, function(z) n(x, z)), 'l',
+              graphics::plot(x1, sapply(x1, function(z) n(x, z, round = rounded)), 'l',
                              xlim = c(min(x4), max(x4)),
-                             ylim = c(0, 1.05 * max(sapply(x1, function(z) n(x, z)))),
+                             ylim = c(0, 1.05 * max(sapply(x1, function(z) n(x, z, round = rounded)))),
                              main = "Overall sample size", ylab = "" , xlab = expression("x"[1]))
-              graphics::lines(x2, sapply(x2, function(z) n(x, z)))
-              graphics::lines(x3, sapply(x3, function(z) n(x, z)))
+              graphics::lines(x2, sapply(x2, function(z) n(x, z, round = rounded)))
+              graphics::lines(x3, sapply(x3, function(z) n(x, z, round = rounded)))
               graphics::plot(x4, c2(x, x4), 'l', main = "Stage-two critical value",
                              ylab = "", xlab = expression("x"[1]))
               if (length(scores) > 0) {
@@ -336,17 +343,13 @@ setMethod("plot", signature(x = "TwoStageDesign"),
 #'
 #' @export
 setMethod("summary", signature("TwoStageDesign"),
-          function(object, ..., rounded = T) {
-              if(rounded == T) {
-                  object@rounded = T
-                  object@n1 = round(object@n1)
-              }
+          function(object, ..., rounded = TRUE) {
               scores <- list(...)
               if (!all(sapply(scores, function(s) is(s, "UnconditionalScore"))))
                   stop("optional arguments must be UnconditionalScores")
               res <- list(
                   design = object,
-                  scores = sapply(scores, function(s) evaluate(s, object))
+                  scores = sapply(scores, function(s) evaluate(s, object, round = rounded, ...))
               )
               names(res$scores) <- names(scores)
               class(res) <- c("TwoStageDesignSummary", "list")
@@ -361,13 +364,9 @@ setMethod("summary", signature("TwoStageDesign"),
 #' @param ... unused
 #'
 #' @export
-print.TwoStageDesignSummary <- function(x, ..., rounded = T) {
-    if(rounded == T) {
-        x$design@rounded = T
-        x$design@n1 = round(x$design@n1)
-    }
+print.TwoStageDesignSummary <- function(x, ..., rounded = TRUE) {
     cat("TwoStageDesign with:\n\r")
-    cat(sprintf("     n1: %6.1f\n\r", x$design@n1))
+    cat(sprintf("     n1: %6.1f\n\r", n1(x$design, round = rounded)))
     cat(sprintf("    c1f: %6.1f\n\r", x$design@c1f))
     cat(sprintf("    c1e: %6.1f\n\r", x$design@c1e))
     if (length(x$scores) > 0) {
@@ -396,20 +395,14 @@ setMethod("simulate", signature("TwoStageDesign", "numeric"),
 
               res <- data.frame(
                   theta  = rep(theta, nsim),
-                  n1     = object@n1,
+                  n1     = n1(object, round = TRUE),
                   c1f    = object@c1f,
                   c1e    = object@c1e
               )
 
-              if (!(object@n1 == round(object@n1)))
-                  stop("n1 must be integer")
-
               res$x1     <- simulate(dist, nsim = nsim, n = res$n1, theta = theta)
-              res$n2     <- n2(object, res$x1)
+              res$n2     <- n2(object, res$x1, round = TRUE)
               res$c2     <- c2(object, res$x1)
-
-              if (!all(res$n2 == round(res$n2)))
-                  stop("n2 must be integer")
 
               res$x2     <- simulate(dist, nsim = nsim, n = res$n2, theta = theta)
               res$reject <- res$x2 > res$c2 # check > vs. >=

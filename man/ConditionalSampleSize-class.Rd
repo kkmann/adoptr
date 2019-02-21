@@ -10,7 +10,7 @@
 ConditionalSampleSize(dist, prior)
 
 \S4method{evaluate}{ConditionalSampleSize,TwoStageDesign}(s, design, x1,
-  ...)
+  optimization = FALSE, ...)
 }
 \arguments{
 \item{dist}{data distribution}

@@ -41,11 +41,11 @@ minimize <- function(objective, subject_to, initial_design,
                          maxeval     = 10000 # TODO: adjust in dependence of default order
                      ), ...) {
 
-        f_obj <- function(params) evaluate(objective, update(initial_design, params))
+        f_obj <- function(params) evaluate(objective, update(initial_design, params), optimization = TRUE)
 
         g_cnstr <- function(params) {
             design <- update(initial_design, params)
-            user_cnstr <- evaluate(subject_to, design)
+            user_cnstr <- evaluate(subject_to, design, optimization = TRUE)
             return(c(
                 user_cnstr,
                 design@c1f - design@c1e + ifelse( # ensure c1e > c1f if not one-stage
@@ -108,11 +108,11 @@ minimize <- function(objective, subject_to, initial_design,
                 ub_design  <- make_fixed(ub_design, n1, n2_pivots)
             }
 
-            f_obj <- function(params) evaluate(objective, update(cont_design, params))
+            f_obj <- function(params) evaluate(objective, update(cont_design, params), optimization = TRUE)
 
             g_cnstr <- function(params) {
                 design <- update(cont_design, params)
-                user_cnstr <- evaluate(subject_to, design)
+                user_cnstr <- evaluate(subject_to, design, optimization = TRUE)
                 return(c(
                     user_cnstr,
                     design@c1f - design@c1e + ifelse( # ensure c1e > c1f if not one-stage
@@ -142,7 +142,6 @@ minimize <- function(objective, subject_to, initial_design,
             } else{
                 cont_design <- make_tunable(cont_design, n1, n2_pivots)
             }
-            cont_design@rounded <- TRUE
 
             out <- list(
                 "design"                 = cont_design,

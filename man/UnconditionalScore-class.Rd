@@ -6,7 +6,8 @@
 \alias{evaluate,UnconditionalScore,TwoStageDesign-method}
 \title{Abstract class for unconditional scoring function}
 \usage{
-\S4method{evaluate}{UnconditionalScore,TwoStageDesign}(s, design, ...)
+\S4method{evaluate}{UnconditionalScore,TwoStageDesign}(s, design,
+  optimization = FALSE, ...)
 }
 \arguments{
 \item{s}{an \code{IntegralScore}}

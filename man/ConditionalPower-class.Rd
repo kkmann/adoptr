@@ -9,7 +9,8 @@
 \usage{
 ConditionalPower(dist, prior)
 
-\S4method{evaluate}{ConditionalPower,TwoStageDesign}(s, design, x1, ...)
+\S4method{evaluate}{ConditionalPower,TwoStageDesign}(s, design, x1,
+  optimization = FALSE, ...)
 }
 \arguments{
 \item{dist}{data distribution}

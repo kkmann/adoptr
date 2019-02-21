@@ -10,7 +10,7 @@
 SmoothnessN2(h = 0.1)
 
 \S4method{evaluate}{SmoothnessN2,TwoStageDesign}(s, design,
-  specific = TRUE, ...)
+  optimization = FALSE, subdivisions = 10000L, ...)
 }
 \arguments{
 \item{h}{positive number, see slot \code{h}}
@@ -19,9 +19,9 @@ SmoothnessN2(h = 0.1)
 
 \item{design}{the design to compute the smoothness term for}
 
-\item{specific}{should a specific implementation be used?}
-
 \item{...}{further optional arguments}
+
+\item{specific}{should a specific implementation be used?}
 }
 \description{
 \code{SmoothnessN2} is a generic class for implementing a smoothness penalty

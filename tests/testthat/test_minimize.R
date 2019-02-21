@@ -151,7 +151,7 @@ test_that("base-case satisfies constraints", {
 }) # end base-case respects constraints
 
 
-test_that("base-case results are consistent", {
+test_that("base-case results are consistent - no post processing", {
 
     opt_os <- minimize(
 
@@ -161,7 +161,7 @@ test_that("base-case results are consistent", {
             toer <= .05
         ),
 
-        post_process          = TRUE,
+        post_process          = FALSE,
         initial_design        = OneStageDesign(100, 1.97),
         lower_boundary_design = OneStageDesign(1, -5),
         upper_boundary_design = OneStageDesign(200, 5)
@@ -180,7 +180,7 @@ test_that("base-case results are consistent", {
             toer <= .05
         ),
 
-        post_process          = TRUE,
+        post_process          = FALSE,
         initial_design        = initial_design_gs,
         lower_boundary_design = update(initial_design_gs, c(10, -1, 1, 2, numeric(order) - 5)),
         upper_boundary_design = update(initial_design_gs, c(50, 1, 4, 50, numeric(order) + 5))
@@ -195,7 +195,7 @@ test_that("base-case results are consistent", {
             toer <= .05
         ),
 
-        post_process          = TRUE,
+        post_process          = FALSE,
         initial_design        = initial_design,
         lower_boundary_design = lb_design,
         upper_boundary_design = ub_design
@@ -238,7 +238,7 @@ test_that("base-case results are consistent", {
     )
 
     # check power constraint
-    expect_equal(mean(sim_alt$reject), 0.8, tolerance = 0.005)
+    expect_equal(mean(sim_alt$reject), 0.8, tolerance = 0.01)
 
     # check expected sample size under alternative
     expect_equal(
@@ -292,3 +292,6 @@ test_that("conditional constraints work", {
     )
 
 }) # end 'conditional constraints work'
+
+
+# TODO: check post-processing

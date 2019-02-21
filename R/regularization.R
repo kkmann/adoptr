@@ -34,14 +34,18 @@ AverageN2 <- function() new("AverageN2", dummy = FALSE)
 #'     score. Uses adaptive Gaussian quadrature for integration and might be
 #'     more efficiently implemented by specific \code{TwoStageDesign}-classes.
 setMethod("evaluate", signature("AverageN2", "TwoStageDesign"),
-          function(s, design, specific = TRUE, ...) {
-              if (specific) { # use design-specific implementation
+          function(s, design, optimization = FALSE, subdivisions = 10000L, ...) {
+              if (optimization) {
+                  # use design-specific implementation
                   return(.evaluate(s, design, ...))
               } else {
+                  # generic integration
                   res <- stats::integrate(
-                      function(x) n2(design, x),
+                      function(x) n2(design, x, round = TRUE),
                       design@c1f,
-                      design@c1e
+                      design@c1e,
+                      subdivisions = subdivisions,
+                      ...
                   )$value
                   res <- res / (design@c1e - design@c1f)
                   return(res)
@@ -53,8 +57,9 @@ setMethod("evaluate", signature("AverageN2", "TwoStageDesign"),
 # not user facing!
 setMethod(".evaluate", signature("AverageN2", "TwoStageDesign"),
           function(s, design, ...) {
+              # use non-rounded version
               integrate_rule(
-                  function(x) n2(design, x),
+                  function(x) n2(design, x, round = FALSE, ...),
                   design@c1f,
                   design@c1e,
                   design@x1_norm_pivots,
@@ -109,8 +114,8 @@ SmoothnessN2 <- function(h = .1)
 #' @rdname SmoothnessN2-class
 #' @export
 setMethod("evaluate", signature("SmoothnessN2", "TwoStageDesign"),
-          function(s, design, specific = TRUE, ...) {
-              if (specific) {
+          function(s, design, optimization = FALSE, subdivisions = 10000L, ...) {
+              if (optimization) {
                   # use design-specific implementation
                   return(.evaluate(s, design, ...))
               } else {
@@ -118,14 +123,14 @@ setMethod("evaluate", signature("SmoothnessN2", "TwoStageDesign"),
                   # integrand is the finite difference approximation of the
                   # squared second derivative
                   integrand <- function(x1) {
-                      ((n2(design, x1 + s@h) - 2 * n2(design, x1) + n2(design, x1 - s@h)) / s@h^2)^2
+                      ((n2(design, x1 + s@h, round = TRUE) - 2 * n2(design, x1, round = TRUE) + n2(design, x1 - s@h, round = TRUE)) / s@h^2)^2
                   }
                   x1_bounds <- c(design@c1f + s@h, design@c1e - s@h)
                   # use adaptive quadrature to integrate - only relies on generic interface
                   # provided by 'Design', no special optimization for particular
                   # design implementation
                   return(1 / diff(x1_bounds) *
-                             stats::integrate(integrand, x1_bounds[1], x1_bounds[2])$value)
+                             stats::integrate(integrand, x1_bounds[1], x1_bounds[2], subdivisions = subdivisions, ...)$value)
               }
           }
 )
@@ -138,7 +143,7 @@ setMethod(".evaluate", signature("SmoothnessN2", "TwoStageDesign"),
               dif2 <- diff(design@n2_pivots[-1]) # increments of n2
               piv  <- diff(scaled_integration_pivots(design)) # increments of pivots
               # Approximate L2 norm of second derivative
-              res <- mean(((-dif1 + dif2) / (piv[-leng+1] * piv[-1]))^2)
+              res <- mean(((-dif1 + dif2) / (piv[-leng + 1] * piv[-1]))^2)
               return(res)
           }
 )
@@ -172,7 +177,7 @@ setMethod("evaluate", signature("SmoothnessN2", "OneStageDesign"),
 
 #' Regularize n1
 #'
-#' \code{PenaltyN1} is a class that penalizes the \code{n1} value of
+#' \code{N1} is a class that penalizes the \code{n1} value of
 #' a design.
 #'
 #'
@@ -186,7 +191,7 @@ contains = "UnconditionalScore")
 
 #' @rdname N1-class
 #' @export
-PenaltyN1 <- function() new("N1", dummy = FALSE)
+N1 <- function() new("N1", dummy = FALSE)
 
 
 #' Returns the n1-value of a \code{TwoStageDesign}.
@@ -199,8 +204,7 @@ PenaltyN1 <- function() new("N1", dummy = FALSE)
 #' @rdname N1-class
 #' @export
 setMethod("evaluate", signature("N1", "TwoStageDesign"),
-          function(s, design, ...) {
-              design@n1
-          }
-)
+          function(s, design, optimization = FALSE, ...)
+              n1(design, round = !optimization)
+          )
 

@@ -7,16 +7,16 @@
 \title{Unconditional score class obtained by integration of a \code{ConditionalScore}}
 \usage{
 \S4method{evaluate}{IntegralScore,TwoStageDesign}(s, design,
-  specific = TRUE, ...)
+  optimization = FALSE, ...)
 }
 \arguments{
 \item{s}{an \code{IntegralScore}}
 
 \item{design}{a \code{TwoStageDesign}}
 
-\item{specific}{logical, flag for switching to design-specific implementation.}
-
 \item{...}{further optimal arguments}
+
+\item{specific}{logical, flag for switching to design-specific implementation.}
 }
 \description{
 Unconditional score class obtained by integration of a \code{ConditionalScore}

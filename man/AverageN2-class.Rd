@@ -9,17 +9,17 @@
 \usage{
 AverageN2()
 
-\S4method{evaluate}{AverageN2,TwoStageDesign}(s, design, specific = TRUE,
-  ...)
+\S4method{evaluate}{AverageN2,TwoStageDesign}(s, design,
+  optimization = FALSE, subdivisions = 10000L, ...)
 }
 \arguments{
 \item{s}{a score of class \code{AverageN2}}
 
 \item{design}{a \code{TwoStageDesign}}
 
-\item{specific}{logical, flag for switching to design-specific implementation.}
-
 \item{...}{further optimal arguments}
+
+\item{specific}{logical, flag for switching to design-specific implementation.}
 }
 \description{
 Implements the L1-norm of the design's stage-two sample size function.

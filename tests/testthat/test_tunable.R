@@ -65,7 +65,7 @@ test_that("two stage design can be optimized with fixed first stage", {
     lb_design      <- update(tmp, c(numeric(order) + 1, numeric(order) - 3))
     ub_design      <- update(tmp, c(numeric(order) + 100, numeric(order) + 10))
 
-    res <- minimize(
+    res <- suppressWarnings(minimize(
 
         ess,
         subject_to(
@@ -80,14 +80,11 @@ test_that("two stage design can be optimized with fixed first stage", {
         lower_boundary_design = lb_design,
         upper_boundary_design = ub_design,
         opts = list(
-            algorithm   = "NLOPT_LN_COBYLA",
-            xtol_abs    = 1 # we do not need convergence,
-                            # only see if it works technically!
+            algorithm = "NLOPT_LN_COBYLA",
+            maxiter   = 10 # we do not need convergence,
+                           # only see if it works technically!
         )
-    )
-
-    # make sure that the lax convergence still leads to function evaluations!
-    expect_true(res$details$nloptr_return$iterations >= 10)
+    ))
 
     # check that fixed params did not change
     expect_equal(res$design@n1, tmp@n1)
@@ -105,7 +102,7 @@ test_that("two stage design can be optimized with fixed sample sizes", {
     lb_design      <- update(tmp, c(-1, 1, numeric(order) - 3))
     ub_design      <- update(tmp, c(1, 4, numeric(order) + 5))
 
-    res <- minimize(
+    res <- suppressWarnings(minimize(
 
         ess,
         subject_to(
@@ -120,14 +117,11 @@ test_that("two stage design can be optimized with fixed sample sizes", {
         lower_boundary_design = lb_design,
         upper_boundary_design = ub_design,
         opts = list(
-            algorithm   = "NLOPT_LN_COBYLA",
-            xtol_abs    = 1 # we do not need convergence,
-                            # only see if it works technically!
+            algorithm = "NLOPT_LN_COBYLA",
+            maxiter   = 10 # we do not need convergence,
+                           # only see if it works technically!
         )
-    )
-
-    # make sure that the lax convergence still leads to function evaluations!
-    expect_true(res$details$nloptr_return$iterations >= 10)
+    ))
 
     # check that fixed params did not change
     expect_equal(res$design@n1, tmp@n1)

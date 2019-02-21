@@ -7,7 +7,8 @@
 \alias{integrate,ConditionalScore-method}
 \title{Class for conditional scoring function}
 \usage{
-\S4method{evaluate}{ConditionalScore,TwoStageDesign}(s, design, x1, ...)
+\S4method{evaluate}{ConditionalScore,TwoStageDesign}(s, design, x1,
+  optimization = FALSE, ...)
 
 \S4method{integrate}{ConditionalScore}(s, ...)
 }

@@ -12,6 +12,8 @@
 \alias{make_fixed}
 \alias{make_fixed,TwoStageDesign-method}
 \alias{update,TwoStageDesign-method}
+\alias{n1}
+\alias{n1,TwoStageDesign-method}
 \alias{n2}
 \alias{n2,TwoStageDesign,numeric-method}
 \alias{n}
@@ -43,13 +45,17 @@ make_fixed(x, ...)
 
 \S4method{update}{TwoStageDesign}(object, params, ...)
 
+n1(d, ...)
+
+\S4method{n1}{TwoStageDesign}(d, round = TRUE, ...)
+
 n2(d, x1, ...)
 
-\S4method{n2}{TwoStageDesign,numeric}(d, x1, ...)
+\S4method{n2}{TwoStageDesign,numeric}(d, x1, round = TRUE, ...)
 
 n(d, x1, ...)
 
-\S4method{n}{TwoStageDesign,numeric}(d, x1, ...)
+\S4method{n}{TwoStageDesign,numeric}(d, x1, round = TRUE, ...)
 
 c2(d, x1, ...)
 
@@ -173,8 +179,6 @@ pivot points of the numeric integration rule [TODO: these are not available duri
 approximating the integral over x1.}
 
 \item{\code{tunable}}{named logical vector indicating whether corresponding slot is considered a tunable parameter}
-
-\item{\code{rounded}}{logical that indicates whether rounded n-values should be used}
 }}
 
 \examples{

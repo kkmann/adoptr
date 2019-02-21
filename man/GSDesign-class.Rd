@@ -11,7 +11,7 @@
 \usage{
 GSDesign(n1, c1f, c1e, n2_pivots, c2_pivots, x1_norm_pivots, weights)
 
-\S4method{n2}{GSDesign,numeric}(d, x1, ...)
+\S4method{n2}{GSDesign,numeric}(d, x1, round = TRUE, ...)
 
 \S4method{TwoStageDesign}{GSDesign}(d, tunable, rounded = FALSE, ...)
 
@@ -74,7 +74,5 @@ pivot points of the numeric integration rule [TODO: these are not available duri
 approximating the integral over x1.}
 
 \item{\code{tunable}}{named logical vector indicating whether corresponding slot is considered a tunable parameter}
-
-\item{\code{rounded}}{logical that indicates whether rounded n-values should be used}
 }}
 

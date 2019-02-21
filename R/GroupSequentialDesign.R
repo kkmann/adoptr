@@ -17,7 +17,6 @@
 #' @slot weights weights of conditional score values at x1_norm_pivots for
 #'     approximating the integral over x1.
 #' @slot tunable named logical vector indicating whether corresponding slot is considered a tunable parameter
-#' @slot rounded logical that indicates whether rounded n-values should be used
 #'
 #' @exportClass GSDesign
 setClass("GSDesign",  contains = "TwoStageDesign")
@@ -47,7 +46,7 @@ GSDesign <- function(n1, c1f, c1e, n2_pivots, c2_pivots, x1_norm_pivots, weights
     names(tunable) <- c("n1", "c1f", "c1e", "n2_pivots", "c2_pivots", "x1_norm_pivots", "weights", "tunable")
         new("GSDesign", n1 = n1, c1f = c1f, c1e = c1e, n2_pivots = n2_pivots,
         c2_pivots = c2_pivots, x1_norm_pivots = x1_norm_pivots, weights = weights,
-        tunable = tunable, rounded = FALSE)
+        tunable = tunable)
 }
 
 
@@ -59,11 +58,11 @@ GSDesign <- function(n1, c1f, c1e, n2_pivots, c2_pivots, x1_norm_pivots, weights
 #' @rdname GSDesign-class
 #' @export
 setMethod("n2", signature("GSDesign", "numeric"),
-          function(d, x1, ...) {
-              res <- ifelse(x1 < d@c1f | x1 > d@c1e, 0, d@n2_pivots)
-              if(d@rounded)
-                  res <- round(res)
-              return(res)
+          function(d, x1, round = TRUE, ...) {
+              n2 <- ifelse(x1 < d@c1f | x1 > d@c1e, 0, d@n2_pivots)
+              if (round)
+                  n2 <- round(n2)
+              return(n2)
           }
 )
 
@@ -85,6 +84,6 @@ setMethod("TwoStageDesign", signature("GSDesign"),
                         n2_pivots = rep(d@n2_pivots, length(d@weights)),
                         c2_pivots = d@c2_pivots,
                         x1_norm_pivots = d@x1_norm_pivots, weights = d@weights,
-                        tunable = tunable, rounded = rounded)
+                        tunable = tunable)
 })
 
