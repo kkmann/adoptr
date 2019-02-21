@@ -72,16 +72,17 @@ test_that("two stage design can be optimized with fixed first stage", {
             pow  >= 0.8,
             toer <= .05
         ),
+
         post_process          = FALSE, # if we can do it without post
-                                       # processing, by design, it also
-                                       # works with
+        # processing, by design, it also
+        # works with
         initial_design        = tmp,
         lower_boundary_design = lb_design,
         upper_boundary_design = ub_design,
         opts = list(
             algorithm   = "NLOPT_LN_COBYLA",
             xtol_abs    = 1 # we do not need convergence,
-                            # only see if it works technically!
+            # only see if it works technically!
         )
     )
 
@@ -111,18 +112,18 @@ test_that("two stage design can be optimized with fixed sample sizes", {
             pow  >= 0.8,
             toer <= .05
         ),
+
         post_process          = FALSE, # if we can do it without post
-                                       # processing, by design, it also
-                                       # works with
+        # processing, by design, it also
+        # works with
         initial_design        = tmp,
         lower_boundary_design = lb_design,
         upper_boundary_design = ub_design,
         opts = list(
             algorithm   = "NLOPT_LN_COBYLA",
             xtol_abs    = 1 # we do not need convergence,
-                            # only see if it works technically!
+            # only see if it works technically!
         )
-
     )
 
     # make sure that the lax convergence still leads to function evaluations!
@@ -162,7 +163,6 @@ test_that("group-sequential design can be optimized with fixed sample sizes", {
             xtol_abs    = 1 # we do not need convergence,
             # only see if it works technically!
         )
-
     )
 
     # make sure that the lax convergence still leads to function evaluations!
@@ -191,7 +191,7 @@ test_that("one-stage design can be optimized with fixed sample sizes", {
         subject_to(
             pow >= 0.8,
             toer <= 0.025
-            ),
+        ),
 
         post_process          = FALSE,
         initial_design        = tmp_os,

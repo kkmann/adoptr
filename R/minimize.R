@@ -67,13 +67,8 @@ minimize <- function(objective, subject_to, initial_design,
             ...
         )
 
-<<<<<<< HEAD
         if(res$status == 5 | res$status == 6){
             warning(res$message)
-=======
-        if (res$status == 5 | res$status == 6) {
-            warning("Algorithm did probably not converge!")
->>>>>>> f766dffe5b10615009a358aba6a67363eddfd537
         }
 
 
@@ -139,13 +134,8 @@ minimize <- function(objective, subject_to, initial_design,
                 ...
             )
 
-<<<<<<< HEAD
             if(res2$status == 5 | res2$status == 6){
                 warning(res2$message)
-=======
-            if (res2$status == 5 | res2$status == 6) {
-                warning("Algorithm did probably not converge!")
->>>>>>> f766dffe5b10615009a358aba6a67363eddfd537
             }
 
 
