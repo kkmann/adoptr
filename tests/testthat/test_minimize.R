@@ -31,7 +31,6 @@ test_that("nloptr maxiter warning correctly passed", {
                 toer <= 0.05
             ),
 
-            post_process          = FALSE,
             initial_design        = initial_design,
             lower_boundary_design = lb_design,
             upper_boundary_design = ub_design,
@@ -42,6 +41,7 @@ test_that("nloptr maxiter warning correctly passed", {
             )
         )
     )
+
 })
 
 
@@ -58,7 +58,6 @@ test_that("nloptr invalid initial values error works", {
                 toer <= 0.05
             ),
 
-            post_process          = FALSE,
             initial_design        = initial_design,
             lower_boundary_design = lb_design,
             upper_boundary_design = ub_design,
@@ -74,41 +73,40 @@ test_that("nloptr invalid initial values error works", {
 
 
 
-test_that("post-processing yields integer sample sizes", {
-
-    res <- suppressWarnings(minimize( # we do not warning about non-convergence!
-
-        ess,
-        subject_to(
-            pow  >= 0.8,
-            toer <= .05
-        ),
-
-        initial_design        = initial_design,
-        lower_boundary_design = lb_design,
-        upper_boundary_design = ub_design,
-        post_process          = TRUE,
-        opts = list(
-            algorithm   = "NLOPT_LN_COBYLA",
-            xtol_rel    = 1e-4, # we use drastically reduced precision, not about convergence!
-            maxeval     = 10
-        )
-
-    ))
-
-    # n1 is integer
-    expect_equal(
-        res$design@n1,
-        round(res$design@n1)
-    )
-
-    # n2 is integer
-    expect_equal(
-        res$design@n2_pivots,
-        round(res$design@n2_pivots)
-    )
-
-})
+# test_that("post-processing yields integer sample sizes", {
+#
+#     res <- suppressWarnings(minimize( # we do not warning about non-convergence!
+#
+#         ess,
+#         subject_to(
+#             pow  >= 0.8,
+#             toer <=  .05
+#         ),
+#
+#         initial_design        = initial_design,
+#         lower_boundary_design = lb_design,
+#         upper_boundary_design = ub_design,
+#         opts = list(
+#             algorithm   = "NLOPT_LN_COBYLA",
+#             xtol_rel    = 1e-4, # we use drastically reduced precision, not about convergence!
+#             maxeval     = 10
+#         )
+#
+#     ))
+#
+#     # n1 is integer
+#     expect_equal(
+#         res$design@n1,
+#         round(res$design@n1)
+#     )
+#
+#     # n2 is integer
+#     expect_equal(
+#         res$design@n2_pivots,
+#         round(res$design@n2_pivots)
+#     )
+#
+# })
 
 
 
@@ -125,7 +123,6 @@ test_that("base-case satisfies constraints", {
         initial_design        = initial_design,
         lower_boundary_design = lb_design,
         upper_boundary_design = ub_design,
-        post_process          = TRUE,
         opts = list(
             algorithm   = "NLOPT_LN_COBYLA",
             xtol_rel    = 1e-3, # we use reduced precision, not optimal but should
@@ -161,7 +158,6 @@ test_that("base-case results are consistent - no post processing", {
             toer <= .05
         ),
 
-        post_process          = FALSE,
         initial_design        = OneStageDesign(100, 1.97),
         lower_boundary_design = OneStageDesign(1, -5),
         upper_boundary_design = OneStageDesign(200, 5)
@@ -177,10 +173,9 @@ test_that("base-case results are consistent - no post processing", {
         ess,
         subject_to(
             pow  >= 0.8,
-            toer <= .05
+            toer <=  .05
         ),
 
-        post_process          = FALSE,
         initial_design        = initial_design_gs,
         lower_boundary_design = update(initial_design_gs, c(10, -1, 1, 2, numeric(order) - 5)),
         upper_boundary_design = update(initial_design_gs, c(50, 1, 4, 50, numeric(order) + 5))
@@ -192,10 +187,9 @@ test_that("base-case results are consistent - no post processing", {
         ess,
         subject_to(
             pow  >= 0.8,
-            toer <= .05
+            toer <=  .05
         ),
 
-        post_process          = FALSE,
         initial_design        = initial_design,
         lower_boundary_design = lb_design,
         upper_boundary_design = ub_design
@@ -261,12 +255,11 @@ test_that("conditional constraints work", {
         ess,
         subject_to(
             pow  >= 0.8,
-            toer <= .05,
+            toer <=  .05,
             cp   >= 0.75,
             cp   <= 0.95
         ),
 
-        post_process          = FALSE,
         initial_design        = initial_design,
         lower_boundary_design = lb_design,
         upper_boundary_design = ub_design,
