@@ -67,9 +67,8 @@ minimize <- function(objective, subject_to, initial_design,
             ...
         )
 
-        if(res$status == 5 | res$status == 6){
+        if(res$status == 5 | res$status == 6)
             warning(res$message)
-        }
 
 
         if (post_process == TRUE) {
@@ -134,9 +133,8 @@ minimize <- function(objective, subject_to, initial_design,
                 ...
             )
 
-            if(res2$status == 5 | res2$status == 6){
+            if(res2$status == 5 | res2$status == 6)
                 warning(res2$message)
-            }
 
 
             # re-make parameters tunable for further use

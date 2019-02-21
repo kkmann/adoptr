@@ -74,15 +74,15 @@ test_that("two stage design can be optimized with fixed first stage", {
         ),
 
         post_process          = FALSE, # if we can do it without post
-        # processing, by design, it also
-        # works with
+                                       # processing, by design, it also
+                                       # works with
         initial_design        = tmp,
         lower_boundary_design = lb_design,
         upper_boundary_design = ub_design,
         opts = list(
             algorithm   = "NLOPT_LN_COBYLA",
             xtol_abs    = 1 # we do not need convergence,
-            # only see if it works technically!
+                            # only see if it works technically!
         )
     )
 
@@ -114,8 +114,8 @@ test_that("two stage design can be optimized with fixed sample sizes", {
         ),
 
         post_process          = FALSE, # if we can do it without post
-        # processing, by design, it also
-        # works with
+                                       # processing, by design, it also
+                                       # works with
         initial_design        = tmp,
         lower_boundary_design = lb_design,
         upper_boundary_design = ub_design,
@@ -161,7 +161,7 @@ test_that("group-sequential design can be optimized with fixed sample sizes", {
         opts = list(
             algorithm   = "NLOPT_LN_COBYLA",
             xtol_abs    = 1 # we do not need convergence,
-            # only see if it works technically!
+                            # only see if it works technically!
         )
     )
 
