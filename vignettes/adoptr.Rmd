@@ -1,6 +1,5 @@
 ---
 title: "Get started with adoptr"
-author: "Kevin Kunzmann"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -48,10 +47,10 @@ To numerically solve this problem $n_2$ and $c_2$ are integrated using
 a Gaussian quadrature rule.
 The order of the rule determines the number of pivot points for both functions.
 Since, both $n_2$ and $c_2$ are usually fairly smooth on the continuation
-region, a quadrature rule of order 7 is sufficiently flexible:
+region, a quadrature rule of order 5 is sufficiently flexible:
 
 ```{r define-order-of-gq-rule}
-order <- 7L
+order <- 5L
 ```
 
 The initial design may then be defined as follows:
@@ -151,19 +150,18 @@ ub_design <- update(
 
 ```{r optimize}
 optimal_result <- minimize(
+  
   ess,
   subject_to(
     power >= 0.8,
     toer  <= .05
   ),
+  
+  post_process = FALSE, # TODO activate this again once tested
   initial_design        = design,
   lower_boundary_design = lb_design,
-  upper_boundary_design = ub_design,
-  opts = list(
-      algorithm   = "NLOPT_LN_COBYLA",
-      xtol_rel    = 1e-5,
-      maxeval     = 25000
-  )
+  upper_boundary_design = ub_design
+  
 )
 
 optimal_design <- optimal_result$design
