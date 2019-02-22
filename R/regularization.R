@@ -159,11 +159,11 @@ setMethod(".evaluate", signature("SmoothnessN2", "TwoStageDesign"),
 #' Return smootheness of a group-sequential design as 0.
 #'
 #' @param s an object of class \code{SmoothnessN2}
-#' @param design an object of class \code{GSDesign}
+#' @param design an object of class \code{GroupSequentialDesign}
 #'
-#' @rdname GSDesign-class
+#' @rdname GroupSequentialDesign-class
 #' @export
-setMethod("evaluate", signature("SmoothnessN2", "GSDesign"),
+setMethod("evaluate", signature("SmoothnessN2", "GroupSequentialDesign"),
           function(s, design, ...) 0 )
 
 

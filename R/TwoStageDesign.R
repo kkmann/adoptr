@@ -62,31 +62,50 @@ setClass("TwoStageDesign", representation(
 #' @export
 setGeneric("TwoStageDesign", function(...) standardGeneric("TwoStageDesign"))
 
+
+#' Create an object of class \code{TwoStageDesign}
+#'
+#' The argument \code{order} defines the order of the Gaussian quadrature rule.
+#' If it is missing, the length of \code{n2_pivots} is used.
+#'
+#' If \code{order} is specified, \code{n2_pivots} and \code{c2_pivots} should
+#' be one-dimensional. They are converted to vectors of length order
+#' automatically.
+#'
 #' @param n1 cf. slot
 #' @param c1f cf. slot
 #' @param c1e cf. slot
 #' @param n2_pivots cf. slot
 #' @param c2_pivots cf. slot
-#' @param x1_norm_pivots cf. slot
-#' @param weights cf. slot
+#' @param order order (i.e. number of pivot points in the interior of [c1f, c1e])
+#'     of the Gaussian quadrature rule to use for integration
+#'
+#' @return an object of class \code{TwoStageDesign}
 #'
 #' @rdname TwoStageDesign-class
 #' @export
-setMethod("TwoStageDesign", signature("numeric"),
-     function(n1, c1f, c1e, n2_pivots, c2_pivots, x1_norm_pivots, weights) {
-        if (any(diff(sapply(list(n2_pivots, c2_pivots, x1_norm_pivots, weights), length)) != 0))
-            stop("pivots and weights must all be of the same length")
-        if (any(x1_norm_pivots < -1) | any(x1_norm_pivots > 1))
-            stop("x1_norm_pivots must be in [-1, 1], is scaled automatically")
-        if (any(weights <= 0))
-            stop("weights must be positive")
-        tunable <- logical(8) # initialize to all false
-        tunable[1:5] <- TRUE
-        names(tunable) <- c("n1", "c1f", "c1e", "n2_pivots", "c2_pivots", "x1_norm_pivots", "weights", "tunable")
-        new("TwoStageDesign", n1 = n1, c1f = c1f, c1e = c1e, n2_pivots = n2_pivots,
-            c2_pivots = c2_pivots, x1_norm_pivots = x1_norm_pivots, weights = weights,
-            tunable = tunable)
+setMethod("TwoStageDesign", signature = "numeric",
+function(n1, c1f, c1e, n2_pivots, c2_pivots, order = NULL, ...) {
+    if(is.null(order)) {
+        if(length(n2_pivots) != length(c2_pivots))
+            stop("n2_pivots and c2_pivots must be of same length!")
+        order <- length(n2_pivots)
+    } else{
+        n2_pivots <- rep(n2_pivots[1], order)
+        c2_pivots <- rep(c2_pivots[1], order)
+    }
+
+    rule <- GaussLegendreRule(order)
+
+    tunable <- logical(8) # initialize to all false
+    tunable[1:5] <- TRUE
+    names(tunable) <- c("n1", "c1f", "c1e", "n2_pivots", "c2_pivots", "x1_norm_pivots", "weights", "tunable")
+
+    new("TwoStageDesign", n1 = n1, c1f = c1f, c1e = c1e, n2_pivots = n2_pivots,
+        c2_pivots = c2_pivots, x1_norm_pivots = rule$nodes, weights = rule$weights,
+        tunable = tunable)
 })
+
 
 
 
