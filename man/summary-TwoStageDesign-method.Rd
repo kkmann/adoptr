@@ -27,7 +27,7 @@ evaluated and listed.
 }
 \examples{
 order  <- 5L
-design <- gq_design(50, 0, 2, rep(50.0, order), rep(2.0, order), order)
+design <- TwoStageDesign(50, 0, 2, 50.0, 2.0, order)
 pow    <- integrate(ConditionalPower(dist = Normal(), prior = PointMassPrior(.4, 1)))
 summary(design, "Power" = pow)
 

@@ -19,7 +19,7 @@
 #' The slots \code{x1_norm_pivots} and \code{weights} are defined
 #' for numerical implementation rules.
 #' The generic implementation of this package is a Gaussian quadrature and
-#' a corresponding design can be built by means of \link{gq_design}.
+#' a corresponding design can be built by calling \code{TwoStageDesign()}.
 #' The user is free to implement own integration rules.
 #' He has to be aware that all elements of \code{x1_norm_pivots} have
 #' to be inside the interval [-1, 1] and have to be scaled by the
@@ -306,7 +306,7 @@ setMethod("show", signature(object = "TwoStageDesign"),
 #'
 #' @examples
 #' order  <- 5L
-#' design <- gq_design(50, 0, 2, rep(50.0, order), rep(2.0, order), order)
+#' design <- TwoStageDesign(50, 0, 2, rep(50.0, order), rep(2.0, order))
 #' cp     <- ConditionalPower(dist = Normal(), prior = PointMassPrior(.4, 1))
 #' plot(design, "Conditional Power" = cp)
 #'
@@ -361,7 +361,7 @@ setMethod("plot", signature(x = "TwoStageDesign"),
 #'
 #' @examples
 #' order  <- 5L
-#' design <- gq_design(50, 0, 2, rep(50.0, order), rep(2.0, order), order)
+#' design <- TwoStageDesign(50, 0, 2, 50.0, 2.0, order)
 #' pow    <- integrate(ConditionalPower(dist = Normal(), prior = PointMassPrior(.4, 1)))
 #' summary(design, "Power" = pow)
 #'
