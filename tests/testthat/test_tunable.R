@@ -72,10 +72,6 @@ test_that("two stage design can be optimized with fixed first stage", {
             pow  >= 0.8,
             toer <= .05
         ),
-
-        post_process          = FALSE, # if we can do it without post
-                                       # processing, by design, it also
-                                       # works with
         initial_design        = tmp,
         lower_boundary_design = lb_design,
         upper_boundary_design = ub_design,
@@ -109,10 +105,6 @@ test_that("two stage design can be optimized with fixed sample sizes", {
             pow  >= 0.8,
             toer <= .05
         ),
-
-        post_process          = FALSE, # if we can do it without post
-                                       # processing, by design, it also
-                                       # works with
         initial_design        = tmp,
         lower_boundary_design = lb_design,
         upper_boundary_design = ub_design,
@@ -148,7 +140,6 @@ test_that("group-sequential design can be optimized with fixed sample sizes", {
             pow  >= 0.8,
             toer <= .05
         ),
-        post_process          = FALSE,
         initial_design        = tmp_gs,
         lower_boundary_design = lb_design,
         upper_boundary_design = ub_design,
@@ -160,7 +151,7 @@ test_that("group-sequential design can be optimized with fixed sample sizes", {
     )
 
     # make sure that the lax convergence still leads to function evaluations!
-    expect_true(res$details$nloptr_return$iterations >= 10)
+    expect_true(res$nloptr_return$iterations >= 10)
 
     # check that fixed params did not change
     expect_equal(res$design@n1, tmp_gs@n1)
@@ -186,8 +177,6 @@ test_that("one-stage design can be optimized with fixed sample sizes", {
             pow >= 0.8,
             toer <= 0.025
             ),
-
-        post_process          = FALSE,
         initial_design        = tmp_os,
         lower_boundary_design = lb_design,
         upper_boundary_design = ub_design

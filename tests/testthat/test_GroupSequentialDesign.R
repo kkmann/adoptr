@@ -1,6 +1,6 @@
 context("GroupSequentialDesign")
 
-test_that("Optimal group-sequential design with point prior is computable", {
+test_that("Group-sequential design constructor works", {
     # define an initial design
     order   <-  5L
     design  <-  GroupSequentialDesign(25, 0.0, 2.0, 40.0, 1.96, order)
@@ -56,52 +56,7 @@ test_that("Optimal group-sequential design with point prior is computable", {
         0.0
     )
 
-    # TODO: should got to test_minimize.R
-    # #compute optimal design
-    #
-    # minimize(
-    #     ess,
-    #     subject_to(
-    #         pow  >= 0.8,
-    #         toer <= .05
-    #     ),
-    #     initial_design = design,
-    #     lower_boundary_design = update(design, c(10, -1, 1, 2, numeric(order) - 5)),
-    #     upper_boundary_design = update(design, c(50, 1, 4, 50, numeric(order) + 5)),
-    #     post_process = FALSE
-    # ) ->
-    #     result
-    #
-    # d2 <- result$design
-    #
-    # expect_equal(
-    #     round(evaluate(pow, d2), 1),
-    #     0.8
-    # )
-    #
-    # expect_equal(
-    #     round(evaluate(toer, d2), 2),
-    #     0.05
-    # )
-    #
-    # expect_equal(
-    #     sign(evaluate(ess, d2) - evaluate(ess, design)),
-    #     -1
-    # )
-    #
-    # # Check if n2 is equal at boundaries
-    # expect_equal(
-    #     n2(d2, d2@c1f),
-    #     n2(d2, d2@c1e)
-    # )
-    #
-    # expect_equal(
-    #     result$details$nloptr_return$solution[1],
-    #     d2@n1
-    # ) # test if nloptr output works
-
-
-})
+})  # end 'group-sequential design constructor works'
 
 
 

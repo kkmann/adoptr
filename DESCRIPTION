@@ -38,6 +38,7 @@ Collate:
     ConditionalPower.R
     ConditionalSampleSize.R
     regularization.R
+    postprocess.R
 RoxygenNote: 6.1.1
 BugReports: https://github.com/kkmann/adoptr/issues
 URL: https://github.com/kkmann/adoptr
