@@ -148,7 +148,8 @@ test_that("Optimal group-sequential design is computable", {
 
 
 test_that("Optimal group-sequential design is superior to standard gs design", {
-    # Create design from rpact
+
+        # Create design from rpact
     design_rp <- rpact::getDesignInverseNormal(
         kMax = 2,
         alpha = alpha,
@@ -208,7 +209,7 @@ test_that("base-case satisfies constraints", {
         opts = list(
             algorithm   = "NLOPT_LN_COBYLA",
             xtol_rel    = 1e-4, # we use reduced precision, not optimal but should
-            # respect constraints!
+                                # respect constraints!
             maxeval     = 10000
         )
 
@@ -228,6 +229,7 @@ test_that("base-case satisfies constraints", {
     )
 
 }) # end base-case respects constraints
+
 
 
 test_that("base-case results are consistent - no post processing", {
@@ -275,8 +277,6 @@ test_that("base-case results are consistent - no post processing", {
         evaluate(ess, opt_ts$design),
         tolerance = 1
     )
-
-
 
 }) # end 'base-case results are consistent'
 
