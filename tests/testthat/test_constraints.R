@@ -1,7 +1,7 @@
 context("constraint specifications                                            ")
 
 # create dummy design
-design <- TwoStageDesign(25, 0, 2, 40.0, 1.96, 5L)
+design <- TwoStageDesign(25, 0, 2, 40.5, 1.96, 5L)
 
 
 test_that("UnconditionalConstraints", {
