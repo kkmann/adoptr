@@ -64,10 +64,11 @@
         return(c(
             cnstr,
             design@c1f - design@c1e + ifelse( # ensure c1e > c1f if not one-stage
-                is(cont_design, "OneStageDesign"), 0, .1),
+                is(design, "OneStageDesign"), 0, .1),
             if (c2_monotone == TRUE) diff(c2(design, scaled_integration_pivots(design))) # make c2() monotone if desired
         ))
     }
+
 
     # re-optimize c-values
     res <- nloptr::nloptr(
@@ -97,8 +98,9 @@
         design        = post_design,
         nloptr_return = res
     ))
-
 }
+
+
 
 #' Post-process an optimal design
 #'
@@ -114,8 +116,7 @@
 #'
 #'
 #' @export
-
-#'
 postprocess <- function(results) {
+    results$call_args$initial_design <- NULL
     do.call(.postprocess, args = c(list(optimal_design = results$design), results$call_args))
 }
