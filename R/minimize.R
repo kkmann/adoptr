@@ -197,6 +197,6 @@ minimize <- function(
 
 
 
-postprocess <- function(optimal_design, results) {
-    do.call(.postprocess, args = c(list(optimal_design = optimal_design), results))
+postprocess <- function(results) {
+    do.call(.postprocess, args = c(list(optimal_design = results$design), results$call_args))
 }
