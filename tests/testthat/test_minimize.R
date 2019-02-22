@@ -13,11 +13,11 @@ null        <- PointMassPrior(.0, 1)
 alternative <- PointMassPrior(.4, 1)
 datadist    <- Normal(two_armed = FALSE)
 
-ess   <- integrate(ConditionalSampleSize(datadist, alternative))
-ess_0 <- integrate(ConditionalSampleSize(datadist, null))
+ess   <- expected(ConditionalSampleSize(datadist, alternative))
+ess_0 <- expected(ConditionalSampleSize(datadist, null))
 cp    <- ConditionalPower(datadist, alternative)
-pow   <- integrate(cp)
-toer  <- integrate(ConditionalPower(datadist, null))
+pow   <- expected(cp)
+toer  <- expected(ConditionalPower(datadist, null))
 
 alpha <- 0.05
 beta  <- 0.2

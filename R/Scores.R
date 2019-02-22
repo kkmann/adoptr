@@ -4,7 +4,7 @@
 #' \code{\link{UnconditionalScore-class}} implement \code{evaluate} methods
 #' which handle the actual computation of the score given a design and
 #' (for conditional scores) an interim result.
-#' Conditional scores additionally implement an \code{integrate} method
+#' Conditional scores additionally implement an \code{expected} method
 #' to obtain the corresponding unconditional \code{\link{IntegralScore-class}}.
 #'
 #' @name working-with-scores
@@ -20,7 +20,7 @@ setGeneric("evaluate", function(s, design, ...) standardGeneric("evaluate"))
 
 #' @rdname working-with-scores
 #' @export
-setGeneric("integrate", function(s, ...) standardGeneric("integrate"))
+setGeneric("expected", function(s, ...) standardGeneric("expected"))
 
 
 # not user facing
@@ -57,7 +57,7 @@ setMethod("evaluate", signature("ConditionalScore", "TwoStageDesign"),
 
 #' @describeIn ConditionalScore integrate a \code{ConditionalScore} over the
 #'     stage-one outcome; return object of class \code{\link{IntegralScore-class}}.
-setMethod("integrate", signature("ConditionalScore"),
+setMethod("expected", signature("ConditionalScore"),
           function(s, ...) new("IntegralScore", cs = s) )
 
 

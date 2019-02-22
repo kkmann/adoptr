@@ -72,7 +72,7 @@ Currently,  constraints of the form 'score <=/>= x',
 }
 \examples{
 cp          <- ConditionalPower(Normal(), PointMassPrior(0.4, 1))
-pow         <- integrate(cp)
+pow         <- expected(cp)
 constraint1 <- pow >= 0.8 # an unconditional power constraint
 constraint2 <- cp >= 0.7 # a conditional power constraint
 constraint3 <- 0.7 <= cp # yields the same as constraint2

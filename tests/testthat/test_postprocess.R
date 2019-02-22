@@ -16,9 +16,9 @@ dist        <- Normal()
 null        <- PointMassPrior(.0, 1)
 alternative <- PointMassPrior(.4, 1)
 
-ess  <- integrate(ConditionalSampleSize(dist, alternative))
-pow  <- integrate(ConditionalPower(dist, alternative))
-toer <- integrate(ConditionalPower(dist, null))
+ess  <- expected(ConditionalSampleSize(dist, alternative))
+pow  <- expected(ConditionalPower(dist, alternative))
+toer <- expected(ConditionalPower(dist, null))
 
 
 test_that("post-processing yields integer sample sizes", {

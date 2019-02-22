@@ -115,7 +115,7 @@ the given power and type one error rate constraints.
 Let to this end
 
 ```{r define-ess}
-ess  <- integrate(ConditionalSampleSize(datadist, alternative))
+ess  <- expected(ConditionalSampleSize(datadist, alternative))
 ```
 
 be the expected sample size under the alternative. 
@@ -127,8 +127,8 @@ integrating conditional power with respect to the alternative or
 null hypothesis respectively:
 
 ```{r define-power-toer}
-power  <- integrate(ConditionalPower(datadist, alternative))
-toer   <- integrate(ConditionalPower(datadist, null))
+power  <- expected(ConditionalPower(datadist, alternative))
+toer   <- expected(ConditionalPower(datadist, null))
 ```
 
 
