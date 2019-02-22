@@ -7,7 +7,7 @@ design <- TwoStageDesign(25, 0, 2, 40.5, 1.96, 5L)
 test_that("UnconditionalConstraints", {
 
     # create power as IntegralScore
-    pow <- integrate(ConditionalPower(Normal(two_armed = FALSE), PointMassPrior(.4, 1)))
+    pow <- expected(ConditionalPower(Normal(two_armed = FALSE), PointMassPrior(.4, 1)))
 
     # construct actual constraint
     cnstr <- pow >= 0.8
@@ -22,7 +22,7 @@ test_that("UnconditionalConstraints", {
         evaluate(cnstr, design), (.8 - pow_true), tolerance = .001)
 
     # check other direction
-    toer <- integrate(ConditionalPower(Normal(two_armed = FALSE), PointMassPrior(.0, 1)))
+    toer <- expected(ConditionalPower(Normal(two_armed = FALSE), PointMassPrior(.0, 1)))
     # compute true value
     toer_true <-  mean(adoptr::simulate
                       (design, nsim = 10^6, dist = Normal(two_armed = FALSE),
@@ -136,8 +136,8 @@ test_that("score vs score inequalities", {
 
 
     # create unconditional scores
-    pow  <- integrate(cp)
-    toer <- integrate(ctoer)
+    pow  <- expected(cp)
+    toer <- expected(ctoer)
 
     expect_equal(
         evaluate(subject_to(toer <= pow), design),

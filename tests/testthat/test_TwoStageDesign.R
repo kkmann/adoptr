@@ -56,7 +56,7 @@ test_that("errors are returned correctly", {
 
 
     cp  <- ConditionalPower(Normal(), PointMassPrior(.4, 1))
-    pow <- integrate(cp)
+    pow <- expected(cp)
     order  = 5L
     design  <- TwoStageDesign(50.1, 0, 2, rep(50, order), rep(2, order))
     design2 <- TwoStageDesign(50, 0, 2, rep(50.1, order), rep(2, order))

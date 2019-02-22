@@ -3,12 +3,12 @@
 \name{working-with-scores}
 \alias{working-with-scores}
 \alias{evaluate}
-\alias{integrate}
+\alias{expected}
 \title{Working with scores}
 \usage{
 evaluate(s, design, ...)
 
-integrate(s, ...)
+expected(s, ...)
 }
 \arguments{
 \item{s}{score}
@@ -22,6 +22,6 @@ Both \code{\link{ConditionalScore-class}} as well as
 \code{\link{UnconditionalScore-class}} implement \code{evaluate} methods
 which handle the actual computation of the score given a design and
 (for conditional scores) an interim result.
-Conditional scores additionally implement an \code{integrate} method
+Conditional scores additionally implement an \code{expected} method
 to obtain the corresponding unconditional \code{\link{IntegralScore-class}}.
 }

@@ -28,10 +28,10 @@ test_that("Group-sequential design constructor works", {
 
     dist <- Normal(two_armed = FALSE)
 
-    ess  <- integrate(ConditionalSampleSize(dist, alternative))
+    ess  <- expected(ConditionalSampleSize(dist, alternative))
     cp   <- ConditionalPower(dist, alternative)
-    pow  <- integrate(cp)
-    toer <- integrate(ConditionalPower(dist, null))
+    pow  <- expected(cp)
+    toer <- expected(ConditionalPower(dist, null))
     smth <- SmoothnessN2()
 
 
@@ -67,7 +67,7 @@ test_that("GSDesign can be converted to TwoStageDesign", {
     design1  <- GroupSequentialDesign(50, 0, 2, 50, rep(2, 5))
     design2  <- TwoStageDesign(design1)
 
-    pow <- integrate(ConditionalPower(Normal(), PointMassPrior(.3, 1)))
+    pow <- expected(ConditionalPower(Normal(), PointMassPrior(.3, 1)))
 
     expect_equal(
         evaluate(pow, design1),
@@ -75,7 +75,7 @@ test_that("GSDesign can be converted to TwoStageDesign", {
     ) # power remains equal
 
 
-    ess <- integrate(ConditionalSampleSize(Normal(), PointMassPrior(.3, 1)))
+    ess <- expected(ConditionalSampleSize(Normal(), PointMassPrior(.3, 1)))
 
     expect_equal(
         evaluate(ess, design1),
