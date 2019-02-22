@@ -56,5 +56,39 @@ test_that("post-processing yields integer sample sizes", {
         round(res$design@n2_pivots)
     )
 
-})
+}) # end 'post-processing yields integer sample sizes'
+
+
+
+test_that("post-processing of OneStageDesign yields integer sample sizes", {
+
+    res <- suppressWarnings(minimize( # we do not warning about non-convergence!
+
+        ess,
+        subject_to(
+            pow  >= 0.8,
+            toer <=  .05
+        ),
+
+        initial_design        = OneStageDesign(50.0, 2.0),
+        lower_boundary_design = OneStageDesign(5.0, 0.0),
+        upper_boundary_design = OneStageDesign(200.0, 5.0),
+        opts = list(
+            algorithm   = "NLOPT_LN_COBYLA",
+            xtol_rel    = 1e-4,
+            maxeval     = 100 # only the principle is tested
+        )
+
+    ))
+
+    res_post <- postprocess(res)
+
+    # n1 is integer
+    expect_equal(
+        res_post$design@n1,
+        round(res$design@n1)
+    )
+
+
+}) # end 'post-processing of OneStageDesign yields integer sample sizes'
 
