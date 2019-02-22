@@ -36,13 +36,12 @@ test_that("Expected sample size is computed correctly",{
     h <- (c1e - c1f) / 2
     x <- h * x + (h + c1f)
 
-    design_gs <<- gq_design(
+    design_gs <<- TwoStageDesign(
         round(n1),
         c1f,
         c1e,
         rep(round(n2), 5),
-        sapply(seq(c1f, c1e, length.out = 5), f),
-        5L
+        sapply(seq(c1f, c1e, length.out = 5), f)
     )
 
 

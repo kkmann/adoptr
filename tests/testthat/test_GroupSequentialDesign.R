@@ -1,14 +1,9 @@
-context("GSDesign")
+context("GroupSequentialDesign")
 
 test_that("Group-sequential design constructor works", {
     # define an initial design
-    n1      <- 25
-    c1f     <-   .0
-    c1e     <-  2.0
     order   <-  5L
-    n2_cont <- 40
-    c2_piv  <- rep(1.96, order)
-    design  <- gq_design(n1, c1f, c1e, n2_cont, c2_piv, order)
+    design  <-  GroupSequentialDesign(25, 0.0, 2.0, 40.0, 1.96, order)
 
     # check if functions are defined correctly
     expect_equal(
@@ -61,30 +56,15 @@ test_that("Group-sequential design constructor works", {
         0.0
     )
 
-}) # end 'group-sequential design constructor works'
+})  # end 'group-sequential design constructor works'
 
 
-
-test_that("Error definition works", {
-    expect_error(
-        GSDesign(50, 0, 2, 50, c(2, 2), c(.1, .5, .9), rep(1/3, 3))
-    ) # pivots length must fit
-
-    expect_error(
-        GSDesign(50, 0, 2, 50, rep(2, 3), c(0, 1, 2), rep(1/3, 3))
-    ) # x1_norm_pivots must not be scaled
-
-    expect_error(
-        GSDesign(50, 0, 2, 50, rep(2,3), c(-.5, 0, .5), c(1, 0, 1))
-    ) # positive weights
-
-}) # end 'error definition works'
 
 
 
 test_that("GSDesign can be converted to TwoStageDesign", {
-    int_pars <- GaussLegendreRule(5L)
-    design1  <- GSDesign(50, 0, 2, 50, rep(2, 5), int_pars$nodes, int_pars$weights)
+
+    design1  <- GroupSequentialDesign(50, 0, 2, 50, rep(2, 5))
     design2  <- TwoStageDesign(design1)
 
     pow <- integrate(ConditionalPower(Normal(), PointMassPrior(.3, 1)))
@@ -108,8 +88,7 @@ test_that("GSDesign can be converted to TwoStageDesign", {
 
 test_that("Rounding works", {
 
-    int_pars <- GaussLegendreRule(5L)
-    design1  <- GSDesign(50, 0, 2, 50.2, rep(2, 5), int_pars$nodes, int_pars$weights)
+    design1  <- GroupSequentialDesign(50, 0, 2, 50.2, rep(2, 5))
 
 
     expect_equal(

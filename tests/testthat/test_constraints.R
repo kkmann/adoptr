@@ -1,9 +1,10 @@
 context("constraint specifications                                            ")
 
-test_that("UnconditionalConstraints", {
+# create dummy design
+design <- TwoStageDesign(25, 0, 2, 40.5, 1.96, 5L)
 
-    # create dummy design
-    design <- gq_design(25, 0, 2, rep(40.0, 5), rep(1.96, 5), 5L)
+
+test_that("UnconditionalConstraints", {
 
     # create power as IntegralScore
     pow <- integrate(ConditionalPower(Normal(two_armed = FALSE), PointMassPrior(.4, 1)))
@@ -49,8 +50,6 @@ test_that("UnconditionalConstraints", {
 
 test_that("ConditionalConstraints", {
 
-    # create dummy design
-    design <- gq_design(25, 0, 2, rep(40.0, 5), rep(1.96, 5), 5L)
 
     # create power as IntegralScore
     cp <- ConditionalPower(Normal(two_armed = FALSE), PointMassPrior(.4, 1))
@@ -72,8 +71,6 @@ test_that("ConditionalConstraints", {
 
 test_that("ConditionalConstraints", {
 
-    # create dummy design
-    design <- gq_design(25, 0, 2, rep(40.5, 5), rep(1.96, 5), 5L)
 
     # create conditional power
     cp <- ConditionalPower(Normal(two_armed = FALSE), PointMassPrior(.4, 1))
@@ -127,8 +124,6 @@ test_that("subject_to throws correct error", {
 
 
 test_that("score vs score inequalities", {
-    # create dummy design
-    design <- gq_design(25, 0, 2, rep(40.5, 5), rep(1.96, 5), 5L)
 
     # create conditional scores
     cp    <- ConditionalPower(Normal(), PointMassPrior(.28, 1))

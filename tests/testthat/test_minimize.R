@@ -5,7 +5,7 @@ context("check minimize()")
 # preliminaries
 order <- 5L
 
-initial_design <- gq_design(25, 0, 2, rep(40.0, order), rep(1.96, order), order)
+initial_design <- TwoStageDesign(25, 0, 2, rep(40.0, order), rep(1.96, order))
 lb_design      <- update(initial_design, c(5, -1, 2, numeric(order), numeric(order) - 3))
 ub_design      <- update(initial_design, c(100, 2, 5, numeric(order) + 100, numeric(order) + 5))
 
@@ -105,7 +105,7 @@ test_that("Optimal one-stage design can be computed", {
 
 test_that("Optimal group-sequential design is computable", {
     # Define initial design
-    initial_design_gs <- gq_design(25, 0, 2, 40, rep(1.96, order), order)
+    initial_design_gs <- GroupSequentialDesign(25, 0, 2, 40, 1.96, order)
 
     opt_gs <<- minimize(
 
@@ -148,7 +148,8 @@ test_that("Optimal group-sequential design is computable", {
 
 
 test_that("Optimal group-sequential design is superior to standard gs design", {
-    # Create design from rpact
+
+        # Create design from rpact
     design_rp <- rpact::getDesignInverseNormal(
         kMax = 2,
         alpha = alpha,
@@ -172,7 +173,7 @@ test_that("Optimal group-sequential design is superior to standard gs design", {
         rpact::getDesignCharacteristics(design_rp)$futilityProbabilities
     ) + sqrt(res$numberOfPatientsGroup1[1]) * (.4 / sqrt(2))
 
-    rpact_design <- gq_design(
+    rpact_design <- GroupSequentialDesign(
         ceiling(res$numberOfPatientsGroup1[1,]),
         c1f,
         design_rp$criticalValues[1],
@@ -230,6 +231,7 @@ test_that("base-case satisfies constraints", {
 }) # end base-case respects constraints
 
 
+
 test_that("base-case results are consistent - no post processing", {
     # optimal designs are used from above
 
@@ -276,8 +278,6 @@ test_that("base-case results are consistent - no post processing", {
         tolerance = 1
     )
 
-
-
 }) # end 'base-case results are consistent'
 
 
@@ -320,4 +320,3 @@ test_that("conditional constraints work", {
     )
 
 }) # end 'conditional constraints work'
-

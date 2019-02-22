@@ -4,10 +4,10 @@ n1     <- 25
 c1f    <-   .0
 c1e    <-  2.0
 order  <- 5L
-n2_piv <- rep(40.0, order)
-c2_piv <- rep(1.96, order)
+n2_piv <- 40.0
+c2_piv <- 1.96
 
-initial_design <- gq_design(n1, c1f, c1e, n2_piv, c2_piv, order)
+initial_design <- TwoStageDesign(n1, c1f, c1e, n2_piv, c2_piv, order)
 lb_design      <- update(initial_design, c(5, -1, 2, numeric(order), numeric(order) - 3))
 ub_design      <- update(initial_design, c(100, 2, 5, numeric(order) + 100, numeric(order) + 5))
 
@@ -91,4 +91,3 @@ test_that("post-processing of OneStageDesign yields integer sample sizes", {
 
 
 }) # end 'post-processing of OneStageDesign yields integer sample sizes'
-

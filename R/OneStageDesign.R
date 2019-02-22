@@ -36,20 +36,6 @@ OneStageDesign <- function(n, c) {
 
 
 
-setMethod("update", signature("TwoStageDesign"),
-          function(object, params, ...) {
-              tunable_names <- names(object@tunable)[object@tunable]
-              res <- object
-              idx <- 1
-              for (i in 1:length(tunable_names)) {
-                  slotname <- tunable_names[i]
-                  k <- length(slot(object, name = slotname))
-                  slot(res, name = slotname) <- params[idx:(idx + k - 1)]
-                  idx <- idx + k
-              }
-              return(res)
-          })
-
 
 
 #' @param params vector of design parameters (must be in same order as returned
