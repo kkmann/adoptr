@@ -8,7 +8,7 @@ test_that("gaussian quadrature constructor", {
     number_knots <<-   5L
     n2_piv       <<- rep(49.6, number_knots)
     c2_piv       <<- rep(1.96, number_knots)
-    design       <<- gq_design(n1, c1f, c1e, n2_piv, c2_piv, number_knots)
+    design       <<- TwoStageDesign(n1, c1f, c1e, n2_piv, c2_piv, number_knots)
 
     expect_equal(
         c(n1, c1f, c1e),
@@ -54,19 +54,12 @@ test_that("errors are returned correctly", {
         TwoStageDesign(50, 0, 2, rep(50, 3), c(2, 2), c(.1, .5, .9), rep(1/3, 3))
     ) # pivots length must fit
 
-    expect_error(
-        TwoStageDesign(50, 0, 2, rep(50, 3), rep(2, 3), c(0, 1, 2), rep(1/3, 3))
-    ) # x1_norm_pivots must not be scaled
-
-    expect_error(
-        TwoStageDesign(50, 0, 2, rep(50, 3), rep(2,3), c(-.5, 0, .5), c(1, 0, 1))
-    ) # positive weights
 
     cp  <- ConditionalPower(Normal(), PointMassPrior(.4, 1))
     pow <- integrate(cp)
     order  = 5L
-    design  <- gq_design(50.1, 0, 2, rep(50, order), rep(2, order), order)
-    design2 <- gq_design(50, 0, 2, rep(50.1, order), rep(2, order), order)
+    design  <- TwoStageDesign(50.1, 0, 2, rep(50, order), rep(2, order))
+    design2 <- TwoStageDesign(50, 0, 2, rep(50.1, order), rep(2, order))
 
     expect_error(
         plot(design, rounded = TRUE, "Power" = pow)

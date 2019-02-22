@@ -49,7 +49,7 @@ GroupSequentialDesign <- function(n1, c1f, c1e, n2_pivots, c2_pivots, order = NU
             c2_pivots <- rep(c2_pivots[1], order)
         }
 
-     rule <- GaussLegendreRule(order)
+     rule <- GaussLegendreRule(as.integer(order))
 
      tunable <- logical(8) # initialize to all false
      tunable[1:5] <- TRUE

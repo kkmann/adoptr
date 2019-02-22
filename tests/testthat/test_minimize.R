@@ -5,7 +5,7 @@ context("check minimize()")
 # preliminaries
 order <- 5L
 
-initial_design <- gq_design(25, 0, 2, rep(40.0, order), rep(1.96, order), order)
+initial_design <- TwoStageDesign(25, 0, 2, 40.0, 1.96, order)
 lb_design      <- update(initial_design, c(5, -1, 2, numeric(order), numeric(order) - 3))
 ub_design      <- update(initial_design, c(100, 2, 5, numeric(order) + 100, numeric(order) + 5))
 
@@ -170,7 +170,7 @@ test_that("base-case results are consistent - no post processing", {
 
 
 
-    initial_design_gs <- gq_design(25, 0, 2, 40, rep(1.96, order), order)
+    initial_design_gs <- GroupSequentialDesign(25, 0, 2, 40, 1.96, order)
 
     opt_gs <- minimize(
 

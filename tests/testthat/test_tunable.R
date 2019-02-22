@@ -5,10 +5,10 @@ n1     <- 25
 c1f    <-   .0
 c1e    <-  2.0
 order  <- 5L
-n2_piv <- rep(40.0, order)
-c2_piv <- rep(1.96, order)
+n2_piv <- 40.0
+c2_piv <- 1.96
 
-initial_design <- gq_design(n1, c1f, c1e, n2_piv, c2_piv, order)
+initial_design <- TwoStageDesign(n1, c1f, c1e, n2_piv, c2_piv, order)
 
 dist        <- Normal(two_armed = FALSE)
 null        <- PointMassPrior(.0, 1)
@@ -134,7 +134,7 @@ test_that("two stage design can be optimized with fixed sample sizes", {
 
 test_that("group-sequential design can be optimized with fixed sample sizes", {
 
-    initial_gs_design <- gq_design(25, .0, 2.0, 50.0, rep(2.0, order), order)
+    initial_gs_design <- GroupSequentialDesign(25, .0, 2.0, 50.0, 2.0, order)
 
     tmp_gs <- make_fixed(initial_gs_design, n1, n2_pivots)
 

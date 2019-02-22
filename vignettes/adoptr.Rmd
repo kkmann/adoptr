@@ -56,12 +56,12 @@ order <- 5L
 The initial design may then be defined as follows:
 
 ```{r create-design}
-design <- gq_design(
+design <- TwoStageDesign(
     n1    = 25, 
     c1f   = 0,
     c1e   = 2,
-    n2    = rep(40.0, order), 
-    c2    = rep( 1.96, order), 
+    n2    = 40.0, 
+    c2    = 1.96,
     order = order
   )
 ```
