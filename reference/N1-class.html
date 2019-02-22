@@ -32,7 +32,7 @@
 
 <meta property="og:title" content="Regularize n1 — N1-class" />
 
-<meta property="og:description" content="PenaltyN1 is a class that penalizes the n1 value of
+<meta property="og:description" content="N1 is a class that penalizes the n1 value of
 a design." />
 
 <meta property="og:image" content="https://kkmann.github.io/adoptr/logo.png" />
@@ -121,15 +121,16 @@ a design." />
 
     <div class="ref-description">
     
-    <p><code>PenaltyN1</code> is a class that penalizes the <code>n1</code> value of
+    <p><code>N1</code> is a class that penalizes the <code>n1</code> value of
 a design.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>PenaltyN1</span>()
+    <pre class="usage"><span class='fu'>N1</span>()
 
 <span class='co'># S4 method for N1,TwoStageDesign</span>
-<span class='fu'><a href='working-with-scores.html'>evaluate</a></span>(<span class='no'>s</span>, <span class='no'>design</span>, <span class='no'>...</span>)</pre>
+<span class='fu'><a href='working-with-scores.html'>evaluate</a></span>(<span class='no'>s</span>, <span class='no'>design</span>, <span class='kw'>optimization</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -141,6 +142,11 @@ a design.</p>
     <tr>
       <th>design</th>
       <td><p>the design to compute the smoothness term for</p></td>
+    </tr>
+    <tr>
+      <th>optimization</th>
+      <td><p>logical, if TRUE uses a relaxation to real parameters of
+the underlying design; used for smooth optimization.</p></td>
     </tr>
     <tr>
       <th>...</th>

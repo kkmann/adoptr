@@ -131,7 +131,8 @@ Currently,  constraints of the form 'score &lt;=/&gt;= x',
     </div>
 
     <pre class="usage"># S4 method for Constraint,TwoStageDesign
-evaluate(s, design, ...)
+evaluate(s, design,
+  optimization = FALSE, ...)
 
 # S4 method for AbstractConditionalScore,numeric
 &lt;=(e1, e2)
@@ -179,6 +180,11 @@ evaluate(s, design, ...)
     <tr>
       <th>design</th>
       <td><p>TwoStageDesign to evaluate</p></td>
+    </tr>
+    <tr>
+      <th>optimization</th>
+      <td><p>logical, if TRUE uses a relaxation to real parameters of
+the underlying design; used for smooth optimization.</p></td>
     </tr>
     <tr>
       <th>...</th>

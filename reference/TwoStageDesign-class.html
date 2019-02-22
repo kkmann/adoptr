@@ -158,15 +158,20 @@ user-defined elements of the class <code>ConditionalScore</code>.</p>
 <span class='co'># S4 method for TwoStageDesign</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/update'>update</a></span>(<span class='no'>object</span>, <span class='no'>params</span>, <span class='no'>...</span>)
 
+<span class='fu'>n1</span>(<span class='no'>d</span>, <span class='no'>...</span>)
+
+<span class='co'># S4 method for TwoStageDesign</span>
+<span class='fu'>n1</span>(<span class='no'>d</span>, <span class='kw'>round</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)
+
 <span class='fu'>n2</span>(<span class='no'>d</span>, <span class='no'>x1</span>, <span class='no'>...</span>)
 
 <span class='co'># S4 method for TwoStageDesign,numeric</span>
-<span class='fu'>n2</span>(<span class='no'>d</span>, <span class='no'>x1</span>, <span class='no'>...</span>)
+<span class='fu'>n2</span>(<span class='no'>d</span>, <span class='no'>x1</span>, <span class='kw'>round</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)
 
 <span class='fu'>n</span>(<span class='no'>d</span>, <span class='no'>x1</span>, <span class='no'>...</span>)
 
 <span class='co'># S4 method for TwoStageDesign,numeric</span>
-<span class='fu'>n</span>(<span class='no'>d</span>, <span class='no'>x1</span>, <span class='no'>...</span>)
+<span class='fu'>n</span>(<span class='no'>d</span>, <span class='no'>x1</span>, <span class='kw'>round</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)
 
 <span class='fu'>c2</span>(<span class='no'>d</span>, <span class='no'>x1</span>, <span class='no'>...</span>)
 
@@ -237,6 +242,11 @@ by <code><a href='https://www.rdocumentation.org/packages/base/topics/numeric'>a
     <tr>
       <th>d</th>
       <td><p>design object</p></td>
+    </tr>
+    <tr>
+      <th>round</th>
+      <td><p>logical, should integer sample size or real sample size be
+returned?</p></td>
     </tr>
     <tr>
       <th>x1</th>
@@ -323,7 +333,6 @@ pivot points of the numeric integration rule [TODO: these are not available duri
     <dt><code>weights</code></dt><dd><p>weights of conditional score values at x1_norm_pivots for
 approximating the integral over x1.</p></dd>
     <dt><code>tunable</code></dt><dd><p>named logical vector indicating whether corresponding slot is considered a tunable parameter</p></dd>
-    <dt><code>rounded</code></dt><dd><p>logical that indicates whether rounded n-values should be used</p></dd>
 </dl>
     
 

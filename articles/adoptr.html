@@ -79,9 +79,8 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1>Get started with adoptr</h1>
-                        <h4 class="author">Kevin Kunzmann</h4>
             
-            <h4 class="date">2019-02-21</h4>
+            <h4 class="date">2019-02-22</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/kkmann/adoptr/blob/master/vignettes/adoptr.Rmd"><code>vignettes/adoptr.Rmd</code></a></small>
       <div class="hidden name"><code>adoptr.Rmd</code></div>
@@ -95,8 +94,8 @@
 <a href="#the-core-problem" class="anchor"></a>The core problem</h2>
 <p><code>adoptr</code> addresses the problem of finding optimal two-stage designs for clinical trials. Currently, only (asymptotically) normal test statistics are supported. Both Z-tests for a single arm versus a fixed value or one-sided tests comparing the means of two arms are supported. In all cases known variance is assumed and in the two-arm case homogeneity of variances is required, additionally.</p>
 <p>Consider the simplest case of a two-stage design for a single-arm trial aiming to reject the null hypothesis that <span class="math inline">\(\delta\leq 0\)</span> where <span class="math inline">\(\delta\)</span> is the mean of the population response. Further assume that a power of 80% at <span class="math inline">\(\delta=0.4\)</span> and a type one error rate of 5% on the boundary of the null hypothesis is required (<span class="math inline">\(\delta=0.0\)</span>).</p>
-<p>We can start with a a more or less arbitrary initial design [ToDo: can we start with a single stage design fulfilling the power and type one error rate constraints here?]. <code>adoptr</code> internally represents designs as tuples of <span class="math inline">\((n_1, c_{1f}, c_{1f}, n_2(\cdot), c_2(\cdot))\)</span>. Here, <span class="math inline">\(n_2\)</span> and <span class="math inline">\(c_2\)</span> are the functions returning the stage-two sample size and critical values given the stage-one test statitic <span class="math inline">\(x_1\)</span> (z-score in our case). For any given objective function, the design parameters can be identified via a variational problem. To numerically solve this problem <span class="math inline">\(n_2\)</span> and <span class="math inline">\(c_2\)</span> are integrated using a Gaussian quadrature rule. The order of the rule determines the number of pivot points for both functions. Since, both <span class="math inline">\(n_2\)</span> and <span class="math inline">\(c_2\)</span> are usually fairly smooth on the continuation region, a quadrature rule of order 7 is sufficiently flexible:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">order &lt;-<span class="st"> </span>7L</a></code></pre></div>
+<p>We can start with a a more or less arbitrary initial design [ToDo: can we start with a single stage design fulfilling the power and type one error rate constraints here?]. <code>adoptr</code> internally represents designs as tuples of <span class="math inline">\((n_1, c_{1f}, c_{1f}, n_2(\cdot), c_2(\cdot))\)</span>. Here, <span class="math inline">\(n_2\)</span> and <span class="math inline">\(c_2\)</span> are the functions returning the stage-two sample size and critical values given the stage-one test statitic <span class="math inline">\(x_1\)</span> (z-score in our case). For any given objective function, the design parameters can be identified via a variational problem. To numerically solve this problem <span class="math inline">\(n_2\)</span> and <span class="math inline">\(c_2\)</span> are integrated using a Gaussian quadrature rule. The order of the rule determines the number of pivot points for both functions. Since, both <span class="math inline">\(n_2\)</span> and <span class="math inline">\(c_2\)</span> are usually fairly smooth on the continuation region, a quadrature rule of order 5 is sufficiently flexible:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">order &lt;-<span class="st"> </span>5L</a></code></pre></div>
 <p>The initial design may then be defined as follows:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">design &lt;-<span class="st"> </span><span class="kw"><a href="../reference/gq_design.html">gq_design</a></span>(</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2">    <span class="dt">n1    =</span> <span class="dv">25</span>, </a>
@@ -142,25 +141,21 @@
 <a class="sourceLine" id="cb8-5" data-line-number="5">  design, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">50</span>, <span class="dv">1</span>, <span class="dv">4</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/numeric">numeric</a></span>(order) <span class="op">+</span><span class="st"> </span><span class="dv">50</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/numeric">numeric</a></span>(order) <span class="op">+</span><span class="st"> </span><span class="dv">5</span>)</a>
 <a class="sourceLine" id="cb8-6" data-line-number="6">)</a></code></pre></div>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">optimal_result &lt;-<span class="st"> </span><span class="kw"><a href="../reference/minimize.html">minimize</a></span>(</a>
-<a class="sourceLine" id="cb9-2" data-line-number="2">  ess,</a>
-<a class="sourceLine" id="cb9-3" data-line-number="3">  <span class="kw"><a href="../reference/ConstraintsCollection-class.html">subject_to</a></span>(</a>
-<a class="sourceLine" id="cb9-4" data-line-number="4">    power <span class="op">&gt;=</span><span class="st"> </span><span class="fl">0.8</span>,</a>
-<a class="sourceLine" id="cb9-5" data-line-number="5">    toer  <span class="op">&lt;=</span><span class="st"> </span><span class="fl">.05</span></a>
-<a class="sourceLine" id="cb9-6" data-line-number="6">  ),</a>
-<a class="sourceLine" id="cb9-7" data-line-number="7">  <span class="dt">initial_design        =</span> design,</a>
-<a class="sourceLine" id="cb9-8" data-line-number="8">  <span class="dt">lower_boundary_design =</span> lb_design,</a>
-<a class="sourceLine" id="cb9-9" data-line-number="9">  <span class="dt">upper_boundary_design =</span> ub_design,</a>
-<a class="sourceLine" id="cb9-10" data-line-number="10">  <span class="dt">opts =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(</a>
-<a class="sourceLine" id="cb9-11" data-line-number="11">      <span class="dt">algorithm   =</span> <span class="st">"NLOPT_LN_COBYLA"</span>,</a>
-<a class="sourceLine" id="cb9-12" data-line-number="12">      <span class="dt">xtol_rel    =</span> <span class="fl">1e-5</span>,</a>
-<a class="sourceLine" id="cb9-13" data-line-number="13">      <span class="dt">maxeval     =</span> <span class="dv">25000</span></a>
-<a class="sourceLine" id="cb9-14" data-line-number="14">  )</a>
-<a class="sourceLine" id="cb9-15" data-line-number="15">)</a>
-<a class="sourceLine" id="cb9-16" data-line-number="16"><span class="co">#&gt; Warning in minimize(ess, subject_to(power &gt;= 0.8, toer &lt;= 0.05),</span></a>
-<a class="sourceLine" id="cb9-17" data-line-number="17"><span class="co">#&gt; initial_design = design, : NLOPT_MAXEVAL_REACHED: Optimization stopped</span></a>
-<a class="sourceLine" id="cb9-18" data-line-number="18"><span class="co">#&gt; because maxeval (above) was reached.</span></a>
-<a class="sourceLine" id="cb9-19" data-line-number="19"></a>
-<a class="sourceLine" id="cb9-20" data-line-number="20">optimal_design &lt;-<span class="st"> </span>optimal_result<span class="op">$</span>design</a></code></pre></div>
+<a class="sourceLine" id="cb9-2" data-line-number="2">  </a>
+<a class="sourceLine" id="cb9-3" data-line-number="3">  ess,</a>
+<a class="sourceLine" id="cb9-4" data-line-number="4">  <span class="kw"><a href="../reference/ConstraintsCollection-class.html">subject_to</a></span>(</a>
+<a class="sourceLine" id="cb9-5" data-line-number="5">    power <span class="op">&gt;=</span><span class="st"> </span><span class="fl">0.8</span>,</a>
+<a class="sourceLine" id="cb9-6" data-line-number="6">    toer  <span class="op">&lt;=</span><span class="st"> </span><span class="fl">.05</span></a>
+<a class="sourceLine" id="cb9-7" data-line-number="7">  ),</a>
+<a class="sourceLine" id="cb9-8" data-line-number="8">  </a>
+<a class="sourceLine" id="cb9-9" data-line-number="9">  <span class="dt">post_process =</span> <span class="ot">FALSE</span>, <span class="co"># </span><span class="al">TODO</span><span class="co"> activate this again once tested</span></a>
+<a class="sourceLine" id="cb9-10" data-line-number="10">  <span class="dt">initial_design        =</span> design,</a>
+<a class="sourceLine" id="cb9-11" data-line-number="11">  <span class="dt">lower_boundary_design =</span> lb_design,</a>
+<a class="sourceLine" id="cb9-12" data-line-number="12">  <span class="dt">upper_boundary_design =</span> ub_design</a>
+<a class="sourceLine" id="cb9-13" data-line-number="13">  </a>
+<a class="sourceLine" id="cb9-14" data-line-number="14">)</a>
+<a class="sourceLine" id="cb9-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb9-16" data-line-number="16">optimal_design &lt;-<span class="st"> </span>optimal_result<span class="op">$</span>design</a></code></pre></div>
 <p>Here, we override the internal defaults to allow a more precise solution. Note that since COBYLA is a generic derivative-free optimizer, the process may take quite a while. In general it is important to check convergence since partial solutions might be non-smooth or otherwise non-intuitive. If the algorithm would not have converged, the function <code>minimize</code> would have thrown a warning message. All the output that was created by <code>nloptr</code> can be regarded by</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">optimal_result<span class="op">$</span>details<span class="op">$</span>nloptr_return</a></code></pre></div>
 <p>The resulting optimized design may again be plotted together with its conditional power.</p>

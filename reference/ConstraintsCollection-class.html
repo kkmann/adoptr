@@ -129,7 +129,8 @@
     </div>
 
     <pre class="usage"><span class='co'># S4 method for ConstraintsCollection,TwoStageDesign</span>
-<span class='fu'><a href='working-with-scores.html'>evaluate</a></span>(<span class='no'>s</span>, <span class='no'>design</span>, <span class='no'>...</span>)
+<span class='fu'><a href='working-with-scores.html'>evaluate</a></span>(<span class='no'>s</span>, <span class='no'>design</span>,
+  <span class='kw'>optimization</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
 
 <span class='fu'>subject_to</span>(<span class='no'>...</span>)</pre>
     
@@ -143,6 +144,11 @@
     <tr>
       <th>design</th>
       <td><p>design</p></td>
+    </tr>
+    <tr>
+      <th>optimization</th>
+      <td><p>logical, if TRUE uses a relaxation to real parameters of
+the underlying design; used for smooth optimization.</p></td>
     </tr>
     <tr>
       <th>...</th>

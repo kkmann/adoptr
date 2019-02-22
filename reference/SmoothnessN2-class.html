@@ -138,7 +138,7 @@ continuation region of a design.</p>
 
 <span class='co'># S4 method for SmoothnessN2,TwoStageDesign</span>
 <span class='fu'><a href='working-with-scores.html'>evaluate</a></span>(<span class='no'>s</span>, <span class='no'>design</span>,
-  <span class='kw'>specific</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
+  <span class='kw'>optimization</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>subdivisions</span> <span class='kw'>=</span> <span class='fl'>10000L</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -156,8 +156,14 @@ continuation region of a design.</p>
       <td><p>the design to compute the smoothness term for</p></td>
     </tr>
     <tr>
-      <th>specific</th>
-      <td><p>should a specific implementation be used?</p></td>
+      <th>optimization</th>
+      <td><p>logical, if TRUE uses a relaxation to real parameters of
+the underlying design; used for smooth optimization.</p></td>
+    </tr>
+    <tr>
+      <th>subdivisions</th>
+      <td><p>integer, maxima number of subdivisions used for daptive
+integration.</p></td>
     </tr>
     <tr>
       <th>...</th>

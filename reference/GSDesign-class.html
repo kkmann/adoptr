@@ -137,10 +137,10 @@ class.
     <pre class="usage"><span class='fu'>GSDesign</span>(<span class='no'>n1</span>, <span class='no'>c1f</span>, <span class='no'>c1e</span>, <span class='no'>n2_pivots</span>, <span class='no'>c2_pivots</span>, <span class='no'>x1_norm_pivots</span>, <span class='no'>weights</span>)
 
 <span class='co'># S4 method for GSDesign,numeric</span>
-<span class='fu'><a href='TwoStageDesign-class.html'>n2</a></span>(<span class='no'>d</span>, <span class='no'>x1</span>, <span class='no'>...</span>)
+<span class='fu'><a href='TwoStageDesign-class.html'>n2</a></span>(<span class='no'>d</span>, <span class='no'>x1</span>, <span class='kw'>round</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)
 
 <span class='co'># S4 method for GSDesign</span>
-<span class='fu'><a href='TwoStageDesign-class.html'>TwoStageDesign</a></span>(<span class='no'>d</span>, <span class='no'>tunable</span>, <span class='kw'>rounded</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
+<span class='fu'><a href='TwoStageDesign-class.html'>TwoStageDesign</a></span>(<span class='no'>d</span>, <span class='no'>tunable</span>, <span class='no'>...</span>)
 
 <span class='co'># S4 method for SmoothnessN2,GSDesign</span>
 <span class='fu'><a href='working-with-scores.html'>evaluate</a></span>(<span class='no'>s</span>, <span class='no'>design</span>, <span class='no'>...</span>)</pre>
@@ -185,15 +185,16 @@ class.
       <td><p>stage-one outcome</p></td>
     </tr>
     <tr>
+      <th>round</th>
+      <td><p>logical, should integer sample size or real sample size be
+returned?</p></td>
+    </tr>
+    <tr>
       <th>...</th>
       <td><p>further optional arguments</p></td>
     </tr>
     <tr>
       <th>tunable</th>
-      <td><p>c.f. slot</p></td>
-    </tr>
-    <tr>
-      <th>rounded</th>
       <td><p>c.f. slot</p></td>
     </tr>
     <tr>
@@ -220,7 +221,6 @@ pivot points of the numeric integration rule [TODO: these are not available duri
     <dt><code>weights</code></dt><dd><p>weights of conditional score values at x1_norm_pivots for
 approximating the integral over x1.</p></dd>
     <dt><code>tunable</code></dt><dd><p>named logical vector indicating whether corresponding slot is considered a tunable parameter</p></dd>
-    <dt><code>rounded</code></dt><dd><p>logical that indicates whether rounded n-values should be used</p></dd>
 </dl>
     
 
