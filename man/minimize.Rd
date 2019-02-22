@@ -5,9 +5,8 @@
 \title{Find optimal two-stage design by constraint minimization}
 \usage{
 minimize(objective, subject_to, initial_design, lower_boundary_design,
-  upper_boundary_design, c2_monotone = FALSE, post_process = TRUE,
-  opts = list(algorithm = "NLOPT_LN_COBYLA", xtol_rel = 1e-05, maxeval =
-  10000), ...)
+  upper_boundary_design, c2_monotone = FALSE, opts = list(algorithm =
+  "NLOPT_LN_COBYLA", xtol_rel = 1e-05, maxeval = 10000), ...)
 }
 \arguments{
 \item{objective}{objective function}
@@ -22,26 +21,14 @@ minimize(objective, subject_to, initial_design, lower_boundary_design,
 
 \item{c2_monotone}{should the c2-function be forced to be monotoneously decreasing?}
 
-\item{post_process}{should post processing be performed to obtain exact boundaries for integer sample sizes?}
-
 \item{opts}{options list passed to nloptr}
 
 \item{...}{further optional arguments passed to \code{\link{nloptr}}}
 }
 \value{
 \item{design}{ The resulting optimal design}
-        \item{details}{ A list with the following arguments
-        \itemize{
-        \item{design}{ The optimal design without rounded n-values}
-        \item{design_post}{ The optimal design after post-processing.
-        Returns \code{NULL} if post_process was set to \code{FALSE}.}
-        \item{nloptr_return}{ The return of the nloptr call for the
-        non-post-processed design.}
-        \item{nloptr_return_post}{ The return of the nloptr call for the
-        post-processed design.
-        Returns \code{NULL} if post_process was set to \code{FALSE}.}
-        }
-        }
+        \item{nloptr_return}{ Output of the corresponding nloptr call}
+        \item{call_args}{ The arguments given to the optimization call}
 }
 \description{
 \code{minimize} takes an unconditioonal score
