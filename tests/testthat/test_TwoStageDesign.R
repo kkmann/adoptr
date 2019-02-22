@@ -51,7 +51,7 @@ test_that("simulate works (as last time)", {
 
 test_that("errors are returned correctly", {
     expect_error(
-        TwoStageDesign(50, 0, 2, rep(50, 3), c(2, 2), c(.1, .5, .9), rep(1/3, 3))
+        TwoStageDesign(50, 0, 2, rep(50, 3), c(2, 2))
     ) # pivots length must fit
 
 
@@ -70,3 +70,26 @@ test_that("errors are returned correctly", {
     ) # Conditional scores cannot be summarized
 
 }) # end 'errors are returned correctly'
+
+
+
+test_that("print methods", {
+    pow <- expected(ConditionalPower(Normal(), PointMassPrior(.4, 1)))
+    vdiffr::expect_doppelganger(
+        "Design print",
+        print.TwoStageDesignSummary(summary(design, "Power" = pow))
+        )
+
+}) # end 'print methods'
+
+
+test_that("plot produces correct number of columns", {
+    cp  <- ConditionalPower(Normal(), PointMassPrior(.3, 1))
+    pic <- plot(design, "ConditionalPower" = cp)
+
+    expect_equal(
+        pic$mfrow[2],
+        3
+    )
+
+}) # end 'plot produces correct number of columns'
