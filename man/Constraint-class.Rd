@@ -20,7 +20,8 @@
 \alias{>=,UnconditionalScore,UnconditionalScore-method}
 \title{Formulating constraints}
 \usage{
-\S4method{evaluate}{Constraint,TwoStageDesign}(s, design, ...)
+\S4method{evaluate}{Constraint,TwoStageDesign}(s, design,
+  optimization = FALSE, ...)
 
 \S4method{<=}{AbstractConditionalScore,numeric}(e1, e2)
 
@@ -50,6 +51,9 @@
 \item{s}{constraint to evaluate}
 
 \item{design}{TwoStageDesign to evaluate}
+
+\item{optimization}{logical, if TRUE uses a relaxation to real parameters of
+the underlying design; used for smooth optimization.}
 
 \item{...}{further optional arguments}
 

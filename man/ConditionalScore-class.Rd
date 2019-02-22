@@ -7,7 +7,8 @@
 \alias{integrate,ConditionalScore-method}
 \title{Class for conditional scoring function}
 \usage{
-\S4method{evaluate}{ConditionalScore,TwoStageDesign}(s, design, x1, ...)
+\S4method{evaluate}{ConditionalScore,TwoStageDesign}(s, design, x1,
+  optimization = FALSE, ...)
 
 \S4method{integrate}{ConditionalScore}(s, ...)
 }
@@ -17,6 +18,9 @@
 \item{design}{a \code{Design}}
 
 \item{x1}{stage one outcome (note that n1 is available from \code{design})}
+
+\item{optimization}{logical, if TRUE uses a relaxation to real parameters of
+the underlying design; used for smooth optimization.}
 
 \item{...}{further optional parameters}
 }

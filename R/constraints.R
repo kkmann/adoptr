@@ -23,11 +23,15 @@ setClass("Constraint")
 
 #' @param s constraint to evaluate
 #' @param design TwoStageDesign to evaluate
+#' @param optimization logical, if TRUE uses a relaxation to real parameters of
+#'       the underlying design; used for smooth optimization.
 #'
 #' @rdname Constraint-class
 #' @export
 setMethod("evaluate", signature("Constraint", "TwoStageDesign"),
-          function(s, design, ...) evaluate(s@score, design, ...) - s@rhs )
+          function(s, design, optimization = FALSE, ...) {
+              evaluate(s@score, design, optimization, ...) - s@rhs
+          })
 
 
 
@@ -123,20 +127,20 @@ setClass("ConstraintsCollection", representation(
         conditional_constraints = "list"))
 
 
+#' @param optimization logical, if TRUE uses a relaxation to real parameters of
+#'    the underlying design; used for smooth optimization.
 #' @rdname ConstraintsCollection-class
 #' @export
 setMethod("evaluate", signature("ConstraintsCollection", "TwoStageDesign"),
-          function(s, design, ...) {
-              # TODO: we will want to allow users to chose where the conditional constraints should apply,
-              # e.g.  continuation, early efficacy etc.
+          function(s, design, optimization = FALSE, ...) {
               x1_cont <- scaled_integration_pivots(design)
               unconditional <- as.numeric(sapply(
                   s@unconditional_constraints,
-                  function(cnstr) evaluate(cnstr, design, ...)
+                  function(cnstr) evaluate(cnstr, design, optimization, ...)
               ))
               conditional <- as.numeric(sapply(
                   s@conditional_constraints,
-                  function(cnstr) evaluate(cnstr, design, x1_cont, ...)
+                  function(cnstr) evaluate(cnstr, design, x1_cont, optimization, ...)
               ))
               return(c(unconditional, conditional))
         })

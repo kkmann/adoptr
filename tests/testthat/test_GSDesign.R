@@ -61,48 +61,49 @@ test_that("Optimal group-sequential design with point prior is computable", {
         0.0
     )
 
-    #compute optimal design
-
-    minimize(
-        ess,
-        subject_to(
-            pow  >= 0.8,
-            toer <= .05
-        ),
-        initial_design = design,
-        lower_boundary_design = update(design, c(10, -1, 1, 2, numeric(order) - 5)),
-        upper_boundary_design = update(design, c(50, 1, 4, 50, numeric(order) + 5)),
-        post_process = FALSE
-    ) ->
-        result
-
-    d2 <- result$design
-
-    expect_equal(
-        round(evaluate(pow, d2), 1),
-        0.8
-    )
-
-    expect_equal(
-        round(evaluate(toer, d2), 2),
-        0.05
-    )
-
-    expect_equal(
-        sign(evaluate(ess, d2) - evaluate(ess, design)),
-        -1
-    )
-
-    # Check if n2 is equal at boundaries
-    expect_equal(
-        n2(d2, d2@c1f),
-        n2(d2, d2@c1e)
-    )
-
-    expect_equal(
-        result$details$nloptr_return$solution[1],
-        d2@n1
-    ) # test if nloptr output works
+    # TODO: should got to test_minimize.R
+    # #compute optimal design
+    #
+    # minimize(
+    #     ess,
+    #     subject_to(
+    #         pow  >= 0.8,
+    #         toer <= .05
+    #     ),
+    #     initial_design = design,
+    #     lower_boundary_design = update(design, c(10, -1, 1, 2, numeric(order) - 5)),
+    #     upper_boundary_design = update(design, c(50, 1, 4, 50, numeric(order) + 5)),
+    #     post_process = FALSE
+    # ) ->
+    #     result
+    #
+    # d2 <- result$design
+    #
+    # expect_equal(
+    #     round(evaluate(pow, d2), 1),
+    #     0.8
+    # )
+    #
+    # expect_equal(
+    #     round(evaluate(toer, d2), 2),
+    #     0.05
+    # )
+    #
+    # expect_equal(
+    #     sign(evaluate(ess, d2) - evaluate(ess, design)),
+    #     -1
+    # )
+    #
+    # # Check if n2 is equal at boundaries
+    # expect_equal(
+    #     n2(d2, d2@c1f),
+    #     n2(d2, d2@c1e)
+    # )
+    #
+    # expect_equal(
+    #     result$details$nloptr_return$solution[1],
+    #     d2@n1
+    # ) # test if nloptr output works
 
 
 })
@@ -150,13 +151,14 @@ test_that("GSDesign can be converted to TwoStageDesign", {
 
 
 test_that("Rounding works", {
+
     int_pars <- GaussLegendreRule(5L)
     design1  <- GSDesign(50, 0, 2, 50.2, rep(2, 5), int_pars$nodes, int_pars$weights)
 
-    design1@rounded = TRUE
 
     expect_equal(
         n2(design1, 1),
         50.0
-    ) # end 'roundig works'
+    )
+
 })

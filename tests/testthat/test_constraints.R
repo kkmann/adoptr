@@ -90,12 +90,11 @@ test_that("ConditionalConstraints", {
 
     # Use non-rounded values
     expect_equal(
-        evaluate(css, design, 1),
+        evaluate(css, design, 1, optimization = TRUE),
         65.5
     )
 
     # Use rounded values
-    design@rounded <- TRUE
     expect_equal(
         evaluate(css, design, 1),
         65.0

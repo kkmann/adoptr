@@ -18,11 +18,9 @@ test_that("gaussian quadrature constructor", {
     x1 <- seq(c1f, c1e, length.out = 11)
 
     expect_equal(
-        n2(design, x1),
+        n2(design, x1, round = FALSE),
         rep(49.6, length(x1))
     )
-
-    design@rounded <- TRUE # TODO: don't like this mechanism, why not make it an argument to n2()?
 
     expect_equal(
         n2(design, x1),
@@ -41,7 +39,6 @@ test_that("gaussian quadrature constructor", {
 test_that("simulate works (as last time)", {
 
     design@n1      <- 50
-    design@rounded <- TRUE
 
     expect_known_value(
         adoptr::simulate(design, nsim = 50, dist = Normal(), theta = .5, seed = 42),
@@ -78,14 +75,5 @@ test_that("errors are returned correctly", {
     expect_error(
         summary(design, rounded = TRUE, "Conditional Power" = cp)
     ) # Conditional scores cannot be summarized
-
-
-    expect_error(
-        simulate(design, nsim = 50, dist = Normal(), theta = .5, seed = 42)
-    ) # simulate requires integer n1 values
-
-    expect_error(
-        simulate(design2, nsim = 50, dist = Normal(), theta = .5, seed = 42)
-    ) # simulate requires integer n2 values
 
 }) # end 'errors are returned correctly'
