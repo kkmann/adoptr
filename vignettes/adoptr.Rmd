@@ -157,7 +157,6 @@ optimal_result <- minimize(
     toer  <= .05
   ),
   
-  post_process = FALSE, # TODO activate this again once tested
   initial_design        = design,
   lower_boundary_design = lb_design,
   upper_boundary_design = ub_design
