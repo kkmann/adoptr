@@ -56,6 +56,7 @@ reference:
   desc: >
     A collection of commonly used pre-implemented scores.
   contents:
+  - '`N1-class`'
   - '`SmoothnessN2-class`'
   - '`AverageN2-class`'
   - '`ConditionalPower-class`'
@@ -66,13 +67,13 @@ reference:
     it also supports group-sequential designs and single-stage designs
   contents:
   - '`TwoStageDesign-class`'
-  - '`GSDesign-class`'
+  - '`GroupSequentialDesign-class`'
   - '`OneStageDesign-class`'
-  - '`gq_design`'
   - '`show,TwoStageDesign-method`'
   - '`summary,TwoStageDesign-method`'
   - '`print.TwoStageDesignSummary`'
   - '`minimize`'
+  - '`postprocess`'
 - title: Optimization constraints
   desc: >
     Formulation of optimization constraints based on scores.
