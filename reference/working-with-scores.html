@@ -36,7 +36,7 @@
 UnconditionalScore-class implement evaluate methods
 which handle the actual computation of the score given a design and
 (for conditional scores) an interim result.
-Conditional scores additionally implement an integrate method
+Conditional scores additionally implement an expected method
 to obtain the corresponding unconditional IntegralScore-class." />
 
 <meta property="og:image" content="https://kkmann.github.io/adoptr/logo.png" />
@@ -129,14 +129,14 @@ to obtain the corresponding unconditional IntegralScore-class." />
 <code><a href='UnconditionalScore-class.html'>UnconditionalScore-class</a></code> implement <code>evaluate</code> methods
 which handle the actual computation of the score given a design and
 (for conditional scores) an interim result.
-Conditional scores additionally implement an <code>integrate</code> method
+Conditional scores additionally implement an <code>expected</code> method
 to obtain the corresponding unconditional <code><a href='IntegralScore-class.html'>IntegralScore-class</a></code>.</p>
     
     </div>
 
     <pre class="usage"><span class='fu'>evaluate</span>(<span class='no'>s</span>, <span class='no'>design</span>, <span class='no'>...</span>)
 
-<span class='fu'>integrate</span>(<span class='no'>s</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>expected</span>(<span class='no'>s</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">

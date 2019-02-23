@@ -192,7 +192,7 @@
       <tr>
         
         <td>
-          <p><code><a href="working-with-scores.html">evaluate()</a></code> <code><a href="working-with-scores.html">integrate()</a></code> </p>
+          <p><code><a href="working-with-scores.html">evaluate()</a></code> <code><a href="working-with-scores.html">expected()</a></code> </p>
         </td>
         <td><p>Working with scores</p></td>
       </tr><tr>
@@ -204,7 +204,7 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="ConditionalScore-class.html">evaluate(<i>&lt;ConditionalScore&gt;</i>,<i>&lt;TwoStageDesign&gt;</i>)</a></code> <code><a href="ConditionalScore-class.html">integrate(<i>&lt;ConditionalScore&gt;</i>)</a></code> </p>
+          <p><code><a href="ConditionalScore-class.html">evaluate(<i>&lt;ConditionalScore&gt;</i>,<i>&lt;TwoStageDesign&gt;</i>)</a></code> <code><a href="ConditionalScore-class.html">expected(<i>&lt;ConditionalScore&gt;</i>)</a></code> </p>
         </td>
         <td><p>Class for conditional scoring function</p></td>
       </tr><tr>
@@ -228,6 +228,12 @@
         </th>
       </tr>
       <tr>
+        
+        <td>
+          <p><code><a href="N1-class.html">N1()</a></code> <code><a href="N1-class.html">evaluate(<i>&lt;N1&gt;</i>,<i>&lt;TwoStageDesign&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Regularize n1</p></td>
+      </tr><tr>
         
         <td>
           <p><code><a href="SmoothnessN2-class.html">SmoothnessN2()</a></code> <code><a href="SmoothnessN2-class.html">evaluate(<i>&lt;SmoothnessN2&gt;</i>,<i>&lt;TwoStageDesign&gt;</i>)</a></code> </p>
@@ -268,7 +274,7 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="GSDesign-class.html">GSDesign()</a></code> <code><a href="GSDesign-class.html">n2(<i>&lt;GSDesign&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="GSDesign-class.html">TwoStageDesign(<i>&lt;GSDesign&gt;</i>)</a></code> <code><a href="GSDesign-class.html">evaluate(<i>&lt;SmoothnessN2&gt;</i>,<i>&lt;GSDesign&gt;</i>)</a></code> </p>
+          <p><code><a href="GroupSequentialDesign-class.html">GroupSequentialDesign()</a></code> <code><a href="GroupSequentialDesign-class.html">n2(<i>&lt;GroupSequentialDesign&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="GroupSequentialDesign-class.html">TwoStageDesign(<i>&lt;GroupSequentialDesign&gt;</i>)</a></code> <code><a href="GroupSequentialDesign-class.html">evaluate(<i>&lt;SmoothnessN2&gt;</i>,<i>&lt;GroupSequentialDesign&gt;</i>)</a></code> </p>
         </td>
         <td><p>Group-sequential design</p></td>
       </tr><tr>
@@ -277,12 +283,6 @@
           <p><code><a href="OneStageDesign-class.html">OneStageDesign()</a></code> <code><a href="OneStageDesign-class.html">update(<i>&lt;OneStageDesign&gt;</i>)</a></code> <code><a href="OneStageDesign-class.html">n2(<i>&lt;OneStageDesign&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="OneStageDesign-class.html">c2(<i>&lt;OneStageDesign&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="OneStageDesign-class.html">TwoStageDesign(<i>&lt;OneStageDesign&gt;</i>)</a></code> <code><a href="OneStageDesign-class.html">plot(<i>&lt;OneStageDesign&gt;</i>)</a></code> <code><a href="OneStageDesign-class.html">evaluate(<i>&lt;SmoothnessN2&gt;</i>,<i>&lt;OneStageDesign&gt;</i>)</a></code> </p>
         </td>
         <td><p>One-stage design</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="gq_design.html">gq_design()</a></code> </p>
-        </td>
-        <td><p>Design with Gaussian quadrature integration rule</p></td>
       </tr><tr>
         
         <td>
@@ -307,6 +307,12 @@
           <p><code><a href="minimize.html">minimize()</a></code> </p>
         </td>
         <td><p>Find optimal two-stage design by constraint minimization</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="postprocess.html">postprocess()</a></code> </p>
+        </td>
+        <td><p>Post-process an optimal design</p></td>
       </tr>
     </tbody><tbody>
       <tr>

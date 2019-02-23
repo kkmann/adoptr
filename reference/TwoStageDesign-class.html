@@ -35,6 +35,8 @@
 <meta property="og:description" content="TwoStageDesign is the fundamental design class of this package.
 It consits of three first-stage parameters, two-stage two vectors
 and additional parameters for implementation.
+The argument order defines the order of the Gaussian quadrature rule.
+If it is missing, the length of n2_pivots is used.
 This function allows to plot the stage-two sample size and decision boundary
 functions of a TwoStageDesign and
 user-defined elements of the class ConditionalScore." />
@@ -128,6 +130,8 @@ user-defined elements of the class ConditionalScore." />
     <p><code>TwoStageDesign</code> is the fundamental design class of this package.
 It consits of three first-stage parameters, two-stage two vectors
 and additional parameters for implementation.</p>
+<p>The argument <code>order</code> defines the order of the Gaussian quadrature rule.
+If it is missing, the length of <code>n2_pivots</code> is used.</p>
 <p>This function allows to plot the stage-two sample size and decision boundary
 functions of a <code>TwoStageDesign</code> and
 user-defined elements of the class <code>ConditionalScore</code>.</p>
@@ -138,7 +142,7 @@ user-defined elements of the class <code>ConditionalScore</code>.</p>
 
 <span class='co'># S4 method for numeric</span>
 <span class='fu'>TwoStageDesign</span>(<span class='no'>n1</span>, <span class='no'>c1f</span>, <span class='no'>c1e</span>, <span class='no'>n2_pivots</span>, <span class='no'>c2_pivots</span>,
-  <span class='no'>x1_norm_pivots</span>, <span class='no'>weights</span>)
+  <span class='kw'>order</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
 
 <span class='fu'>tunable_parameters</span>(<span class='no'>x</span>, <span class='no'>...</span>)
 
@@ -219,12 +223,9 @@ user-defined elements of the class <code>ConditionalScore</code>.</p>
       <td><p>cf. slot</p></td>
     </tr>
     <tr>
-      <th>x1_norm_pivots</th>
-      <td><p>cf. slot</p></td>
-    </tr>
-    <tr>
-      <th>weights</th>
-      <td><p>cf. slot</p></td>
+      <th>order</th>
+      <td><p>order (i.e. number of pivot points in the interior of [c1f, c1e])
+of the Gaussian quadrature rule to use for integration</p></td>
     </tr>
     <tr>
       <th>x</th>
@@ -282,6 +283,10 @@ returned?</p></td>
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>an object of class <code>TwoStageDesign</code></p>
+    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p><code>n1</code> denotes the sample size of the first stage.
@@ -299,7 +304,7 @@ denoted by <code>n2_pivots</code> and <code>c2_pivots</code>, respectively.
 The slots <code>x1_norm_pivots</code> and <code>weights</code> are defined
 for numerical implementation rules.
 The generic implementation of this package is a Gaussian quadrature and
-a corresponding design can be built by means of <a href='gq_design.html'>gq_design</a>.
+a corresponding design can be built by calling <code>TwoStageDesign()</code>.
 The user is free to implement own integration rules.
 He has to be aware that all elements of <code>x1_norm_pivots</code> have
 to be inside the interval [-1, 1] and have to be scaled by the
@@ -308,6 +313,9 @@ The parameter <code>tunable</code> is a logical one and indicates which
 design parameters should be tunable for use in optimization.
 Rounded sample size values can be applied by the logical parameter
 <code>rounded</code>.</p>
+<p>If <code>order</code> is specified, <code>n2_pivots</code> and <code>c2_pivots</code> should
+be one-dimensional. They are converted to vectors of length order
+automatically.</p>
     
     <h2 class="hasAnchor" id="methods-by-generic-"><a class="anchor" href="#methods-by-generic-"></a>Methods (by generic)</h2>
 
@@ -338,7 +346,7 @@ approximating the integral over x1.</p></dd>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>order</span>  <span class='kw'>&lt;-</span> <span class='fl'>5L</span>
-<span class='no'>design</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='gq_design.html'>gq_design</a></span>(<span class='fl'>50</span>, <span class='fl'>0</span>, <span class='fl'>2</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/rep'>rep</a></span>(<span class='fl'>50.0</span>, <span class='no'>order</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/rep'>rep</a></span>(<span class='fl'>2.0</span>, <span class='no'>order</span>), <span class='no'>order</span>)
+<span class='no'>design</span> <span class='kw'>&lt;-</span> <span class='fu'>TwoStageDesign</span>(<span class='fl'>50</span>, <span class='fl'>0</span>, <span class='fl'>2</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/rep'>rep</a></span>(<span class='fl'>50.0</span>, <span class='no'>order</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/rep'>rep</a></span>(<span class='fl'>2.0</span>, <span class='no'>order</span>))
 <span class='no'>cp</span>     <span class='kw'>&lt;-</span> <span class='fu'><a href='ConditionalPower-class.html'>ConditionalPower</a></span>(<span class='kw'>dist</span> <span class='kw'>=</span> <span class='fu'><a href='NormalDataDistribution-class.html'>Normal</a></span>(), <span class='kw'>prior</span> <span class='kw'>=</span> <span class='fu'><a href='PointMassPrior-class.html'>PointMassPrior</a></span>(<span class='fl'>.4</span>, <span class='fl'>1</span>))
 <span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/plot'>plot</a></span>(<span class='no'>design</span>, <span class='st'>"Conditional Power"</span> <span class='kw'>=</span> <span class='no'>cp</span>)</div><div class='img'><img src='TwoStageDesign-class-1.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
@@ -348,6 +356,8 @@ approximating the integral over x1.</p></dd>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
+      <li><a href="#value">Value</a></li>
+
       <li><a href="#details">Details</a></li>
 
       <li><a href="#methods-by-generic-">Methods (by generic)</a></li>

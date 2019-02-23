@@ -31,13 +31,13 @@
     <loc>https://kkmann.github.io/adoptr//reference/DataDistribution-class.html</loc>
   </url>
   <url>
-    <loc>https://kkmann.github.io/adoptr//reference/GSDesign-class.html</loc>
-  </url>
-  <url>
     <loc>https://kkmann.github.io/adoptr//reference/GaussLegendreIntegral.html</loc>
   </url>
   <url>
     <loc>https://kkmann.github.io/adoptr//reference/GaussLegendreRule.html</loc>
+  </url>
+  <url>
+    <loc>https://kkmann.github.io/adoptr//reference/GroupSequentialDesign-class.html</loc>
   </url>
   <url>
     <loc>https://kkmann.github.io/adoptr//reference/IntegralScore-class.html</loc>
@@ -70,10 +70,10 @@
     <loc>https://kkmann.github.io/adoptr//reference/adoptr.html</loc>
   </url>
   <url>
-    <loc>https://kkmann.github.io/adoptr//reference/gq_design.html</loc>
+    <loc>https://kkmann.github.io/adoptr//reference/minimize.html</loc>
   </url>
   <url>
-    <loc>https://kkmann.github.io/adoptr//reference/minimize.html</loc>
+    <loc>https://kkmann.github.io/adoptr//reference/postprocess.html</loc>
   </url>
   <url>
     <loc>https://kkmann.github.io/adoptr//reference/print.TwoStageDesignSummary.html</loc>

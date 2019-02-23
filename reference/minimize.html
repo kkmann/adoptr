@@ -131,9 +131,8 @@ using <code>nloptr</code> (using COBYLA by default).</p>
     </div>
 
     <pre class="usage"><span class='fu'>minimize</span>(<span class='no'>objective</span>, <span class='no'>subject_to</span>, <span class='no'>initial_design</span>, <span class='no'>lower_boundary_design</span>,
-  <span class='no'>upper_boundary_design</span>, <span class='kw'>c2_monotone</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>post_process</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>opts</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>algorithm</span> <span class='kw'>=</span> <span class='st'>"NLOPT_LN_COBYLA"</span>, <span class='kw'>xtol_rel</span> <span class='kw'>=</span> <span class='fl'>1e-05</span>, <span class='kw'>maxeval</span> <span class='kw'>=</span>
-  <span class='fl'>10000</span>), <span class='no'>...</span>)</pre>
+  <span class='no'>upper_boundary_design</span>, <span class='kw'>c2_monotone</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>opts</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>algorithm</span> <span class='kw'>=</span>
+  <span class='st'>"NLOPT_LN_COBYLA"</span>, <span class='kw'>xtol_rel</span> <span class='kw'>=</span> <span class='fl'>1e-05</span>, <span class='kw'>maxeval</span> <span class='kw'>=</span> <span class='fl'>10000</span>), <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -163,10 +162,6 @@ using <code>nloptr</code> (using COBYLA by default).</p>
       <td><p>should the c2-function be forced to be monotoneously decreasing?</p></td>
     </tr>
     <tr>
-      <th>post_process</th>
-      <td><p>should post processing be performed to obtain exact boundaries for integer sample sizes?</p></td>
-    </tr>
-    <tr>
       <th>opts</th>
       <td><p>options list passed to nloptr</p></td>
     </tr>
@@ -181,17 +176,8 @@ using <code>nloptr</code> (using COBYLA by default).</p>
     
 
 <dt>design</dt><dd><p>The resulting optimal design</p></dd>
-        <dt>details</dt><dd><p>A list with the following arguments
-        <ul>
-<li><p>design The optimal design without rounded n-values</p></li>
-<li><p>design_post The optimal design after post-processing.
-        Returns <code>NULL</code> if post_process was set to <code>FALSE</code>.</p></li>
-<li><p>nloptr_return The return of the nloptr call for the
-        non-post-processed design.</p></li>
-<li><p>nloptr_return_post The return of the nloptr call for the
-        post-processed design.
-        Returns <code>NULL</code> if post_process was set to <code>FALSE</code>.</p></li>
-</ul></p></dd>
+        <dt>nloptr_return</dt><dd><p>Output of the corresponding nloptr call</p></dd>
+        <dt>call_args</dt><dd><p>The arguments given to the optimization call</p></dd>
 
     
 

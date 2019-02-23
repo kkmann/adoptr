@@ -80,7 +80,7 @@
     <div class="page-header toc-ignore">
       <h1>Get started with adoptr</h1>
             
-            <h4 class="date">2019-02-22</h4>
+            <h4 class="date">2019-02-23</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/kkmann/adoptr/blob/master/vignettes/adoptr.Rmd"><code>vignettes/adoptr.Rmd</code></a></small>
       <div class="hidden name"><code>adoptr.Rmd</code></div>
@@ -97,12 +97,12 @@
 <p>We can start with a a more or less arbitrary initial design [ToDo: can we start with a single stage design fulfilling the power and type one error rate constraints here?]. <code>adoptr</code> internally represents designs as tuples of <span class="math inline">\((n_1, c_{1f}, c_{1f}, n_2(\cdot), c_2(\cdot))\)</span>. Here, <span class="math inline">\(n_2\)</span> and <span class="math inline">\(c_2\)</span> are the functions returning the stage-two sample size and critical values given the stage-one test statitic <span class="math inline">\(x_1\)</span> (z-score in our case). For any given objective function, the design parameters can be identified via a variational problem. To numerically solve this problem <span class="math inline">\(n_2\)</span> and <span class="math inline">\(c_2\)</span> are integrated using a Gaussian quadrature rule. The order of the rule determines the number of pivot points for both functions. Since, both <span class="math inline">\(n_2\)</span> and <span class="math inline">\(c_2\)</span> are usually fairly smooth on the continuation region, a quadrature rule of order 5 is sufficiently flexible:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">order &lt;-<span class="st"> </span>5L</a></code></pre></div>
 <p>The initial design may then be defined as follows:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">design &lt;-<span class="st"> </span><span class="kw"><a href="../reference/gq_design.html">gq_design</a></span>(</a>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">design &lt;-<span class="st"> </span><span class="kw"><a href="../reference/TwoStageDesign-class.html">TwoStageDesign</a></span>(</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2">    <span class="dt">n1    =</span> <span class="dv">25</span>, </a>
 <a class="sourceLine" id="cb2-3" data-line-number="3">    <span class="dt">c1f   =</span> <span class="dv">0</span>,</a>
 <a class="sourceLine" id="cb2-4" data-line-number="4">    <span class="dt">c1e   =</span> <span class="dv">2</span>,</a>
-<a class="sourceLine" id="cb2-5" data-line-number="5">    <span class="dt">n2    =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="fl">40.0</span>, order), </a>
-<a class="sourceLine" id="cb2-6" data-line-number="6">    <span class="dt">c2    =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>( <span class="fl">1.96</span>, order), </a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">    <span class="dt">n2    =</span> <span class="fl">40.0</span>, </a>
+<a class="sourceLine" id="cb2-6" data-line-number="6">    <span class="dt">c2    =</span> <span class="fl">1.96</span>,</a>
 <a class="sourceLine" id="cb2-7" data-line-number="7">    <span class="dt">order =</span> order</a>
 <a class="sourceLine" id="cb2-8" data-line-number="8">  )</a></code></pre></div>
 <p>[comment: I don’t like the gq_design function. If we only use GQ, we should implement this as default constructor of the TwoStageDesign class even though the implementation is more generic.] The design can be visualized using the provided <code><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot()</a></code> method.</p>
@@ -124,11 +124,11 @@
 <h2 class="hasAnchor">
 <a href="#define-scores" class="anchor"></a>Define scores</h2>
 <p>To define the optimization problem we specify a few quantities of interest. The overall objective could, e.g., be to minimize the expected sample size of the design under the alternative hypothesis subject to the given power and type one error rate constraints. Let to this end</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">ess  &lt;-<span class="st"> </span><span class="kw"><a href="../reference/working-with-scores.html">integrate</a></span>(<span class="kw"><a href="../reference/ConditionalSampleSize-class.html">ConditionalSampleSize</a></span>(datadist, alternative))</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">ess  &lt;-<span class="st"> </span><span class="kw"><a href="../reference/working-with-scores.html">expected</a></span>(<span class="kw"><a href="../reference/ConditionalSampleSize-class.html">ConditionalSampleSize</a></span>(datadist, alternative))</a></code></pre></div>
 <p>be the expected sample size under the alternative. Note that the <code>ess</code> object is created by integrating a simple, conditional score - the conditional sample size given <span class="math inline">\(X_1 = x_1\)</span> is just <span class="math inline">\(n_1 + n_2(x_1)\)</span> and pre-implemented.</p>
 <p>Similarly, we can define the power and type one error rate by integrating conditional power with respect to the alternative or null hypothesis respectively:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">power  &lt;-<span class="st"> </span><span class="kw"><a href="../reference/working-with-scores.html">integrate</a></span>(<span class="kw"><a href="../reference/ConditionalPower-class.html">ConditionalPower</a></span>(datadist, alternative))</a>
-<a class="sourceLine" id="cb7-2" data-line-number="2">toer   &lt;-<span class="st"> </span><span class="kw"><a href="../reference/working-with-scores.html">integrate</a></span>(<span class="kw"><a href="../reference/ConditionalPower-class.html">ConditionalPower</a></span>(datadist, null))</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">power  &lt;-<span class="st"> </span><span class="kw"><a href="../reference/working-with-scores.html">expected</a></span>(<span class="kw"><a href="../reference/ConditionalPower-class.html">ConditionalPower</a></span>(datadist, alternative))</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">toer   &lt;-<span class="st"> </span><span class="kw"><a href="../reference/working-with-scores.html">expected</a></span>(<span class="kw"><a href="../reference/ConditionalPower-class.html">ConditionalPower</a></span>(datadist, null))</a></code></pre></div>
 </div>
 <div id="optimize-the-design" class="section level2">
 <h2 class="hasAnchor">
@@ -148,14 +148,13 @@
 <a class="sourceLine" id="cb9-6" data-line-number="6">    toer  <span class="op">&lt;=</span><span class="st"> </span><span class="fl">.05</span></a>
 <a class="sourceLine" id="cb9-7" data-line-number="7">  ),</a>
 <a class="sourceLine" id="cb9-8" data-line-number="8">  </a>
-<a class="sourceLine" id="cb9-9" data-line-number="9">  <span class="dt">post_process =</span> <span class="ot">FALSE</span>, <span class="co"># </span><span class="al">TODO</span><span class="co"> activate this again once tested</span></a>
-<a class="sourceLine" id="cb9-10" data-line-number="10">  <span class="dt">initial_design        =</span> design,</a>
-<a class="sourceLine" id="cb9-11" data-line-number="11">  <span class="dt">lower_boundary_design =</span> lb_design,</a>
-<a class="sourceLine" id="cb9-12" data-line-number="12">  <span class="dt">upper_boundary_design =</span> ub_design</a>
-<a class="sourceLine" id="cb9-13" data-line-number="13">  </a>
-<a class="sourceLine" id="cb9-14" data-line-number="14">)</a>
-<a class="sourceLine" id="cb9-15" data-line-number="15"></a>
-<a class="sourceLine" id="cb9-16" data-line-number="16">optimal_design &lt;-<span class="st"> </span>optimal_result<span class="op">$</span>design</a></code></pre></div>
+<a class="sourceLine" id="cb9-9" data-line-number="9">  <span class="dt">initial_design        =</span> design,</a>
+<a class="sourceLine" id="cb9-10" data-line-number="10">  <span class="dt">lower_boundary_design =</span> lb_design,</a>
+<a class="sourceLine" id="cb9-11" data-line-number="11">  <span class="dt">upper_boundary_design =</span> ub_design</a>
+<a class="sourceLine" id="cb9-12" data-line-number="12">  </a>
+<a class="sourceLine" id="cb9-13" data-line-number="13">)</a>
+<a class="sourceLine" id="cb9-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb9-15" data-line-number="15">optimal_design &lt;-<span class="st"> </span>optimal_result<span class="op">$</span>design</a></code></pre></div>
 <p>Here, we override the internal defaults to allow a more precise solution. Note that since COBYLA is a generic derivative-free optimizer, the process may take quite a while. In general it is important to check convergence since partial solutions might be non-smooth or otherwise non-intuitive. If the algorithm would not have converged, the function <code>minimize</code> would have thrown a warning message. All the output that was created by <code>nloptr</code> can be regarded by</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">optimal_result<span class="op">$</span>details<span class="op">$</span>nloptr_return</a></code></pre></div>
 <p>The resulting optimized design may again be plotted together with its conditional power.</p>
