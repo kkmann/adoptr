@@ -3,10 +3,10 @@ context("AffineScoreFunction")
 # Define conditional and unconditional scores
 css <- ConditionalSampleSize(Normal(), PointMassPrior(.3, 1))
 cp  <- ConditionalPower(Normal(), PointMassPrior(.3, 1))
-ess <- integrate(css)
-pow <- integrate(cp)
+ess <- expected(css)
+pow <- expected(cp)
 order  = 5L
-design <- gq_design(30, -.5, 2.5, rep(50.0, order), rep(2.0, order), order)
+design <- TwoStageDesign(30, -.5, 2.5, rep(50.0, order), rep(2.0, order))
 z1 <- seq(-1, 3, .1)
 
 

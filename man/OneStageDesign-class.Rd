@@ -20,10 +20,9 @@ OneStageDesign(n, c)
 
 \S4method{c2}{OneStageDesign,numeric}(d, x1, ...)
 
-\S4method{TwoStageDesign}{OneStageDesign}(d, rounded = FALSE, ...)
+\S4method{TwoStageDesign}{OneStageDesign}(d, ...)
 
-\S4method{plot}{OneStageDesign}(x, y = NULL, rounded = TRUE, ...,
-  k = 100)
+\S4method{plot}{OneStageDesign}(x, y, ...)
 
 \S4method{evaluate}{SmoothnessN2,OneStageDesign}(s, design, ...)
 }
@@ -43,13 +42,9 @@ by \code{as.numeric(OneStageDesign)})}
 
 \item{x1}{stage-one outcome}
 
-\item{rounded}{logical that indicates whether rounded n1-value should be used}
-
 \item{x}{not used}
 
 \item{y}{not used}
-
-\item{k}{number of points to use for plotting}
 
 \item{s}{an object of class \code{SmoothnessN2}}
 
@@ -80,7 +75,5 @@ No other parameters have to be set.
 \item{\code{weights}}{is ignored for OneStageDesign}
 
 \item{\code{tunable}}{is ignored for OneStageDesign}
-
-\item{\code{rounded}}{logical that indicates whether rounded n1-value should be used}
 }}
 

@@ -29,3 +29,29 @@ test_that("manual Gauss-Legendre integration is replicating stats::integrate()",
     expect_equal(int3, gl3)
 
 })
+
+
+
+test_that("errors are thrown correctly", {
+    expect_error(
+        GaussLegendreRule(0)
+    )
+
+    f <- function(x) x^2
+    a <- 0
+    b <- 1
+
+    expect_error(
+        integrate_rule(f, a, b, c(1, 1), 1)
+    )
+
+    expect_error(
+        integrate_rule(f, a, b, c(2, 1), c(.5, .5))
+    )
+
+
+    expect_error(
+        integrate_rule(f, a, b, c(-.5, .5), c(-1, 1))
+    )
+
+}) # end 'errors are thrown correctly'

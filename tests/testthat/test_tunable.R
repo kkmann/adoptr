@@ -5,18 +5,18 @@ n1     <- 25
 c1f    <-   .0
 c1e    <-  2.0
 order  <- 5L
-n2_piv <- rep(40.0, order)
-c2_piv <- rep(1.96, order)
+n2_piv <- 40.0
+c2_piv <- 1.96
 
-initial_design <- gq_design(n1, c1f, c1e, n2_piv, c2_piv, order)
+initial_design <- TwoStageDesign(n1, c1f, c1e, n2_piv, c2_piv, order)
 
 dist        <- Normal(two_armed = FALSE)
 null        <- PointMassPrior(.0, 1)
 alternative <- PointMassPrior(.4, 1)
 
-ess  <- integrate(ConditionalSampleSize(dist, alternative))
-pow  <- integrate(ConditionalPower(dist, alternative))
-toer <- integrate(ConditionalPower(dist, null))
+ess  <- expected(ConditionalSampleSize(dist, alternative))
+pow  <- expected(ConditionalPower(dist, alternative))
+toer <- expected(ConditionalPower(dist, null))
 
 
 
@@ -65,29 +65,22 @@ test_that("two stage design can be optimized with fixed first stage", {
     lb_design      <- update(tmp, c(numeric(order) + 1, numeric(order) - 3))
     ub_design      <- update(tmp, c(numeric(order) + 100, numeric(order) + 10))
 
-    res <- minimize(
+    res <- suppressWarnings(minimize(
 
         ess,
         subject_to(
             pow  >= 0.8,
             toer <= .05
         ),
-
-        post_process          = FALSE, # if we can do it without post
-                                       # processing, by design, it also
-                                       # works with
         initial_design        = tmp,
         lower_boundary_design = lb_design,
         upper_boundary_design = ub_design,
         opts = list(
-            algorithm   = "NLOPT_LN_COBYLA",
-            xtol_abs    = 1 # we do not need convergence,
-                            # only see if it works technically!
+            algorithm = "NLOPT_LN_COBYLA",
+            maxiter   = 10 # we do not need convergence,
+                           # only see if it works technically!
         )
-    )
-
-    # make sure that the lax convergence still leads to function evaluations!
-    expect_true(res$details$nloptr_return$iterations >= 10)
+    ))
 
     # check that fixed params did not change
     expect_equal(res$design@n1, tmp@n1)
@@ -105,29 +98,22 @@ test_that("two stage design can be optimized with fixed sample sizes", {
     lb_design      <- update(tmp, c(-1, 1, numeric(order) - 3))
     ub_design      <- update(tmp, c(1, 4, numeric(order) + 5))
 
-    res <- minimize(
+    res <- suppressWarnings(minimize(
 
         ess,
         subject_to(
             pow  >= 0.8,
             toer <= .05
         ),
-
-        post_process          = FALSE, # if we can do it without post
-                                       # processing, by design, it also
-                                       # works with
         initial_design        = tmp,
         lower_boundary_design = lb_design,
         upper_boundary_design = ub_design,
         opts = list(
-            algorithm   = "NLOPT_LN_COBYLA",
-            xtol_abs    = 1 # we do not need convergence,
-                            # only see if it works technically!
+            algorithm = "NLOPT_LN_COBYLA",
+            maxiter   = 10 # we do not need convergence,
+                           # only see if it works technically!
         )
-    )
-
-    # make sure that the lax convergence still leads to function evaluations!
-    expect_true(res$details$nloptr_return$iterations >= 10)
+    ))
 
     # check that fixed params did not change
     expect_equal(res$design@n1, tmp@n1)
@@ -140,7 +126,7 @@ test_that("two stage design can be optimized with fixed sample sizes", {
 
 test_that("group-sequential design can be optimized with fixed sample sizes", {
 
-    initial_gs_design <- gq_design(25, .0, 2.0, 50.0, rep(2.0, order), order)
+    initial_gs_design <- GroupSequentialDesign(25, .0, 2.0, 50.0, 2.0, order)
 
     tmp_gs <- make_fixed(initial_gs_design, n1, n2_pivots)
 
@@ -154,19 +140,18 @@ test_that("group-sequential design can be optimized with fixed sample sizes", {
             pow  >= 0.8,
             toer <= .05
         ),
-        post_process          = FALSE,
         initial_design        = tmp_gs,
         lower_boundary_design = lb_design,
         upper_boundary_design = ub_design,
         opts = list(
             algorithm   = "NLOPT_LN_COBYLA",
             xtol_abs    = 1 # we do not need convergence,
-            # only see if it works technically!
+                            # only see if it works technically!
         )
     )
 
     # make sure that the lax convergence still leads to function evaluations!
-    expect_true(res$details$nloptr_return$iterations >= 10)
+    expect_true(res$nloptr_return$iterations >= 10)
 
     # check that fixed params did not change
     expect_equal(res$design@n1, tmp_gs@n1)
@@ -192,8 +177,6 @@ test_that("one-stage design can be optimized with fixed sample sizes", {
             pow >= 0.8,
             toer <= 0.025
             ),
-
-        post_process          = FALSE,
         initial_design        = tmp_os,
         lower_boundary_design = lb_design,
         upper_boundary_design = ub_design

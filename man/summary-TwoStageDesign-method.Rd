@@ -5,7 +5,7 @@
 \alias{summary,TwoStageDesign-method}
 \title{Summarize TwoStageDesign objects with optional set of scores}
 \usage{
-\S4method{summary}{TwoStageDesign}(object, ..., rounded = T)
+\S4method{summary}{TwoStageDesign}(object, ..., rounded = TRUE)
 }
 \arguments{
 \item{object}{design object to summarize}
@@ -27,8 +27,8 @@ evaluated and listed.
 }
 \examples{
 order  <- 5L
-design <- gq_design(50, 0, 2, rep(50.0, order), rep(2.0, order), order)
-pow    <- integrate(ConditionalPower(dist = Normal(), prior = PointMassPrior(.4, 1)))
+design <- TwoStageDesign(50, 0, 2, 50.0, 2.0, order)
+pow    <- expected(ConditionalPower(dist = Normal(), prior = PointMassPrior(.4, 1)))
 summary(design, "Power" = pow)
 
 }

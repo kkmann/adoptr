@@ -10,7 +10,7 @@
 SmoothnessN2(h = 0.1)
 
 \S4method{evaluate}{SmoothnessN2,TwoStageDesign}(s, design,
-  specific = TRUE, ...)
+  optimization = FALSE, subdivisions = 10000L, ...)
 }
 \arguments{
 \item{h}{positive number, see slot \code{h}}
@@ -19,7 +19,11 @@ SmoothnessN2(h = 0.1)
 
 \item{design}{the design to compute the smoothness term for}
 
-\item{specific}{should a specific implementation be used?}
+\item{optimization}{logical, if TRUE uses a relaxation to real parameters of
+the underlying design; used for smooth optimization.}
+
+\item{subdivisions}{integer, maxima number of subdivisions used for daptive
+integration.}
 
 \item{...}{further optional arguments}
 }

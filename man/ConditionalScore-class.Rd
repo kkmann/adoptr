@@ -4,12 +4,13 @@
 \name{ConditionalScore-class}
 \alias{ConditionalScore-class}
 \alias{evaluate,ConditionalScore,TwoStageDesign-method}
-\alias{integrate,ConditionalScore-method}
+\alias{expected,ConditionalScore-method}
 \title{Class for conditional scoring function}
 \usage{
-\S4method{evaluate}{ConditionalScore,TwoStageDesign}(s, design, x1, ...)
+\S4method{evaluate}{ConditionalScore,TwoStageDesign}(s, design, x1,
+  optimization = FALSE, ...)
 
-\S4method{integrate}{ConditionalScore}(s, ...)
+\S4method{expected}{ConditionalScore}(s, ...)
 }
 \arguments{
 \item{s}{conditional score object to evaluate}
@@ -17,6 +18,9 @@
 \item{design}{a \code{Design}}
 
 \item{x1}{stage one outcome (note that n1 is available from \code{design})}
+
+\item{optimization}{logical, if TRUE uses a relaxation to real parameters of
+the underlying design; used for smooth optimization.}
 
 \item{...}{further optional parameters}
 }
@@ -28,7 +32,7 @@
 \item \code{evaluate}: not implemented, just raises a 'not implemented'
 error.
 
-\item \code{integrate}: integrate a \code{ConditionalScore} over the
+\item \code{expected}: integrate a \code{ConditionalScore} over the
 stage-one outcome; return object of class \code{\link{IntegralScore-class}}.
 }}
 

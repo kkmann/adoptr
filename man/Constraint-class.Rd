@@ -20,7 +20,8 @@
 \alias{>=,UnconditionalScore,UnconditionalScore-method}
 \title{Formulating constraints}
 \usage{
-\S4method{evaluate}{Constraint,TwoStageDesign}(s, design, ...)
+\S4method{evaluate}{Constraint,TwoStageDesign}(s, design,
+  optimization = FALSE, ...)
 
 \S4method{<=}{AbstractConditionalScore,numeric}(e1, e2)
 
@@ -51,6 +52,9 @@
 
 \item{design}{TwoStageDesign to evaluate}
 
+\item{optimization}{logical, if TRUE uses a relaxation to real parameters of
+the underlying design; used for smooth optimization.}
+
 \item{...}{further optional arguments}
 
 \item{e1}{first comparator}
@@ -68,7 +72,7 @@ Currently,  constraints of the form 'score <=/>= x',
 }
 \examples{
 cp          <- ConditionalPower(Normal(), PointMassPrior(0.4, 1))
-pow         <- integrate(cp)
+pow         <- expected(cp)
 constraint1 <- pow >= 0.8 # an unconditional power constraint
 constraint2 <- cp >= 0.7 # a conditional power constraint
 constraint3 <- 0.7 <= cp # yields the same as constraint2

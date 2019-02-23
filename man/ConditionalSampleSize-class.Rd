@@ -10,7 +10,7 @@
 ConditionalSampleSize(dist, prior)
 
 \S4method{evaluate}{ConditionalSampleSize,TwoStageDesign}(s, design, x1,
-  ...)
+  optimization = FALSE, ...)
 }
 \arguments{
 \item{dist}{data distribution}
@@ -22,6 +22,9 @@ ConditionalSampleSize(dist, prior)
 \item{design}{a \code{Design}}
 
 \item{x1}{stage one outcome (note that n1 is available from \code{design})}
+
+\item{optimization}{logical, if TRUE uses a relaxation to real parameters of
+the underlying design; used for smooth optimization.}
 
 \item{...}{further optional parameters}
 }

@@ -34,10 +34,10 @@ test_that("Optimal one-stage design with point prior is computable", {
 
     dist <- Normal(two_armed = FALSE)
 
-    ess  <- integrate(ConditionalSampleSize(dist, alternative))
+    ess  <- expected(ConditionalSampleSize(dist, alternative))
     cp   <- ConditionalPower(dist, alternative)
-    pow  <- integrate(cp)
-    toer <- integrate(ConditionalPower(dist, null))
+    pow  <- expected(cp)
+    toer <- expected(ConditionalPower(dist, null))
     smth <- SmoothnessN2()
 
 
@@ -72,8 +72,7 @@ test_that("Optimal one-stage design with point prior is computable", {
         ),
         initial_design = design,
         lower_boundary_design = update(design, c(5, -5)),
-        upper_boundary_design = update(design, c(500, 5)),
-        post_process = FALSE
+        upper_boundary_design = update(design, c(500, 5))
     ) -> d2
 
     d2 <- d2$design
@@ -135,7 +134,7 @@ test_that("OneStageDesign can be converted to TwoStageDesign", {
     design1 <- OneStageDesign(87.21, 1.96)
     design2 <- TwoStageDesign(design1)
 
-    pow <- integrate(ConditionalPower(Normal(two_armed = FALSE), PointMassPrior(.3, 1)))
+    pow <- expected(ConditionalPower(Normal(two_armed = FALSE), PointMassPrior(.3, 1)))
 
     expect_equal(
         evaluate(pow, design1),

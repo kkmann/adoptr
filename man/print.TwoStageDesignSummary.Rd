@@ -4,7 +4,7 @@
 \alias{print.TwoStageDesignSummary}
 \title{Print object of class TwoStageDesignSummary}
 \usage{
-\method{print}{TwoStageDesignSummary}(x, ..., rounded = T)
+\method{print}{TwoStageDesignSummary}(x, ..., rounded = TRUE)
 }
 \arguments{
 \item{x}{object to print}
