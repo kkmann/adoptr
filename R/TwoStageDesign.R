@@ -204,8 +204,6 @@ setMethod("n1", signature("TwoStageDesign"),
               n1 <- d@n1
               if (round)
                   n1 <- round(n1)
-              # if (round)
-              #     n1 <- round(n1)
               return(n1)
           })
 
@@ -224,13 +222,11 @@ setMethod("n2", signature("TwoStageDesign", "numeric"),
               res <- ifelse(x1 < d@c1f | x1 > d@c1e, 0, 1) *
                   pmax(
                       0,
-                      stats::approx(
+                      stats::splinefun(
                           scaled_integration_pivots(d),
                           d@n2_pivots,
-                          xout   = x1,
-                          method = "linear",
-                          rule   = 2
-                      )$y
+                          method = "monoH.FC"
+                        )(x1)
                   )
               if (round)
                   res <- round(res)
@@ -259,7 +255,12 @@ setGeneric("c2", function(d, x1, ...) standardGeneric("c2"))
 setMethod("c2", signature("TwoStageDesign", "numeric"),
           function(d, x1, ...) ifelse(x1 < d@c1f, Inf,
                                       ifelse(x1 > d@c1e, -Inf,
-                                             stats::approx(scaled_integration_pivots(d), d@c2_pivots, xout = x1, method = "linear", rule = 2)$y)
+                                             stats::splinefun(
+                                                 scaled_integration_pivots(d),
+                                                 d@c2_pivots,
+                                                 method = "monoH.FC"
+                                                 )(x1)
+                                             )
           )
 )
 
@@ -334,7 +335,10 @@ setMethod("plot", signature(x = "TwoStageDesign"),
               if (length(scores) > 0) {
                   for (i in 1:length(scores)) {
                       graphics::plot(x1, evaluate(scores[[i]], x, x1), 'l',
-                                     main = names(scores[i]), ylab = "", xlab = expression("x"[1]))
+                                     main = names(scores[i]), ylab = "", xlab = expression("x"[1]),
+                                     ylim = c(0,
+                                              1.05 * max(sapply(x1,
+                                                                function(z) evaluate(scores[[i]], x, z)))))
                       graphics::lines(x2, evaluate(scores[[i]], x, x2))
                       graphics::lines(x3, evaluate(scores[[i]], x, x3))
                   }
