@@ -92,12 +92,14 @@ test_that("Optimal one-stage design can be computed", {
 
     expect_equal(
         opt_os$design@c1f,
-        qnorm(1 - alpha)
+        qnorm(1 - alpha),
+        tolerance = 1e-3
     ) # c-value known for one-stage
 
     expect_equal(
         opt_os$design@n1,
-        ((qnorm(1 - beta) + qnorm(1 - alpha)) / 0.4)^2
+        ((qnorm(1 - beta) + qnorm(1 - alpha)) / 0.4)^2,
+        tolerance = .01
     ) # n-value known for one-stage
 
 }) # end 'optimal one-stage design can be computed'
@@ -159,7 +161,7 @@ test_that("Optimal group-sequential design is superior to standard gs design", {
     )
 
     res <- rpact::getSampleSizeMeans(
-        design_rp, normalApproximation = TRUE, alternative = .4
+        design_rp, normalApproximation = TRUE, alternative = .4 * sqrt(2)
     )
 
     c2_fun <- function(z){
@@ -182,7 +184,7 @@ test_that("Optimal group-sequential design is superior to standard gs design", {
         100L
     )
 
-    rpact_design@c2_pivots <- sapply(tunable_parameters(rpact_design), c2_fun)
+    rpact_design@c2_pivots <- sapply(scaled_integration_pivots(rpact_design), c2_fun)
 
     # use opt_gs from above
     testthat::expect_lte(
