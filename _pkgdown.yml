@@ -1,6 +1,6 @@
 destination: docs
 
-url: https://kkmann.github.io/adoptr/
+url: https://kkmann.github.io/adoptr
 
 navbar:
   left:
@@ -10,9 +10,9 @@ navbar:
     href: articles/adoptr.html
   - text: Working with priors
     href: articles/working-with-priors.html
-  - text: Score and constraints arithmetic
+  - text: Score arithmetic
     href: articles/score-and-constraints-arithmetic.html
-  - text: Defining new scores
+  - text: Defining custom scores
     href: articles/defining-new-scores.html
   - text: Reference
     href: reference/index.html
@@ -80,3 +80,11 @@ reference:
   contents:
   - '`Constraint-class`'
   - '`ConstraintsCollection-class`'
+
+
+
+template:
+  params:
+    docsearch:
+      api_key: f5b8253ef131d8de31a2e0e075678ba8
+      index_name: adoptr
