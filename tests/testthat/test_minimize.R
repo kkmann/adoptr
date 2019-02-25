@@ -173,7 +173,7 @@ test_that("Optimal group-sequential design is superior to standard gs design", {
 
     c1f <- qnorm(
         rpact::getDesignCharacteristics(design_rp)$futilityProbabilities
-    ) + sqrt(res$numberOfPatientsGroup1[1]) * (.4 / sqrt(2))
+    ) + sqrt(res$numberOfPatientsGroup1[1]) * .4
 
     rpact_design <- GroupSequentialDesign(
         ceiling(res$numberOfPatientsGroup1[1,]),
