@@ -9,15 +9,19 @@
 \usage{
 AverageN2()
 
-\S4method{evaluate}{AverageN2,TwoStageDesign}(s, design, specific = TRUE,
-  ...)
+\S4method{evaluate}{AverageN2,TwoStageDesign}(s, design,
+  optimization = FALSE, subdivisions = 10000L, ...)
 }
 \arguments{
 \item{s}{a score of class \code{AverageN2}}
 
 \item{design}{a \code{TwoStageDesign}}
 
-\item{specific}{logical, flag for switching to design-specific implementation.}
+\item{optimization}{logical, if TRUE uses a relaxation to real parameters of
+the underlying design; used for smooth optimization.}
+
+\item{subdivisions}{integer, maxima number of subdivisions used for daptive
+integration.}
 
 \item{...}{further optimal arguments}
 }
@@ -34,7 +38,6 @@ the optimization more stable.
 \itemize{
 \item \code{evaluate}: generic implementation of evaluating a smoothness
 score. Uses adaptive Gaussian quadrature for integration and might be
-more efficiently implemented by specific \code{TwoStageDesign}-classes
-(cf. \code{\link{.evaluate}}).
+more efficiently implemented by specific \code{TwoStageDesign}-classes.
 }}
 

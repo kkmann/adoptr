@@ -1,9 +1,0 @@
-pandoc: 2.3.1
-pkgdown: 1.1.0
-pkgdown_sha: ~
-articles:
-  otsd: otsd.html
-urls:
-  reference: https://kkmann.github.io/otsd//reference
-  article: https://kkmann.github.io/otsd//articles
-

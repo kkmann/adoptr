@@ -4,7 +4,7 @@
 #' \code{\link{UnconditionalScore-class}} implement \code{evaluate} methods
 #' which handle the actual computation of the score given a design and
 #' (for conditional scores) an interim result.
-#' Conditional scores additionally implement an \code{integrate} method
+#' Conditional scores additionally implement an \code{expected} method
 #' to obtain the corresponding unconditional \code{\link{IntegralScore-class}}.
 #'
 #' @name working-with-scores
@@ -20,48 +20,20 @@ setGeneric("evaluate", function(s, design, ...) standardGeneric("evaluate"))
 
 #' @rdname working-with-scores
 #' @export
-setGeneric("integrate", function(s, ...) standardGeneric("integrate"))
+setGeneric("expected", function(s, ...) standardGeneric("expected"))
 
 
-#' Design specific implementation for evaluating integral scores
-#'
-#' This generic is not exported and for internal use only.
-#' It allows \code{\link{evaluate}} which is implemented generically via
-#' adaptive Gaussian quadrature to selectively dispatch to a design-specific
-#' implementation.
-#' This is mostly exploited during optiization to allow more efficient and
-#' stable evaluation of integral scores.
-#'
-#' @param s score object
-#' @param design design object
-#' @template dotdotdotTemplate
-#'
-#' @name .evaluate
+# not user facing
 setGeneric(".evaluate", function(s, design, ...) standardGeneric(".evaluate"))
 
 
 
-#' [ToDO]
-#'
-#' [ToDo]
-#'
-#' @exportClass AbstractConditionalScore
+# internal use only
 setClass("AbstractConditionalScore")
 
-#' @param s score
-#' @param design design
-#' @param x1 stage-one outcome
-#' @template dotdotdotTemplate
-#'
-#' @rdname AbstractConditionalScore-class
-#' @export
-setMethod("evaluate", signature("AbstractConditionalScore", "TwoStageDesign"),
-          function(s, design, x1, ...) stop("not implemented"))
 
 
-
-
-#' Abstract class for conditional scoring function
+#' Class for conditional scoring function
 #'
 #' [ToDo]
 #'
@@ -75,15 +47,17 @@ setClass("ConditionalScore", representation(
     contains = "AbstractConditionalScore")
 
 
+#' @param optimization logical, if TRUE uses a relaxation to real parameters of
+#'    the underlying design; used for smooth optimization.
 #' @describeIn ConditionalScore not implemented, just raises a 'not implemented'
 #'     error.
 setMethod("evaluate", signature("ConditionalScore", "TwoStageDesign"),
-          function(s, design, x1, ...) stop("not implemented"))
+          function(s, design, x1, optimization = FALSE, ...) stop("not implemented"))
 
 
 #' @describeIn ConditionalScore integrate a \code{ConditionalScore} over the
 #'     stage-one outcome; return object of class \code{\link{IntegralScore-class}}.
-setMethod("integrate", signature("ConditionalScore"),
+setMethod("expected", signature("ConditionalScore"),
           function(s, ...) new("IntegralScore", cs = s) )
 
 
@@ -103,19 +77,19 @@ NULL
 #' @rdname score-arithmetic
 setMethod("+", signature("ConditionalScore", "numeric"),
           function(e1, e2) AffineConditionalScore(list(e1), 1, e2) )
-#'@rdname score-arithmetic
+#' @rdname score-arithmetic
 setMethod("+", signature("numeric", "ConditionalScore"),
           function(e1, e2) e2 + e1 )
 ## TODO: check for duplicate scores and combine!
-#'@rdname score-arithmetic
+#' @rdname score-arithmetic
 setMethod("+", signature("ConditionalScore", "ConditionalScore"),
           function(e1, e2) AffineConditionalScore(list(e1, e2), c(1, 1), 0) )
 
 
-#'@rdname score-arithmetic
+#' @rdname score-arithmetic
 setMethod("*", signature("ConditionalScore", "numeric"),
           function(e1, e2) AffineConditionalScore(list(e1), e2, 0) )
-#'@rdname score-arithmetic
+#' @rdname score-arithmetic
 setMethod("*", signature("numeric", "ConditionalScore"),
           function(e1, e2) e2 * e1 )
 
@@ -134,35 +108,40 @@ setClass("UnconditionalScore")
 
 #' @param s an \code{IntegralScore}
 #' @param design a \code{TwoStageDesign}
+#' @param optimization logical, if TRUE uses a relaxation to real parameters of
+#'    the underlying design; used for smooth optimization.
 #' @template dotdotdotTemplate
 #'
 #' @rdname UnconditionalScore-class
 #' @export
 setMethod("evaluate", signature("UnconditionalScore", "TwoStageDesign"),
-          function(s, design, ...) stop("not implemented") )
+          function(s, design, optimization = FALSE, ...) stop("not implemented") )
 
 
-#' @rdname UnconditionalScore-class
+# not user facing
 setMethod(".evaluate", signature("UnconditionalScore", "TwoStageDesign"),
           function(s, design, ...) stop("not implemented") )
 
 
-#'@rdname score-arithmetic
+#' @rdname score-arithmetic
 setMethod("+", signature("UnconditionalScore", "numeric"),
           function(e1, e2) AffineUnconditionalScore(list(e1), 1, e2) )
-#'@rdname score-arithmetic
+
+#' @rdname score-arithmetic
 setMethod("+", signature("numeric", "UnconditionalScore"),
           function(e1, e2) e2 + e1 )
 ## TODO: check for duplicate scores and combine!
-#'@rdname score-arithmetic
+
+#' @rdname score-arithmetic
 setMethod("+", signature("UnconditionalScore", "UnconditionalScore"),
           function(e1, e2) AffineUnconditionalScore(list(e1, e2), c(1, 1), 0) )
 
 
-#'@rdname score-arithmetic
+#' @rdname score-arithmetic
 setMethod("*", signature("UnconditionalScore", "numeric"),
           function(e1, e2) AffineUnconditionalScore(list(e1), e2, 0) )
-#'@rdname score-arithmetic
+
+#' @rdname score-arithmetic
 setMethod("*", signature("numeric", "UnconditionalScore"),
           function(e1, e2) e2 * e1 )
 
@@ -183,19 +162,20 @@ setClass("IntegralScore", representation(
     contains = "UnconditionalScore")
 
 
-#' @param specific logical, flag for switching to design-specific implementation.
+#' @param optimization logical, if TRUE uses a relaxation to real parameters of
+#'    the underlying design; used for smooth optimization.
+#' @param subdivisions integer, [TODO]
 #' @param ... further optimal arguments
 #'
 #' @describeIn IntegralScore generic implementation of evaluating an integral
 #'     score. Uses adaptive Gaussian quadrature for integration and might be
-#'     more efficiently implemented by specific \code{TwoStageDesign}-classes
-#'     (cf. \code{\link{.evaluate}}).
+#'     more efficiently implemented by specific \code{TwoStageDesign}-classes.
 setMethod("evaluate", signature("IntegralScore", "TwoStageDesign"),
-          function(s, design, specific = TRUE, ...) {
+          function(s, design, optimization = FALSE, subdivisions = 10000L, ...) {
               # TODO: currently ignores the possibility of early stopping/uncontinuus
               # conditional scores - might get better when checking for early stopping
               # and integrating separately!
-              if (specific) { # use design-specific implementation
+              if (optimization) { # use design-specific implementation
                   return(.evaluate(s, design, ...))
               } else {
                   # use generic approach
@@ -209,7 +189,8 @@ setMethod("evaluate", signature("IntegralScore", "TwoStageDesign"),
                   # use adaptive quadrature to integrate - only relies on generic interface
                   # provided by 'TwoStageDesign', no special optimization for particular
                   # design implementation
-                  mid_section <- stats::integrate(integrand, design@c1f, design@c1e)$value
+                  mid_section <- stats::integrate(
+                      integrand, design@c1f, design@c1e, subdivisions = subdivisions)$value
                   # compose
                   res <- poef * evaluate( # score is constant on early stopping region
                       s@cs, design,
@@ -230,25 +211,36 @@ setMethod("evaluate", signature("IntegralScore", "TwoStageDesign"),
 # not user facing!
 setMethod(".evaluate", signature("IntegralScore", "TwoStageDesign"),
           function(s, design, ...) {
-              # use design specific implementation tailored to this particular
-              # implementation (Gauss Quadrature N points here)
-              poef <- predictive_cdf(s@cs@distribution, s@cs@prior, design@c1f, design@n1)
-              poee <- 1 - predictive_cdf(s@cs@distribution, s@cs@prior, design@c1e, design@n1)
-              # continuation region
-              integrand   <- function(x1) evaluate(s@cs, design, x1, ...) *
-                  predictive_pdf(s@cs@distribution, s@cs@prior, x1, design@n1, ...)
+              # probability of early futility
+              poef <- predictive_cdf(
+                  s@cs@distribution, s@cs@prior, design@c1f, n1(design, round = FALSE))
+              # probability of early efficacy
+              poee <- 1 - predictive_cdf(
+                  s@cs@distribution, s@cs@prior, design@c1e, n1(design, round = FALSE))
+              # integrand: conditional score times predictive PDF
+              integrand <- function(x1) {
+                  evaluate(s@cs, design, x1, optimization = TRUE, ...) *
+                  predictive_pdf(s@cs@distribution, s@cs@prior, x1, n1(design, round = FALSE), ...)
+              }
               mid_section <- integrate_rule(
-                  integrand, design@c1f, design@c1e, design@x1_norm_pivots, design@weights
+                  integrand,
+                  design@c1f, design@c1e,
+                  design@x1_norm_pivots,
+                  design@weights
               )
               # compose
               res <- poef * evaluate( # score is constant on early stopping region
                   s@cs, design,
-                  design@c1f - sqrt(.Machine$double.eps) # slightly smaller than stopping for futility
+                  design@c1f - sqrt(.Machine$double.eps), # slightly smaller than stopping for futility
+                  optimization = TRUE,
+                  ...
               ) +
               mid_section +
               poee * evaluate(
                   s@cs, design,
-                  design@c1e + sqrt(.Machine$double.eps)
+                  design@c1e + sqrt(.Machine$double.eps),
+                  optimization = TRUE,
+                  ...
               )
               return(res)
           })
@@ -261,15 +253,21 @@ setMethod(".evaluate", signature("IntegralScore", "OneStageDesign"),
           function(s, design, ...) {
               # use design specific implementation tailored to this particular
               # implementation (Gauss Quadrature N points here)
-              poef <- predictive_cdf(s@cs@distribution, s@cs@prior, design@c1f, design@n1)
-              poee <- 1 - predictive_cdf(s@cs@distribution, s@cs@prior, design@c1e, design@n1)
+              poef <- predictive_cdf(
+                  s@cs@distribution, s@cs@prior, design@c1f, n1(design, round = FALSE))
+              poee <- 1 - predictive_cdf(
+                  s@cs@distribution, s@cs@prior, design@c1e, n1(design, round = FALSE))
               res  <- poef * evaluate( # score is constant on early stopping region
                       s@cs, design,
-                      design@c1f - sqrt(.Machine$double.eps) # slightly smaller than stopping for futility
+                      design@c1f - sqrt(.Machine$double.eps), # slightly smaller than stopping for futility
+                      optimization = TRUE,
+                      ...
                   ) +
                   poee * evaluate(
                       s@cs, design,
-                      design@c1e + sqrt(.Machine$double.eps)
+                      design@c1e + sqrt(.Machine$double.eps),
+                      optimization = TRUE,
+                      ...
                   )
               return(res)
           })

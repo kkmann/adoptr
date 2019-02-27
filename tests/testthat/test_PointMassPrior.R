@@ -2,7 +2,7 @@ context("PointMassPrior                                                       ")
 
 test_that("single point prior", {
 
-    dist <- Normal(two_armed=F)
+    dist <- Normal(two_armed = FALSE)
 
     prior <- PointMassPrior(.0, 1.0)
 
@@ -11,11 +11,11 @@ test_that("single point prior", {
         c(0, 0))
 
     expect_equal(
-        otsd::expectation(prior, function(x) x),
+        adoptr::expectation(prior, function(x) x),
         0)
 
     expect_equal(
-        otsd::expectation(prior, function(x) x + 1),
+        adoptr::expectation(prior, function(x) x + 1),
         1)
 
     n1    <- 20
@@ -79,11 +79,11 @@ test_that("multiple points prior", {
         c(0, .5))
 
     expect_equal(
-        otsd::expectation(prior, function(x) x),
+        adoptr::expectation(prior, function(x) x),
         .25)
 
     expect_equal(
-        otsd::expectation(prior, function(x) x + 1),
+        adoptr::expectation(prior, function(x) x + 1),
         1.25)
 
     n1 <- 20
@@ -132,3 +132,31 @@ test_that("multiple points prior", {
         post@mass[1])
 
 })
+
+
+
+test_that("errors are defined correctly", {
+    expect_error(
+        PointMassPrior(theta = .3, mass = .9)
+    ) # mass must sum up to 1
+
+    prior <- PointMassPrior(c(.5, 1.5), rep(.5,2))
+
+    expect_error(
+        condition(prior, 1)
+    ) # interval must be of length 2
+
+    expect_error(
+        condition(prior, c(0, Inf))
+    ) # interval must be finite
+
+    expect_error(
+        condition(prior, c(1, 0))
+    ) # interval[2] must be greater or equal than interval[1]
+
+    expect_equal(
+        condition(prior, c(0, 1))@mass,
+        1
+    ) # conditioning works correctly
+
+}) # end 'errors are defined correctly'

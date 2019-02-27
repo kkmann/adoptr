@@ -5,7 +5,7 @@
 \alias{summary,TwoStageDesign-method}
 \title{Summarize TwoStageDesign objects with optional set of scores}
 \usage{
-\S4method{summary}{TwoStageDesign}(object, ..., rounded = T)
+\S4method{summary}{TwoStageDesign}(object, ..., rounded = TRUE)
 }
 \arguments{
 \item{object}{design object to summarize}
@@ -15,5 +15,20 @@
 \item{rounded}{should rounded n-values be used?}
 }
 \description{
-[TODO]
+\code{summary} summarizes the first-stage of a \code{TwoStageDesign}
+and objects of class \code{UnconditionalScore} that have to be
+defined by the user.
+}
+\details{
+The first stage sample size and the two continuation decsion boundaries
+are printed.
+Furthermore, the user can define unconditional scores and these will be
+evaluated and listed.
+}
+\examples{
+order  <- 5L
+design <- TwoStageDesign(50, 0, 2, 50.0, 2.0, order)
+pow    <- expected(ConditionalPower(dist = Normal(), prior = PointMassPrior(.4, 1)))
+summary(design, "Power" = pow)
+
 }

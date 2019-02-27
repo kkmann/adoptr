@@ -1,4 +1,4 @@
 library(testthat)
-library(otsd)
+library(adoptr)
 
-test_check("otsd")
+test_check("adoptr")

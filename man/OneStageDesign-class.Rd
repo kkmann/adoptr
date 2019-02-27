@@ -4,17 +4,15 @@
 \name{OneStageDesign-class}
 \alias{OneStageDesign-class}
 \alias{OneStageDesign}
-\alias{tunable_parameters,OneStageDesign-method}
 \alias{update,OneStageDesign-method}
 \alias{n2,OneStageDesign,numeric-method}
 \alias{c2,OneStageDesign,numeric-method}
 \alias{TwoStageDesign,OneStageDesign-method}
+\alias{plot,OneStageDesign-method}
 \alias{evaluate,SmoothnessN2,OneStageDesign-method}
 \title{One-stage design}
 \usage{
 OneStageDesign(n, c)
-
-\S4method{tunable_parameters}{OneStageDesign}(x, ...)
 
 \S4method{update}{OneStageDesign}(object, params, ...)
 
@@ -24,6 +22,8 @@ OneStageDesign(n, c)
 
 \S4method{TwoStageDesign}{OneStageDesign}(d, ...)
 
+\S4method{plot}{OneStageDesign}(x, y, ...)
+
 \S4method{evaluate}{SmoothnessN2,OneStageDesign}(s, design, ...)
 }
 \arguments{
@@ -31,25 +31,31 @@ OneStageDesign(n, c)
 
 \item{c}{rejection boundary (c = c1f = c1e)}
 
-\item{x}{object to get parameters from}
-
-\item{...}{further optional arguments}
-
 \item{object}{object to update}
 
 \item{params}{vector of design parameters (must be in same order as returned
 by \code{as.numeric(OneStageDesign)})}
 
+\item{...}{further optional arguments}
+
 \item{d}{object of class \code{OneStageDesign}}
 
 \item{x1}{stage-one outcome}
+
+\item{x}{not used}
+
+\item{y}{not used}
 
 \item{s}{an object of class \code{SmoothnessN2}}
 
 \item{design}{an object of class \code{OneStageDesign}}
 }
 \description{
-[ToDo]
+\code{OneStageDesign} allows the usage of a single-stage design.
+In this case without a second stage, there only exist the first-stage sample
+size \code{n1} and the first-stage rejection boundary \code{c1f}.
+No other parameters have to be set.
+\code{OneStageDesign} is a subclass of \link{TwoStageDesign}.
 }
 \section{Slots}{
 
@@ -67,5 +73,7 @@ by \code{as.numeric(OneStageDesign)})}
 \item{\code{x1_norm_pivots}}{is ignored for OneStageDesign}
 
 \item{\code{weights}}{is ignored for OneStageDesign}
+
+\item{\code{tunable}}{is ignored for OneStageDesign}
 }}
 

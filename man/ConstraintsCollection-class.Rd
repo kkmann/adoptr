@@ -7,7 +7,8 @@
 \alias{subject_to}
 \title{Collection of constraints}
 \usage{
-\S4method{evaluate}{ConstraintsCollection,TwoStageDesign}(s, design, ...)
+\S4method{evaluate}{ConstraintsCollection,TwoStageDesign}(s, design,
+  optimization = FALSE, ...)
 
 subject_to(...)
 }
@@ -15,6 +16,9 @@ subject_to(...)
 \item{s}{constraint collection}
 
 \item{design}{design}
+
+\item{optimization}{logical, if TRUE uses a relaxation to real parameters of
+the underlying design; used for smooth optimization.}
 
 \item{...}{arbitrary number of (un)conditional constraints}
 }

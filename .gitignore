@@ -3,3 +3,5 @@ doc
 inst/doc
 .Rproj.user/*
 .Rproj.user
+tests/testthat/Rplots.pdf
+docs

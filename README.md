@@ -1,37 +1,31 @@
+[![Travis build status](https://travis-ci.org/kkmann/adoptr.svg?branch=master)](https://travis-ci.org/kkmann/adoptr)
+[![Codecov test coverage](https://codecov.io/gh/kkmann/adoptr/branch/master/graph/badge.svg)](https://codecov.io/gh/kkmann/adoptr?branch=master)
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# otsd
 
-<!-- badges: start -->
 
-[![Travis build
-status](https://travis-ci.org/kkmann/otsd.svg?branch=master)](https://travis-ci.org/kkmann/otsd)
-[![Codecov test
-coverage](https://codecov.io/gh/kkmann/otsd/branch/master/graph/badge.svg)](https://codecov.io/gh/kkmann/otsd?branch=master)
-<!-- badges: end -->
 
-Optimal two-stage designs made sexy\!
+# adoptr <a href='https://github.com/kkmann/adoptr'><img src='man/figures/logo.png' align="right" height="139" /></a>
+
+
+Adaptive optimal two-stage designs for clinical trials with one or two arms.
+
+[ToDo: elaborate ;)]
+
+
 
 ## Installation
 
-install directly from [GitHub](https://github.com/) with:
+install the development version directly from [GitHub](https://github.com/) with:
 
-``` r
+```r
 # install.packages("devtools")
-devtools::install_github("kkmann/otsd")
+devtools::install_github("kkmann/adoptr")
 ```
+
+
 
 ## Documentation
 
-the docs are at <https://kkmann.github.io/otsd/>
-
-## Example
-
-This is a basic example which shows you how to solve a common problem:
-
-``` r
-library(otsd)
-
-[TODO example]
-```
+the documentation is hosted on github pages at 
+https://kkmann.github.io/adoptr.

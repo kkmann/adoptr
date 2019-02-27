@@ -27,22 +27,28 @@ AverageN2 <- function() new("AverageN2", dummy = FALSE)
 
 #' Evaluation of a AverageN2 score
 #'
-#' @param specific logical, flag for switching to design-specific implementation.
+#' @param optimization logical, if TRUE uses a relaxation to real parameters of
+#'    the underlying design; used for smooth optimization.
+#' @param subdivisions integer, maxima number of subdivisions used for daptive
+#'    integration.
 #' @param ... further optimal arguments
 #'
 #' @describeIn AverageN2 generic implementation of evaluating a smoothness
 #'     score. Uses adaptive Gaussian quadrature for integration and might be
-#'     more efficiently implemented by specific \code{TwoStageDesign}-classes
-#'     (cf. \code{\link{.evaluate}}).
+#'     more efficiently implemented by specific \code{TwoStageDesign}-classes.
 setMethod("evaluate", signature("AverageN2", "TwoStageDesign"),
-          function(s, design, specific = TRUE, ...) {
-              if (specific) { # use design-specific implementation
+          function(s, design, optimization = FALSE, subdivisions = 10000L, ...) {
+              if (optimization) {
+                  # use design-specific implementation
                   return(.evaluate(s, design, ...))
               } else {
+                  # generic integration
                   res <- stats::integrate(
-                      function(x) n2(design, x),
+                      function(x) n2(design, x, round = TRUE),
                       design@c1f,
-                      design@c1e
+                      design@c1e,
+                      subdivisions = subdivisions,
+                      ...
                   )$value
                   res <- res / (design@c1e - design@c1f)
                   return(res)
@@ -54,8 +60,9 @@ setMethod("evaluate", signature("AverageN2", "TwoStageDesign"),
 # not user facing!
 setMethod(".evaluate", signature("AverageN2", "TwoStageDesign"),
           function(s, design, ...) {
+              # use non-rounded version
               integrate_rule(
-                  function(x) n2(design, x),
+                  function(x) n2(design, x, round = FALSE, ...),
                   design@c1f,
                   design@c1e,
                   design@x1_norm_pivots,
@@ -104,14 +111,17 @@ SmoothnessN2 <- function(h = .1)
 #'
 #' @param s an object of class \code{SmoothnessN2}
 #' @param design the design to compute the smoothness term for
-#' @param specific should a specific implementation be used?
+#' @param optimization logical, if TRUE uses a relaxation to real parameters of
+#'    the underlying design; used for smooth optimization.
+#' @param subdivisions integer, maxima number of subdivisions used for daptive
+#'    integration.
 #' @template dotdotdotTemplate
 #'
 #' @rdname SmoothnessN2-class
 #' @export
 setMethod("evaluate", signature("SmoothnessN2", "TwoStageDesign"),
-          function(s, design, specific = TRUE, ...) {
-              if (specific) {
+          function(s, design, optimization = FALSE, subdivisions = 10000L, ...) {
+              if (optimization) {
                   # use design-specific implementation
                   return(.evaluate(s, design, ...))
               } else {
@@ -119,14 +129,14 @@ setMethod("evaluate", signature("SmoothnessN2", "TwoStageDesign"),
                   # integrand is the finite difference approximation of the
                   # squared second derivative
                   integrand <- function(x1) {
-                      ((n2(design, x1 + s@h) - 2 * n2(design, x1) + n2(design, x1 - s@h)) / s@h^2)^2
+                      ((n2(design, x1 + s@h, round = TRUE) - 2 * n2(design, x1, round = TRUE) + n2(design, x1 - s@h, round = TRUE)) / s@h^2)^2
                   }
                   x1_bounds <- c(design@c1f + s@h, design@c1e - s@h)
                   # use adaptive quadrature to integrate - only relies on generic interface
                   # provided by 'Design', no special optimization for particular
                   # design implementation
                   return(1 / diff(x1_bounds) *
-                             stats::integrate(integrand, x1_bounds[1], x1_bounds[2])$value)
+                             stats::integrate(integrand, x1_bounds[1], x1_bounds[2], subdivisions = subdivisions, ...)$value)
               }
           }
 )
@@ -139,7 +149,7 @@ setMethod(".evaluate", signature("SmoothnessN2", "TwoStageDesign"),
               dif2 <- diff(design@n2_pivots[-1]) # increments of n2
               piv  <- diff(scaled_integration_pivots(design)) # increments of pivots
               # Approximate L2 norm of second derivative
-              res <- mean(((-dif1 + dif2) / (piv[-leng+1] * piv[-1]))^2)
+              res <- mean(((-dif1 + dif2) / (piv[-leng + 1] * piv[-1]))^2)
               return(res)
           }
 )
@@ -149,11 +159,11 @@ setMethod(".evaluate", signature("SmoothnessN2", "TwoStageDesign"),
 #' Return smootheness of a group-sequential design as 0.
 #'
 #' @param s an object of class \code{SmoothnessN2}
-#' @param design an object of class \code{GSDesign}
+#' @param design an object of class \code{GroupSequentialDesign}
 #'
-#' @rdname GSDesign-class
+#' @rdname GroupSequentialDesign-class
 #' @export
-setMethod("evaluate", signature("SmoothnessN2", "GSDesign"),
+setMethod("evaluate", signature("SmoothnessN2", "GroupSequentialDesign"),
           function(s, design, ...) 0 )
 
 
@@ -167,4 +177,42 @@ setMethod("evaluate", signature("SmoothnessN2", "GSDesign"),
 #' @export
 setMethod("evaluate", signature("SmoothnessN2", "OneStageDesign"),
           function(s, design, ...) 0 )
+
+
+
+
+#' Regularize n1
+#'
+#' \code{N1} is a class that penalizes the \code{n1} value of
+#' a design.
+#'
+#'
+#' @exportClass N1
+setClass("N1", representation(
+    dummy = 'logical'
+),
+contains = "UnconditionalScore")
+
+
+
+#' @rdname N1-class
+#' @export
+N1 <- function() new("N1", dummy = FALSE)
+
+
+#' Returns the n1-value of a \code{TwoStageDesign}.
+#' This can be used as penalty term in the optimization.
+#'
+#' @param s an object of class \code{N1}
+#' @param design the design to compute the smoothness term for
+#' @param optimization logical, if TRUE uses a relaxation to real parameters of
+#'    the underlying design; used for smooth optimization.
+#' @template dotdotdotTemplate
+#'
+#' @rdname N1-class
+#' @export
+setMethod("evaluate", signature("N1", "TwoStageDesign"),
+          function(s, design, optimization = FALSE, ...)
+              n1(design, round = !optimization)
+          )
 

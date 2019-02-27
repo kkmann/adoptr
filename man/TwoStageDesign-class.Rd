@@ -12,6 +12,8 @@
 \alias{make_fixed}
 \alias{make_fixed,TwoStageDesign-method}
 \alias{update,TwoStageDesign-method}
+\alias{n1}
+\alias{n1,TwoStageDesign-method}
 \alias{n2}
 \alias{n2,TwoStageDesign,numeric-method}
 \alias{n}
@@ -27,7 +29,7 @@
 TwoStageDesign(...)
 
 \S4method{TwoStageDesign}{numeric}(n1, c1f, c1e, n2_pivots, c2_pivots,
-  x1_norm_pivots, weights)
+  order = NULL, ...)
 
 tunable_parameters(x, ...)
 
@@ -43,13 +45,17 @@ make_fixed(x, ...)
 
 \S4method{update}{TwoStageDesign}(object, params, ...)
 
+n1(d, ...)
+
+\S4method{n1}{TwoStageDesign}(d, round = TRUE, ...)
+
 n2(d, x1, ...)
 
-\S4method{n2}{TwoStageDesign,numeric}(d, x1, ...)
+\S4method{n2}{TwoStageDesign,numeric}(d, x1, round = TRUE, ...)
 
 n(d, x1, ...)
 
-\S4method{n}{TwoStageDesign,numeric}(d, x1, ...)
+\S4method{n}{TwoStageDesign,numeric}(d, x1, round = TRUE, ...)
 
 c2(d, x1, ...)
 
@@ -59,7 +65,7 @@ scaled_integration_pivots(d, ...)
 
 \S4method{scaled_integration_pivots}{TwoStageDesign}(d, ...)
 
-\S4method{plot}{TwoStageDesign}(x, y = NULL, rounded = T, ...,
+\S4method{plot}{TwoStageDesign}(x, y = NULL, rounded = TRUE, ...,
   k = 100)
 
 \S4method{simulate}{TwoStageDesign,numeric}(object, nsim, dist, theta,
@@ -78,9 +84,8 @@ scaled_integration_pivots(d, ...)
 
 \item{c2_pivots}{cf. slot}
 
-\item{x1_norm_pivots}{cf. slot}
-
-\item{weights}{cf. slot}
+\item{order}{order (i.e. number of pivot points in the interior of [c1f, c1e])
+of the Gaussian quadrature rule to use for integration}
 
 \item{x}{design}
 
@@ -90,6 +95,9 @@ scaled_integration_pivots(d, ...)
 by \code{as.numeric(design)})}
 
 \item{d}{design object}
+
+\item{round}{logical, should integer sample size or real sample size be
+returned?}
 
 \item{x1}{stage-one outcome}
 
@@ -107,10 +115,50 @@ by \code{as.numeric(design)})}
 
 \item{seed}{random seed}
 }
+\value{
+an object of class \code{TwoStageDesign}
+}
 \description{
-[ToDo]
+\code{TwoStageDesign} is the fundamental design class of this package.
+It consits of three first-stage parameters, two-stage two vectors
+and additional parameters for implementation.
 
-[TODO]
+The argument \code{order} defines the order of the Gaussian quadrature rule.
+If it is missing, the length of \code{n2_pivots} is used.
+
+This function allows to plot the stage-two sample size and decision boundary
+functions of a \code{TwoStageDesign} and
+user-defined elements of the class \code{ConditionalScore}.
+}
+\details{
+\code{n1} denotes the sample size of the first stage.
+\code{c1f} and \code{c1e} define decision boundary.
+If the first-stage test statistic \code{Z_1} is larger than \code{c1e},
+than the trial is stopped early for efficacy and the null hypothesis is
+rejected.
+If \code{Z_1} is smaller than \code{c1f}, than the null hypothesis is
+accpected and the trial is stopped early for futility.
+Otherwise, the trial enters in the second stage. In this case,
+the stage-two sample size function \code{n2(Z_1)} and the stage-two
+rejection boundary \code{c2(Z_1)} are computed.
+As these are functions, they are approximated by a vector of pivots
+denoted by \code{n2_pivots} and \code{c2_pivots}, respectively.
+The slots \code{x1_norm_pivots} and \code{weights} are defined
+for numerical implementation rules.
+The generic implementation of this package is a Gaussian quadrature and
+a corresponding design can be built by calling \code{TwoStageDesign()}.
+The user is free to implement own integration rules.
+He has to be aware that all elements of \code{x1_norm_pivots} have
+to be inside the interval [-1, 1] and have to be scaled by the
+applied integration rule.
+The parameter \code{tunable} is a logical one and indicates which
+design parameters should be tunable for use in optimization.
+Rounded sample size values can be applied by the logical parameter
+\code{rounded}.
+
+If \code{order} is specified, \code{n2_pivots} and \code{c2_pivots} should
+be one-dimensional. They are converted to vectors of length order
+automatically.
 }
 \section{Methods (by generic)}{
 \itemize{
@@ -143,7 +191,12 @@ pivot points of the numeric integration rule [TODO: these are not available duri
 approximating the integral over x1.}
 
 \item{\code{tunable}}{named logical vector indicating whether corresponding slot is considered a tunable parameter}
-
-\item{\code{rounded}}{logical that indicates whether rounded n-values should be used}
 }}
 
+\examples{
+order  <- 5L
+design <- TwoStageDesign(50, 0, 2, rep(50.0, order), rep(2.0, order))
+cp     <- ConditionalPower(dist = Normal(), prior = PointMassPrior(.4, 1))
+plot(design, "Conditional Power" = cp)
+
+}

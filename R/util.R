@@ -7,13 +7,11 @@
 #' @param order Number of nodes to be used
 #'
 #' @rdname GaussLegendreRule
-#' @export
+#' @keywords internal
 GaussLegendreRule <- function(order) {
     order <- as.integer(order)
-    if (order < 0)
-        stop("Must be a non-negative number of nodes!")
-    if (order == 0)
-        return(list(x = numeric(0), w = numeric(0)))
+    if (order < 2)
+        stop("At least two nodes are necessary for integration!")
     j   <- 1:(order - 1)
     mu0 <- 2
     b   <- j / (4 * j^2 - 1)^0.5
@@ -38,7 +36,7 @@ GaussLegendreRule <- function(order) {
 #' @param weights integration weights
 #'
 #' @rdname GaussLegendreIntegral
-#' @export
+#' @keywords internal
 integrate_rule <- function(f, low, up, x, weights) {
   if (!(length(weights) == length(x)))
       stop("x and weights must be of same length")

@@ -17,6 +17,10 @@ setClass("ConditionalSampleSize", contains = "ConditionalScore")
 #' @export
 ConditionalSampleSize <- function(dist, prior) new("ConditionalSampleSize", distribution = dist, prior = prior)
 
+#' @param optimization logical, if TRUE uses a relaxation to real parameters of
+#'    the underlying design; used for smooth optimization.
 #' @rdname ConditionalSampleSize-class
 setMethod("evaluate", signature("ConditionalSampleSize", "TwoStageDesign"),
-          function(s, design, x1, ...) n(design, x1) )
+          function(s, design, x1, optimization = FALSE, ...) {
+              n(design, x1, round = !optimization)
+          })

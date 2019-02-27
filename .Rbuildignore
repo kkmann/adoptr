@@ -3,9 +3,13 @@
 ^codecov\.yml$
 ^\.travis\.yml$
 ^_pkgdown\.yml$
+^pkgdown$
 ^docs$
 ^man-roxygen$
 ^Meta$
 ^doc$
 ^.*\.Rproj$
 ^\.Rproj\.user$
+sticker.R
+vignettes
+^deploy.sh$

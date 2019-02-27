@@ -7,25 +7,53 @@
 \alias{ConditionalConstraint-class}
 \alias{<=,AbstractConditionalScore,numeric-method}
 \alias{>=,AbstractConditionalScore,numeric-method}
+\alias{<=,numeric,AbstractConditionalScore-method}
+\alias{>=,numeric,AbstractConditionalScore-method}
+\alias{<=,AbstractConditionalScore,AbstractConditionalScore-method}
+\alias{>=,AbstractConditionalScore,AbstractConditionalScore-method}
 \alias{UnconditionalConstraint-class}
 \alias{<=,UnconditionalScore,numeric-method}
 \alias{>=,UnconditionalScore,numeric-method}
+\alias{<=,numeric,UnconditionalScore-method}
+\alias{>=,numeric,UnconditionalScore-method}
+\alias{<=,UnconditionalScore,UnconditionalScore-method}
+\alias{>=,UnconditionalScore,UnconditionalScore-method}
 \title{Formulating constraints}
 \usage{
-\S4method{evaluate}{Constraint,TwoStageDesign}(s, design, ...)
+\S4method{evaluate}{Constraint,TwoStageDesign}(s, design,
+  optimization = FALSE, ...)
 
 \S4method{<=}{AbstractConditionalScore,numeric}(e1, e2)
 
 \S4method{>=}{AbstractConditionalScore,numeric}(e1, e2)
 
+\S4method{<=}{numeric,AbstractConditionalScore}(e1, e2)
+
+\S4method{>=}{numeric,AbstractConditionalScore}(e1, e2)
+
+\S4method{<=}{AbstractConditionalScore,AbstractConditionalScore}(e1, e2)
+
+\S4method{>=}{AbstractConditionalScore,AbstractConditionalScore}(e1, e2)
+
 \S4method{<=}{UnconditionalScore,numeric}(e1, e2)
 
 \S4method{>=}{UnconditionalScore,numeric}(e1, e2)
+
+\S4method{<=}{numeric,UnconditionalScore}(e1, e2)
+
+\S4method{>=}{numeric,UnconditionalScore}(e1, e2)
+
+\S4method{<=}{UnconditionalScore,UnconditionalScore}(e1, e2)
+
+\S4method{>=}{UnconditionalScore,UnconditionalScore}(e1, e2)
 }
 \arguments{
-\item{s}{constraint to evaluate [TODO make naming of arguments for evaluate more generic!]}
+\item{s}{constraint to evaluate}
 
 \item{design}{TwoStageDesign to evaluate}
+
+\item{optimization}{logical, if TRUE uses a relaxation to real parameters of
+the underlying design; used for smooth optimization.}
 
 \item{...}{further optional arguments}
 
@@ -34,10 +62,19 @@
 \item{e2}{second comparator}
 }
 \description{
-[TODO]
+Conceptually, constraints work very similar to scores (any score can be put in
+a constraint).
+Currently,  constraints of the form 'score <=/>= x',
+'x <=/>= score' and 'score <=/>= score' are admissable.
 }
 \details{
-[TODO: currently we only support scores on the LHS - this can be easily extended!]
+[TODO: conditional constraints are only evaluated at the continuation area]
+}
+\examples{
+cp          <- ConditionalPower(Normal(), PointMassPrior(0.4, 1))
+pow         <- expected(cp)
+constraint1 <- pow >= 0.8 # an unconditional power constraint
+constraint2 <- cp >= 0.7 # a conditional power constraint
+constraint3 <- 0.7 <= cp # yields the same as constraint2
 
-[TODO: do we also want to support scores vs scores comparisons?]
 }

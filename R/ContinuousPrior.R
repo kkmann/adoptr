@@ -89,7 +89,6 @@ setMethod("condition", signature("ContinuousPrior", "numeric"),
 #' @export
 setMethod("predictive_pdf", signature("DataDistribution", "ContinuousPrior", "numeric"),
     function(dist, prior, x1, n1, k = 33, ...) {
-        # TODO: use Gaussian Quadrature for pivots!
         piv <- seq(prior@support[1], prior@support[2], length.out = k)
         mass <- sapply(piv, prior@pdf)
         mass <- mass / sum(mass) # (renormalize!)
@@ -105,7 +104,6 @@ setMethod("predictive_pdf", signature("DataDistribution", "ContinuousPrior", "nu
 #' @export
 setMethod("predictive_cdf", signature("DataDistribution", "ContinuousPrior", "numeric"),
     function(dist, prior, x1, n1, k = 33, ...) {
-        # TODO: use Gaussian Quadrature for pivots!
         piv  <- seq(prior@support[1], prior@support[2], length.out = k)
         mass <- sapply(piv, prior@pdf)
         mass <- mass / sum(mass) # (renormalize!)
