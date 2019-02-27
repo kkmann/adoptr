@@ -42,7 +42,7 @@ test_that("post-processing yields integer sample sizes", {
 
     ))
 
-    res_post <- postprocess(res)
+    res_post <- suppressWarnings(postprocess(res))
 
     # n1 is integer
     expect_equal(
