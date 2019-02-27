@@ -297,7 +297,20 @@ returned?</p></td>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>an object of class <code>TwoStageDesign</code></p>
+    <p><code>TwoStageDesign</code> returns an object of class <code>TwoStageDesign</code>.</p>
+<p><code><a href='https://www.rdocumentation.org/packages/stats/topics/simulate'>simulate()</a></code> returns list with <code>nsim</code> rows and for each row
+(each simulation run) the following columns</p><ul>
+<li><p>theta The effect size</p></li>
+<li><p>n1 First-stage sample size</p></li>
+<li><p>c1f Stopping for futility boundary</p></li>
+<li><p>c1e Stopping for efficacy boundary</p></li>
+<li><p>x1 First-stage outcome</p></li>
+<li><p>n2 Resulting second-stage sample size after observing x1</p></li>
+<li><p>c2 Resulting second-stage decision-boundary after observing x1</p></li>
+<li><p>x2 Second-stage outcome</p></li>
+<li><p>reject Decision whether the null hypothesis is rejected or not</p></li>
+</ul>
+
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
