@@ -13,6 +13,8 @@
     ...
 ) {
 
+    args <- c(as.list(environment()), list(...))
+
     n1 <- NULL
     n2_pivots <- NULL
 
@@ -73,7 +75,8 @@
 
     return(list(
         design        = post_design,
-        nloptr_return = res
+        nloptr_return = res,
+        call_args     = args
     ))
 }
 
@@ -92,6 +95,8 @@
     ),
     ...
 ) {
+
+    args <- c(as.list(environment()), list(...))
 
     n1 <- NULL
 
@@ -142,7 +147,8 @@
 
     return(list(
         design        = post_design,
-        nloptr_return = res
+        nloptr_return = res,
+        call_args     = args
     ))
 }
 

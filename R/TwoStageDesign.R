@@ -80,7 +80,7 @@ setGeneric("TwoStageDesign", function(...) standardGeneric("TwoStageDesign"))
 #' @param order order (i.e. number of pivot points in the interior of [c1f, c1e])
 #'     of the Gaussian quadrature rule to use for integration
 #'
-#' @return an object of class \code{TwoStageDesign}
+#' @return \code{TwoStageDesign} returns an object of class \code{TwoStageDesign}.
 #'
 #' @rdname TwoStageDesign-class
 #' @export
@@ -400,7 +400,7 @@ print.TwoStageDesignSummary <- function(x, ..., rounded = TRUE) {
     if (length(x$scores) > 0) {
         cat("Unconditional scores:\n\r")
         for (i in 1:length(x$scores)) {
-            cat(sprintf("    %s: %7.2f\n\r", names(x$scores)[i], x$scores[i]))
+            cat(sprintf("    %s: %7.3f\n\r", names(x$scores)[i], x$scores[i]))
         }
         cat("\n\r")
     }
@@ -414,6 +414,19 @@ print.TwoStageDesignSummary <- function(x, ..., rounded = TRUE) {
 #' @param seed random seed
 #' @param dist data distribution
 #' @param theta location parameter of the data distribution
+#'
+#' @return \code{simulate()} returns list with \code{nsim} rows and for each row
+#' (each simulation run) the following columns \itemize{
+#' \item{theta }{The effect size}
+#' \item{n1 }{First-stage sample size}
+#' \item{c1f }{Stopping for futility boundary}
+#' \item{c1e }{Stopping for efficacy boundary}
+#' \item{x1 }{First-stage outcome}
+#' \item{n2 }{Resulting second-stage sample size after observing x1}
+#' \item{c2 }{Resulting second-stage decision-boundary after observing x1}
+#' \item{x2 }{Second-stage outcome}
+#' \item{reject }{Decision whether the null hypothesis is rejected or not}
+#' }
 #'
 #' @export
 setMethod("simulate", signature("TwoStageDesign", "numeric"),
