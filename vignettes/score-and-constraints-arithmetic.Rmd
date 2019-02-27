@@ -10,7 +10,9 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  fig.width  = 7,
+  fig.height = 5
 )
 ```
 
@@ -18,50 +20,247 @@ knitr::opts_chunk$set(
 library(adoptr)
 ```
 
-Vignettes are long form documentation commonly included in packages. Because they are part of the distribution of the package, they need to be as compact as possible. The `html_vignette` output type provides a custom style sheet (and tweaks some options) to ensure that the resulting html is as small as possible. The `html_vignette` format:
+## Score classes in `adoptr`
 
-- Never uses retina figures
-- Has a smaller default figure size
-- Uses a custom CSS stylesheet instead of the default Twitter Bootstrap style
+In `adoptr` there are two custom score classes. 
+Conditional scores represented by the class `ConditionalScore` and 
+unconditional scores which are currently implemented as expected conditional
+scores and therefore represented by the class `IntegralScore`.
 
-## Vignette Info
 
-Note the various macros within the `vignette` section of the metadata block above. These are required in order to instruct R how to build the vignette. Note that you should change the `title` field and the `\VignetteIndexEntry` to match the title of your vignette.
 
-## Styles
+### Conditional scores
 
-The `html_vignette` template includes a basic CSS theme. To override this theme you can specify your own CSS in the document metadata as follows:
+A conditional score is the evaluation of a design property conditioned
+on the first-stage outcome $X_1 = x_1$.
 
-    output: 
-      rmarkdown::html_vignette:
-        css: mystyles.css
+In `adoptr`, a conditional score as, e.g. conditional power, 
+includes the following slots:
 
-## Figures
+- `distribution`: the underlying data distribution. 
 
-The figure sizes have been customised so that you can easily put two images side-by-side. 
+- `prior`: the prior distribution. 
 
-```{r, fig.show='hold'}
-plot(1:10)
-plot(10:1)
+The only data distribution that is currently supported is `Normal()`.
+One can differentiate between two-armed designs (the default) and 
+one-armed designs. It can easily be called by 
+
+````{r distribution}
+dist <- Normal(two_armed = FALSE)
 ```
 
-You can enable figure captions by `fig_caption: yes` in YAML:
+The prior distribution is needed here to be able to compute the 
+posterior distribution and evaluate the conditional score in case of continuation.
+How to work and specify priors is described more detailed in the vignette
+'working with priors'.
 
-    output:
-      rmarkdown::html_vignette:
-        fig_caption: yes
+Every conditional score requires an evaluation method. 
+This has to be defined as a method of three arguments. 
 
-Then you can use the chunk option `fig.cap = "Your figure caption."` in **knitr**.
+- the object of class `ConditionalScore` that is to be evaluated
 
-## More Examples
+- the `TwoStageDesign` used of evaluation
 
-You can write math expressions, e.g. $Y = X\beta + \epsilon$, footnotes^[A footnote here.], and tables, e.g. using `knitr::kable()`.
+- the realisation of the test statistic $z_1$ where the score is evaluated.
 
-```{r, echo=FALSE, results='asis'}
-knitr::kable(head(mtcars, 10))
+Later in this vignette it is shown how one can define an own evaluation
+method.
+For the common cases conditional sample size and conditional power
+such methods already exist in `adoptr` as will be shown below.
+
+
+
+### Unconditional scores
+
+Unconditional scores are scores that do not depend on a specific value
+of the first-stage statistic $X_1$. 
+
+In `adoptr` an unconditional score is an expected conditional score.
+I.e., integrating the product of a conditional score and the probability 
+density function of the test statistic over the full $x_1$-range
+yields to an unconditional score. 
+For instance, power is nothing but the integral over conditional power
+multiplied by the density function of the test statistic.
+Therefore, the proposed class of an unconditional score is the 
+class `IntegralScore`.
+The following 'formula' expresses the connection between the two score classes
+in `adoptr` for a design $D$.
+$$
+\text{IntegralScore} (D) = \int_{-\infty}^{\infty} \text{ConditionalScore}(x_1, D) *
+\text{TestStatisticDensity} (x_1) \operatorname{d} x_1.
+$$
+
+Creating an `IntegralScore` only requires a conditional score.
+Via the method `expected()` an `IntegralScore` is built.
+The evaluation method is then adopted by the underlying `ConditionalScore`.
+
+
+
+## Preimplemented scores
+
+There are two common unconditional scores that are already implemented
+in `adoptr`. These are the conditional sample size and the conditional power.
+Its usage is described now.
+For illustration a `TwoStageDesign` has to be defined.
+
+```{r define-design}
+design <- TwoStageDesign(
+    n1  = 100,
+    c1f = .0,
+    c1e = 2.0,
+    n2_pivots = rep(150, 5),
+    c2_pivots = seq(2.0, 0.0, length.out = 5)
+)
 ```
 
-Also a quote using `>`:
+A brief look on this design shows that a classical group-sequential design
+has been defined
 
-> "He who gives up [code] safety for [code] speed deserves neither."
-([via](https://twitter.com/hadleywickham/status/504368538874703872))
+```{r plot-design}
+plot(design)
+```
+
+
+### Conditional Sample Size
+
+The conditional sample size is the sample size of a design conditioned
+on observing the first-stage result $X_1 = x_1$. 
+Therefore, it is just the total sample size $n(x_1) = n_1 + n_2(x_1)$.
+As described above, a data distribution and a prior have to be defined.
+```{r define-slots}
+dist  <- Normal()
+prior <- PointMassPrior(.3, 1)
+```
+
+
+It can be defined via
+
+```{r conditional-sample-size}
+css <- ConditionalSampleSize(dist, prior)
+```
+
+For our dummy design the conditional sample size at $x_1 = 1$ can be evaluated
+via
+
+```{r evaluate-css}
+evaluate(css, design, 1)
+```
+
+
+The corresponding unconditional score is the expected sample size.
+It can be defined by calling `expected()`:
+
+```{r ess}
+ess <- expected(css)
+```
+
+The call of `evaluate()` allows to evaluate the expected sample size of
+a two-stage design.
+Note that `ess` is a unconditional score and therefore, no $x_1$-outcome
+can be specified.
+
+```{r evaluate-ess}
+evaluate(ess, design)
+```
+
+
+### Conditional Power  
+
+Another common used conditional score in the development of adaptive designs
+is the conditional power. It is defined as the probability to reject
+the null hypothesis at interim if $X_1 = x_1$ was observed. 
+For a design $D$ it is defined as.
+$$
+\text{Conditional Power }(x_1, D) = P[\text{Reject } \mathcal{H}_0 \, | \, X_1 = x_1]
+$$
+
+Analogously to the conditional sample size it can be called and evaluate
+by the `adoptr`-internal definitions.
+
+```{r cp}
+cp <- ConditionalPower(dist, prior)
+
+evaluate(cp, design, 1)
+```
+
+The power is than defined as the probability under the alternative 
+(here this is $\delta = 0.3$ as defined by the prior) to reject 
+the null hypothesis. 
+As before one can simply call:
+
+```{r power}
+power <- expected(cp)
+
+evaluate(power, design)
+```
+
+
+Finally note that the type one error rate is the probability to reject
+the null hypothesis under the null. 
+Therefore, it can be interpreted as conditional power under the null hypothesis
+and be defined as the power above where only the prior has to be changed.
+
+```{r toer}
+toer <- expected(ConditionalPower(dist = Normal(), prior = PointMassPrior(0.0, 1)))
+
+evaluate(toer, design)
+```
+
+### Plotting conditional scores
+
+Conditional scores can be implemented in the `plot()` method
+of `adoptr` in the following manner.
+Note that the term `cp``has already been defined above as conditional power.
+
+```{r plot-scores}
+plot(design, "Conditional Power" = cp)
+```
+
+
+
+## Working with scores
+
+
+### Score arithmetic
+
+`adoptr` provides to add and multiply scores with scores as well as
+scores with constants. 
+For instance, one can evaluate the sum of twice type one error rate and 
+power via
+
+```{r sum}
+evaluate(2 * toer + power, design)
+```
+
+Note that this only works for scores of the same kind.
+I.e., one can not add conditional power (a `ConditionalScore`)
+and unconditional power (an `IntegralScore`) because the former
+requires a $x_1$-value to evaluate and the latter does not.
+
+
+
+### Inequalities
+
+To compute optimal designs scores will be used as objective criteria.
+However, one may also use them as inequalities.
+For instance, power and type one error rate inequalities may be used
+very often in the development of optimal two-stage designs. 
+They can be included easily because `adoptr` provides the following
+possibilites
+
+- Score <= / >= constant
+
+- Constant <= / >= Score
+
+- Score <= / >= Score
+
+Have a look at some examples. Keep in mind that the used scores and the
+dummy design have already been defined above in this vignette.
+
+```{r constraints}
+evaluate(power >= .8, design)
+
+evaluate(power <= toer, design)
+
+evaluate(0.7 <= cp, design, 1.1)
+```
