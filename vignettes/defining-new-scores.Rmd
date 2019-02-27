@@ -10,7 +10,9 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  fig.width  = 7,
+  fig.height = 5
 )
 ```
 
@@ -18,50 +20,95 @@ knitr::opts_chunk$set(
 library(adoptr)
 ```
 
-Vignettes are long form documentation commonly included in packages. Because they are part of the distribution of the package, they need to be as compact as possible. The `html_vignette` output type provides a custom style sheet (and tweaks some options) to ensure that the resulting html is as small as possible. The `html_vignette` format:
 
-- Never uses retina figures
-- Has a smaller default figure size
-- Uses a custom CSS stylesheet instead of the default Twitter Bootstrap style
 
-## Vignette Info
+In addition to the already existing ones, `adoptr` allows the user to
+define his own scores. 
+This requires a basic knowledge on object oriented programming in R.
+While all unconditional scores are based on conditional scores via
+`expected()` (c.f. vignette on score arithmetic), 
+conditional scores have to be defined by building three blocks.
 
-Note the various macros within the `vignette` section of the metadata block above. These are required in order to instruct R how to build the vignette. Note that you should change the `title` field and the `\VignetteIndexEntry` to match the title of your vignette.
+- the class of the score as a subclass of `ConditionalScore`
 
-## Styles
+- a constructor method
 
-The `html_vignette` template includes a basic CSS theme. To override this theme you can specify your own CSS in the document metadata as follows:
+- a method `evaluate()` to evaluate the score on a design
 
-    output: 
-      rmarkdown::html_vignette:
-        css: mystyles.css
+In this example we illustrate how one can implement the probability of 
+continuation. 
+Under the null hypothesis $\delta = 0$ it is given via
+$$
+P[\text{continue}] = P[c_f \leq X_1 \leq c_e] =\Phi(c_e) - \Phi(c_f),
+$$
+where $\Phi$ denotes the cumulative distribution function of the standard
+normal distribution.
 
-## Figures
+Note that as all unconditional scores
+this score needs to be represented by a conditional score.
+One can express it via
+$$
+\Phi(c_e) - \Phi(c_f) = \int_{c_f}^{c_e} \phi(x) dx =
+\int_{-\infty}^{\infty} 1_{x \in [c_f, c_e]} \phi(x) dx.
+$$
 
-The figure sizes have been customised so that you can easily put two images side-by-side. 
+Therefore, the conditional score $f(x) = 1_{x \in [c_f, c_e]}$ has to be defined.
+To do so, a new class and a corresponding method `evaluate()` have to be 
+defined. Let us call the class `ConditionalContinuation`.
+Then it can be implemented as follows.
 
-```{r, fig.show='hold'}
-plot(1:10)
-plot(10:1)
+```{r define-new-score}
+# Define the class
+setClass("ConditionalContinuation", contains = "ConditionalScore")
+
+# Define constructor
+ConditionalContinuation <- function(dist, prior) new("ConditionalContinuation", 
+                                                     distribution = dist, prior = prior)
+
+# Define corresponding evaluate method
+setMethod("evaluate", signature("ConditionalContinuation", "TwoStageDesign"),
+          function(s, design, x1, optimization = FALSE, ...) {
+              res <- 0
+              if(design@c1f <= x1 && x1 <= design@c1e)
+                  res <- 1
+              return(res)
+})
+
 ```
 
-You can enable figure captions by `fig_caption: yes` in YAML:
+Note that the option `optimization` has to be given in order to apply
+a faster Gaussian quadrature if the scores are used during optimization.
+It suffices to include it as above and can be ignored by the user.
 
-    output:
-      rmarkdown::html_vignette:
-        fig_caption: yes
+Now we can define the `IntegralScore` representing the probability to 
+continue under the effect size $\delta = 0$.
 
-Then you can use the chunk option `fig.cap = "Your figure caption."` in **knitr**.
-
-## More Examples
-
-You can write math expressions, e.g. $Y = X\beta + \epsilon$, footnotes^[A footnote here.], and tables, e.g. using `knitr::kable()`.
-
-```{r, echo=FALSE, results='asis'}
-knitr::kable(head(mtcars, 10))
+```{r p-cont}
+p_cont <- expected(ConditionalContinuation(Normal(), PointMassPrior(.0, 1)))
 ```
 
-Also a quote using `>`:
+Let us check if it can be evaluated.
+We need a dummy design to do so.
 
-> "He who gives up [code] safety for [code] speed deserves neither."
-([via](https://twitter.com/hadleywickham/status/504368538874703872))
+```{r define-design}
+design <- TwoStageDesign(
+    n1  = 100,
+    c1f = .0,
+    c1e = 2.0,
+    n2_pivots = rep(150, 5),
+    c2_pivots = seq(2.0, 0.0, length.out = 5)
+)
+```
+
+
+```{r evaluate-p-cont}
+evaluate(p_cont, design)
+```
+Evaluating directly from the design yields.
+
+```{r check}
+pnorm(design@c1e) - pnorm(design@c1f)
+```
+
+The values are identical what shows that the definition of the new score
+was successful.
