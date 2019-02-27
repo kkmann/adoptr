@@ -10,7 +10,9 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  fig.width  = 7,
+  fig.height = 5
 )
 ```
 
@@ -70,17 +72,220 @@ such methods already exist in `adoptr` as will be shown below.
 
 ### Unconditional scores
 
+Unconditional scores are scores that do not depend on a specific value
+of the first-stage statistic $X_1$. 
 
+In `adoptr` an unconditional score is an expected conditional score.
+I.e., integrating the product of a conditional score and the probability 
+density function of the test statistic over the full $x_1$-range
+yields to an unconditional score. 
+For instance, power is nothing but the integral over conditional power
+multiplied by the density function of the test statistic.
+Therefore, the proposed class of an unconditional score is the 
+class `IntegralScore`.
+The following 'formula' expresses the connection between the two score classes
+in `adoptr` for a design $D$.
+$$
+\text{IntegralScore} (D) = \int_{-\infty}^{\infty} \text{ConditionalScore}(x_1, D) *
+\text{TestStatisticDensity} (x_1) \operatorname{d} x_1.
+$$
+
+Creating an `IntegralScore` only requires a conditional score.
+Via the method `expected()` an `IntegralScore` is built.
+The evaluation method is then adopted by the underlying `ConditionalScore`.
 
 
 
 ## Preimplemented scores
 
-### Sample Size
+There are two common unconditional scores that are already implemented
+in `adoptr`. These are the conditional sample size and the conditional power.
+Its usage is described now.
+For illustration a `TwoStageDesign` has to be defined.
+
+```{r define-design}
+design <- TwoStageDesign(
+    n1  = 100,
+    c1f = .0,
+    c1e = 2.0,
+    n2_pivots = rep(150, 5),
+    c2_pivots = seq(2.0, 0.0, length.out = 5)
+)
+```
+
+A brief look on this design shows that a classical group-sequential design
+has been defined
+
+```{r plot-design}
+plot(design)
+```
+
+
+### Conditional Sample Size
+
+The conditional sample size is the sample size of a design conditioned
+on observing the first-stage result $X_1 = x_1$. 
+Therefore, it is just the total sample size $n(x_1) = n_1 + n_2(x_1)$.
+As described above, a data distribution and a prior have to be defined.
+```{r define-slots}
+dist  <- Normal()
+prior <- PointMassPrior(.3, 1)
+```
+
+
+It can be defined via
+
+```{r conditional-sample-size}
+css <- ConditionalSampleSize(dist, prior)
+```
+
+For our dummy design the conditional sample size at $x_1 = 1$ can be evaluated
+via
+
+```{r evaluate-css}
+evaluate(css, design, 1)
+```
+
+
+The corresponding unconditional score is the expected sample size.
+It can be defined by calling `expected()`:
+
+```{r ess}
+ess <- expected(css)
+```
+
+The call of `evaluate()` allows to evaluate the expected sample size of
+a two-stage design.
+Note that `ess` is a unconditional score and therefore, no $x_1$-outcome
+can be specified.
+
+```{r evaluate-ess}
+evaluate(ess, design)
+```
+
 
 ### Conditional Power  
+
+Another common used conditional score in the development of adaptive designs
+is the conditional power. It is defined as the probability to reject
+the null hypothesis at interim if $X_1 = x_1$ was observed. 
+For a design $D$ it is defined as.
+$$
+\text{Conditional Power }(x_1, D) = P[\text{Reject } \mathcal{H}_0 \, | \, X_1 = x_1]
+$$
+
+Analogously to the conditional sample size it can be called and evaluate
+by the `adoptr`-internal definitions.
+
+```{r cp}
+cp <- ConditionalPower(dist, prior)
+
+evaluate(cp, design, 1)
+```
+
+The power is than defined as the probability under the alternative 
+(here this is $\delta = 0.3$ as defined by the prior) to reject 
+the null hypothesis. 
+As before one can simply call:
+
+```{r power}
+power <- expected(cp)
+
+evaluate(power, design)
+```
+
+
+Finally note that the type one error rate is the probability to reject
+the null hypothesis under the null. 
+Therefore, it can be interpreted as conditional power under the null hypothesis
+and be defined as the power above where only the prior has to be changed.
+
+```{r toer}
+toer <- expected(ConditionalPower(dist = Normal(), prior = PointMassPrior(0.0, 1)))
+
+evaluate(toer, design)
+```
+
+### Plotting conditional scores
+
+Conditional scores can be implemented in the `plot()` method
+of `adoptr` in the following manner.
+Note that the term `cp``has already been defined above as conditional power.
+
+```{r plot-scores}
+plot(design, "Conditional Power" = cp)
+```
 
 
 
 
 ## Defining a new score
+
+In addition to the already existing ones, `adoptr` allows the user to
+define his own score. 
+This requires a basic knowledge on object oriented programming in R.
+
+In this example we illustrate how one can implement the probability of 
+continuation under the null hypothesis $\delta = 0$. 
+It is given via
+$$
+P[\text{continue}] = P[c_f \leq X_1 \leq c_e] =\Phi(c_e) - \Phi(c_f),
+$$
+where $\Phi$ denotes the cumulative distribution function of the standard
+normal distribution.
+
+Note that this score needs to be represented by a conditional score.
+One can express it via
+$$
+\Phi(c_e) - \Phi(c_f) = \int_{c_f}^{c_e} \phi(x) dx =
+\int_{-\infty}^{\infty} 1_{x \in [c_f, c_e]} \phi(x) dx.
+$$
+
+Therefore, the conditional score $f(x) = 1_{x \in [c_f, c_e]}$ has to be defined.
+To do so, a new class and a corresponding method `evaluate()` have to be 
+defined. Let us call the class `ConditionalContinuation`.
+Then it can be implemented as follows.
+
+```{r define-new-score}
+# Define the class
+setClass("ConditionalContinuation", contains = "ConditionalScore")
+
+# Define constructor
+ConditionalContinuation <- function(dist, prior) new("ConditionalContinuation", 
+                                                     distribution = dist, prior = prior)
+
+# Define corresponding evaluate method
+setMethod("evaluate", signature("ConditionalContinuation", "TwoStageDesign"),
+          function(s, design, x1, optimization = FALSE, ...) {
+              res <- 0
+              if(design@c1f <= x1 && x1 <= design@c1e)
+                  res <- 1
+              return(res)
+})
+
+```
+
+Note that the option `optimization` has to be given in order to apply
+a faster Gaussian quadrature if the scores are used during optimization.
+It suffices to include it as above and can be ignored by the user.
+
+Now we can define the `IntegralScore` representing the probability to 
+continue under the effect size $\delta = 0$.
+
+```{r p-cont}
+p_cont <- expected(ConditionalContinuation(Normal(), PointMassPrior(.0, 1)))
+```
+
+Let us check if it can be evaluated.
+
+```{r evaluate-p-cont}
+evaluate(p_cont, design)
+```
+Evaluating directly from the design yields.
+
+```{r check}
+pnorm(design@c1e) - pnorm(design@c1f)
+```
+
+The values are identical what shows that the definition of the new score
+was successful.
