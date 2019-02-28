@@ -3,49 +3,24 @@
 \docType{class}
 \name{DataDistribution-class}
 \alias{DataDistribution-class}
-\alias{quantile,DataDistribution-method}
 \alias{probability_density_function}
-\alias{probability_density_function,DataDistribution,numeric,numeric,numeric-method}
 \alias{cumulative_distribution_function}
-\alias{cumulative_distribution_function,DataDistribution,numeric,numeric,numeric-method}
-\alias{simulate,DataDistribution,numeric-method}
 \title{Data distributions}
 \usage{
-\S4method{quantile}{DataDistribution}(x, probs, n, theta, ...)
-
 probability_density_function(dist, x, n, theta, ...)
 
-
-  \S4method{probability_density_function}{DataDistribution,numeric,numeric,numeric}(dist,
-  x, n, theta, ...)
-
 cumulative_distribution_function(dist, x, n, theta, ...)
-
-
-  \S4method{cumulative_distribution_function}{DataDistribution,numeric,numeric,numeric}(dist,
-  x, n, theta, ...)
-
-\S4method{simulate}{DataDistribution,numeric}(object, nsim, n, theta,
-  seed = NULL, ...)
 }
 \arguments{
-\item{x}{outcome}
+\item{dist}{data distribution object}
 
-\item{probs}{numeric vector of probabilities}
+\item{x}{outcome}
 
 \item{n}{sample size}
 
 \item{theta}{distribution parameter}
 
 \item{...}{further optional arguments}
-
-\item{dist}{data distribution object}
-
-\item{object}{design to simulate from}
-
-\item{nsim}{number of simulation runs}
-
-\item{seed}{ranom seed}
 }
 \description{
 \code{DataDistribution} is an abstract class used to represent the distribution
@@ -62,19 +37,6 @@ The logical option \code{two_armed} allows to decide whether a one-arm or
 a two-arm (the default) design should be computed. In the case of a two-arm
 design all sample sizes are per group.
 }
-\section{Methods (by generic)}{
-\itemize{
-\item \code{quantile}: quantile function of the respective distribution.
-
-\item \code{probability_density_function}: probability density function given outcome,
-sample size and parameter; must be implemented.
-
-\item \code{cumulative_distribution_function}: cumulative distribution function given outcome,
-sample size and parameter; must be implemented.
-
-\item \code{simulate}: sample from distribution given theta
-}}
-
 \section{Slots}{
 
 \describe{

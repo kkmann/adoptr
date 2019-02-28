@@ -37,7 +37,8 @@ setClass("AbstractConditionalScore")
 #'
 #' [ToDo]
 #'
-#' @template ConditionalScoreTemplate
+#' @param s conditional score object to evaluate
+#' @param ... optional arguments
 #'
 #' @exportClass ConditionalScore
 setClass("ConditionalScore", representation(
@@ -46,13 +47,6 @@ setClass("ConditionalScore", representation(
     ),
     contains = "AbstractConditionalScore")
 
-
-#' @param optimization logical, if TRUE uses a relaxation to real parameters of
-#'    the underlying design; used for smooth optimization.
-#' @describeIn ConditionalScore not implemented, just raises a 'not implemented'
-#'     error.
-setMethod("evaluate", signature("ConditionalScore", "TwoStageDesign"),
-          function(s, design, x1, optimization = FALSE, ...) stop("not implemented"))
 
 
 #' @describeIn ConditionalScore integrate a \code{ConditionalScore} over the
@@ -105,22 +99,6 @@ setMethod("*", signature("numeric", "ConditionalScore"),
 #' @exportClass UnconditionalScore
 setClass("UnconditionalScore")
 
-
-#' @param s an \code{IntegralScore}
-#' @param design a \code{TwoStageDesign}
-#' @param optimization logical, if TRUE uses a relaxation to real parameters of
-#'    the underlying design; used for smooth optimization.
-#' @template dotdotdotTemplate
-#'
-#' @rdname UnconditionalScore-class
-#' @export
-setMethod("evaluate", signature("UnconditionalScore", "TwoStageDesign"),
-          function(s, design, optimization = FALSE, ...) stop("not implemented") )
-
-
-# not user facing
-setMethod(".evaluate", signature("UnconditionalScore", "TwoStageDesign"),
-          function(s, design, ...) stop("not implemented") )
 
 
 #' @rdname score-arithmetic
