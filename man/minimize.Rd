@@ -5,8 +5,8 @@
 \title{Find optimal two-stage design by constraint minimization}
 \usage{
 minimize(objective, subject_to, initial_design, lower_boundary_design,
-  upper_boundary_design, c2_monotone = FALSE, opts = list(algorithm =
-  "NLOPT_LN_COBYLA", xtol_rel = 1e-05, maxeval = 10000), ...)
+  upper_boundary_design, opts = list(algorithm = "NLOPT_LN_COBYLA",
+  xtol_rel = 1e-05, maxeval = 10000), ...)
 }
 \arguments{
 \item{objective}{objective function}
@@ -18,8 +18,6 @@ minimize(objective, subject_to, initial_design, lower_boundary_design,
 \item{lower_boundary_design}{design specifying the lower boundary}
 
 \item{upper_boundary_design}{design specifying the upper boundary}
-
-\item{c2_monotone}{should the c2-function be forced to be monotoneously decreasing?}
 
 \item{opts}{options list passed to nloptr}
 
