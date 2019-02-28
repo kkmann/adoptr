@@ -1,0 +1,554 @@
+---
+title: "otsd examples"
+author: "Maximilian Pilz"
+date: "`r Sys.Date()`"
+output: github_document
+vignette: >
+  %\VignetteIndexEntry{examples}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse  = TRUE,
+  #eval = FALSE,
+  comment   = "#>",
+  fig.width = 8
+)
+```
+
+
+# Definition of constant key figures
+
+For all examples type one error is defined under a point mass prior
+and a two-armed design is regarded. 
+
+
+```{r load package, echo = F}
+devtools::install_github("kkmann/otsd")
+library(otsd)
+```
+
+```{r normal distribution}
+dist <- Normal(two_armed = TRUE)
+```
+
+```{r null hypothesis}
+null = PointMassPrior(0, 1)
+```
+
+```{r toer}
+toer = integrate(ConditionalPower(dist, null))
+```
+
+
+Definition of a starting design.
+Note that `order` can be changed.
+
+```{r}
+order = 7L # maybe find a default here
+
+design <- gq_design(
+    n1  = 50,
+    c1f = .0,
+    c1e = 2.0,
+    n2  = seq(200, 20, length.out = order),
+    c2  = rep(1.96, order),
+    order = order)
+```
+
+Finally, define the regularization function.
+
+```{r}
+avn2 <- AverageN2()
+```
+
+
+# Point alternative
+
+## Large effect size
+
+### Expected sample size under alternative
+
+Here we go:
+
+```{r}
+alternative <- PointMassPrior(.4, 1)
+pow         <- integrate(ConditionalPower(dist, alternative))
+ess         <- integrate(ConditionalSampleSize(dist, alternative))
+```
+
+Minimize.
+
+```{r, warning = F}
+minimize(
+    objective = ess + 1e-6*avn2,
+    subject_to(
+        pow  >= 0.8,
+        toer <= 0.025
+    ),
+    initial_design = design,
+    lower_boundary_design = update(design, c(10, -2, 2, numeric(order) + 2, numeric(order) - 3)),
+    upper_boundary_design = update(design, c(500, 2, 5, numeric(order) + 500, numeric(order) + 3))
+
+) ->
+    optimal_design
+```
+
+Plot and summarize the resulting design.
+
+```{r}
+plot(optimal_design, "Conditional Power" = ConditionalPower(dist, alternative))
+```
+
+```{r}
+summary(optimal_design, "Power" = pow, "Type One Error" = toer)
+```
+
+Check power and type one error via `simulate`.
+
+```{r}
+optimal_design@n1      <- round(optimal_design@n1)
+optimal_design@rounded <- TRUE
+
+sim_null_1 <- simulate(object = optimal_design, nsim = 100000, dist = dist, 
+                       theta = .0, seed = 1)
+sim_alt_1  <- simulate(object = optimal_design, nsim = 100000, dist = dist, 
+                       theta = .4, seed = 1)
+```
+
+We obtaina type one error of `r mean(sim_null_1[,"reject"])`
+and a power of `r mean(sim_alt_1[,"reject"])`
+
+
+### Expected sample size under null hypothesis
+
+```{r}
+ess_0 <- integrate(ConditionalSampleSize(dist, null))
+```
+
+
+```{r, warning = F}
+minimize(
+    objective = ess_0 + 1e-6*avn2,
+    subject_to(
+        pow  >= 0.8,
+        toer <= 0.025
+    ),
+    initial_design = design,
+    lower_boundary_design = update(design, c(10, -2, 2, numeric(order) + 2, numeric(order) - 1)),
+    upper_boundary_design = update(design, c(500, 2, 5, numeric(order) + 500, numeric(order) + 3)),
+    opts = list(algorithm   = "NLOPT_LN_COBYLA",
+                xtol_rel    = 1e-4,
+                maxeval     = 5000)
+
+) ->
+    optimal_design_2
+```
+
+Plot and summarize the resulting design.
+
+```{r}
+plot(optimal_design_2, "Conditional Power" = ConditionalPower(dist, alternative))
+```
+
+```{r}
+summary(optimal_design_2, "Power" = pow, "Type One Error" = toer)
+```
+
+Check power and type one error via `simulate`.
+
+```{r}
+optimal_design_2@n1      <- round(optimal_design_2@n1)
+optimal_design_2@rounded <- TRUE
+
+sim_null_2 <- simulate(object = optimal_design_2, nsim =  100000, dist =  dist, 
+                       theta = .0, seed = 2)
+sim_alt_2  <- simulate(object = optimal_design_2, nsim =  100000, dist =  dist, 
+                       theta = .4, seed = 2)
+```
+
+We obtaina type one error of `r mean(sim_null_2[,"reject"])`
+and a power of `r mean(sim_alt_2[,"reject"])`
+
+
+
+## Small effect size
+
+### Expected sample size under alternative
+
+Here we go:
+
+```{r}
+alternative <- PointMassPrior(.2, 1)
+pow         <- integrate(ConditionalPower(dist, alternative))
+ess         <- integrate(ConditionalSampleSize(dist, alternative))
+```
+
+Minimize.
+
+```{r, warning = F}
+minimize(
+    objective = ess + 1e-6*avn2,
+    subject_to(
+        pow  >= 0.8,
+        toer <= 0.025
+    ),
+    initial_design = design,
+    lower_boundary_design = update(design, c(10, -2, 2, numeric(order) + 2, numeric(order) - 3)),
+    upper_boundary_design = update(design, c(500, 2, 5, numeric(order) + 500, numeric(order) + 3))
+
+) ->
+    optimal_design_3
+```
+
+Plot and summarize the resulting design.
+
+```{r}
+plot(optimal_design_3, "Conditional Power" = ConditionalPower(dist, alternative))
+```
+
+```{r}
+summary(optimal_design_3, "Power" = pow, "Type One Error" = toer)
+```
+
+Check power and type one error via `simulate`.
+
+```{r}
+optimal_design_3@n1      <- round(optimal_design_3@n1)
+optimal_design_3@rounded <- TRUE
+
+sim_null_3 <- simulate(object = optimal_design_3, nsim =  100000, dist =  dist, 
+                       theta = .0, seed = 3)
+sim_alt_3  <- simulate(object = optimal_design_3, nsim =  100000, dist =  dist, 
+                       theta = .2, seed = 3)
+```
+
+We obtaina type one error of `r mean(sim_null_3[,"reject"])`
+and a power of `r mean(sim_alt_3[,"reject"])`
+
+
+### Expected sample size under null hypothesis
+
+```{r}
+ess_0 <- integrate(ConditionalSampleSize(dist, null))
+```
+
+
+```{r, warning = F}
+minimize(
+    objective = ess_0 + 1e-6*avn2,
+    subject_to(
+        pow  >= 0.8,
+        toer <= 0.025
+    ),
+    initial_design = design,
+    lower_boundary_design = update(design, c(10, -2, 2, numeric(order) + 2, numeric(order) - 1)),
+    upper_boundary_design = update(design, c(500, 2, 5, numeric(order) + 500, numeric(order) + 3)),
+    opts = list(algorithm   = "NLOPT_LN_COBYLA",
+                xtol_rel    = 1e-4,
+                maxeval     = 5000)
+
+) ->
+    optimal_design_4
+```
+
+Plot and summarize the resulting design.
+
+```{r}
+plot(optimal_design_4, "Conditional Power" = ConditionalPower(dist, alternative))
+```
+
+```{r}
+summary(optimal_design_4, "Power" = pow, "Type One Error" = toer)
+```
+
+Check power and type one error via `simulate`.
+
+```{r}
+optimal_design_4@n1      <- round(optimal_design_4@n1)
+optimal_design_4@rounded <- TRUE
+
+sim_null_4 <- simulate(object = optimal_design_4, nsim = 100000, dist =  dist, 
+                       theta = .0, seed = 4)
+sim_alt_4  <- simulate(object = optimal_design_4, nsim = 100000, dist = dist,
+                       theta = .2, seed = 4)
+```
+
+We obtaina type one error of `r mean(sim_null_4[,"reject"])`
+and a power of `r mean(sim_alt_4[,"reject"])`
+
+
+
+
+
+# Continuous normal prior
+
+## Expected Sample size under prior
+
+```{r}
+density_1   <- function(x) dnorm(x, mean = .4, sd = .2)
+prior       <- ContinuousPrior(density_1, c(-.7, 1.6))
+alternative <- condition(prior, c(0, 1.6))
+```
+
+
+```{r}
+pow <- integrate(ConditionalPower(dist, alternative))
+ess_total <- integrate(ConditionalSampleSize(dist, prior))
+```
+
+
+```{r, warning = F}
+minimize(
+    objective = ess_total + 1e-6*avn2,
+    subject_to(
+        pow  >= 0.8,
+        toer <= 0.025
+    ),
+    initial_design = design,
+    lower_boundary_design = update(design, c(10, -2, 2, numeric(order) + 2, numeric(order) - 1)),
+    upper_boundary_design = update(design, c(500, 2, 5, numeric(order) + 500, numeric(order) + 3)),
+    opts = list(algorithm   = "NLOPT_LN_COBYLA",
+                xtol_rel    = 1e-4,
+                maxeval     = 10000)
+
+) ->
+    optimal_design_5
+```
+
+
+```{r}
+plot(optimal_design_5, "Conditional Power" = ConditionalPower(dist, alternative))
+```
+
+```{r}
+summary(optimal_design_5, "Power" = pow, "Type One Error" = toer)
+```
+
+
+Simulation is only possible for type one error rate.
+```{r}
+optimal_design_5@n1      <- round(optimal_design_5@n1)
+optimal_design_5@rounded <- TRUE
+
+sim_null_5 <- simulate(object = optimal_design_5, nsim = 100000, dist =  dist, 
+                       theta = .0, seed = 5)
+```
+
+We obtain a type one error of `r mean(sim_null_5[,"reject"])`.
+
+## Expected sample size under null hypothesis
+
+```{r}
+pow <- integrate(ConditionalPower(dist, alternative))
+ess_null <- integrate(ConditionalSampleSize(dist, null))
+```
+
+
+```{r, warning = F}
+minimize(
+    objective = ess_null + 1e-6*avn2,
+    subject_to(
+        pow  >= 0.8,
+        toer <= 0.025
+    ),
+    initial_design = design,
+    lower_boundary_design = update(design, c(10, -2, 2, numeric(order) + 2, numeric(order) - 1)),
+    upper_boundary_design = update(design, c(500, 2, 5, numeric(order) + 500, numeric(order) + 3)),
+    opts = list(algorithm   = "NLOPT_LN_COBYLA",
+                xtol_rel    = 1e-4,
+                maxeval     = 10000)
+
+) ->
+    optimal_design_6
+```
+
+
+```{r}
+plot(optimal_design_6, "Conditional Power" = ConditionalPower(dist, alternative))
+```
+
+```{r}
+summary(optimal_design_6, "Power" = pow, "Type One Error" = toer)
+```
+
+
+Simulation is only possible for type one error rate.
+```{r}
+optimal_design_6@n1      <- round(optimal_design_6@n1)
+optimal_design_6@rounded <- TRUE
+
+sim_null_6 <- simulate(object = optimal_design_6, nsim = 100000, dist =  dist, 
+                       theta = .0, seed = 6)
+```
+
+We obtain a type one error of `r mean(sim_null_6[,"reject"])`.
+
+
+
+
+# Uniform prior
+
+```{r}
+density_2   <- function(x) dunif(x, min = 0.2, max = 0.6)
+prior_2     <- ContinuousPrior(density_2, support = c(0.2, 0.6))
+pow <- integrate(ConditionalPower(dist, prior_2))
+```
+
+
+## Expected Sample size under prior
+
+```{r}
+ess <- integrate(ConditionalSampleSize(dist, prior_2))
+```
+
+These changes are sufficient to compute the new optimal design
+by again calling the `minimize` function.
+
+```{r, warning = F}
+minimize(
+    objective = ess + 1e-6*avn2,
+    subject_to(
+        pow  >= 0.8,
+        toer <= 0.025
+    ),
+    initial_design = design,
+    lower_boundary_design = update(design, c(10, -2, 2, numeric(order) + 2, numeric(order) - 1)),
+    upper_boundary_design = update(design, c(500, 2, 5, numeric(order) + 500, numeric(order) + 3)),
+    opts = list(algorithm   = "NLOPT_LN_COBYLA",
+                xtol_rel    = 1e-4,
+                maxeval     = 5000)
+
+) ->
+    optimal_design_7
+```
+
+
+```{r}
+plot(optimal_design_7, "Conditional Power" = ConditionalPower(dist, prior_2))
+```
+
+```{r}
+summary(optimal_design_7, "Power" = pow, "Type One Error" = toer)
+```
+
+Simulation is only possible for type one error rate.
+```{r}
+optimal_design_7@n1      <- round(optimal_design_7@n1)
+optimal_design_7@rounded <- TRUE
+
+sim_null_7 <- simulate(object = optimal_design_7, nsim = 100000, dist = dist, 
+                       theta = .0, seed = 7)
+```
+
+We obtain a type one error of `r mean(sim_null_7[,"reject"])`.
+
+
+
+## Expected Sample size under null hypothesis
+
+```{r}
+ess_null <- integrate(ConditionalSampleSize(dist, null))
+```
+
+These changes are sufficient to compute the new optimal design
+by again calling the `minimize` function.
+
+```{r, warning = F}
+minimize(
+    objective = ess_null + 1e-6*avn2,
+    subject_to(
+        pow  >= 0.8,
+        toer <= 0.025
+    ),
+    initial_design = design,
+    lower_boundary_design = update(design, c(10, -2, 2, numeric(order) + 2, numeric(order) - 1)),
+    upper_boundary_design = update(design, c(500, 2, 5, numeric(order) + 500, numeric(order) + 3)),
+    opts = list(algorithm   = "NLOPT_LN_COBYLA",
+                xtol_rel    = 1e-4,
+                maxeval     = 5000)
+
+) ->
+    optimal_design_8
+```
+
+
+```{r}
+plot(optimal_design_8, "Conditional Power" = ConditionalPower(dist, prior_2))
+```
+
+```{r}
+summary(optimal_design_8, "Power" = pow, "Type One Error" = toer)
+```
+
+Simulation is only possible for type one error rate.
+```{r}
+optimal_design_8@n1      <- round(optimal_design_8@n1)
+optimal_design_8@rounded <- TRUE
+
+sim_null_8 <- simulate(object = optimal_design_8, nsim = 100000, dist = dist, 
+                       theta = .0, seed = 8)
+```
+
+We obtain a type one error of `r mean(sim_null_8[,"reject"])`.
+
+
+
+
+# Conditional Power inequalities
+
+```{r}
+alternative <- PointMassPrior(.4, 1)
+pow         <- integrate(ConditionalPower(dist, alternative))
+ess         <- integrate(ConditionalSampleSize(dist, alternative))
+```
+
+
+## Conditional power constraints
+To trial sponsors it is often hardly acceptable to conduct the second-stage
+of a trial without a sufficient conditional power. 
+`adoptr` allows to implement conditional constraints as, e.g., 
+requiering the conditional power to be above a certain level. 
+We extend the first example that was regarded by a conditional power constraint
+of 75\%.
+
+```{r}
+cp <- ConditionalPower(dist, alternative)
+```
+
+```{r, warning = F}
+minimize(
+    objective = ess + 1e-6*avn2,
+    subject_to(
+        pow  >= 0.8,
+        toer <= 0.025,
+        cp   >= 0.75
+    ),
+    initial_design = design,
+    lower_boundary_design = update(design, c(10, -2, 2, numeric(order) + 2, numeric(order) - 1)),
+    upper_boundary_design = update(design, c(500, 2, 5, numeric(order) + 500, numeric(order) + 3)),
+    opts = list(algorithm   = "NLOPT_LN_COBYLA",
+                xtol_rel    = 1e-4,
+                maxeval     = 5000)
+
+) ->
+    optimal_design_9
+```
+
+
+```{r}
+plot(optimal_design_9, "Conditional Power" = ConditionalPower(dist, alternative))
+```
+
+```{r}
+summary(optimal_design_9, "Power" = pow, "Type One Error" = toer)
+```
+
+
+
+
+
