@@ -88,28 +88,3 @@ test_that("simulate respects seed", {
     )
 
 })
-
-
-
-test_that("run through abstract methods", {
-
-    x <- list()
-    class(x) <- "DataDistribution"
-
-    expect_error(
-        probability_density_function(x, 5, 10, .5)
-    )
-
-    expect_error(
-        cumulative_distribution_function(x, 5, 10, .5)
-    )
-
-    expect_error(
-        quantile(x, .5, 10, .5)
-    )
-
-    expect_error(
-        simulate(x, 5, 10, .5)
-    )
-
-})

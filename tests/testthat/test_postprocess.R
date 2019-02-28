@@ -44,6 +44,10 @@ test_that("post-processing yields integer sample sizes", {
 
     res_post <- suppressWarnings(postprocess(res))
 
+    expect_warning(
+        postprocess(res)
+    )  # warning because maxeval was reached
+
     # n1 is integer
     expect_equal(
         res_post$design@n1,
@@ -76,12 +80,17 @@ test_that("post-processing of OneStageDesign yields integer sample sizes", {
         opts = list(
             algorithm   = "NLOPT_LN_COBYLA",
             xtol_rel    = 1e-4,
-            maxeval     = 100 # only the principle is tested
+            maxeval     = 10 # only the principle is tested
         )
 
     ))
 
-    res_post <- postprocess(res)
+    res_post <- suppressWarnings(postprocess(res))
+
+    expect_warning(
+        postprocess(res)
+    )  # warning because maxeval was reached
+
 
     # n1 is integer
     expect_equal(

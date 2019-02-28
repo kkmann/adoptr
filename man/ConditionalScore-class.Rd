@@ -3,46 +3,22 @@
 \docType{class}
 \name{ConditionalScore-class}
 \alias{ConditionalScore-class}
-\alias{evaluate,ConditionalScore,TwoStageDesign-method}
 \alias{expected,ConditionalScore-method}
 \title{Class for conditional scoring function}
 \usage{
-\S4method{evaluate}{ConditionalScore,TwoStageDesign}(s, design, x1,
-  optimization = FALSE, ...)
-
 \S4method{expected}{ConditionalScore}(s, ...)
 }
 \arguments{
 \item{s}{conditional score object to evaluate}
 
-\item{design}{a \code{Design}}
-
-\item{x1}{stage one outcome (note that n1 is available from \code{design})}
-
-\item{optimization}{logical, if TRUE uses a relaxation to real parameters of
-the underlying design; used for smooth optimization.}
-
-\item{...}{further optional parameters}
+\item{...}{optional arguments}
 }
 \description{
 [ToDo]
 }
 \section{Methods (by generic)}{
 \itemize{
-\item \code{evaluate}: not implemented, just raises a 'not implemented'
-error.
-
 \item \code{expected}: integrate a \code{ConditionalScore} over the
 stage-one outcome; return object of class \code{\link{IntegralScore-class}}.
-}}
-
-\section{Slots}{
-
-\describe{
-\item{\code{distribution}}{\code{DataDistribution} object specifying the data distribution
-given the parameter \eqn{\theta} of the model}
-
-\item{\code{prior}}{\code{Prior} object specifying the data distribution
-given the parameter \eqn{\theta} of the model}
 }}
 
