@@ -93,3 +93,12 @@ test_that("plot produces correct number of columns", {
     )
 
 }) # end 'plot produces correct number of columns'
+
+
+
+test_that("show method returns design name", {
+    expect_equal(
+        cat(class(design)[1]),
+        show(design)
+    )
+}) # end 'show method returns design name'
