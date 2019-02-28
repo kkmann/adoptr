@@ -87,6 +87,11 @@ test_that("post-processing of OneStageDesign yields integer sample sizes", {
 
     res_post <- postprocess(res)
 
+    expect_warning(
+        postprocess(res)
+    )  # warning because maxeval was reached
+
+
     # n1 is integer
     expect_equal(
         res_post$design@n1,
