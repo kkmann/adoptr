@@ -3,22 +3,7 @@
 \docType{class}
 \name{UnconditionalScore-class}
 \alias{UnconditionalScore-class}
-\alias{evaluate,UnconditionalScore,TwoStageDesign-method}
 \title{Abstract class for unconditional scoring function}
-\usage{
-\S4method{evaluate}{UnconditionalScore,TwoStageDesign}(s, design,
-  optimization = FALSE, ...)
-}
-\arguments{
-\item{s}{an \code{IntegralScore}}
-
-\item{design}{a \code{TwoStageDesign}}
-
-\item{optimization}{logical, if TRUE uses a relaxation to real parameters of
-the underlying design; used for smooth optimization.}
-
-\item{...}{further optional arguments}
-}
 \description{
 [ToDo]
 }
