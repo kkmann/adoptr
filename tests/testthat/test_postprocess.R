@@ -44,6 +44,10 @@ test_that("post-processing yields integer sample sizes", {
 
     res_post <- suppressWarnings(postprocess(res))
 
+    expect_warning(
+        postprocess(res)
+    )  # warning because maxeval was reached
+
     # n1 is integer
     expect_equal(
         res_post$design@n1,
