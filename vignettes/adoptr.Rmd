@@ -12,9 +12,10 @@ editor_options:
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
-  collapse  = TRUE,
-  comment   = "#>",
-  fig.width = 8
+  collapse   = TRUE,
+  comment    = "#>",
+  fig.width  = 7,
+  fig.height = 5
 )
 library(adoptr)
 ```
@@ -186,7 +187,7 @@ conditional power.
 plot(
   optimal_design, 
   "Conditional power" = ConditionalPower(datadist, alternative),
-  "Conditional TOER" = ConditionalPower(datadist, null)
+  "Conditional TOER"  = ConditionalPower(datadist, null)
 )
 ```
 
