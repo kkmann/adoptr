@@ -22,8 +22,182 @@ library(adoptr)
 
 ## The usage of prior distributions in two-stage designs
 
+A key feature of a clinical trial design is the probability as success.
+Often this is measured by the power, the probability to reject the null
+hypothesis when the 'true' effect differs from $0$ in a clinically 
+relevant manner. 
+
+To decide on which effect size the power should be computed is of high importance.
+The classical choice is to determine a point alternative hypothesis 
+$\delta = \delta_1$. 
+However, one may not be sure on the true effect value.
+This uncertainty can be integrated by the usage of a Bayesian prior
+distribution $\delta \sim \pi(\delta)$. 
+In this setting the power can be defined as probability to reject the 
+null hypothesis given that the effect size is at least the minimal clinically
+relevant one. 
+In order to avoid the incorporation of effect sizes under the null hypothesis,
+the prior has to be conditioned on the interval $[\delta_{MCR}, \infty]$, where
+$\delta_{MCR} > 0$ denotes the minimal clinically relevant effect size.
+`adoptr` allows the user to use discrete as well as continuous priors
+and a `condition()` method.
+
+An further advantage of the usage of prior distribution is the possibility
+to update the prior at the interim analysis and to compute the posterior
+distribution for, e.g., the calculation of conditional power. 
+`adoptr` provides the computation of the posterior and uses it automatically
+for `ConditionalPower`.
+
+In general, the user of `adoptr` only needs to define the desired
+priors for null and alternative hypothesis.
+Further work on priors is not necessary to obtain an optimal design.
+Methods for further calcluations as posterior computation are provided
+but already used internally.
+
+There are two prior classes in `adoptr` that will be introduced in the 
+following two chapters. For illustration of, e.g. expectation,
+we will need the following dummy function $f$.
+
+```{r dummy-function}
+f <- function(x) 2*x
+```
+
+
+
+
 
 ## Discrete priors in `adoptr`
 
+The first prior class are classical distrecte priors. 
+The corresponding class in `adoptr` is named `PointMassPrior`.
+It requires the definition of two slots:
+
+- `theta`: the points on which probability mass lies
+
+- `mass`: the respective mass on these points 
+
+Note that `theta` and `mass` have to be of the same length and that `mass`
+has to sum to one as it defines a probability distribution. 
+
+Let us regard an example where the point $\delta = 0.1$ has probability mass 
+$0.4$ and the point $\delta = 0.25$ has mass $1 - 0.4 = 0.6$. 
+
+```{r discrete-prior}
+disc_prior <- PointMassPrior(c(0.1, 0.25), c(0.4, 0.6))
+```
+
+Now, the expectation of $f$ under this prior can be computed via `expectation()`.
+
+```{r discrete-expectation}
+expectation(disc_prior, f)
+```
+
+The prior can also be conditioned on the interval $[0.2, 0.3]$.
+Then all probability mass should be concentrated on the single point 
+$\delta =0.25$. Let us check this.
+
+```{r condition-discrete-prior}
+disc_prior_2 <- condition(disc_prior, c(0.2, 0.3))
+
+disc_prior_2@theta
+
+disc_prior_2@mass
+```
+
+
+Finally, discrete priors can be updated at the interim and the posterior
+can be computed. 
+To illustrate this, assume a first-stage sample size $n_1 = 50$ and
+a first-stage outcome $x_1 = 1$ when the data distribution is normal.
+
+```{r define-scenario}
+n1   = 50.0
+x1   = 1.0
+dist = Normal()
+```
+
+Then, the posterior can be computed and regarded.
+
+```{r discrete-posterior}
+disc_post <- posterior(dist, disc_prior, x1, n1)
+
+disc_post@theta
+
+disc_post@mass
+```
+
+Analogously, it can be worked with point mass priors with mass on only one 
+solely point and thereby creating a classical design with power on a point 
+alternative. 
+
+However, not only power but all the scores in `adoptr` as conditional
+and expected sample size can be computed based on the respective power.
+This is illustrated in the vignettes to scores.
+
+
 
 ## Continuous priors in `adoptr`
+
+Similarily to discrete priors, continuous priors can be used in `adoptr`.
+The implemented class is called `ContinuousPrior` and based on the following
+slots.
+
+- `pdf`: probability density function of the prior
+
+- `support`: support of the density
+
+It is important to note that for numerical reasons `adoptr` does not support
+infinite support. 
+However, as the density has to integrate to one, its tails need to tend to zero
+quite quickly and therefore, a finite support should be applicable without
+loss of generality. 
+
+As example a normal prior with mean $\delta = 0.3$, variance $\tau^2 = 0.04$
+and support $[-2, 3]$ is presented. 
+Note that if the support was chosen to small (i.e. the integral of the
+pdf on the support was not numerical one) `adoptr` would produce an error
+message. 
+
+```{r cont-prior}
+dens <- function(x) dnorm(x, mean = 0.3, sd = 0.2)
+
+cont_prior <- ContinuousPrior(pdf = dens, support = c(-2, 3))
+```
+
+
+Computing expectations works equivalently to the discrete case.
+
+```{r cont-prior-expectation}
+expectation(cont_prior, f)
+```
+
+Also conditioning works by the same methods. 
+In the continuous case, this is even more important because one
+does not want to compute power on the full parameter space but
+only on values of $\delta$ that are greater than zero.
+This can then also be used to compute scores on the alternative 
+(condition the prior to be greater than zero) or the null hypothesis
+(condition the prior to be smaller than zero).
+However, in the particular situation of type one error rate proctection,
+we recommend the usage of a point mass prior according to the ICH guideline.
+
+Combing back to conditioning, the continuous prior can be conditioned on 
+positive $\delta$-values and the expectation of $f$ can be computed
+under this new prior.
+
+```{r cont-condition}
+cont_prior_2 <- condition(cont_prior, c(0, 3))
+
+expectation(cont_prior_2, f)
+```
+
+The computation of the posterior distribution also is supported for 
+continuous priors. The example numbers from the discrete example are still
+used.
+
+```{r cont-posterior}
+cont_post <- posterior(dist, cont_prior, x1, n1)
+```
+
+This is again an object of class `ContinuousPrior` that can be applied
+for further use.
