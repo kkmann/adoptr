@@ -88,7 +88,7 @@
     <div class="page-header toc-ignore">
       <h1>Get started with adoptr</h1>
             
-            <h4 class="date">2019-02-27</h4>
+            <h4 class="date">2019-03-01</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/kkmann/adoptr/blob/master/vignettes/adoptr.Rmd"><code>vignettes/adoptr.Rmd</code></a></small>
       <div class="hidden name"><code>adoptr.Rmd</code></div>
@@ -115,7 +115,7 @@
 <a class="sourceLine" id="cb2-8" data-line-number="8">  )</a></code></pre></div>
 <p>[comment: I don’t like the gq_design function. If we only use GQ, we should implement this as default constructor of the TwoStageDesign class even though the implementation is more generic.] The design can be visualized using the provided <code><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot()</a></code> method.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(design)</a></code></pre></div>
-<p><img src="adoptr_files/figure-html/plot-design-1.png" width="768"></p>
+<p><img src="adoptr_files/figure-html/plot-design-1.png" width="672"></p>
 <p>In the next step, we define a simple optimization problem for improving this initial design.</p>
 </div>
 <div id="define-hypotheses-and-data-generating-mechanism" class="section level2">
@@ -169,9 +169,9 @@
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(</a>
 <a class="sourceLine" id="cb11-2" data-line-number="2">  optimal_design, </a>
 <a class="sourceLine" id="cb11-3" data-line-number="3">  <span class="st">"Conditional power"</span> =<span class="st"> </span><span class="kw"><a href="../reference/ConditionalPower-class.html">ConditionalPower</a></span>(datadist, alternative),</a>
-<a class="sourceLine" id="cb11-4" data-line-number="4">  <span class="st">"Conditional TOER"</span> =<span class="st"> </span><span class="kw"><a href="../reference/ConditionalPower-class.html">ConditionalPower</a></span>(datadist, null)</a>
+<a class="sourceLine" id="cb11-4" data-line-number="4">  <span class="st">"Conditional TOER"</span>  =<span class="st"> </span><span class="kw"><a href="../reference/ConditionalPower-class.html">ConditionalPower</a></span>(datadist, null)</a>
 <a class="sourceLine" id="cb11-5" data-line-number="5">)</a></code></pre></div>
-<p><img src="adoptr_files/figure-html/plot-optimal-design-1.png" width="768"></p>
+<p><img src="adoptr_files/figure-html/plot-optimal-design-1.png" width="672"></p>
 <p>This class of designs was previously discussed in [SIM article] where an indirect method solving the Euler-Lagrange equation was used to find the optimal <span class="math inline">\(n_2\)</span> and <span class="math inline">\(c_2\)</span> functions.</p>
 </div>
 <div id="variations" class="section level2">

@@ -140,37 +140,20 @@ single parameter value <code>theta</code>.</p>
     
     </div>
 
-    <pre class="usage"><span class='co'># S4 method for DataDistribution</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/quantile'>quantile</a></span>(<span class='no'>x</span>, <span class='no'>probs</span>, <span class='no'>n</span>, <span class='no'>theta</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>probability_density_function</span>(<span class='no'>dist</span>, <span class='no'>x</span>, <span class='no'>n</span>, <span class='no'>theta</span>, <span class='no'>...</span>)
 
-<span class='fu'>probability_density_function</span>(<span class='no'>dist</span>, <span class='no'>x</span>, <span class='no'>n</span>, <span class='no'>theta</span>, <span class='no'>...</span>)
-
-
-  <span class='co'># S4 method for DataDistribution,numeric,numeric,numeric</span>
-<span class='fu'>probability_density_function</span>(<span class='no'>dist</span>,
-  <span class='no'>x</span>, <span class='no'>n</span>, <span class='no'>theta</span>, <span class='no'>...</span>)
-
-<span class='fu'>cumulative_distribution_function</span>(<span class='no'>dist</span>, <span class='no'>x</span>, <span class='no'>n</span>, <span class='no'>theta</span>, <span class='no'>...</span>)
-
-
-  <span class='co'># S4 method for DataDistribution,numeric,numeric,numeric</span>
-<span class='fu'>cumulative_distribution_function</span>(<span class='no'>dist</span>,
-  <span class='no'>x</span>, <span class='no'>n</span>, <span class='no'>theta</span>, <span class='no'>...</span>)
-
-<span class='co'># S4 method for DataDistribution,numeric</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/simulate'>simulate</a></span>(<span class='no'>object</span>, <span class='no'>nsim</span>, <span class='no'>n</span>, <span class='no'>theta</span>,
-  <span class='kw'>seed</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>cumulative_distribution_function</span>(<span class='no'>dist</span>, <span class='no'>x</span>, <span class='no'>n</span>, <span class='no'>theta</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>outcome</p></td>
+      <th>dist</th>
+      <td><p>data distribution object</p></td>
     </tr>
     <tr>
-      <th>probs</th>
-      <td><p>numeric vector of probabilities</p></td>
+      <th>x</th>
+      <td><p>outcome</p></td>
     </tr>
     <tr>
       <th>n</th>
@@ -184,22 +167,6 @@ single parameter value <code>theta</code>.</p>
       <th>...</th>
       <td><p>further optional arguments</p></td>
     </tr>
-    <tr>
-      <th>dist</th>
-      <td><p>data distribution object</p></td>
-    </tr>
-    <tr>
-      <th>object</th>
-      <td><p>design to simulate from</p></td>
-    </tr>
-    <tr>
-      <th>nsim</th>
-      <td><p>number of simulation runs</p></td>
-    </tr>
-    <tr>
-      <th>seed</th>
-      <td><p>ranom seed</p></td>
-    </tr>
     </table>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
@@ -211,17 +178,6 @@ Currently, only the normal case is implemented with <code><a href='NormalDataDis
 <p>The logical option <code>two_armed</code> allows to decide whether a one-arm or
 a two-arm (the default) design should be computed. In the case of a two-arm
 design all sample sizes are per group.</p>
-    
-    <h2 class="hasAnchor" id="methods-by-generic-"><a class="anchor" href="#methods-by-generic-"></a>Methods (by generic)</h2>
-
-    <ul>
-<li><p><code>quantile</code>: quantile function of the respective distribution.</p></li>
-<li><p><code>probability_density_function</code>: probability density function given outcome,
-sample size and parameter; must be implemented.</p></li>
-<li><p><code>cumulative_distribution_function</code>: cumulative distribution function given outcome,
-sample size and parameter; must be implemented.</p></li>
-<li><p><code>simulate</code>: sample from distribution given theta</p></li>
-</ul>
     
     <h2 class="hasAnchor" id="slots"><a class="anchor" href="#slots"></a>Slots</h2>
 
@@ -238,8 +194,6 @@ sample size and parameter; must be implemented.</p></li>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#details">Details</a></li>
-
-      <li><a href="#methods-by-generic-">Methods (by generic)</a></li>
 
       <li><a href="#slots">Slots</a></li>
           </ul>

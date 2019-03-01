@@ -143,8 +143,8 @@ using <code>nloptr</code> (using COBYLA by default).</p>
     </div>
 
     <pre class="usage"><span class='fu'>minimize</span>(<span class='no'>objective</span>, <span class='no'>subject_to</span>, <span class='no'>initial_design</span>, <span class='no'>lower_boundary_design</span>,
-  <span class='no'>upper_boundary_design</span>, <span class='kw'>c2_monotone</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>opts</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>algorithm</span> <span class='kw'>=</span>
-  <span class='st'>"NLOPT_LN_COBYLA"</span>, <span class='kw'>xtol_rel</span> <span class='kw'>=</span> <span class='fl'>1e-05</span>, <span class='kw'>maxeval</span> <span class='kw'>=</span> <span class='fl'>10000</span>), <span class='no'>...</span>)</pre>
+  <span class='no'>upper_boundary_design</span>, <span class='kw'>opts</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>algorithm</span> <span class='kw'>=</span> <span class='st'>"NLOPT_LN_COBYLA"</span>,
+  <span class='kw'>xtol_rel</span> <span class='kw'>=</span> <span class='fl'>1e-05</span>, <span class='kw'>maxeval</span> <span class='kw'>=</span> <span class='fl'>10000</span>), <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -168,10 +168,6 @@ using <code>nloptr</code> (using COBYLA by default).</p>
     <tr>
       <th>upper_boundary_design</th>
       <td><p>design specifying the upper boundary</p></td>
-    </tr>
-    <tr>
-      <th>c2_monotone</th>
-      <td><p>should the c2-function be forced to be monotoneously decreasing?</p></td>
     </tr>
     <tr>
       <th>opts</th>
