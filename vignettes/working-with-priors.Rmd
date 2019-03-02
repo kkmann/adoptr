@@ -38,6 +38,7 @@ null hypothesis given that the effect size is at least the minimal clinically
 relevant one. 
 In order to avoid the incorporation of effect sizes under the null hypothesis,
 the prior has to be conditioned on the interval $[\delta_{MCR}, \infty]$, where
+$\delta_{MCR} > 0$ denotes the minimal clinically relevant effect size.
 `adoptr` allows the user to use discrete as well as continuous priors
 and a `condition()` method.
 
