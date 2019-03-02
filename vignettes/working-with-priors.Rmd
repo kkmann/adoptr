@@ -22,6 +22,35 @@ library(adoptr)
 
 ## The usage of prior distributions in two-stage designs
 
+A key feature of a clinical trial design is the probability as success.
+Often this is measured by the power, the probability to reject the null
+hypothesis when the 'true' effect differs from $0$ in a clinically 
+relevant manner. 
+
+To decide on which effect size the power should be computed is of high importance.
+The classical choice is to determine a point alternative hypothesis 
+$\delta = \delta_1$. 
+However, one may not be sure on the true effect value.
+This uncertainty can be integrated by the usage of a Bayesian prior
+distribution $\delta \sim \pi(\delta)$. 
+In this setting the power can be defined as probability to reject the 
+null hypothesis given that the effect size is at least the minimal clinically
+relevant one. 
+In order to avoid the incorporation of effect sizes under the null hypothesis,
+the prior has to be conditioned on the interval $[\delta_{MCR}, \infty]$, where
+$\delta_{MCR} > $ denotes the minimal clinically relevant effect size.
+`adoptr` allows the user to use discrete as well as continuous priors
+and a `condition()` method.
+
+An further advantage of the usage of prior distribution is the possibility
+to update the prior at the interim analysis and to compute the posterior
+distribution for, e.g., the calculation of conditional power. 
+`adoptr` provides the computation of the posterior and uses it automatically
+for `ConditionalPower`.
+
+There are two prior classes in `adoptr` that will be introduced in the 
+following two chapters. 
+
 
 ## Discrete priors in `adoptr`
 
