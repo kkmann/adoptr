@@ -33,14 +33,12 @@ minimize <- function(
     ...
 ) {
 
+    args <- c(as.list(environment()), list(...))
+
+
     if(is(initial_design, "OneStageDesign")) {
-        res <- .minimize_os(objective,
-                            subject_to,
-                            initial_design,
-                            lower_boundary_design,
-                            upper_boundary_design,
-                            opts,
-                            ...)
+        res <- do.call(.minimize_os, args = args)
+
     } else{
         if(is.null(lower_boundary_design) || is.null(upper_boundary_design)) {
             # compute boundaries if necessary
@@ -51,20 +49,15 @@ minimize <- function(
             bounds <- .starting_designs(objective, cnstrs, initial_design)
 
             if(is.null(lower_boundary_design))
-                lower_boundary_design <- bounds$lb_design
+                args$lower_boundary_design <- bounds$lb_design
 
             if(is.null(upper_boundary_design))
-                upper_boundary_design <- bounds$ub_design
+                args$upper_boundary_design <- bounds$ub_design
 
         }
 
-        res <- .minimize(objective,
-                         subject_to,
-                         initial_design,
-                         lower_boundary_design,
-                         upper_boundary_design,
-                         opts,
-                         ...)
+        res <- do.call(.minimize, args = args)
+
     }
 
     return(res)
@@ -77,13 +70,9 @@ minimize <- function(
     objective,
     subject_to,
     initial_design,
-    lower_boundary_design,
-    upper_boundary_design,
-    opts         =  list(
-        algorithm   = "NLOPT_LN_COBYLA",
-        xtol_rel    = 1e-5,
-        maxeval     = 10000
-    ),
+    lower_boundary_design = NULL,
+    upper_boundary_design = NULL,
+    opts,
     ...
 ) {
 
@@ -102,8 +91,7 @@ minimize <- function(
             user_cnstr <- evaluate(subject_to, design, optimization = TRUE)
             return(c(
                 user_cnstr,
-                design@c1f - design@c1e + ifelse( # ensure c1e > c1f if not one-stage
-                    is(initial_design, "OneStageDesign"), 0, .1)
+                design@c1f - design@c1e + .1
             ))
         }
 
@@ -212,14 +200,14 @@ minimize <- function(
 
     if(is(initial_design, "GroupSequentialDesign")) {
         lb_design <- GroupSequentialDesign(5,
-                                           -2,
+                                           -1,
                                            os_design@c1f,
                                            2,
                                            rep(-2, length(initial_design@c2_pivots)))
         ub_design <- GroupSequentialDesign(os_design@n1,
                                            os_design@c1f,
                                            5,
-                                           os_design@n1,
+                                           2*os_design@n1,
                                            rep(5, length(initial_design@c2_pivots)))
     } else{
         lb_design <- TwoStageDesign(5,
@@ -230,7 +218,7 @@ minimize <- function(
         ub_design <- TwoStageDesign(os_design@n1,
                                     os_design@c1f,
                                     5,
-                                    rep(os_design@n1, length(initial_design@c2_pivots)),
+                                    rep(2*os_design@n1, length(initial_design@c2_pivots)),
                                     rep(5, length(initial_design@c2_pivots)))
 
     }
