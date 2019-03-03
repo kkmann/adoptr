@@ -4,9 +4,10 @@
 \alias{minimize}
 \title{Find optimal two-stage design by constraint minimization}
 \usage{
-minimize(objective, subject_to, initial_design, lower_boundary_design,
-  upper_boundary_design, opts = list(algorithm = "NLOPT_LN_COBYLA",
-  xtol_rel = 1e-05, maxeval = 10000), ...)
+minimize(objective, subject_to, initial_design,
+  lower_boundary_design = NULL, upper_boundary_design = NULL,
+  opts = list(algorithm = "NLOPT_LN_COBYLA", xtol_rel = 1e-05, maxeval =
+  10000), ...)
 }
 \arguments{
 \item{objective}{objective function}
