@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Score arithmetic — score-arithmetic • adoptr</title>
+<title>Boundary designs — get_lower_boundary_design • adoptr</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -36,14 +36,10 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="Score arithmetic — score-arithmetic" />
+<meta property="og:title" content="Boundary designs — get_lower_boundary_design" />
 
-<meta property="og:description" content="To facilitate working with simple weighted sums of scores,
-adoptr supports some basic arithmetic operations on score object
-(both conditional and unconditional ones).
-Scores can be scalar-multiplied by a constant and added to produce new
-scores.
-Conditional and unconditional scores cannot be mixed." />
+<meta property="og:description" content="Compute boundary designs. These can be used for optimization and are
+implemented by default in minimize." />
 
 <meta property="og:image" content="https://kkmann.github.io/adoptr/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -130,104 +126,82 @@ Conditional and unconditional scores cannot be mixed." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Score arithmetic</h1>
-    <small class="dont-index">Source: <a href='https://github.com/kkmann/adoptr/blob/master/R/Scores.R'><code>R/Scores.R</code></a>, <a href='https://github.com/kkmann/adoptr/blob/master/R/AffineScoreFunction.R'><code>R/AffineScoreFunction.R</code></a></small>
-    <div class="hidden name"><code>score-arithmetic.Rd</code></div>
+    <h1>Boundary designs</h1>
+    <small class="dont-index">Source: <a href='https://github.com/kkmann/adoptr/blob/master/R/boundary_designs.R'><code>R/boundary_designs.R</code></a></small>
+    <div class="hidden name"><code>boundary-designs.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>To facilitate working with simple weighted sums of scores,
-<code>adoptr</code> supports some basic arithmetic operations on score object
-(both conditional and unconditional ones).
-Scores can be scalar-multiplied by a constant and added to produce new
-scores.
-Conditional and unconditional scores cannot be mixed.</p>
+    <p>Compute boundary designs. These can be used for optimization and are
+implemented by default in <a href='minimize.html'>minimize</a>.</p>
     
     </div>
 
-    <pre class="usage"># S4 method for ConditionalScore,numeric
-+(e1, e2)
+    <pre class="usage"><span class='fu'>get_lower_boundary_design</span>(<span class='no'>initial_design</span>, <span class='no'>...</span>)
 
-# S4 method for numeric,ConditionalScore
-+(e1, e2)
+<span class='fu'>get_upper_boundary_design</span>(<span class='no'>initial_design</span>, <span class='no'>...</span>)
 
-# S4 method for ConditionalScore,ConditionalScore
-+(e1, e2)
+<span class='co'># S4 method for OneStageDesign</span>
+<span class='fu'>get_lower_boundary_design</span>(<span class='no'>initial_design</span>,
+  <span class='kw'>n1</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>c1_buffer</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='no'>...</span>)
 
-# S4 method for ConditionalScore,numeric
-*(e1, e2)
 
-# S4 method for numeric,ConditionalScore
-*(e1, e2)
+  <span class='co'># S4 method for GroupSequentialDesign</span>
+<span class='fu'>get_lower_boundary_design</span>(<span class='no'>initial_design</span>,
+  <span class='kw'>n1</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>n2_pivots</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>c1_buffer</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>c2_buffer</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='no'>...</span>)
 
-# S4 method for UnconditionalScore,numeric
-+(e1, e2)
+<span class='co'># S4 method for TwoStageDesign</span>
+<span class='fu'>get_lower_boundary_design</span>(<span class='no'>initial_design</span>,
+  <span class='kw'>n1</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>n2_pivots</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>c1_buffer</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>c2_buffer</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='no'>...</span>)
 
-# S4 method for numeric,UnconditionalScore
-+(e1, e2)
+<span class='co'># S4 method for OneStageDesign</span>
+<span class='fu'>get_upper_boundary_design</span>(<span class='no'>initial_design</span>,
+  <span class='kw'>n1</span> <span class='kw'>=</span> <span class='fl'>5</span> * <span class='no'>initial_design</span>@<span class='kw'>n1</span>, <span class='kw'>c1_buffer</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='no'>...</span>)
 
-# S4 method for UnconditionalScore,UnconditionalScore
-+(e1, e2)
 
-# S4 method for UnconditionalScore,numeric
-*(e1, e2)
+  <span class='co'># S4 method for GroupSequentialDesign</span>
+<span class='fu'>get_upper_boundary_design</span>(<span class='no'>initial_design</span>,
+  <span class='kw'>n1</span> <span class='kw'>=</span> <span class='fl'>5</span> * <span class='no'>initial_design</span>@<span class='kw'>n1</span>, <span class='kw'>n2_pivots</span> <span class='kw'>=</span> <span class='fl'>5</span> * <span class='no'>initial_design</span>@<span class='kw'>n2_pivots</span>,
+  <span class='kw'>c1_buffer</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>c2_buffer</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='no'>...</span>)
 
-# S4 method for numeric,UnconditionalScore
-*(e1, e2)
-
-# S4 method for AffineUnconditionalScore,UnconditionalScore
-+(e1, e2)
-
-# S4 method for UnconditionalScore,AffineUnconditionalScore
-+(e1, e2)
-
-# S4 method for AffineUnconditionalScore,numeric
-+(e1, e2)
-
-# S4 method for numeric,AffineUnconditionalScore
-+(e1, e2)
-
-# S4 method for AffineUnconditionalScore,AffineUnconditionalScore
-+(e1, e2)
-
-# S4 method for AffineUnconditionalScore,numeric
-*(e1, e2)
-
-# S4 method for numeric,AffineUnconditionalScore
-*(e1, e2)
-
-# S4 method for AffineConditionalScore,ConditionalScore
-+(e1, e2)
-
-# S4 method for ConditionalScore,AffineConditionalScore
-+(e1, e2)
-
-# S4 method for AffineConditionalScore,numeric
-+(e1, e2)
-
-# S4 method for numeric,AffineConditionalScore
-+(e1, e2)
-
-# S4 method for AffineConditionalScore,AffineConditionalScore
-+(e1, e2)
-
-# S4 method for AffineConditionalScore,numeric
-*(e1, e2)
-
-# S4 method for numeric,AffineConditionalScore
-*(e1, e2)</pre>
+<span class='co'># S4 method for TwoStageDesign</span>
+<span class='fu'>get_upper_boundary_design</span>(<span class='no'>initial_design</span>,
+  <span class='kw'>n1</span> <span class='kw'>=</span> <span class='fl'>5</span> * <span class='no'>initial_design</span>@<span class='kw'>n1</span>, <span class='kw'>n2_pivots</span> <span class='kw'>=</span> <span class='fl'>5</span> * <span class='no'>initial_design</span>@<span class='kw'>n2_pivots</span>,
+  <span class='kw'>c1_buffer</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>c2_buffer</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>e1</th>
-      <td><p>first summand / factor</p></td>
+      <th>initial_design</th>
+      <td><p>The initial design</p></td>
     </tr>
     <tr>
-      <th>e2</th>
-      <td><p>second summand / factor</p></td>
+      <th>...</th>
+      <td><p>optional arguments</p>
+<p>The values <code>c1f</code> and <code>c1e</code> from the initial design are shifted
+to <code>c1f - c1_buffer</code> and <code>c1e - c1_buffer</code> in
+<code>get_lower_boundary_design</code>, respectively, to
+<code>c1f + c1_buffer</code> and <code>c1e + c1_buffer</code> in
+<code>get_upper_boundary_design</code>.
+This is handled analogously with <code>c2_pivots</code> and <code>c2_buffer</code>.</p></td>
+    </tr>
+    <tr>
+      <th>n1</th>
+      <td><p>bound for the first-stage sample size n1</p></td>
+    </tr>
+    <tr>
+      <th>c1_buffer</th>
+      <td><p>shift of the early-stopping boundaries from the initial ones</p></td>
+    </tr>
+    <tr>
+      <th>n2_pivots</th>
+      <td><p>bound for the second-stage sample size n2</p></td>
+    </tr>
+    <tr>
+      <th>c2_buffer</th>
+      <td><p>shift of the final decision boundary from the initial one</p></td>
     </tr>
     </table>
     
