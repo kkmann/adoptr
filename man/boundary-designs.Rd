@@ -16,26 +16,44 @@ get_lower_boundary_design(initial_design, ...)
 
 get_upper_boundary_design(initial_design, ...)
 
-\S4method{get_lower_boundary_design}{OneStageDesign}(initial_design, ...)
+\S4method{get_lower_boundary_design}{OneStageDesign}(initial_design,
+  n1 = 1, c1f = 0, ...)
 
 
   \S4method{get_lower_boundary_design}{GroupSequentialDesign}(initial_design,
+  n1 = 1, c1f = -2, c1e = 1.5, n2_pivots = 1, c2_pivots = -2,
   ...)
 
-\S4method{get_lower_boundary_design}{TwoStageDesign}(initial_design, ...)
+\S4method{get_lower_boundary_design}{TwoStageDesign}(initial_design,
+  n1 = 1, c1f = -2, c1e = 1.5, n2_pivots = 1, c2_pivots = -2,
+  ...)
 
-\S4method{get_upper_boundary_design}{OneStageDesign}(initial_design, ...)
+\S4method{get_upper_boundary_design}{OneStageDesign}(initial_design,
+  n1 = NULL, c1f = 5, ...)
 
 
   \S4method{get_upper_boundary_design}{GroupSequentialDesign}(initial_design,
+  n1 = NULL, c1f = 2, c1e = 5, n2_pivots = NULL, c2_pivots = 5,
   ...)
 
-\S4method{get_upper_boundary_design}{TwoStageDesign}(initial_design, ...)
+\S4method{get_upper_boundary_design}{TwoStageDesign}(initial_design,
+  n1 = NULL, c1f = 2, c1e = 5, n2_pivots = NULL, c2_pivots = 5,
+  ...)
 }
 \arguments{
 \item{initial_design}{The initial design}
 
 \item{...}{optimal arguments}
+
+\item{n1}{bound for n1}
+
+\item{c1f}{bound for c1f}
+
+\item{c1e}{bound for c1e}
+
+\item{n2_pivots}{bound for n2_pivots}
+
+\item{c2_pivots}{bound for c2_pivots}
 }
 \description{
 Compute boundary designs. These can be used for optimization and are
