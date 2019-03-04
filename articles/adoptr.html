@@ -5,13 +5,13 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Get started with adoptr • adoptr</title>
+<title>Get started with <strong>adoptr</strong> • adoptr</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><!-- docsearch --><script src="../docsearch.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous">
 <link href="../docsearch.css" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="Get started with adoptr">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="Get started with &lt;strong&gt;adoptr&lt;/strong&gt;">
 <meta property="og:description" content="">
 <meta property="og:image" content="https://kkmann.github.io/adoptr/logo.png">
 <meta name="twitter:card" content="summary">
@@ -86,7 +86,8 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>Get started with adoptr</h1>
+      <h1>Get started with <strong>adoptr</strong>
+</h1>
             
             <h4 class="date">2019-03-04</h4>
       
@@ -97,88 +98,94 @@
 
     
     
-<div id="the-core-problem" class="section level2">
+<div id="two-stage-designs-for-clinical-trials" class="section level2">
 <h2 class="hasAnchor">
-<a href="#the-core-problem" class="anchor"></a>The core problem</h2>
-<p><code>adoptr</code> addresses the problem of finding optimal two-stage designs for clinical trials. Currently, only (asymptotically) normal test statistics are supported. Both Z-tests for a single arm versus a fixed value or one-sided tests comparing the means of two arms are supported. In all cases known variance is assumed and in the two-arm case homogeneity of variances is required, additionally.</p>
-<p>Consider the simplest case of a two-stage design for a single-arm trial aiming to reject the null hypothesis that <span class="math inline">\(\delta\leq 0\)</span> where <span class="math inline">\(\delta\)</span> is the mean of the population response. Further assume that a power of 80% at <span class="math inline">\(\delta=0.4\)</span> and a type one error rate of 5% on the boundary of the null hypothesis is required (<span class="math inline">\(\delta=0.0\)</span>).</p>
-<p>We can start with a a more or less arbitrary initial design [ToDo: can we start with a single stage design fulfilling the power and type one error rate constraints here?]. <code>adoptr</code> internally represents designs as tuples of <span class="math inline">\((n_1, c_{1f}, c_{1f}, n_2(\cdot), c_2(\cdot))\)</span>. Here, <span class="math inline">\(n_2\)</span> and <span class="math inline">\(c_2\)</span> are the functions returning the stage-two sample size and critical values given the stage-one test statitic <span class="math inline">\(x_1\)</span> (z-score in our case). For any given objective function, the design parameters can be identified via a variational problem. To numerically solve this problem <span class="math inline">\(n_2\)</span> and <span class="math inline">\(c_2\)</span> are integrated using a Gaussian quadrature rule. The order of the rule determines the number of pivot points for both functions. Since, both <span class="math inline">\(n_2\)</span> and <span class="math inline">\(c_2\)</span> are usually fairly smooth on the continuation region, a quadrature rule of order 5 is sufficiently flexible:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">order &lt;-<span class="st"> </span>5L</a></code></pre></div>
-<p>The initial design may then be defined as follows:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">design &lt;-<span class="st"> </span><span class="kw"><a href="../reference/TwoStageDesign-class.html">TwoStageDesign</a></span>(</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">    <span class="dt">n1    =</span> <span class="dv">25</span>, </a>
-<a class="sourceLine" id="cb2-3" data-line-number="3">    <span class="dt">c1f   =</span> <span class="dv">0</span>,</a>
-<a class="sourceLine" id="cb2-4" data-line-number="4">    <span class="dt">c1e   =</span> <span class="dv">2</span>,</a>
-<a class="sourceLine" id="cb2-5" data-line-number="5">    <span class="dt">n2    =</span> <span class="fl">40.0</span>, </a>
-<a class="sourceLine" id="cb2-6" data-line-number="6">    <span class="dt">c2    =</span> <span class="fl">1.96</span>,</a>
-<a class="sourceLine" id="cb2-7" data-line-number="7">    <span class="dt">order =</span> order</a>
-<a class="sourceLine" id="cb2-8" data-line-number="8">  )</a></code></pre></div>
-<p>[comment: I don’t like the gq_design function. If we only use GQ, we should implement this as default constructor of the TwoStageDesign class even though the implementation is more generic.] The design can be visualized using the provided <code><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot()</a></code> method.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(design)</a></code></pre></div>
-<p><img src="adoptr_files/figure-html/plot-design-1.png" width="672"></p>
-<p>In the next step, we define a simple optimization problem for improving this initial design.</p>
+<a href="#two-stage-designs-for-clinical-trials" class="anchor"></a>Two-stage designs for clinical trials</h2>
+<p>In prospectively planned confirmatory clinical trials there has been a long-standing debate about the merits of allowing pre-planned interim analyses to stop or modify an ongoing trial, cf. [REFEENCE BAUER et al 2016]. It is common consensus that such two-stage designs should still maintain strict control of the maximal type one error rate despite the data dependent decision at the interim analyis. Most authors use combination function approaches to combine either the independent p values or test statistics from the respective stages. Doing so with pre-specified weights maintains the type one error rate control [REFERENCE].</p>
+<p>In [our paper], it was argued that such techniques are not necessary, in fact, that they are counter-productive, since the pre-specified weights might be sub-optimal. Intuitively, this can be seen from the fact that the derivation of optimal weights for a two-stage test build on the notion of a hypothetical overall sample size which might never be realized in practice [REFERENCE]. Instead, one may see the problem of defining an optimal two-stage designs as a variational problem to find the optimal configuration <span class="math inline">\(\big(n_1, c_1^e, c_1^f, n_2(\cdot), c_2(\cdot)\big)\)</span> directly for a given objective function and potentially a set of constraints. The relaxation of this mixed-integer problem to the real numbers can then be solved with standard methods from analysis. E.g., one could construct an implicit solution by solving the corresponding Euler-Lagrange equation for given first-stage and then find an optimal first-stage configuration [our paper]. Instead, the <strong>adoptr</strong> package implements a direct numerical solution algorithm by embedding the variation problem via a set of pivot points in the <span class="math inline">\(\mathbb{R}^k\)</span> and solving the corresponding finite-dimensional problem using gradient-free numerical optimization procedures (COBYLA / nloptr).</p>
 </div>
+<div id="example" class="section level1">
+<h1 class="hasAnchor">
+<a href="#example" class="anchor"></a>Example</h1>
+<p>Consider the case of a two-stage design for a single-arm trial aiming to reject the null hypothesis <span class="math inline">\(\mathcal{H}_0: \delta \leq 0\)</span> where <span class="math inline">\(\delta\)</span> is the population-mean response. Further assume that a power of 80% at <span class="math inline">\(\delta=0.4\)</span> and a type-one-error rate of 2.5% on the boundary of the null hypothesis <span class="math inline">\(\delta\leq0.0\)</span> is required.</p>
+<p>In this situation, the one-sided t-test would require a sample size of <span class="math inline">\(51\)</span> individuals. If we were willing to accept the fact that the sample size of a two-stage design is inherently unknown at the planning stage, we could reduce the <em>expected</em> sample size under the alternative by optimizing a two-stage design with respect to this quantity. Since the two-stage design, by definition, has more degrees of freedom than the single-stage design, it must be at least as good in terms of expected sample size as the single-stage design - for which the expected sample size is always 51.</p>
 <div id="define-hypotheses-and-data-generating-mechanism" class="section level2">
 <h2 class="hasAnchor">
 <a href="#define-hypotheses-and-data-generating-mechanism" class="anchor"></a>Define hypotheses and data-generating mechanism</h2>
-<p>First, we define the null and alternative hypotheses as prior distributions over the unknown <span class="math inline">\(\delta\)</span>.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">null        &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PointMassPrior-class.html">PointMassPrior</a></span>(.<span class="dv">0</span>, <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2">alternative &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PointMassPrior-class.html">PointMassPrior</a></span>(.<span class="dv">4</span>, <span class="dv">1</span>)</a></code></pre></div>
-<p>Next, we define the data-generating mechanism. Currently, only normally distributed test statistics with known variance are supported. For medium to large sample sizes, the assumption of known variance introduces little error even if the true distribution is, e.g., a t-distribution due to estimation of the unknown variance. Here we simply define a normal-model. The default is a two-arm trial, but for the sake of simplicity, we consider a single-arm trial first.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">datadist &lt;-<span class="st"> </span><span class="kw"><a href="../reference/NormalDataDistribution-class.html">Normal</a></span>(<span class="dt">two_armed =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
-<p>Note that when using two-armed designs, all sample sizes are given <em>per-arm</em>!</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(adoptr)</a></code></pre></div>
+<p>First, we define the null and alternative hypotheses as prior distributions over the unknown paramter <span class="math inline">\(\delta\)</span>.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">H_<span class="dv">0</span> &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PointMassPrior-class.html">PointMassPrior</a></span>(.<span class="dv">0</span>, <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">H_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PointMassPrior-class.html">PointMassPrior</a></span>(.<span class="dv">4</span>, <span class="dv">1</span>)</a></code></pre></div>
+<p>Next, we define the data-generating mechanism (data distribution). Currently, only normally distributed test statistics with known variance are supported.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">datadist &lt;-<span class="st"> </span><span class="kw"><a href="../reference/NormalDataDistribution-class.html">Normal</a></span>(<span class="dt">two_armed =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
 </div>
-<div id="define-scores" class="section level2">
+<div id="specify-optimization-problem" class="section level2">
 <h2 class="hasAnchor">
-<a href="#define-scores" class="anchor"></a>Define scores</h2>
-<p>To define the optimization problem we specify a few quantities of interest. The overall objective could, e.g., be to minimize the expected sample size of the design under the alternative hypothesis subject to the given power and type one error rate constraints. Let to this end</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">ess  &lt;-<span class="st"> </span><span class="kw"><a href="../reference/working-with-scores.html">expected</a></span>(<span class="kw"><a href="../reference/ConditionalSampleSize-class.html">ConditionalSampleSize</a></span>(datadist, alternative))</a></code></pre></div>
-<p>be the expected sample size under the alternative. Note that the <code>ess</code> object is created by integrating a simple, conditional score - the conditional sample size given <span class="math inline">\(X_1 = x_1\)</span> is just <span class="math inline">\(n_1 + n_2(x_1)\)</span> and pre-implemented.</p>
-<p>Similarly, we can define the power and type one error rate by integrating conditional power with respect to the alternative or null hypothesis respectively:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">power  &lt;-<span class="st"> </span><span class="kw"><a href="../reference/working-with-scores.html">expected</a></span>(<span class="kw"><a href="../reference/ConditionalPower-class.html">ConditionalPower</a></span>(datadist, alternative))</a>
-<a class="sourceLine" id="cb7-2" data-line-number="2">toer   &lt;-<span class="st"> </span><span class="kw"><a href="../reference/working-with-scores.html">expected</a></span>(<span class="kw"><a href="../reference/ConditionalPower-class.html">ConditionalPower</a></span>(datadist, null))</a></code></pre></div>
-</div>
-<div id="optimize-the-design" class="section level2">
-<h2 class="hasAnchor">
-<a href="#optimize-the-design" class="anchor"></a>Optimize the design</h2>
-<p>We can now proceed with defining and solving the optimization problem. Before doing so, we need to define box-constraints by providing a lower and upper boundary design.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">lb_design &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/update">update</a></span>(</a>
-<a class="sourceLine" id="cb8-2" data-line-number="2">    design, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">10</span>, <span class="dv">-1</span>, <span class="dv">1</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/numeric">numeric</a></span>(order) <span class="op">+</span><span class="st"> </span><span class="dv">2</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/numeric">numeric</a></span>(order) <span class="op">-</span><span class="st"> </span><span class="dv">5</span>)</a>
-<a class="sourceLine" id="cb8-3" data-line-number="3">)</a>
-<a class="sourceLine" id="cb8-4" data-line-number="4">ub_design &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/update">update</a></span>(</a>
-<a class="sourceLine" id="cb8-5" data-line-number="5">  design, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">50</span>, <span class="dv">1</span>, <span class="dv">4</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/numeric">numeric</a></span>(order) <span class="op">+</span><span class="st"> </span><span class="dv">50</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/numeric">numeric</a></span>(order) <span class="op">+</span><span class="st"> </span><span class="dv">5</span>)</a>
-<a class="sourceLine" id="cb8-6" data-line-number="6">)</a></code></pre></div>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">optimal_result &lt;-<span class="st"> </span><span class="kw"><a href="../reference/minimize.html">minimize</a></span>(</a>
+<a href="#specify-optimization-problem" class="anchor"></a>Specify optimization problem</h2>
+<p>We begin by defining the expected sample size under the alternative hypothesis:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">ess &lt;-<span class="st"> </span><span class="kw"><a href="../reference/working-with-scores.html">expected</a></span>(<span class="kw"><a href="../reference/ConditionalSampleSize-class.html">ConditionalSampleSize</a></span>(datadist, H_<span class="dv">1</span>))</a></code></pre></div>
+<p>Similarly, we can define the power and the type-one-error rate by integrating conditional power with respect to the alternative or null hypothesis respectively:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">power  &lt;-<span class="st"> </span><span class="kw"><a href="../reference/working-with-scores.html">expected</a></span>(<span class="kw"><a href="../reference/ConditionalPower-class.html">ConditionalPower</a></span>(datadist, H_<span class="dv">1</span>))</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">toer   &lt;-<span class="st"> </span><span class="kw"><a href="../reference/working-with-scores.html">expected</a></span>(<span class="kw"><a href="../reference/ConditionalPower-class.html">ConditionalPower</a></span>(datadist, H_<span class="dv">0</span>))</a></code></pre></div>
+<p>To complete the problem specification, we only need to provide an initial design and an integration order for the Gaussian quadrature rule to be used for the numerical integration of the variational objective between <span class="math inline">\(c_1^f\)</span> and <span class="math inline">\(c_1^e\)</span>. For the initial design, we simply set the stage-one sample size to half the sample size of the t-test and we use a rule of order 7:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">initial_design &lt;-<span class="st"> </span><span class="kw"><a href="../reference/TwoStageDesign-class.html">TwoStageDesign</a></span>(</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">    <span class="dt">n1    =</span> <span class="dv">25</span>, </a>
+<a class="sourceLine" id="cb6-3" data-line-number="3">    <span class="dt">c1f   =</span> <span class="dv">0</span>,</a>
+<a class="sourceLine" id="cb6-4" data-line-number="4">    <span class="dt">c1e   =</span> <span class="fl">2.5</span>,</a>
+<a class="sourceLine" id="cb6-5" data-line-number="5">    <span class="dt">n2    =</span> <span class="dv">50</span>, </a>
+<a class="sourceLine" id="cb6-6" data-line-number="6">    <span class="dt">c2    =</span> <span class="fl">1.96</span>,</a>
+<a class="sourceLine" id="cb6-7" data-line-number="7">    <span class="dt">order =</span> 7L</a>
+<a class="sourceLine" id="cb6-8" data-line-number="8">)</a></code></pre></div>
+<p>The decision boundaries are heuristically picked in concordance with those of the single-stage design. We can then check whether the initial design fulfills the constraints on the operating characteristics:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="../reference/working-with-scores.html">evaluate</a></span>(power, initial_design)</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co">#&gt; [1] 0.8484691</span></a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="../reference/working-with-scores.html">evaluate</a></span>(toer, initial_design)</a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="co">#&gt; [1] 0.01855338</span></a></code></pre></div>
+<p>We can now proceed with defining and solving the optimization problem:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">opt_res &lt;-<span class="st"> </span><span class="kw"><a href="../reference/minimize.html">minimize</a></span>(</a>
 <a class="sourceLine" id="cb9-2" data-line-number="2">  </a>
 <a class="sourceLine" id="cb9-3" data-line-number="3">  ess,</a>
-<a class="sourceLine" id="cb9-4" data-line-number="4">  <span class="kw"><a href="../reference/ConstraintsCollection-class.html">subject_to</a></span>(</a>
-<a class="sourceLine" id="cb9-5" data-line-number="5">    power <span class="op">&gt;=</span><span class="st"> </span><span class="fl">0.8</span>,</a>
-<a class="sourceLine" id="cb9-6" data-line-number="6">    toer  <span class="op">&lt;=</span><span class="st"> </span><span class="fl">.05</span></a>
-<a class="sourceLine" id="cb9-7" data-line-number="7">  ),</a>
-<a class="sourceLine" id="cb9-8" data-line-number="8">  </a>
-<a class="sourceLine" id="cb9-9" data-line-number="9">  <span class="dt">initial_design        =</span> design,</a>
-<a class="sourceLine" id="cb9-10" data-line-number="10">  <span class="dt">lower_boundary_design =</span> lb_design,</a>
-<a class="sourceLine" id="cb9-11" data-line-number="11">  <span class="dt">upper_boundary_design =</span> ub_design</a>
-<a class="sourceLine" id="cb9-12" data-line-number="12">  </a>
-<a class="sourceLine" id="cb9-13" data-line-number="13">)</a>
-<a class="sourceLine" id="cb9-14" data-line-number="14"></a>
-<a class="sourceLine" id="cb9-15" data-line-number="15">optimal_design &lt;-<span class="st"> </span>optimal_result<span class="op">$</span>design</a></code></pre></div>
-<p>Here, we override the internal defaults to allow a more precise solution. Note that since COBYLA is a generic derivative-free optimizer, the process may take quite a while. In general it is important to check convergence since partial solutions might be non-smooth or otherwise non-intuitive. If the algorithm would not have converged, the function <code>minimize</code> would have thrown a warning message. All the output that was created by <code>nloptr</code> can be regarded by</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">optimal_result<span class="op">$</span>details<span class="op">$</span>nloptr_return</a></code></pre></div>
-<p>The resulting optimized design may again be plotted together with its conditional power.</p>
+<a class="sourceLine" id="cb9-4" data-line-number="4">  </a>
+<a class="sourceLine" id="cb9-5" data-line-number="5">  <span class="kw"><a href="../reference/ConstraintsCollection-class.html">subject_to</a></span>(</a>
+<a class="sourceLine" id="cb9-6" data-line-number="6">    power <span class="op">&gt;=</span><span class="st"> </span><span class="fl">0.8</span>,</a>
+<a class="sourceLine" id="cb9-7" data-line-number="7">    toer  <span class="op">&lt;=</span><span class="st"> </span><span class="fl">.025</span></a>
+<a class="sourceLine" id="cb9-8" data-line-number="8">  ),</a>
+<a class="sourceLine" id="cb9-9" data-line-number="9">  </a>
+<a class="sourceLine" id="cb9-10" data-line-number="10">  initial_design</a>
+<a class="sourceLine" id="cb9-11" data-line-number="11">)</a></code></pre></div>
+<p>Here, the default setting for the optimizer and box constraints seem to have worked out. The numerical procedure converged after</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">opt_res<span class="op">$</span>nloptr_return<span class="op">$</span>iterations</a></code></pre></div>
+<p>iterations.</p>
+<p>We can plot the resulting optimized design may again be plotted together with its conditional power.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(</a>
-<a class="sourceLine" id="cb11-2" data-line-number="2">  optimal_design, </a>
-<a class="sourceLine" id="cb11-3" data-line-number="3">  <span class="st">"Conditional power"</span> =<span class="st"> </span><span class="kw"><a href="../reference/ConditionalPower-class.html">ConditionalPower</a></span>(datadist, alternative),</a>
-<a class="sourceLine" id="cb11-4" data-line-number="4">  <span class="st">"Conditional TOER"</span>  =<span class="st"> </span><span class="kw"><a href="../reference/ConditionalPower-class.html">ConditionalPower</a></span>(datadist, null)</a>
-<a class="sourceLine" id="cb11-5" data-line-number="5">)</a></code></pre></div>
+<a class="sourceLine" id="cb11-2" data-line-number="2">  opt_res<span class="op">$</span>design, </a>
+<a class="sourceLine" id="cb11-3" data-line-number="3">  <span class="st">"Conditional power"</span> =<span class="st"> </span><span class="kw"><a href="../reference/ConditionalPower-class.html">ConditionalPower</a></span>(datadist, H_<span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb11-4" data-line-number="4">)</a></code></pre></div>
 <p><img src="adoptr_files/figure-html/plot-optimal-design-1.png" width="672"></p>
-<p>This class of designs was previously discussed in [SIM article] where an indirect method solving the Euler-Lagrange equation was used to find the optimal <span class="math inline">\(n_2\)</span> and <span class="math inline">\(c_2\)</span> functions.</p>
+<p>Numerical integration yields an expected sample size of</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw"><a href="../reference/working-with-scores.html">evaluate</a></span>(ess, opt_res<span class="op">$</span>design)</a>
+<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="co">#&gt; [1] 39.80969</span></a></code></pre></div>
+<p>which is way below the single-stage 51. We can check this results against simulated values</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">df_sim &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/simulate">simulate</a></span>(opt_res<span class="op">$</span>design, <span class="dt">nsim =</span> <span class="dv">10</span><span class="op">^</span><span class="dv">6</span>, <span class="dt">dist =</span> datadist, <span class="dt">theta =</span> <span class="fl">.4</span>, <span class="dt">seed =</span> <span class="dv">42</span>)</a>
+<a class="sourceLine" id="cb13-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb13-3" data-line-number="3">n &lt;-<span class="st"> </span>df_sim<span class="op">$</span>n1 <span class="op">+</span><span class="st"> </span>df_sim<span class="op">$</span>n2</a>
+<a class="sourceLine" id="cb13-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/mean">mean</a></span>(n)</a>
+<a class="sourceLine" id="cb13-5" data-line-number="5"><span class="co">#&gt; [1] 39.8399</span></a>
+<a class="sourceLine" id="cb13-6" data-line-number="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/sd">sd</a></span>(n) <span class="op">/</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/MathFun">sqrt</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(n))</a>
+<a class="sourceLine" id="cb13-7" data-line-number="7"><span class="co">#&gt; [1] 0.01372656</span></a></code></pre></div>
+<p>Obviously, the values from simulation and numerical integration are almost identical.</p>
+<p>The constraints are also met almost perfectly:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw"><a href="../reference/working-with-scores.html">evaluate</a></span>(toer, opt_res<span class="op">$</span>design)</a>
+<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="co">#&gt; [1] 0.02500571</span></a>
+<a class="sourceLine" id="cb14-3" data-line-number="3"><span class="kw"><a href="../reference/working-with-scores.html">evaluate</a></span>(power, opt_res<span class="op">$</span>design)</a>
+<a class="sourceLine" id="cb14-4" data-line-number="4"><span class="co">#&gt; [1] 0.7999964</span></a></code></pre></div>
 </div>
 <div id="variations" class="section level2">
 <h2 class="hasAnchor">
 <a href="#variations" class="anchor"></a>Variations</h2>
 <p>The purpose of <code>adoptr</code> is to provide a high-level interface for exploring and comparing different designs and to experiment with different combinations of objective functions and constraints.</p>
 <p>[…]</p>
+</div>
 </div>
   </div>
 
@@ -187,11 +194,14 @@
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-<li><a href="#the-core-problem">The core problem</a></li>
-      <li><a href="#define-hypotheses-and-data-generating-mechanism">Define hypotheses and data-generating mechanism</a></li>
-      <li><a href="#define-scores">Define scores</a></li>
-      <li><a href="#optimize-the-design">Optimize the design</a></li>
+<li><a href="#two-stage-designs-for-clinical-trials">Two-stage designs for clinical trials</a></li>
+      <li>
+<a href="#example">Example</a><ul class="nav nav-pills nav-stacked">
+<li><a href="#define-hypotheses-and-data-generating-mechanism">Define hypotheses and data-generating mechanism</a></li>
+      <li><a href="#specify-optimization-problem">Specify optimization problem</a></li>
       <li><a href="#variations">Variations</a></li>
+      </ul>
+</li>
       </ul>
 </div>
       </div>
