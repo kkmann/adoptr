@@ -5,9 +5,11 @@
 \title{Find optimal two-stage design by constraint minimization}
 \usage{
 minimize(objective, subject_to, initial_design,
-  lower_boundary_design = NULL, upper_boundary_design = NULL,
-  opts = list(algorithm = "NLOPT_LN_COBYLA", xtol_rel = 1e-05, maxeval =
-  10000), ...)
+  lower_boundary_design = get_lower_boundary_design(objective,
+  subject_to, initial_design),
+  upper_boundary_design = get_upper_boundary_design(objective,
+  subject_to, initial_design), opts = list(algorithm = "NLOPT_LN_COBYLA",
+  xtol_rel = 1e-05, maxeval = 10000), ...)
 }
 \arguments{
 \item{objective}{objective function}
@@ -34,4 +36,7 @@ minimize(objective, subject_to, initial_design,
 and a constraint set (or single constraint) of conditional and/or unconditional
 scores and solves the corresponding constraint minimization problem
 using \code{nloptr} (using COBYLA by default).
+An initial design has to be defined. It is also possible to defined
+lower- and upper-boundary designs. If this is not done, these
+are computed automatically.
 }
