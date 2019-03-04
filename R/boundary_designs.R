@@ -28,21 +28,30 @@ setGeneric("get_upper_boundary_design",
 #' @rdname boundary-designs
 #' @export
 setMethod("get_lower_boundary_design", signature("OneStageDesign"),
-          function(initial_design, n1 = 1, c1f = 0.0, ...) {
-              OneStageDesign(n1, c1f)
+          function(initial_design, n1 = 1, c_buffer = 2, ...) {
+              OneStageDesign(n1, min(0, initial_design@c1f - c_buffer))
 })
 
 
 #' @rdname boundary-designs
 #' @export
 setMethod("get_lower_boundary_design", signature("GroupSequentialDesign"),
-          function(initial_design, n1 = 1, c1f = -2, c1e = 1.5, n2_pivots = 1, c2_pivots = -2, ...) {
-              GroupSequentialDesign(n1,
-                                    c1f,
-                                    c1e,
-                                    n2_pivots,
-                                    c2_pivots,
-                                    order = length(initial_design@c2_pivots))
+          function(
+              initial_design,
+              n1        = 1,
+              n2_pivots = 1,
+              c1_buffer = 2,
+              c2_buffer = 2,
+              ...
+          ) {
+              GroupSequentialDesign(
+                  n1,
+                  initial_design@c1f - c1_buffer,
+                  initial_design@c1e - c1_buffer,
+                  n2_pivots,
+                  initial_design@c2_pivots - c2_buffer,
+                  order = length(initial_design@c2_pivots)
+              )
 })
 
 
@@ -50,13 +59,22 @@ setMethod("get_lower_boundary_design", signature("GroupSequentialDesign"),
 #' @rdname boundary-designs
 #' @export
 setMethod("get_lower_boundary_design", signature("TwoStageDesign"),
-          function(initial_design, n1 = 1, c1f = -2, c1e = 1.5, n2_pivots = 1, c2_pivots = -2, ...) {
-              TwoStageDesign(n1,
-                             c1f,
-                             c1e,
-                             n2_pivots,
-                             c2_pivots,
-                             order = length(initial_design@c2_pivots))
+          function(
+              initial_design,
+              n1        = 1,
+              n2_pivots = 1,
+              c1_buffer = 2,
+              c2_buffer = 2,
+              ...
+          ) {
+              TwoStageDesign(
+                  n1,
+                  initial_design@c1f - c1_buffer,
+                  initial_design@c1e - c1_buffer,
+                  n2_pivots,
+                  initial_design@c2_pivots - c2_buffer,
+                  order = length(initial_design@c2_pivots)
+              )
 })
 
 
@@ -66,12 +84,10 @@ setMethod("get_lower_boundary_design", signature("TwoStageDesign"),
 #' @rdname boundary-designs
 #' @export
 setMethod("get_upper_boundary_design", signature("OneStageDesign"),
-          function(initial_design, n1 = NULL, c1f = 5.0, ...) {
-              if(is.null(n1))
-                  n1 = 5 * initial_design@n1
-
-              return(OneStageDesign(n1, c1f))
+          function(initial_design, n1_fctr = 5, c_buffer = 2, ...) {
+              return(OneStageDesign(n1_fctr * n1(initial_design), initial_design@c1f + c_buffer))
 })
+
 
 
 #' @rdname boundary-designs
