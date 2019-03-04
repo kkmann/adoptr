@@ -5,7 +5,7 @@ context("check minimize()")
 # preliminaries
 order <- 5L
 
-initial_design <- TwoStageDesign(25, 0, 2, rep(40.0, order), rep(1.96, order))
+initial_design <- TwoStageDesign(25, 0, 2, rep(35.0, order), rep(1.96, order))
 lb_design      <- update(initial_design, c(5, -1, 2, numeric(order), numeric(order) - 3))
 ub_design      <- update(initial_design, c(100, 2, 5, numeric(order) + 100, numeric(order) + 5))
 
@@ -77,17 +77,12 @@ test_that("nloptr invalid initial values error works", {
 
 test_that("Optimal one-stage design can be computed", {
     opt_os <<- minimize(
-
         ess,
         subject_to(
             pow  >= 1 - beta,
             toer <= alpha
         ),
-
-        initial_design        = OneStageDesign(100, 1.97),
-        lower_boundary_design = OneStageDesign(1, -5),
-        upper_boundary_design = OneStageDesign(200, 5)
-
+        initial_design = OneStageDesign(100, 1.97)
     )
 
     expect_equal(
@@ -105,22 +100,18 @@ test_that("Optimal one-stage design can be computed", {
 }) # end 'optimal one-stage design can be computed'
 
 
+
 test_that("Optimal group-sequential design is computable", {
     # Define initial design
-    initial_design_gs <- GroupSequentialDesign(25, 0, 2, 40, 1.96, order)
+    initial_design_gs <- GroupSequentialDesign(25, 0, 2, 35, 1.96, order)
 
     opt_gs <<- minimize(
-
         ess,
         subject_to(
             pow  >= 1 - beta,
             toer <= alpha
         ),
-
-        initial_design        = initial_design_gs,
-        lower_boundary_design = update(initial_design_gs, c(10, -1, 1, 2, numeric(order) - 5)),
-        upper_boundary_design = update(initial_design_gs, c(50, 1, 4, 50, numeric(order) + 5))
-
+        initial_design = initial_design_gs
     )
 
     expect_equal(
@@ -198,13 +189,11 @@ test_that("Optimal group-sequential design is superior to standard gs design", {
 test_that("base-case satisfies constraints", {
 
     opt_ts <<- minimize(
-
         ess,
         subject_to(
             pow  >= 1 - beta,
             toer <= alpha
         ),
-
         initial_design        = initial_design,
         lower_boundary_design = lb_design,
         upper_boundary_design = ub_design,
@@ -288,7 +277,6 @@ test_that("base-case results are consistent - no post processing", {
 test_that("conditional constraints work", {
 
     opt_ts <- suppressWarnings(minimize( # ignore: initial design is infeasible
-
         ess,
         subject_to(
             pow  >= 1 - beta,
@@ -296,10 +284,7 @@ test_that("conditional constraints work", {
             cp   >= 0.75,
             cp   <= 0.95
         ),
-
-        initial_design        = initial_design,
-        lower_boundary_design = lb_design,
-        upper_boundary_design = ub_design,
+        initial_design = initial_design,
         opts = list(
             algorithm   = "NLOPT_LN_COBYLA",
             xtol_rel    = 1e-4,
@@ -307,7 +292,7 @@ test_that("conditional constraints work", {
         )
     ))
 
-    tol <- .001
+    tol <- .005
 
     # check lower boundary on conditional power
     expect_gte(
