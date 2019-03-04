@@ -25,8 +25,8 @@ minimize <- function(
     objective,
     subject_to,
     initial_design,
-    lower_boundary_design = get_lower_boundary_design(objective, subject_to, initial_design),
-    upper_boundary_design = get_upper_boundary_design(objective, subject_to, initial_design),
+    lower_boundary_design = get_lower_boundary_design(initial_design),
+    upper_boundary_design = get_upper_boundary_design(initial_design),
     opts         =  list(
         algorithm   = "NLOPT_LN_COBYLA",
         xtol_rel    = 1e-5,
@@ -48,7 +48,11 @@ minimize <- function(
     g_cnstr <- function(params) {
         design <- update(initial_design, params)
         user_cnstr <- evaluate(subject_to, design, optimization = TRUE)
-        return(user_cnstr)
+        return(c(
+            user_cnstr,
+            design@c1f - design@c1e + ifelse( # ensure c1e > c1f if not one-stage
+                is(initial_design, "OneStageDesign"), 0, .1)
+        ))
     }
 
     if (any(g_cnstr(tunable_parameters(initial_design)) > 0))

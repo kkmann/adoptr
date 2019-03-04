@@ -4,47 +4,35 @@
 \name{get_lower_boundary_design}
 \alias{get_lower_boundary_design}
 \alias{get_upper_boundary_design}
-\alias{get_lower_boundary_design,UnconditionalScore,ConstraintsCollection,OneStageDesign-method}
-\alias{get_lower_boundary_design,UnconditionalScore,ConstraintsCollection,GroupSequentialDesign-method}
-\alias{get_lower_boundary_design,UnconditionalScore,ConstraintsCollection,TwoStageDesign-method}
-\alias{get_upper_boundary_design,UnconditionalScore,ConstraintsCollection,OneStageDesign-method}
-\alias{get_upper_boundary_design,UnconditionalScore,ConstraintsCollection,GroupSequentialDesign-method}
-\alias{get_upper_boundary_design,UnconditionalScore,ConstraintsCollection,TwoStageDesign-method}
+\alias{get_lower_boundary_design,OneStageDesign-method}
+\alias{get_lower_boundary_design,GroupSequentialDesign-method}
+\alias{get_lower_boundary_design,TwoStageDesign-method}
+\alias{get_upper_boundary_design,OneStageDesign-method}
+\alias{get_upper_boundary_design,GroupSequentialDesign-method}
+\alias{get_upper_boundary_design,TwoStageDesign-method}
 \title{Boundary designs}
 \usage{
-get_lower_boundary_design(objective, subject_to, initial_design, ...)
+get_lower_boundary_design(initial_design, ...)
 
-get_upper_boundary_design(objective, subject_to, initial_design, ...)
+get_upper_boundary_design(initial_design, ...)
 
-
-  \S4method{get_lower_boundary_design}{UnconditionalScore,ConstraintsCollection,OneStageDesign}(objective,
-  subject_to, initial_design, ...)
+\S4method{get_lower_boundary_design}{OneStageDesign}(initial_design, ...)
 
 
-  \S4method{get_lower_boundary_design}{UnconditionalScore,ConstraintsCollection,GroupSequentialDesign}(objective,
-  subject_to, initial_design, ...)
+  \S4method{get_lower_boundary_design}{GroupSequentialDesign}(initial_design,
+  ...)
+
+\S4method{get_lower_boundary_design}{TwoStageDesign}(initial_design, ...)
+
+\S4method{get_upper_boundary_design}{OneStageDesign}(initial_design, ...)
 
 
-  \S4method{get_lower_boundary_design}{UnconditionalScore,ConstraintsCollection,TwoStageDesign}(objective,
-  subject_to, initial_design, ...)
+  \S4method{get_upper_boundary_design}{GroupSequentialDesign}(initial_design,
+  ...)
 
-
-  \S4method{get_upper_boundary_design}{UnconditionalScore,ConstraintsCollection,OneStageDesign}(objective,
-  subject_to, initial_design, ...)
-
-
-  \S4method{get_upper_boundary_design}{UnconditionalScore,ConstraintsCollection,GroupSequentialDesign}(objective,
-  subject_to, initial_design, ...)
-
-
-  \S4method{get_upper_boundary_design}{UnconditionalScore,ConstraintsCollection,TwoStageDesign}(objective,
-  subject_to, initial_design, ...)
+\S4method{get_upper_boundary_design}{TwoStageDesign}(initial_design, ...)
 }
 \arguments{
-\item{objective}{An object of class \code{\link{UnconditionalScore-class}} to be minimized}
-
-\item{subject_to}{A \code{\link{ConstraintsCollection-class}} defining the constraints}
-
 \item{initial_design}{The initial design}
 
 \item{...}{optimal arguments}

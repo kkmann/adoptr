@@ -49,8 +49,3 @@ integrate_rule <- function(f, low, up, x, weights) {
   ff <- sapply(x, function(x) f(a * x + b))
   return(a * sum(weights * ff))
 }
-
-
-
-
-
