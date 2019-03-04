@@ -18,7 +18,7 @@ minimize(objective, subject_to, initial_design,
 
 \item{initial_design}{initial guess (x0 for nloptr)}
 
-\item{lower_boundary_design}{design specifying the lower boundary}
+\item{lower_boundary_design}{design specifying the lower boundary.}
 
 \item{upper_boundary_design}{design specifying the upper boundary}
 

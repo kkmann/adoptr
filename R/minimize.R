@@ -11,7 +11,7 @@
 #' @param objective objective function
 #' @param subject_to constraint collection
 #' @param initial_design initial guess (x0 for nloptr)
-#' @param lower_boundary_design design specifying the lower boundary
+#' @param lower_boundary_design design specifying the lower boundary.
 #' @param upper_boundary_design design specifying the upper boundary
 #' @param opts options list passed to nloptr
 #' @param ... further optional arguments passed to \code{\link{nloptr}}
@@ -19,7 +19,6 @@
 #' @return \item{design}{ The resulting optimal design}
 #'         \item{nloptr_return}{ Output of the corresponding nloptr call}
 #'         \item{call_args}{ The arguments given to the optimization call}
-#'
 #'
 #' @export
 minimize <- function(
