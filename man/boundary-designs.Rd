@@ -17,43 +17,46 @@ get_lower_boundary_design(initial_design, ...)
 get_upper_boundary_design(initial_design, ...)
 
 \S4method{get_lower_boundary_design}{OneStageDesign}(initial_design,
-  n1 = 1, c1f = 0, ...)
+  n1 = 1, c1_buffer = 2, ...)
 
 
   \S4method{get_lower_boundary_design}{GroupSequentialDesign}(initial_design,
-  n1 = 1, c1f = -2, c1e = 1.5, n2_pivots = 1, c2_pivots = -2,
-  ...)
+  n1 = 1, n2_pivots = 1, c1_buffer = 2, c2_buffer = 2, ...)
 
 \S4method{get_lower_boundary_design}{TwoStageDesign}(initial_design,
-  n1 = 1, c1f = -2, c1e = 1.5, n2_pivots = 1, c2_pivots = -2,
-  ...)
+  n1 = 1, n2_pivots = 1, c1_buffer = 2, c2_buffer = 2, ...)
 
 \S4method{get_upper_boundary_design}{OneStageDesign}(initial_design,
-  n1 = NULL, c1f = 5, ...)
+  n1 = 5 * initial_design@n1, c1_buffer = 2, ...)
 
 
   \S4method{get_upper_boundary_design}{GroupSequentialDesign}(initial_design,
-  n1 = NULL, c1f = 2, c1e = 5, n2_pivots = NULL, c2_pivots = 5,
-  ...)
+  n1 = 5 * initial_design@n1, n2_pivots = 5 * initial_design@n2_pivots,
+  c1_buffer = 2, c2_buffer = 2, ...)
 
 \S4method{get_upper_boundary_design}{TwoStageDesign}(initial_design,
-  n1 = NULL, c1f = 2, c1e = 5, n2_pivots = NULL, c2_pivots = 5,
-  ...)
+  n1 = 5 * initial_design@n1, n2_pivots = 5 * initial_design@n2_pivots,
+  c1_buffer = 2, c2_buffer = 2, ...)
 }
 \arguments{
 \item{initial_design}{The initial design}
 
-\item{...}{optimal arguments}
+\item{...}{optional arguments
 
-\item{n1}{bound for n1}
+The values \code{c1f} and \code{c1e} from the initial design are shifted
+to \code{c1f - c1_buffer} and \code{c1e - c1_buffer} in
+\code{get_lower_boundary_design}, respectively, to
+\code{c1f + c1_buffer} and \code{c1e + c1_buffer} in
+\code{get_upper_boundary_design}.
+This is handled analogously with \code{c2_pivots} and \code{c2_buffer}.}
 
-\item{c1f}{bound for c1f}
+\item{n1}{bound for the first-stage sample size n1}
 
-\item{c1e}{bound for c1e}
+\item{c1_buffer}{shift of the early-stopping boundaries from the initial ones}
 
-\item{n2_pivots}{bound for n2_pivots}
+\item{n2_pivots}{bound for the second-stage sample size n2}
 
-\item{c2_pivots}{bound for c2_pivots}
+\item{c2_buffer}{shift of the final decision boundary from the initial one}
 }
 \description{
 Compute boundary designs. These can be used for optimization and are
