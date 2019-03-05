@@ -10,10 +10,8 @@ navbar:
     href: articles/adoptr.html
   - text: Working with priors
     href: articles/working-with-priors.html
-  - text: Score arithmetic
+  - text: Scores and constraints
     href: articles/score-and-constraints-arithmetic.html
-  - text: Defining custom scores
-    href: articles/defining-new-scores.html
   - text: Reference
     href: reference/index.html
   right:
