@@ -51,7 +51,7 @@ test_that("UnconditionalConstraints", {
 test_that("ConditionalConstraints", {
 
 
-    # create power as IntegralScore
+    # create conditional power
     cp <- ConditionalPower(Normal(two_armed = FALSE), PointMassPrior(.4, 1))
 
     # construct actual constraint
@@ -145,3 +145,16 @@ test_that("score vs score inequalities", {
     )
 
 }) # end 'score vs score inequalities'
+
+
+
+test_that("show method returns class name", {
+    cp <- ConditionalPower(Normal(two_armed = FALSE), PointMassPrior(.4, 1))
+    cnstr <- cp >= 0.8
+
+    expect_equal(
+        show(cnstr),
+        cat(class(cnstr)[1])
+    )
+}) # end 'show method returns class name'
+

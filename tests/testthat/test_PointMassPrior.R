@@ -160,3 +160,15 @@ test_that("errors are defined correctly", {
     ) # conditioning works correctly
 
 }) # end 'errors are defined correctly'
+
+
+
+test_that("show method returns class name", {
+    prior <- PointMassPrior(.3, 1)
+
+    expect_equal(
+        cat(class(prior)[1]),
+        show(prior)
+    )
+}) # end 'show method returns class name'
+

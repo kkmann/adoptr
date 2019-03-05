@@ -115,6 +115,19 @@ test_that("Arithmetic for conditional scores works", {
         -1 * evaluate(afcp, design, z1) + evaluate(afcosc, design, z1)
     ) # add two AffineConditionalScores
 
-
 })
+
+
+
+
+test_that("show method returns class name", {
+    afpow  <- AffineUnconditionalScore(pow, 1, 0)
+    afcp   <- AffineConditionalScore(cp, 1, 0)
+
+    expect_equal(
+        show(afpow),
+        show(afcp)
+    ) # should both be of class AffineScore
+
+}) # end 'show method returns class name'
 

@@ -5,14 +5,11 @@
 \alias{DataDistribution-class}
 \alias{probability_density_function}
 \alias{cumulative_distribution_function}
-\alias{show,DataDistribution-method}
 \title{Data distributions}
 \usage{
 probability_density_function(dist, x, n, theta, ...)
 
 cumulative_distribution_function(dist, x, n, theta, ...)
-
-\S4method{show}{DataDistribution}(object)
 }
 \arguments{
 \item{dist}{data distribution object}
@@ -24,15 +21,11 @@ cumulative_distribution_function(dist, x, n, theta, ...)
 \item{theta}{distribution parameter}
 
 \item{...}{further optional arguments}
-
-\item{object}{data distribution to show}
 }
 \description{
 \code{DataDistribution} is an abstract class used to represent the distribution
 of a sufficient statistic \code{x} given a sample size \code{n} and a
 single parameter value \code{theta}.
-
-Only states the class itself.
 }
 \details{
 This abstraction layer allows representation of t-distributions

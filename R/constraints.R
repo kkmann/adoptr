@@ -35,6 +35,13 @@ setMethod("evaluate", signature("Constraint", "TwoStageDesign"),
 
 
 
+#' @rdname Constraint-class
+#'
+#' @param object object of class \code{Constraint}
+#' @export
+setMethod("show", signature(object = "Constraint"),
+          function(object) cat("Constraint"))
+
 
 
 #' @rdname Constraint-class

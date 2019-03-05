@@ -97,3 +97,14 @@ test_that("Rounding works", {
     )
 
 })
+
+
+test_that("show method returns design name", {
+    design  <-  GroupSequentialDesign(25, 0.0, 2.0, 40.0, 1.96, 5L)
+
+    expect_equal(
+        cat(class(design)[1]),
+        show(design)
+    )
+}) # end 'show method returns design name'
+

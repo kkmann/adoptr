@@ -36,17 +36,6 @@ setGeneric("cumulative_distribution_function", function(dist, x, n, theta, ...) 
 
 
 
-#' Show method for DataDistribution
-#'
-#' Only states the class itself.
-#'
-#' @param object data distribution to show
-#'
-#' @rdname DataDistribution-class
-#' @export
-setMethod("show", signature("DataDistribution"),
-          function(object) cat("DataDistribution"))
-
 
 
 #' Normal data distribution
