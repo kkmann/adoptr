@@ -68,6 +68,14 @@ setMethod("evaluate", signature("AffineScore", "TwoStageDesign"),
 
 
 
+#' @rdname AffineScore-class
+#'
+#' @param object object of class \code{AffineScore}
+#' @export
+setMethod("show", signature(object = "AffineScore"),
+          function(object) cat("AffineScore"))
+
+
 
 setClass("AffineUnconditionalScore", contains = c("AffineScore", "UnconditionalScore"))
 

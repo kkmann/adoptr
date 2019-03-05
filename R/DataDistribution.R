@@ -36,6 +36,18 @@ setGeneric("cumulative_distribution_function", function(dist, x, n, theta, ...) 
 
 
 
+#' Show method for DataDistribution
+#'
+#' Only states the class itself.
+#'
+#' @param object data distribution to show
+#'
+#' @rdname DataDistribution-class
+#' @export
+setMethod("show", signature("DataDistribution"),
+          function(object) cat("DataDistribution"))
+
+
 
 #' Normal data distribution
 #'
@@ -118,3 +130,12 @@ setMethod("simulate", signature("Normal", "numeric"),
 
               stats::rnorm(nsim, mean = fct * sqrt(n) * theta, sd = 1)
           })
+
+
+#' @rdname NormalDataDistribution-class
+#'
+#' @param object object of class \code{Normal}
+#' @export
+setMethod("show", signature(object = "Normal"),
+          function(object) cat("Normal"))
+

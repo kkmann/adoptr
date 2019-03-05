@@ -99,3 +99,13 @@ setMethod("posterior", signature("DataDistribution", "PointMassPrior", "numeric"
         mass <- mass / sum(mass) # normalize
         return(PointMassPrior(prior@theta, mass))
     })
+
+
+
+#' @rdname PointMassPrior-class
+#'
+#' @param object object of class \code{PointMassPrior}
+#' @export
+setMethod("show", signature(object = "PointMassPrior"),
+          function(object) cat("PointMassPrior"))
+
