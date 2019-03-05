@@ -123,5 +123,4 @@ setMethod("plot", signature("OneStageDesign"),
 #' @rdname OneStageDesign-class
 #' @export
 setMethod("show", signature(object = "OneStageDesign"),
-          function(object) cat("OneStageDesign"))
-
+          function(object) cat(class(object)[1]))

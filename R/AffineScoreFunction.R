@@ -73,7 +73,7 @@ setMethod("evaluate", signature("AffineScore", "TwoStageDesign"),
 #' @param object object of class \code{AffineScore}
 #' @export
 setMethod("show", signature(object = "AffineScore"),
-          function(object) cat("AffineScore"))
+          function(object) cat(class(object)[1]))
 
 
 

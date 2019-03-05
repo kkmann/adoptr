@@ -112,6 +112,4 @@ setMethod("TwoStageDesign", signature("GroupSequentialDesign"),
 #' @rdname GroupSequentialDesign-class
 #' @export
 setMethod("show", signature(object = "GroupSequentialDesign"),
-          function(object) cat("GroupSequentialDesign"))
-
-
+          function(object) cat(class(object)[1]))

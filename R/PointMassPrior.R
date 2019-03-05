@@ -107,5 +107,4 @@ setMethod("posterior", signature("DataDistribution", "PointMassPrior", "numeric"
 #' @param object object of class \code{PointMassPrior}
 #' @export
 setMethod("show", signature(object = "PointMassPrior"),
-          function(object) cat("PointMassPrior"))
-
+          function(object) cat(class(object)[1]))

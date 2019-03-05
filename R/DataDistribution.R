@@ -126,5 +126,5 @@ setMethod("simulate", signature("Normal", "numeric"),
 #' @param object object of class \code{Normal}
 #' @export
 setMethod("show", signature(object = "Normal"),
-          function(object) cat("Normal"))
+          function(object) cat(class(object)[1]))
 

@@ -60,7 +60,7 @@ setMethod("expected", signature("ConditionalScore"),
 #' @param object object of class \code{ConditionalScore}
 #' @export
 setMethod("show", signature(object = "ConditionalScore"),
-          function(object) cat("ConditionalScore"))
+          function(object) cat(class(object)[1]))
 
 
 
@@ -156,7 +156,7 @@ setClass("IntegralScore", representation(
 #' @param object object of class \code{IntegralScore}
 #' @export
 setMethod("show", signature(object = "IntegralScore"),
-          function(object) cat("IntegralScore"))
+          function(object) cat(class(object)[1]))
 
 
 
