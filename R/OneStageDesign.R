@@ -111,3 +111,16 @@ setMethod("plot", signature("OneStageDesign"),
           function(x, ...)
               stop("plot method is only defined for two-stage designs!")
           )
+
+
+
+#' Show method for OneStageDesign objects
+#'
+#' Only states the class itself.
+#'
+#' @param object design to show
+#'
+#' @rdname OneStageDesign-class
+#' @export
+setMethod("show", signature(object = "OneStageDesign"),
+          function(object) cat(class(object)[1]))

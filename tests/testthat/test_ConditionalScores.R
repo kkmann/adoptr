@@ -103,7 +103,7 @@ test_that("Conditional power has correct values outside continuation region",{
 }) # end 'Conditional power has correct values outside continuation region'
 
 
-context("Test vectorization")
+context("Test class ConditionalScore")
 
 test_that("Conditional scores are vectorized in z1", {
     css    <- ConditionalSampleSize(Normal(), PointMassPrior(.4, 1))
@@ -120,3 +120,16 @@ test_that("Conditional scores are vectorized in z1", {
     )
 
 }) # end 'Conditional scores are vectorized in z1'
+
+
+
+test_that("show method returns class name", {
+    cp   <- ConditionalPower(Normal(), PointMassPrior(.4, 1))
+    css  <- ConditionalSampleSize(Normal(), PointMassPrior(.4, 1))
+
+    expect_equal(
+        show(cp),
+        show(css)
+    ) # should both be of class ConditionalScore
+
+}) # end 'show method returns class name'

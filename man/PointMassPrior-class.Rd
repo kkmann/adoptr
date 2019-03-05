@@ -10,6 +10,7 @@
 \alias{predictive_pdf,DataDistribution,PointMassPrior,numeric-method}
 \alias{predictive_cdf,DataDistribution,PointMassPrior,numeric-method}
 \alias{posterior,DataDistribution,PointMassPrior,numeric-method}
+\alias{show,PointMassPrior-method}
 \title{Point-mass prior}
 \usage{
 PointMassPrior(theta, mass)
@@ -28,6 +29,8 @@ PointMassPrior(theta, mass)
 
 \S4method{posterior}{DataDistribution,PointMassPrior,numeric}(dist, prior,
   x1, n1, ...)
+
+\S4method{show}{PointMassPrior}(object)
 }
 \arguments{
 \item{theta}{cf. slot 'theta'}
@@ -47,6 +50,8 @@ PointMassPrior(theta, mass)
 \item{x1}{stage one outcome (note that n1 is available from \code{design})}
 
 \item{n1}{stage-one sample size}
+
+\item{object}{object of class \code{PointMassPrior}}
 }
 \description{
 \code{PointMassPrior} is a generic class for representing a univariate prior
