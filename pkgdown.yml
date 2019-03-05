@@ -3,7 +3,6 @@ pkgdown: 1.3.0
 pkgdown_sha: ~
 articles:
   adoptr: adoptr.html
-  defining-new-scores: defining-new-scores.html
   score-and-constraints-arithmetic: score-and-constraints-arithmetic.html
   working-with-priors: working-with-priors.html
 urls:

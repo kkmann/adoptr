@@ -52,10 +52,7 @@
   <a href="../articles/working-with-priors.html">Working with priors</a>
 </li>
 <li>
-  <a href="../articles/score-and-constraints-arithmetic.html">Score arithmetic</a>
-</li>
-<li>
-  <a href="../articles/defining-new-scores.html">Defining custom scores</a>
+  <a href="../articles/score-and-constraints-arithmetic.html">Scores and constraints</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -101,14 +98,16 @@
 <div id="two-stage-designs-for-clinical-trials" class="section level2">
 <h2 class="hasAnchor">
 <a href="#two-stage-designs-for-clinical-trials" class="anchor"></a>Two-stage designs for clinical trials</h2>
-<p>In prospectively planned confirmatory clinical trials there has been a long-standing debate about the merits of allowing pre-planned interim analyses to stop or modify an ongoing trial, cf. [REFEENCE BAUER et al 2016]. It is common consensus that such two-stage designs should still maintain strict control of the maximal type one error rate despite the data dependent decision at the interim analyis. Most authors use combination function approaches to combine either the independent p values or test statistics from the respective stages. Doing so with pre-specified weights maintains the type one error rate control [REFERENCE].</p>
-<p>In [our paper], it was argued that such techniques are not necessary, in fact, that they are counter-productive, since the pre-specified weights might be sub-optimal. Intuitively, this can be seen from the fact that the derivation of optimal weights for a two-stage test build on the notion of a hypothetical overall sample size which might never be realized in practice [REFERENCE]. Instead, one may see the problem of defining an optimal two-stage designs as a variational problem to find the optimal configuration <span class="math inline">\(\big(n_1, c_1^e, c_1^f, n_2(\cdot), c_2(\cdot)\big)\)</span> directly for a given objective function and potentially a set of constraints. The relaxation of this mixed-integer problem to the real numbers can then be solved with standard methods from analysis. E.g., one could construct an implicit solution by solving the corresponding Euler-Lagrange equation for given first-stage and then find an optimal first-stage configuration [our paper]. Instead, the <strong>adoptr</strong> package implements a direct numerical solution algorithm by embedding the variation problem via a set of pivot points in the <span class="math inline">\(\mathbb{R}^k\)</span> and solving the corresponding finite-dimensional problem using gradient-free numerical optimization procedures (COBYLA / nloptr).</p>
+<p>In prospectively planned confirmatory clinical trials there has been a long-standing debate about the merits of allowing pre-planned interim analyses to stop or modify an ongoing trial, cf. [REFEENCE BAUER et al 2016]. It is common consensus that such two-stage designs should still maintain strict control of the maximal type one error rate despite the data dependent decision at the interim analyis. Most authors use combination function approaches to combine either the independent p values or test statistics from the respective stages. Doing so with pre-specified weights maintains the type one error rate control.</p>
+<p>With <strong>adoptr</strong> we provide tools to explore optimal two-stage designs for one or two-arm clinical trials with (asymptotically) normally distributed and stage-wise independent test statistics. In [our paper], it was argued that such techniques are not necessary, in fact, that they are counter-productive, since the pre-specified weights might be sub-optimal. Instead, one may see the problem of defining an optimal two-stage designs as a variational problem to find the optimal configuration <span class="math display">\[
+\mathcal{D}:=\big(n_1, c_1^e, c_1^f, n_2(\cdot), c_2(\cdot)\big)
+\]</span> directly for a given objective function and potentially a set of constraints. The relaxation of this mixed-integer problem to the real numbers can then be solved with standard methods from analysis. E.g., one could construct an implicit solution by solving the corresponding Euler-Lagrange equation for given first-stage and then find an optimal first-stage configuration [our paper]. Instead, the <strong>adoptr</strong> package implements a direct numerical solution algorithm by embedding the variation problem via a set of pivot points in the <span class="math inline">\(\mathbb{R}^k\)</span> and solving the corresponding finite-dimensional problem using gradient-free numerical optimization procedures (COBYLA / nloptr).</p>
 </div>
 <div id="example" class="section level1">
 <h1 class="hasAnchor">
 <a href="#example" class="anchor"></a>Example</h1>
-<p>Consider the case of a two-stage design for a single-arm trial aiming to reject the null hypothesis <span class="math inline">\(\mathcal{H}_0: \delta \leq 0\)</span> where <span class="math inline">\(\delta\)</span> is the population-mean response. Further assume that a power of 80% at <span class="math inline">\(\delta=0.4\)</span> and a type-one-error rate of 2.5% on the boundary of the null hypothesis <span class="math inline">\(\delta\leq0.0\)</span> is required.</p>
-<p>In this situation, the one-sided t-test would require a sample size of <span class="math inline">\(51\)</span> individuals. If we were willing to accept the fact that the sample size of a two-stage design is inherently unknown at the planning stage, we could reduce the <em>expected</em> sample size under the alternative by optimizing a two-stage design with respect to this quantity. Since the two-stage design, by definition, has more degrees of freedom than the single-stage design, it must be at least as good in terms of expected sample size as the single-stage design - for which the expected sample size is always 51.</p>
+<p>Consider the two-arm case comparing two group means mean. Let <span class="math inline">\(\delta\)</span> be the difference in means and assume that the aim is to reject the null hypothesis <span class="math inline">\(\mathcal{H}_0: \delta \leq 0\)</span>. Further assume that a power of 80% at <span class="math inline">\(\delta=0.4\)</span> and a type-one-error rate of 2.5% on the boundary of the null hypothesis <span class="math inline">\(\delta\leq0.0\)</span> is required.</p>
+<p>In this situation, the one-sided t-test would require a sample size of <span class="math inline">\(51\)</span> individuals per-group. If we were willing to accept the fact that the sample size of a two-stage design is inherently unknown at the planning stage, we could reduce the <em>expected</em> sample size under the alternative by optimizing a two-stage design with respect to this quantity. Since the two-stage design, by definition, has more degrees of freedom than the single-stage design, it must be at least as good in terms of expected sample size as the single-stage design - for which the expected sample size is always 51.</p>
 <div id="define-hypotheses-and-data-generating-mechanism" class="section level2">
 <h2 class="hasAnchor">
 <a href="#define-hypotheses-and-data-generating-mechanism" class="anchor"></a>Define hypotheses and data-generating mechanism</h2>
@@ -183,8 +182,12 @@
 <div id="variations" class="section level2">
 <h2 class="hasAnchor">
 <a href="#variations" class="anchor"></a>Variations</h2>
-<p>The purpose of <code>adoptr</code> is to provide a high-level interface for exploring and comparing different designs and to experiment with different combinations of objective functions and constraints.</p>
-<p>[…]</p>
+<p>The purpose of <strong>adoptr</strong> is to provide a high-level interface for exploring and comparing different designs and to experiment with different combinations of objective functions and constraints. In particular, <strong>adoptr</strong> supports:</p>
+<ul>
+<li><p>Arbitrary continuous or discrete <a href="https://kkmann.github.io/adoptr/articles/working-with-priors.html">prior distributions</a> for the single location parameter <span class="math inline">\(\theta\)</span> of the test statistic.</p></li>
+<li><p>Support for simple arithmetic operations on scores to quickly define weighted sums etc. (cf. <a href="https://kkmann.github.io/adoptr/articles/score-and-constraints-arithmetic.html">working with priors</a>).</p></li>
+<li><p>Relatively flexible framework for <a href="https://kkmann.github.io/adoptr/articles/score-and-constraints-arithmetic.html">defining custom scores</a>.</p></li>
+</ul>
 </div>
 </div>
   </div>

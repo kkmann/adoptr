@@ -52,10 +52,7 @@
   <a href="../articles/working-with-priors.html">Working with priors</a>
 </li>
 <li>
-  <a href="../articles/score-and-constraints-arithmetic.html">Score arithmetic</a>
-</li>
-<li>
-  <a href="../articles/defining-new-scores.html">Defining custom scores</a>
+  <a href="../articles/score-and-constraints-arithmetic.html">Scores and constraints</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -99,130 +96,89 @@
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(adoptr)</a></code></pre></div>
 <div id="score-classes-in-adoptr" class="section level2">
 <h2 class="hasAnchor">
-<a href="#score-classes-in-adoptr" class="anchor"></a>Score classes in <code>adoptr</code>
+<a href="#score-classes-in-adoptr" class="anchor"></a>Score classes in <strong>adoptr</strong>
 </h2>
-<p>In <code>adoptr</code> there are two custom score classes. Conditional scores represented by the class <code>ConditionalScore</code> and unconditional scores which are currently implemented as expected conditional scores and therefore represented by the class <code>IntegralScore</code>.</p>
-<div id="conditional-scores" class="section level3">
-<h3 class="hasAnchor">
-<a href="#conditional-scores" class="anchor"></a>Conditional scores</h3>
-<p>A conditional score is the evaluation of a design property conditioned on the first-stage outcome <span class="math inline">\(X_1 = x_1\)</span>.</p>
-<p>In <code>adoptr</code>, a conditional score as, e.g. conditional power, includes the following slots:</p>
-<ul>
-<li><p><code>distribution</code>: the underlying data distribution.</p></li>
-<li><p><code>prior</code>: the prior distribution.</p></li>
-</ul>
-<p>The only data distribution that is currently supported is <code><a href="../reference/NormalDataDistribution-class.html">Normal()</a></code>. One can differentiate between two-armed designs (the default) and one-armed designs. It can easily be called by</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">dist &lt;-<span class="st"> </span><span class="kw"><a href="../reference/NormalDataDistribution-class.html">Normal</a></span>(<span class="dt">two_armed =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
-<p>The prior distribution is needed here to be able to compute the posterior distribution and evaluate the conditional score in case of continuation. How to work and specify priors is described more detailed in the vignette ‘working with priors’.</p>
-<p>Every conditional score requires an evaluation method. This has to be defined as a method of three arguments.</p>
-<ul>
-<li><p>the object of class <code>ConditionalScore</code> that is to be evaluated</p></li>
-<li><p>the <code>TwoStageDesign</code> used of evaluation</p></li>
-<li><p>the realisation of the test statistic <span class="math inline">\(z_1\)</span> where the score is evaluated.</p></li>
-</ul>
-<p>Later in this vignette it is shown how one can define an own evaluation method. For the common cases conditional sample size and conditional power such methods already exist in <code>adoptr</code> as will be shown below.</p>
+<p>For a two-stage design, both conditional (on the stage-one outcome) as well as unconditional scores (e.g. power) might be of interest. Consider the following group-sequenital example design</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">design &lt;-<span class="st"> </span><span class="kw"><a href="../reference/TwoStageDesign-class.html">TwoStageDesign</a></span>(</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">    <span class="dt">n1  =</span> <span class="dv">100</span>,</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3">    <span class="dt">c1f =</span> <span class="fl">.0</span>,</a>
+<a class="sourceLine" id="cb2-4" data-line-number="4">    <span class="dt">c1e =</span> <span class="fl">2.0</span>,</a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">    <span class="dt">n2_pivots =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="dv">150</span>, <span class="dv">5</span>),</a>
+<a class="sourceLine" id="cb2-6" data-line-number="6">    <span class="dt">c2_pivots =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/lapply">sapply</a></span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>adoptr<span class="op">:::</span><span class="kw"><a href="../reference/GaussLegendreRule.html">GaussLegendreRule</a></span>(<span class="dv">5</span>)<span class="op">$</span>nodes, <span class="cf">function</span>(x) <span class="op">-</span>x <span class="op">+</span><span class="st"> </span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb2-7" data-line-number="7">)</a>
+<a class="sourceLine" id="cb2-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(design)</a></code></pre></div>
+<p><img src="score-and-constraints-arithmetic_files/figure-html/define-design-1.png" width="672"></p>
+<p>A <code>ConditionalScore</code> is a function <span class="math inline">\(s(\mathcal{D}, x_1)\)</span> evaluating a design <span class="math inline">\(\mathcal{D}\)</span> at a stage-one outcome <span class="math inline">\(X_1 = x_1\)</span>. In <code>adoptr</code>, a conditional score of a particular class always takes a <code>DataDistribution</code> and a <code>Prior</code> argument to specify a complete sampling distribution. This allows to <code><a href="../reference/working-with-scores.html">evaluate()</a></code> conditional scores, e.g. given <span class="math inline">\(x_1=0.5\)</span></p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">uniform_prior &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ContinuousPrior-class.html">ContinuousPrior</a></span>(</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">  <span class="cf">function</span>(x) <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/numeric">numeric</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(x)) <span class="op">+</span><span class="st"> </span><span class="dv">1</span><span class="op">/</span>.<span class="dv">2</span>,</a>
+<a class="sourceLine" id="cb3-3" data-line-number="3">  <span class="dt">support =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(.<span class="dv">3</span>, <span class="fl">.5</span>)</a>
+<a class="sourceLine" id="cb3-4" data-line-number="4">)</a>
+<a class="sourceLine" id="cb3-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb3-6" data-line-number="6">cp &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ConditionalPower-class.html">ConditionalPower</a></span>(<span class="kw"><a href="../reference/NormalDataDistribution-class.html">Normal</a></span>(), uniform_prior)</a>
+<a class="sourceLine" id="cb3-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="kw"><a href="../reference/working-with-scores.html">evaluate</a></span>(cp, design, <span class="dt">x1 =</span> <span class="fl">0.5</span>) </a>
+<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="co">#&gt; [1] 0.9303985</span></a></code></pre></div>
+<p>Conditional scores can also be plotted directly for a given design by including them in the <code><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot()</a></code> call.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(design, <span class="st">"Conditional Power"</span> =<span class="st"> </span>cp)</a></code></pre></div>
+<p><img src="score-and-constraints-arithmetic_files/figure-html/unnamed-chunk-3-1.png" width="672"></p>
+<p>Since the <code>cp</code> object already contains the specification of the sampling distribution (via <code><a href="../reference/NormalDataDistribution-class.html">Normal()</a></code> and <code>uniform_prior</code>), the expected score can be computed immediately, in this case giving expected power. The resulting socre is of class <code>IntegralScore</code>, a specific subclass of <code>UnconditionalScore</code> and can be evaluated via</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">ep &lt;-<span class="st"> </span><span class="kw"><a href="../reference/working-with-scores.html">expected</a></span>(cp)</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="kw"><a href="../reference/working-with-scores.html">evaluate</a></span>(ep, design)</a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#&gt; [1] 0.9921388</span></a></code></pre></div>
+<p>‘Classical power’ at a specific parameter value can be obtained by forming the expected value with respect to a point prior, e.g.,</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">power &lt;-<span class="st"> </span><span class="kw"><a href="../reference/working-with-scores.html">expected</a></span>(<span class="kw"><a href="../reference/ConditionalPower-class.html">ConditionalPower</a></span>(<span class="kw"><a href="../reference/NormalDataDistribution-class.html">Normal</a></span>(), <span class="kw"><a href="../reference/PointMassPrior-class.html">PointMassPrior</a></span>(.<span class="dv">4</span>, <span class="fl">1.0</span>)))</a></code></pre></div>
+<p>would be the power at <span class="math inline">\(0.4\)</span>.</p>
+<p>Besides <code>ConditionalPower</code> we also provide the conditional sample size, i.e., <span class="math inline">\(n_2(\cdot)\)</span> as score via <code>ConditionalSampleSize</code></p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">ess &lt;-<span class="st"> </span><span class="kw"><a href="../reference/working-with-scores.html">expected</a></span>(<span class="kw"><a href="../reference/ConditionalSampleSize-class.html">ConditionalSampleSize</a></span>(<span class="kw"><a href="../reference/NormalDataDistribution-class.html">Normal</a></span>(), uniform_prior))</a></code></pre></div>
 </div>
-<div id="unconditional-scores" class="section level3">
-<h3 class="hasAnchor">
-<a href="#unconditional-scores" class="anchor"></a>Unconditional scores</h3>
-<p>Unconditional scores are scores that do not depend on a specific value of the first-stage statistic <span class="math inline">\(X_1\)</span>.</p>
-<p>In <code>adoptr</code> an unconditional score is an expected conditional score. I.e., integrating the product of a conditional score and the probability density function of the test statistic over the full <span class="math inline">\(x_1\)</span>-range yields to an unconditional score. For instance, power is nothing but the integral over conditional power multiplied by the density function of the test statistic. Therefore, the proposed class of an unconditional score is the class <code>IntegralScore</code>. The following ‘formula’ expresses the connection between the two score classes in <code>adoptr</code> for a design <span class="math inline">\(D\)</span>. <span class="math display">\[
-\text{IntegralScore} (D) = \int_{-\infty}^{\infty} \text{ConditionalScore}(x_1, D) *
-\text{TestStatisticDensity} (x_1) \operatorname{d} x_1.
-\]</span></p>
-<p>Creating an <code>IntegralScore</code> only requires a conditional score. Via the method <code><a href="../reference/working-with-scores.html">expected()</a></code> an <code>IntegralScore</code> is built. The evaluation method is then adopted by the underlying <code>ConditionalScore</code>.</p>
-</div>
-</div>
-<div id="preimplemented-scores" class="section level2">
+<div id="defining-new-scores" class="section level2">
 <h2 class="hasAnchor">
-<a href="#preimplemented-scores" class="anchor"></a>Preimplemented scores</h2>
-<p>There are two common unconditional scores that are already implemented in <code>adoptr</code>. These are the conditional sample size and the conditional power. Its usage is described now. For illustration a <code>TwoStageDesign</code> has to be defined.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">design &lt;-<span class="st"> </span><span class="kw"><a href="../reference/TwoStageDesign-class.html">TwoStageDesign</a></span>(</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">    <span class="dt">n1  =</span> <span class="dv">100</span>,</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3">    <span class="dt">c1f =</span> <span class="fl">.0</span>,</a>
-<a class="sourceLine" id="cb3-4" data-line-number="4">    <span class="dt">c1e =</span> <span class="fl">2.0</span>,</a>
-<a class="sourceLine" id="cb3-5" data-line-number="5">    <span class="dt">n2_pivots =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="dv">150</span>, <span class="dv">5</span>),</a>
-<a class="sourceLine" id="cb3-6" data-line-number="6">    <span class="dt">c2_pivots =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq</a></span>(<span class="fl">2.0</span>, <span class="fl">0.0</span>, <span class="dt">length.out =</span> <span class="dv">5</span>)</a>
-<a class="sourceLine" id="cb3-7" data-line-number="7">)</a></code></pre></div>
-<p>A brief look on this design shows that a classical group-sequential design has been defined</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(design)</a></code></pre></div>
-<p><img src="score-and-constraints-arithmetic_files/figure-html/plot-design-1.png" width="672"></p>
-<div id="conditional-sample-size" class="section level3">
-<h3 class="hasAnchor">
-<a href="#conditional-sample-size" class="anchor"></a>Conditional Sample Size</h3>
-<p>The conditional sample size is the sample size of a design conditioned on observing the first-stage result <span class="math inline">\(X_1 = x_1\)</span>. Therefore, it is just the total sample size <span class="math inline">\(n(x_1) = n_1 + n_2(x_1)\)</span>. As described above, a data distribution and a prior have to be defined.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">dist  &lt;-<span class="st"> </span><span class="kw"><a href="../reference/NormalDataDistribution-class.html">Normal</a></span>()</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2">prior &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PointMassPrior-class.html">PointMassPrior</a></span>(.<span class="dv">3</span>, <span class="dv">1</span>)</a></code></pre></div>
-<p>It can be defined via</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">css &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ConditionalSampleSize-class.html">ConditionalSampleSize</a></span>(dist, prior)</a></code></pre></div>
-<p>For our dummy design the conditional sample size at <span class="math inline">\(x_1 = 1\)</span> can be evaluated via</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="../reference/working-with-scores.html">evaluate</a></span>(css, design, <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co">#&gt; [1] 250</span></a></code></pre></div>
-<p>The corresponding unconditional score is the expected sample size. It can be defined by calling <code><a href="../reference/working-with-scores.html">expected()</a></code>:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">ess &lt;-<span class="st"> </span><span class="kw"><a href="../reference/working-with-scores.html">expected</a></span>(css)</a></code></pre></div>
-<p>The call of <code><a href="../reference/working-with-scores.html">evaluate()</a></code> allows to evaluate the expected sample size of a two-stage design. Note that <code>ess</code> is a unconditional score and therefore, no <span class="math inline">\(x_1\)</span>-outcome can be specified.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="../reference/working-with-scores.html">evaluate</a></span>(ess, design)</a>
-<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="co">#&gt; [1] 165.2157</span></a></code></pre></div>
+<a href="#defining-new-scores" class="anchor"></a>Defining new scores</h2>
+<p>In addition to the already existing ones, <code>adoptr</code> allows the user to implement custom scores. Usually, this will be done by defining a new sub-class of <code>ConditionalScore</code>. Assume that one would be interested in the probability of early stopping for futility. We only need to implement a method <code><a href="../reference/working-with-scores.html">evaluate()</a></code>, all other methods are inherited from the abstract class <code>ConditionalScore</code>.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="co"># Define the class</span></a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="kw">setClass</span>(<span class="st">"ConditionalProbabilityEarlyFutility"</span>, <span class="dt">contains =</span> <span class="st">"ConditionalScore"</span>)</a>
+<a class="sourceLine" id="cb8-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="co"># Define constructor</span></a>
+<a class="sourceLine" id="cb8-5" data-line-number="5">ConditionalProbabilityEarlyFutility &lt;-<span class="st"> </span><span class="cf">function</span>(dist, prior) {</a>
+<a class="sourceLine" id="cb8-6" data-line-number="6">  <span class="kw">new</span>(<span class="st">"ConditionalProbabilityEarlyFutility"</span>, <span class="dt">distribution =</span> dist, <span class="dt">prior =</span> prior)</a>
+<a class="sourceLine" id="cb8-7" data-line-number="7">} </a>
+<a class="sourceLine" id="cb8-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb8-9" data-line-number="9"><span class="co"># Define corresponding evaluate method</span></a>
+<a class="sourceLine" id="cb8-10" data-line-number="10"><span class="kw">setMethod</span>(<span class="st">"evaluate"</span>, <span class="kw">signature</span>(<span class="st">"ConditionalProbabilityEarlyFutility"</span>, <span class="st">"TwoStageDesign"</span>),</a>
+<a class="sourceLine" id="cb8-11" data-line-number="11">          <span class="cf">function</span>(s, design, x1, <span class="dt">optimization =</span> <span class="ot">FALSE</span>, ...) <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ifelse">ifelse</a></span>(x1 <span class="op">&lt;</span><span class="st"> </span>design<span class="op">@</span>c1f, <span class="dv">1</span>, <span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb8-12" data-line-number="12">)</a></code></pre></div>
+<p>Note that the option <code>optimization</code> has to be given in order to apply a faster Gaussian quadrature if the scores are used during optimization. It suffices to include it as above and can be ignored by the user. Now we can define the <code>IntegralScore</code> representing the probability to stop early for futility under no differenceas</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">prob_early_fut &lt;-<span class="st"> </span><span class="kw"><a href="../reference/working-with-scores.html">expected</a></span>(<span class="kw">ConditionalProbabilityEarlyFutility</span>(</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2">  <span class="kw"><a href="../reference/NormalDataDistribution-class.html">Normal</a></span>(), </a>
+<a class="sourceLine" id="cb9-3" data-line-number="3">  <span class="kw"><a href="../reference/PointMassPrior-class.html">PointMassPrior</a></span>(.<span class="dv">0</span>, <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb9-4" data-line-number="4">))</a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw"><a href="../reference/working-with-scores.html">evaluate</a></span>(prob_early_fut, design)</a>
+<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="co">#&gt; [1] 0.5</span></a></code></pre></div>
+<p>The value is correct since it needs to conform with</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">pnorm</a></span>(design<span class="op">@</span>c1f)</a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="co">#&gt; [1] 0.5</span></a></code></pre></div>
 </div>
-<div id="conditional-power" class="section level3">
-<h3 class="hasAnchor">
-<a href="#conditional-power" class="anchor"></a>Conditional Power</h3>
-<p>Another common used conditional score in the development of adaptive designs is the conditional power. It is defined as the probability to reject the null hypothesis at interim if <span class="math inline">\(X_1 = x_1\)</span> was observed. For a design <span class="math inline">\(D\)</span> it is defined as. <span class="math display">\[
-\text{Conditional Power }(x_1, D) = P[\text{Reject } \mathcal{H}_0 \, | \, X_1 = x_1]
-\]</span></p>
-<p>Analogously to the conditional sample size it can be called and evaluate by the <code>adoptr</code>-internal definitions.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">cp &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ConditionalPower-class.html">ConditionalPower</a></span>(dist, prior)</a>
-<a class="sourceLine" id="cb10-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="kw"><a href="../reference/working-with-scores.html">evaluate</a></span>(cp, design, <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb10-4" data-line-number="4"><span class="co">#&gt; [1] 0.944987</span></a></code></pre></div>
-<p>The power is than defined as the probability under the alternative (here this is <span class="math inline">\(\delta = 0.3\)</span> as defined by the prior) to reject the null hypothesis. As before one can simply call:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">power &lt;-<span class="st"> </span><span class="kw"><a href="../reference/working-with-scores.html">expected</a></span>(cp)</a>
-<a class="sourceLine" id="cb11-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="kw"><a href="../reference/working-with-scores.html">evaluate</a></span>(power, design)</a>
-<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="co">#&gt; [1] 0.9631647</span></a></code></pre></div>
-<p>Finally note that the type one error rate is the probability to reject the null hypothesis under the null. Therefore, it can be interpreted as conditional power under the null hypothesis and be defined as the power above where only the prior has to be changed.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">toer &lt;-<span class="st"> </span><span class="kw"><a href="../reference/working-with-scores.html">expected</a></span>(<span class="kw"><a href="../reference/ConditionalPower-class.html">ConditionalPower</a></span>(<span class="dt">dist =</span> <span class="kw"><a href="../reference/NormalDataDistribution-class.html">Normal</a></span>(), <span class="dt">prior =</span> <span class="kw"><a href="../reference/PointMassPrior-class.html">PointMassPrior</a></span>(<span class="fl">0.0</span>, <span class="dv">1</span>)))</a>
-<a class="sourceLine" id="cb12-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="kw"><a href="../reference/working-with-scores.html">evaluate</a></span>(toer, design)</a>
-<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="co">#&gt; [1] 0.08391578</span></a></code></pre></div>
-</div>
-<div id="plotting-conditional-scores" class="section level3">
-<h3 class="hasAnchor">
-<a href="#plotting-conditional-scores" class="anchor"></a>Plotting conditional scores</h3>
-<p>Conditional scores can be implemented in the <code><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot()</a></code> method of <code>adoptr</code> in the following manner. Note that the term `cp``has already been defined above as conditional power.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(design, <span class="st">"Conditional Power"</span> =<span class="st"> </span>cp)</a></code></pre></div>
-<p><img src="score-and-constraints-arithmetic_files/figure-html/plot-scores-1.png" width="672"></p>
-</div>
-</div>
-<div id="working-with-scores" class="section level2">
+<div id="score-arithmetic" class="section level2">
 <h2 class="hasAnchor">
-<a href="#working-with-scores" class="anchor"></a>Working with scores</h2>
-<div id="score-arithmetic" class="section level3">
-<h3 class="hasAnchor">
-<a href="#score-arithmetic" class="anchor"></a>Score arithmetic</h3>
-<p><code>adoptr</code> provides to add and multiply scores with scores as well as scores with constants. For instance, one can evaluate the sum of twice type one error rate and power via</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw"><a href="../reference/working-with-scores.html">evaluate</a></span>(<span class="dv">2</span> <span class="op">*</span><span class="st"> </span>toer <span class="op">+</span><span class="st"> </span>power, design)</a>
-<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="co">#&gt; [1] 1.130996</span></a></code></pre></div>
-<p>Note that this only works for scores of the same kind. I.e., one can not add conditional power (a <code>ConditionalScore</code>) and unconditional power (an <code>IntegralScore</code>) because the former requires a <span class="math inline">\(x_1\)</span>-value to evaluate and the latter does not.</p>
-</div>
+<a href="#score-arithmetic" class="anchor"></a>Score ‘arithmetic’</h2>
+<p>For sake of convenience, <code>adoptr</code> allows affine transformations of scores.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw"><a href="../reference/working-with-scores.html">evaluate</a></span>(ess <span class="op">+</span><span class="st"> </span><span class="dv">50</span><span class="op">*</span>power, design)</a>
+<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="co">#&gt; [1] 182.6668</span></a></code></pre></div>
+<p>Note that conditional and unconditional scores cannot be mixed in this way! This allows to easily specify utility functions to e.g. relax a strict power constraint.</p>
 <div id="inequalities" class="section level3">
 <h3 class="hasAnchor">
 <a href="#inequalities" class="anchor"></a>Inequalities</h3>
-<p>To compute optimal designs scores will be used as objective criteria. However, one may also use them as inequalities. For instance, power and type one error rate inequalities may be used very often in the development of optimal two-stage designs. They can be included easily because <code>adoptr</code> provides the following possibilites</p>
-<ul>
-<li><p>Score &lt;= / &gt;= constant</p></li>
-<li><p>Constant &lt;= / &gt;= Score</p></li>
-<li><p>Score &lt;= / &gt;= Score</p></li>
-</ul>
-<p>Have a look at some examples. Keep in mind that the used scores and the dummy design have already been defined above in this vignette.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw"><a href="../reference/working-with-scores.html">evaluate</a></span>(power <span class="op">&gt;=</span><span class="st"> </span><span class="fl">.8</span>, design)</a>
-<a class="sourceLine" id="cb15-2" data-line-number="2"><span class="co">#&gt; [1] -0.1631647</span></a>
-<a class="sourceLine" id="cb15-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb15-4" data-line-number="4"><span class="kw"><a href="../reference/working-with-scores.html">evaluate</a></span>(power <span class="op">&lt;=</span><span class="st"> </span>toer, design)</a>
-<a class="sourceLine" id="cb15-5" data-line-number="5"><span class="co">#&gt; [1] 0.8792489</span></a>
-<a class="sourceLine" id="cb15-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb15-7" data-line-number="7"><span class="kw"><a href="../reference/working-with-scores.html">evaluate</a></span>(<span class="fl">0.7</span> <span class="op">&lt;=</span><span class="st"> </span>cp, design, <span class="fl">1.1</span>)</a>
-<a class="sourceLine" id="cb15-8" data-line-number="8"><span class="co">#&gt; [1] -0.2542629</span></a></code></pre></div>
+<p><strong>adoptr</strong> also provides an easy and intuitive way to specify constraints by simply comparing a (conditional) score to a constant or another score. The following constraints are all valid and can be used in the <code><a href="../reference/minimize.html">minimize()</a></code> function</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">power <span class="op">&gt;=</span><span class="st"> </span><span class="fl">.8</span></a>
+<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="co">#&gt; UnconditionalConstraint</span></a>
+<a class="sourceLine" id="cb13-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb13-4" data-line-number="4">power <span class="op">&lt;=</span><span class="st"> </span>ess</a>
+<a class="sourceLine" id="cb13-5" data-line-number="5"><span class="co">#&gt; UnconditionalConstraint</span></a>
+<a class="sourceLine" id="cb13-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb13-7" data-line-number="7"><span class="fl">0.7</span> <span class="op">&lt;=</span><span class="st"> </span>cp</a>
+<a class="sourceLine" id="cb13-8" data-line-number="8"><span class="co">#&gt; ConditionalConstraint</span></a></code></pre></div>
 </div>
 </div>
   </div>
@@ -232,9 +188,9 @@
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-<li><a href="#score-classes-in-adoptr">Score classes in <code>adoptr</code></a></li>
-      <li><a href="#preimplemented-scores">Preimplemented scores</a></li>
-      <li><a href="#working-with-scores">Working with scores</a></li>
+<li><a href="#score-classes-in-adoptr">Score classes in <strong>adoptr</strong></a></li>
+      <li><a href="#defining-new-scores">Defining new scores</a></li>
+      <li><a href="#score-arithmetic">Score ‘arithmetic’</a></li>
       </ul>
 </div>
       </div>

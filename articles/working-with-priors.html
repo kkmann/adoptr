@@ -52,10 +52,7 @@
   <a href="../articles/working-with-priors.html">Working with priors</a>
 </li>
 <li>
-  <a href="../articles/score-and-constraints-arithmetic.html">Score arithmetic</a>
-</li>
-<li>
-  <a href="../articles/defining-new-scores.html">Defining custom scores</a>
+  <a href="../articles/score-and-constraints-arithmetic.html">Scores and constraints</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -96,81 +93,50 @@
 
     
     
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(adoptr)</a></code></pre></div>
-<div id="the-usage-of-prior-distributions-in-two-stage-designs" class="section level2">
+<div id="working-with-priors-in-adoptr" class="section level2">
 <h2 class="hasAnchor">
-<a href="#the-usage-of-prior-distributions-in-two-stage-designs" class="anchor"></a>The usage of prior distributions in two-stage designs</h2>
-<p>A key feature of a clinical trial design is the probability as success. Often this is measured by the power, the probability to reject the null hypothesis when the ‘true’ effect differs from <span class="math inline">\(0\)</span> in a clinically relevant manner.</p>
-<p>To decide on which effect size the power should be computed is of high importance. The classical choice is to determine a point alternative hypothesis <span class="math inline">\(\delta = \delta_1\)</span>. However, one may not be sure on the true effect value. This uncertainty can be integrated by the usage of a Bayesian prior distribution <span class="math inline">\(\delta \sim \pi(\delta)\)</span>. In this setting the power can be defined as probability to reject the null hypothesis given that the effect size is at least the minimal clinically relevant one. In order to avoid the incorporation of effect sizes under the null hypothesis, the prior has to be conditioned on the interval <span class="math inline">\([\delta_{MCR}, \infty]\)</span>, where <span class="math inline">\(\delta_{MCR} &gt; 0\)</span> denotes the minimal clinically relevant effect size. <code>adoptr</code> allows the user to use discrete as well as continuous priors and a <code><a href="../reference/Prior-class.html">condition()</a></code> method.</p>
-<p>An further advantage of the usage of prior distribution is the possibility to update the prior at the interim analysis and to compute the posterior distribution for, e.g., the calculation of conditional power. <code>adoptr</code> provides the computation of the posterior and uses it automatically for <code>ConditionalPower</code>.</p>
-<p>In general, the user of <code>adoptr</code> only needs to define the desired priors for null and alternative hypothesis. Further work on priors is not necessary to obtain an optimal design. Methods for further calcluations as posterior computation are provided but already used internally.</p>
-<p>There are two prior classes in <code>adoptr</code> that will be introduced in the following two chapters. For illustration of, e.g. expectation, we will need the following dummy function <span class="math inline">\(f\)</span>.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">f &lt;-<span class="st"> </span><span class="cf">function</span>(x) <span class="dv">2</span><span class="op">*</span>x</a></code></pre></div>
-</div>
-<div id="discrete-priors-in-adoptr" class="section level2">
-<h2 class="hasAnchor">
-<a href="#discrete-priors-in-adoptr" class="anchor"></a>Discrete priors in <code>adoptr</code>
+<a href="#working-with-priors-in-adoptr" class="anchor"></a>Working with priors in <strong>adoptr</strong>
 </h2>
-<p>The first prior class are classical distrecte priors. The corresponding class in <code>adoptr</code> is named <code>PointMassPrior</code>. It requires the definition of two slots:</p>
-<ul>
-<li><p><code>theta</code>: the points on which probability mass lies</p></li>
-<li><p><code>mass</code>: the respective mass on these points</p></li>
-</ul>
-<p>Note that <code>theta</code> and <code>mass</code> have to be of the same length and that <code>mass</code> has to sum to one as it defines a probability distribution.</p>
-<p>Let us regard an example where the point <span class="math inline">\(\delta = 0.1\)</span> has probability mass <span class="math inline">\(0.4\)</span> and the point <span class="math inline">\(\delta = 0.25\)</span> has mass <span class="math inline">\(1 - 0.4 = 0.6\)</span>.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">disc_prior &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PointMassPrior-class.html">PointMassPrior</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="fl">0.1</span>, <span class="fl">0.25</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="fl">0.4</span>, <span class="fl">0.6</span>))</a></code></pre></div>
-<p>Now, the expectation of <span class="math inline">\(f\)</span> under this prior can be computed via <code><a href="../reference/Prior-class.html">expectation()</a></code>.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="../reference/Prior-class.html">expectation</a></span>(disc_prior, f)</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co">#&gt; [1] 0.38</span></a></code></pre></div>
-<p>The prior can also be conditioned on the interval <span class="math inline">\([0.2, 0.3]\)</span>. Then all probability mass should be concentrated on the single point <span class="math inline">\(\delta =0.25\)</span>. Let us check this.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">disc_prior_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="kw"><a href="../reference/Prior-class.html">condition</a></span>(disc_prior, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="fl">0.2</span>, <span class="fl">0.3</span>))</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb5-3" data-line-number="3">disc_prior_<span class="dv">2</span><span class="op">@</span>theta</a>
-<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#&gt; [1] 0.25</span></a>
-<a class="sourceLine" id="cb5-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb5-6" data-line-number="6">disc_prior_<span class="dv">2</span><span class="op">@</span>mass</a>
-<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">#&gt; [1] 1</span></a></code></pre></div>
-<p>Finally, discrete priors can be updated at the interim and the posterior can be computed. To illustrate this, assume a first-stage sample size <span class="math inline">\(n_1 = 50\)</span> and a first-stage outcome <span class="math inline">\(x_1 = 1\)</span> when the data distribution is normal.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">n1   =<span class="st"> </span><span class="fl">50.0</span></a>
-<a class="sourceLine" id="cb6-2" data-line-number="2">x1   =<span class="st"> </span><span class="fl">1.0</span></a>
-<a class="sourceLine" id="cb6-3" data-line-number="3">dist =<span class="st"> </span><span class="kw"><a href="../reference/NormalDataDistribution-class.html">Normal</a></span>()</a></code></pre></div>
-<p>Then, the posterior can be computed and regarded.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">disc_post &lt;-<span class="st"> </span><span class="kw"><a href="../reference/Prior-class.html">posterior</a></span>(dist, disc_prior, x1, n1)</a>
-<a class="sourceLine" id="cb7-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb7-3" data-line-number="3">disc_post<span class="op">@</span>theta</a>
-<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#&gt; [1] 0.10 0.25</span></a>
-<a class="sourceLine" id="cb7-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb7-6" data-line-number="6">disc_post<span class="op">@</span>mass</a>
-<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co">#&gt; [1] 0.3777251 0.6222749</span></a></code></pre></div>
-<p>Analogously, it can be worked with point mass priors with mass on only one solely point and thereby creating a classical design with power on a point alternative.</p>
-<p>However, not only power but all the scores in <code>adoptr</code> as conditional and expected sample size can be computed based on the respective power. This is illustrated in the vignettes to scores.</p>
+<p>Internally, <strong>adoptr</strong> is built around the joint distribution of a test statistic and the unknown location parameter of interest given a sample size, i.e. <span class="math display">\[
+\mathcal{L}\big[(X_i, \theta)\,|\,n_i\big]
+\]</span> where <span class="math inline">\(X_i\)</span> is the stage-<span class="math inline">\(i\)</span> test statistic and <span class="math inline">\(n_i\)</span> the corresponding sample size. The distribution class for <span class="math inline">\(X_i\)</span> is defined by specifying a <code>DataDistribution</code> object, e.g., a normal distribution</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(adoptr)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb1-3" data-line-number="3">datadist &lt;-<span class="st"> </span><span class="kw"><a href="../reference/NormalDataDistribution-class.html">Normal</a></span>()</a></code></pre></div>
+<p>To completely specify the marginal distribution of <span class="math inline">\(X_i\)</span>, the distribution of <span class="math inline">\(\theta\)</span> must also be specified. The classical case where <span class="math inline">\(\theta\)</span> is considered fixed, emerges as special case when a single parameter value has probability mass 1.</p>
+<div id="discrete-priors" class="section level3">
+<h3 class="hasAnchor">
+<a href="#discrete-priors" class="anchor"></a>Discrete priors</h3>
+<p>The simplest supported prior class are discrete <code>PointMassPrior</code> priors. To specify a discrete prior, one simply specifies the vector of pivot points with positive mass and the vectro of corresponding probability masses. E.g., consider an example where the point <span class="math inline">\(\delta = 0.1\)</span> has probability mass <span class="math inline">\(0.4\)</span> and the point <span class="math inline">\(\delta = 0.25\)</span> has mass <span class="math inline">\(1 - 0.4 = 0.6\)</span>.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">disc_prior &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PointMassPrior-class.html">PointMassPrior</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="fl">0.1</span>, <span class="fl">0.25</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="fl">0.4</span>, <span class="fl">0.6</span>))</a></code></pre></div>
+<p>For details on the provided methods, see <code>?DiscretePrior</code>.</p>
 </div>
-<div id="continuous-priors-in-adoptr" class="section level2">
-<h2 class="hasAnchor">
-<a href="#continuous-priors-in-adoptr" class="anchor"></a>Continuous priors in <code>adoptr</code>
-</h2>
-<p>Similarily to discrete priors, continuous priors can be used in <code>adoptr</code>. The implemented class is called <code>ContinuousPrior</code> and based on the following slots.</p>
-<ul>
-<li><p><code>pdf</code>: probability density function of the prior</p></li>
-<li><p><code>support</code>: support of the density</p></li>
-</ul>
-<p>It is important to note that for numerical reasons <code>adoptr</code> does not support infinite support. However, as the density has to integrate to one, its tails need to tend to zero quite quickly and therefore, a finite support should be applicable without loss of generality.</p>
-<p>As example a normal prior with mean <span class="math inline">\(\delta = 0.3\)</span>, variance <span class="math inline">\(\tau^2 = 0.04\)</span> and support <span class="math inline">\([-2, 3]\)</span> is presented. Note that if the support was chosen to small (i.e. the integral of the pdf on the support was not numerical one) <code>adoptr</code> would produce an error message.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">dens &lt;-<span class="st"> </span><span class="cf">function</span>(x) <span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">dnorm</a></span>(x, <span class="dt">mean =</span> <span class="fl">0.3</span>, <span class="dt">sd =</span> <span class="fl">0.2</span>)</a>
-<a class="sourceLine" id="cb8-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb8-3" data-line-number="3">cont_prior &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ContinuousPrior-class.html">ContinuousPrior</a></span>(<span class="dt">pdf =</span> dens, <span class="dt">support =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="op">-</span><span class="dv">2</span>, <span class="dv">3</span>))</a></code></pre></div>
-<p>Computing expectations works equivalently to the discrete case.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="../reference/Prior-class.html">expectation</a></span>(cont_prior, f)</a>
-<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="co">#&gt; [1] 0.6</span></a></code></pre></div>
-<p>Also conditioning works by the same methods. In the continuous case, this is even more important because one does not want to compute power on the full parameter space but only on values of <span class="math inline">\(\delta\)</span> that are greater than zero. This can then also be used to compute scores on the alternative (condition the prior to be greater than zero) or the null hypothesis (condition the prior to be smaller than zero). However, in the particular situation of type one error rate proctection, we recommend the usage of a point mass prior according to the ICH guideline.</p>
-<p>Combing back to conditioning, the continuous prior can be conditioned on positive <span class="math inline">\(\delta\)</span>-values and the expectation of <span class="math inline">\(f\)</span> can be computed under this new prior.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">cont_prior_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="kw"><a href="../reference/Prior-class.html">condition</a></span>(cont_prior, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>, <span class="dv">3</span>))</a>
-<a class="sourceLine" id="cb10-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="kw"><a href="../reference/Prior-class.html">expectation</a></span>(cont_prior_<span class="dv">2</span>, f)</a>
-<a class="sourceLine" id="cb10-4" data-line-number="4"><span class="co">#&gt; [1] 0.6555159</span></a></code></pre></div>
-<p>The computation of the posterior distribution also is supported for continuous priors. The example numbers from the discrete example are still used.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">cont_post &lt;-<span class="st"> </span><span class="kw"><a href="../reference/Prior-class.html">posterior</a></span>(dist, cont_prior, x1, n1)</a></code></pre></div>
-<p>This is again an object of class <code>ContinuousPrior</code> that can be applied for further use.</p>
+<div id="continuous-priors" class="section level3">
+<h3 class="hasAnchor">
+<a href="#continuous-priors" class="anchor"></a>Continuous priors</h3>
+<p><strong>adoptr</strong> also supports arbitrary continuous priors with support on compact intervals. For instance, we could consider a prior based on a truncated normal via:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">cont_prior &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ContinuousPrior-class.html">ContinuousPrior</a></span>(</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">  <span class="dt">pdf     =</span> <span class="cf">function</span>(x) <span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">dnorm</a></span>(x, <span class="dt">mean =</span> <span class="fl">0.3</span>, <span class="dt">sd =</span> <span class="fl">0.2</span>), </a>
+<a class="sourceLine" id="cb3-3" data-line-number="3">  <span class="dt">support =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="op">-</span><span class="dv">2</span>, <span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb3-4" data-line-number="4">)</a></code></pre></div>
+<p>For details on the provided methods, see <code><a href="../reference/ContinuousPrior-class.html">?ContinuousPrior</a></code>.</p>
+</div>
+<div id="conditioning" class="section level3">
+<h3 class="hasAnchor">
+<a href="#conditioning" class="anchor"></a>Conditioning</h3>
+<p>In practice, the most important operation will be conditioning. This is important to implement type one and type two error rate constraints. Consider, e.g., the case of power. Typically, a power constraint is imposed on a single point in the alternative, e.g. using the contraint</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="../reference/working-with-scores.html">expected</a></span>(<span class="kw"><a href="../reference/ConditionalPower-class.html">ConditionalPower</a></span>(</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">  <span class="kw"><a href="../reference/NormalDataDistribution-class.html">Normal</a></span>(), </a>
+<a class="sourceLine" id="cb4-3" data-line-number="3">  <span class="kw"><a href="../reference/PointMassPrior-class.html">PointMassPrior</a></span>(.<span class="dv">4</span>, <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb4-4" data-line-number="4">)) <span class="op">&gt;=</span><span class="st"> </span><span class="fl">0.8</span></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#&gt; UnconditionalConstraint</span></a></code></pre></div>
+<p>If uncertainty about the true response rate should be incorporated in the design, it makes sense to assume a continuous prior on <span class="math inline">\(\theta\)</span>. In this case, the prior should be conditioned for the power constraint to avoid integrating over the null hypothesis:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="../reference/working-with-scores.html">expected</a></span>(<span class="kw"><a href="../reference/ConditionalPower-class.html">ConditionalPower</a></span>(</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">  <span class="kw"><a href="../reference/NormalDataDistribution-class.html">Normal</a></span>(), </a>
+<a class="sourceLine" id="cb5-3" data-line-number="3">  <span class="kw"><a href="../reference/Prior-class.html">condition</a></span>(cont_prior, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>, <span class="dv">3</span>))</a>
+<a class="sourceLine" id="cb5-4" data-line-number="4">)) <span class="op">&gt;=</span><span class="st"> </span><span class="fl">0.8</span></a>
+<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">#&gt; UnconditionalConstraint</span></a></code></pre></div>
+</div>
 </div>
   </div>
 
@@ -179,9 +145,7 @@
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-<li><a href="#the-usage-of-prior-distributions-in-two-stage-designs">The usage of prior distributions in two-stage designs</a></li>
-      <li><a href="#discrete-priors-in-adoptr">Discrete priors in <code>adoptr</code></a></li>
-      <li><a href="#continuous-priors-in-adoptr">Continuous priors in <code>adoptr</code></a></li>
+<li><a href="#working-with-priors-in-adoptr">Working with priors in <strong>adoptr</strong></a></li>
       </ul>
 </div>
       </div>
