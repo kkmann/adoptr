@@ -37,6 +37,7 @@ setGeneric("cumulative_distribution_function", function(dist, x, n, theta, ...) 
 
 
 
+
 #' Normal data distribution
 #'
 #' Implements a normal data distribution for z-values given an observed z-value
@@ -118,3 +119,12 @@ setMethod("simulate", signature("Normal", "numeric"),
 
               stats::rnorm(nsim, mean = fct * sqrt(n) * theta, sd = 1)
           })
+
+
+#' @rdname NormalDataDistribution-class
+#'
+#' @param object object of class \code{Normal}
+#' @export
+setMethod("show", signature(object = "Normal"),
+          function(object) cat(class(object)[1]))
+

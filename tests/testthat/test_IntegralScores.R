@@ -167,3 +167,16 @@ test_that("arithmetic works", {
         evaluate(1.1 + pow, design_gs)
     )
 }) # end 'arithmetic works'
+
+
+
+test_that("show method returns class name", {
+    pow <- expected(ConditionalPower(Normal(), PointMassPrior(.35, 1)))
+    ess <- expected(ConditionalSampleSize(Normal(), PointMassPrior(.35, 1)))
+
+    expect_equal(
+        show(pow),
+        show(ess)
+    ) # should both be of class IntegralScore
+
+}) # end 'show method returns class name'

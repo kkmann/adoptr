@@ -86,5 +86,16 @@ test_that("simulate respects seed", {
     expect_true(
         all(simulate(Normal(), 10, 25, -.5) != simulate(Normal(), 10, 25, -.5))
     )
+}) # end 'simulate respects seed'
 
-})
+
+
+test_that("show method returns class name", {
+    dist <- Normal()
+
+    expect_equal(
+        cat(class(dist)[1]),
+        show(dist)
+    )
+}) # end 'show method returns class name'
+

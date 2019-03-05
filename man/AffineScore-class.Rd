@@ -5,11 +5,14 @@
 \alias{AffineScore-class}
 \alias{AffineScore}
 \alias{evaluate,AffineScore,TwoStageDesign-method}
+\alias{show,AffineScore-method}
 \title{Affine functions of scores}
 \usage{
 AffineScore(scores, coefs, intercept)
 
 \S4method{evaluate}{AffineScore,TwoStageDesign}(s, design, ...)
+
+\S4method{show}{AffineScore}(object)
 }
 \arguments{
 \item{scores}{cf. corresponding slot}
@@ -23,6 +26,8 @@ AffineScore(scores, coefs, intercept)
 \item{design}{design}
 
 \item{...}{further optional arguments}
+
+\item{object}{object of class \code{AffineScore}}
 }
 \description{
 These methods allow to add and multiplicate two or several

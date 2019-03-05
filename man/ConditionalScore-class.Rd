@@ -4,14 +4,19 @@
 \name{ConditionalScore-class}
 \alias{ConditionalScore-class}
 \alias{expected,ConditionalScore-method}
+\alias{show,ConditionalScore-method}
 \title{Class for conditional scoring function}
 \usage{
 \S4method{expected}{ConditionalScore}(s, ...)
+
+\S4method{show}{ConditionalScore}(object)
 }
 \arguments{
 \item{s}{conditional score object to evaluate}
 
 \item{...}{optional arguments}
+
+\item{object}{object of class \code{ConditionalScore}}
 }
 \description{
 [ToDo]
@@ -20,5 +25,7 @@
 \itemize{
 \item \code{expected}: integrate a \code{ConditionalScore} over the
 stage-one outcome; return object of class \code{\link{IntegralScore-class}}.
+
+\item \code{show}: returns the class name itself
 }}
 

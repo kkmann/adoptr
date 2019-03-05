@@ -132,3 +132,12 @@ setMethod("posterior", signature("DataDistribution", "ContinuousPrior", "numeric
             prior@support
         )
     })
+
+
+#' @rdname ContinuousPrior-class
+#'
+#' @param object object of class \code{ContinuousPrior}
+#' @export
+setMethod("show", signature(object = "ContinuousPrior"),
+          function(object) cat(class(object)[1]))
+
