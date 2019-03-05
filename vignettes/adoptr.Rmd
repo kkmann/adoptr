@@ -31,19 +31,20 @@ strict control of the maximal type one error rate despite the data dependent
 decision at the interim analyis.
 Most authors use combination function approaches to combine either the
 independent p values or test statistics from the respective stages.
-Doing so with pre-specified weights maintains the type one error rate control
-[REFERENCE].
+Doing so with pre-specified weights maintains the type one error rate control.
 
+With **adoptr** we provide tools to explore optimal two-stage designs for
+one or two-arm clinical trials with (asymptotically) normally distributed
+and stage-wise independent test statistics.
 In [our paper], it was argued that such techniques are not necessary, in fact,
 that they are counter-productive, since the pre-specified weights might be
 sub-optimal.
-Intuitively, this can be seen from the fact that the derivation of optimal
-weights for a two-stage test build on the notion of a hypothetical overall
-sample size which might never be realized in practice [REFERENCE].
 Instead, one may see the problem of defining an optimal two-stage designs as
 a variational problem to find the optimal configuration 
-$\big(n_1, c_1^e, c_1^f, n_2(\cdot), c_2(\cdot)\big)$ directly for a given
-objective function and potentially a set of constraints.
+$$
+\mathcal{D}:=\big(n_1, c_1^e, c_1^f, n_2(\cdot), c_2(\cdot)\big)
+$$ 
+directly for a given objective function and potentially a set of constraints.
 The relaxation of this mixed-integer problem to the real numbers can then
 be solved with standard methods from analysis.
 E.g., one could construct an implicit solution by solving the corresponding
@@ -57,14 +58,14 @@ using gradient-free numerical optimization procedures (COBYLA / nloptr).
 
 # Example
 
-Consider the case of a two-stage design for a single-arm trial
-aiming to reject the null hypothesis $\mathcal{H}_0: \delta \leq 0$ 
-where $\delta$ is the population-mean response. 
+Consider the two-arm case comparing two group means mean.
+Let $\delta$ be the difference in means and assume that the aim is to 
+reject the null hypothesis $\mathcal{H}_0: \delta \leq 0$. 
 Further assume that a power of 80% at $\delta=0.4$ and a type-one-error rate
 of 2.5% on the boundary of the null hypothesis $\delta\leq0.0$ is required.
 
 In this situation, the one-sided t-test would require a sample size of
-$51$ individuals.
+$51$ individuals per-group.
 If we were willing to accept the fact that the sample size of a two-stage
 design is inherently unknown at the planning stage, 
 we could reduce the *expected* sample size under the alternative by optimizing
@@ -73,6 +74,7 @@ Since the two-stage design, by definition, has more degrees of freedom than
 the single-stage design, it must be at least as good in terms of expected sample
 size as the single-stage design - for which the expected sample size is 
 always 51.
+
 
 ## Define hypotheses and data-generating mechanism
 
@@ -209,8 +211,15 @@ evaluate(power, opt_res$design)
 
 ## Variations
 
-The purpose of `adoptr` is to provide a high-level interface for exploring 
+The purpose of **adoptr** is to provide a high-level interface for exploring 
 and comparing different designs and to experiment with different 
 combinations of objective functions and constraints.
+In particular, **adoptr** supports:
 
-[...]
+* Arbitrary continuous or discrete [prior distributions](https://kkmann.github.io/adoptr/articles/working-with-priors.html) for the single location 
+parameter $\theta$ of the test statistic.
+
+* Support for simple arithmetic operations on scores to quickly define weighted
+sums etc. (cf. [working with priors](https://kkmann.github.io/adoptr/articles/score-and-constraints-arithmetic.html)).
+
+* Relatively flexible framework for [defining custom scores](https://kkmann.github.io/adoptr/articles/score-and-constraints-arithmetic.html).
