@@ -146,6 +146,9 @@ Currently,  constraints of the form 'score &lt;=/&gt;= x',
 evaluate(s, design,
   optimization = FALSE, ...)
 
+# S4 method for Constraint
+show(object)
+
 # S4 method for AbstractConditionalScore,numeric
 &lt;=(e1, e2)
 
@@ -201,6 +204,10 @@ the underlying design; used for smooth optimization.</p></td>
     <tr>
       <th>...</th>
       <td><p>further optional arguments</p></td>
+    </tr>
+    <tr>
+      <th>object</th>
+      <td><p>object of class <code>Constraint</code></p></td>
     </tr>
     <tr>
       <th>e1</th>

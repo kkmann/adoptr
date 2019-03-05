@@ -160,7 +160,10 @@ over a compact interval of the real numbers.</p>
 
 <span class='co'># S4 method for DataDistribution,ContinuousPrior,numeric</span>
 <span class='fu'><a href='Prior-class.html'>posterior</a></span>(<span class='no'>dist</span>, <span class='no'>prior</span>,
-  <span class='no'>x1</span>, <span class='no'>n1</span>, <span class='no'>...</span>)</pre>
+  <span class='no'>x1</span>, <span class='no'>n1</span>, <span class='no'>...</span>)
+
+<span class='co'># S4 method for ContinuousPrior</span>
+<span class='fu'>show</span>(<span class='no'>object</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -209,6 +212,10 @@ to evaluate the integral</p></td>
     <tr>
       <th>k</th>
       <td><p>number of pivots for crude integral approximation [TODO: this needs to be done properly!, cant use integrate since we wnat this vectorized!]</p></td>
+    </tr>
+    <tr>
+      <th>object</th>
+      <td><p>object of class <code>ContinuousPrior</code></p></td>
     </tr>
     </table>
     

@@ -42,7 +42,8 @@
 In this case without a second stage, there only exist the first-stage sample
 size n1 and the first-stage rejection boundary c1f.
 No other parameters have to be set.
-OneStageDesign is a subclass of TwoStageDesign." />
+OneStageDesign is a subclass of TwoStageDesign.
+Only states the class itself." />
 
 <meta property="og:image" content="https://kkmann.github.io/adoptr/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -141,6 +142,7 @@ In this case without a second stage, there only exist the first-stage sample
 size <code>n1</code> and the first-stage rejection boundary <code>c1f</code>.
 No other parameters have to be set.
 <code>OneStageDesign</code> is a subclass of <a href='TwoStageDesign-class.html'>TwoStageDesign</a>.</p>
+<p>Only states the class itself.</p>
     
     </div>
 
@@ -160,6 +162,9 @@ No other parameters have to be set.
 
 <span class='co'># S4 method for OneStageDesign</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/plot'>plot</a></span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='no'>...</span>)
+
+<span class='co'># S4 method for OneStageDesign</span>
+<span class='fu'>show</span>(<span class='no'>object</span>)
 
 <span class='co'># S4 method for SmoothnessN2,OneStageDesign</span>
 <span class='fu'><a href='working-with-scores.html'>evaluate</a></span>(<span class='no'>s</span>, <span class='no'>design</span>, <span class='no'>...</span>)</pre>
@@ -211,6 +216,10 @@ by <code><a href='https://www.rdocumentation.org/packages/base/topics/numeric'>a
     <tr>
       <th>design</th>
       <td><p>an object of class <code>OneStageDesign</code></p></td>
+    </tr>
+    <tr>
+      <th>object</th>
+      <td><p>design to show</p></td>
     </tr>
     </table>
     

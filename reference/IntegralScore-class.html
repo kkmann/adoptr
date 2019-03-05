@@ -136,13 +136,20 @@
     
     </div>
 
-    <pre class="usage"><span class='co'># S4 method for IntegralScore,TwoStageDesign</span>
+    <pre class="usage"><span class='co'># S4 method for IntegralScore</span>
+<span class='fu'>show</span>(<span class='no'>object</span>)
+
+<span class='co'># S4 method for IntegralScore,TwoStageDesign</span>
 <span class='fu'><a href='working-with-scores.html'>evaluate</a></span>(<span class='no'>s</span>, <span class='no'>design</span>,
   <span class='kw'>optimization</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>subdivisions</span> <span class='kw'>=</span> <span class='fl'>10000L</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>object</th>
+      <td><p>object of class <code>IntegralScore</code></p></td>
+    </tr>
     <tr>
       <th>s</th>
       <td><p>an <code>IntegralScore</code></p></td>
@@ -169,6 +176,7 @@ the underlying design; used for smooth optimization.</p></td>
     <h2 class="hasAnchor" id="methods-by-generic-"><a class="anchor" href="#methods-by-generic-"></a>Methods (by generic)</h2>
 
     <ul>
+<li><p><code>show</code>: returns the class name itself</p></li>
 <li><p><code>evaluate</code>: generic implementation of evaluating an integral
 score. Uses adaptive Gaussian quadrature for integration and might be
 more efficiently implemented by specific <code>TwoStageDesign</code>-classes.</p></li>

@@ -45,7 +45,8 @@ Therefore, the length of n2_pivots is required to be 1 in this
 class.
 GroupSequentialDesign is a subclass of TwoStageDesign.
 If order is not defined, the length of the parameter c2_pivots
-defines the order of the Gaussian quadrature integration rule." />
+defines the order of the Gaussian quadrature integration rule.
+Only states the class itself." />
 
 <meta property="og:image" content="https://kkmann.github.io/adoptr/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -147,6 +148,7 @@ class.
 <code>GroupSequentialDesign</code> is a subclass of <a href='TwoStageDesign-class.html'>TwoStageDesign</a>.</p>
 <p>If <code>order</code> is not defined, the length of the parameter <code>c2_pivots</code>
 defines the order of the Gaussian quadrature integration rule.</p>
+<p>Only states the class itself.</p>
     
     </div>
 
@@ -158,6 +160,9 @@ defines the order of the Gaussian quadrature integration rule.</p>
 
 <span class='co'># S4 method for GroupSequentialDesign</span>
 <span class='fu'><a href='TwoStageDesign-class.html'>TwoStageDesign</a></span>(<span class='no'>d</span>, <span class='no'>tunable</span>, <span class='no'>...</span>)
+
+<span class='co'># S4 method for GroupSequentialDesign</span>
+<span class='fu'>show</span>(<span class='no'>object</span>)
 
 <span class='co'># S4 method for SmoothnessN2,GroupSequentialDesign</span>
 <span class='fu'><a href='working-with-scores.html'>evaluate</a></span>(<span class='no'>s</span>, <span class='no'>design</span>, <span class='no'>...</span>)</pre>
@@ -209,6 +214,10 @@ returned?</p></td>
     <tr>
       <th>tunable</th>
       <td><p>c.f. slot</p></td>
+    </tr>
+    <tr>
+      <th>object</th>
+      <td><p>design to show</p></td>
     </tr>
     <tr>
       <th>s</th>
