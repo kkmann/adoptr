@@ -107,7 +107,7 @@
 <div id="discrete-priors" class="section level3">
 <h3 class="hasAnchor">
 <a href="#discrete-priors" class="anchor"></a>Discrete priors</h3>
-<p>The simplest supported prior class are discrete <code>PointMassPrior</code> priors. To specify a discrete prior, one simply specifies the vector of pivot points with positive mass and the vectro of corresponding probability masses. E.g., consider an example where the point <span class="math inline">\(\delta = 0.1\)</span> has probability mass <span class="math inline">\(0.4\)</span> and the point <span class="math inline">\(\delta = 0.25\)</span> has mass <span class="math inline">\(1 - 0.4 = 0.6\)</span>.</p>
+<p>The simplest supported prior class are discrete <code>PointMassPrior</code> priors. To specify a discrete prior, one simply specifies the vector of pivot points with positive mass and the vector of corresponding probability masses. E.g., consider an example where the point <span class="math inline">\(\delta = 0.1\)</span> has probability mass <span class="math inline">\(0.4\)</span> and the point <span class="math inline">\(\delta = 0.25\)</span> has mass <span class="math inline">\(1 - 0.4 = 0.6\)</span>.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">disc_prior &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PointMassPrior-class.html">PointMassPrior</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="fl">0.1</span>, <span class="fl">0.25</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="fl">0.4</span>, <span class="fl">0.6</span>))</a></code></pre></div>
 <p>For details on the provided methods, see <code>?DiscretePrior</code>.</p>
 </div>
@@ -124,7 +124,7 @@
 <div id="conditioning" class="section level3">
 <h3 class="hasAnchor">
 <a href="#conditioning" class="anchor"></a>Conditioning</h3>
-<p>In practice, the most important operation will be conditioning. This is important to implement type one and type two error rate constraints. Consider, e.g., the case of power. Typically, a power constraint is imposed on a single point in the alternative, e.g. using the contraint</p>
+<p>In practice, the most important operation will be conditioning. This is important to implement type one and type two error rate constraints. Consider, e.g., the case of power. Typically, a power constraint is imposed on a single point in the alternative, e.g. using the constraint</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="../reference/working-with-scores.html">expected</a></span>(<span class="kw"><a href="../reference/ConditionalPower-class.html">ConditionalPower</a></span>(</a>
 <a class="sourceLine" id="cb4-2" data-line-number="2">  <span class="kw"><a href="../reference/NormalDataDistribution-class.html">Normal</a></span>(), </a>
 <a class="sourceLine" id="cb4-3" data-line-number="3">  <span class="kw"><a href="../reference/PointMassPrior-class.html">PointMassPrior</a></span>(.<span class="dv">4</span>, <span class="dv">1</span>)</a>

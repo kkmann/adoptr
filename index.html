@@ -93,14 +93,18 @@
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#adoptr" class="anchor"></a>adoptr <a href="https://github.com/kkmann/adoptr"><img src="reference/figures/logo.png" align="right" height="139"></a>
 </h1></div>
-<p>Adaptive optimal two-stage designs for clinical trials with one or two arms.</p>
-<p>[ToDo: elaborate ;)]</p>
+<p>The <strong>adoptr</strong> package enables exploring optimal adaptive two-stage designs for clinical trials with one or two arms. Currently, only normally distributed test statistics with known variance are supported.</p>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>install the development version directly from <a href="https://github.com/">GitHub</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># install.packages("devtools")</span></a>
 <a class="sourceLine" id="cb1-2" data-line-number="2">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"kkmann/adoptr"</span>)</a></code></pre></div>
+</div>
+<div id="validation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#validation" class="anchor"></a>Validation</h2>
+<p>We provide an extensive validation suite for <strong>adoptr</strong> in the separate package <a href="https://github.com/kkmann/adoptrValidation"><strong>adoptrValidation</strong></a>. The rationale behind externalizing the validation suit is to keep the main package test suit lean and focused on checking technical correctness. We also want to ensure that the validation suit is transparent and accessible. It is thus implemented as a set of vignettes in the separate package <strong>adoptrValidation</strong>. The entire validation report is made accessible at <a href="https://kkmann.github.io/adoptrValidation/" class="uri">https://kkmann.github.io/adoptrValidation/</a>. The website is re-build on a weekly basis to ensure that the presented validation report is up-to-date with the master branch of <strong>adoptr</strong>. To validate a specific version of <strong>adoptr</strong>, just download and install the validation package an build the contained vignettes locally.</p>
 </div>
 </div>
   </div>
