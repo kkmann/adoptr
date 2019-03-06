@@ -149,3 +149,15 @@ test_that("OneStageDesign can be converted to TwoStageDesign", {
     ) # power works for OneStageDesign
 
 }) # end 'OneStageDesign can be converted to TwoStageDesign'
+
+
+
+test_that("show method returns design name", {
+    design  <-  OneStageDesign(90, 2.0)
+
+    expect_equal(
+        cat(class(design)[1]),
+        show(design)
+    )
+}) # end 'show method returns design name'
+

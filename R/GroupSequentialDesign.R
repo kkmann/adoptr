@@ -100,3 +100,16 @@ setMethod("TwoStageDesign", signature("GroupSequentialDesign"),
                         tunable = tunable)
 })
 
+
+
+
+#' Show method for GroupSequentialDesign objects
+#'
+#' Only states the class itself.
+#'
+#' @param object design to show
+#'
+#' @rdname GroupSequentialDesign-class
+#' @export
+setMethod("show", signature(object = "GroupSequentialDesign"),
+          function(object) cat(class(object)[1]))

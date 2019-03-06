@@ -10,6 +10,7 @@
 \alias{predictive_pdf,DataDistribution,ContinuousPrior,numeric-method}
 \alias{predictive_cdf,DataDistribution,ContinuousPrior,numeric-method}
 \alias{posterior,DataDistribution,ContinuousPrior,numeric-method}
+\alias{show,ContinuousPrior-method}
 \title{Continuous univariate prior distribution}
 \usage{
 ContinuousPrior(pdf, support)
@@ -29,6 +30,8 @@ ContinuousPrior(pdf, support)
 
 \S4method{posterior}{DataDistribution,ContinuousPrior,numeric}(dist, prior,
   x1, n1, ...)
+
+\S4method{show}{ContinuousPrior}(object)
 }
 \arguments{
 \item{pdf}{cf. slot \code{pdf}}
@@ -53,6 +56,8 @@ to evaluate the integral}
 \item{n1}{stage-one sample size}
 
 \item{k}{number of pivots for crude integral approximation [TODO: this needs to be done properly!, cant use integrate since we wnat this vectorized!]}
+
+\item{object}{object of class \code{ContinuousPrior}}
 }
 \description{
 \code{ContinuousPrior} is a generic class for representing a univariate prior

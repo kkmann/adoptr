@@ -84,7 +84,7 @@
 }
 \description{
 To facilitate working with simple weighted sums of scores,
-\code{otsd} supports some basic arithmetic operations on score object
+\code{adoptr} supports some basic arithmetic operations on score object
 (both conditional and unconditional ones).
 Scores can be scalar-multiplied by a constant and added to produce new
 scores.
