@@ -26,7 +26,7 @@ library(adoptr)
 
 For a two-stage design, both conditional (on the stage-one outcome) as well
 as unconditional scores (e.g. power) might be of interest.
-Consider the following group-sequenital example design
+Consider the following group-sequential example design
 ```{r define-design}
 design <- TwoStageDesign(
     n1  = 100,
@@ -66,7 +66,7 @@ Since the `cp` object already contains the specification of the sampling
 distribution (via `Normal()` and `uniform_prior`), 
 the expected score can be computed immediately, in this case giving expected
 power.
-The resulting socre is of class `IntegralScore`, a specific subclass of 
+The resulting score is of class `IntegralScore`, a specific subclass of 
 `UnconditionalScore` and can be evaluated via
 ```{r}
 ep <- expected(cp)
@@ -118,7 +118,7 @@ Note that the option `optimization` has to be given in order to apply
 a faster Gaussian quadrature if the scores are used during optimization.
 It suffices to include it as above and can be ignored by the user.
 Now we can define the `IntegralScore` representing the probability to 
-stop early for futility under no differenceas
+stop early for futility under no differences
 
 ```{r p-cont}
 prob_early_fut <- expected(ConditionalProbabilityEarlyFutility(
