@@ -46,7 +46,7 @@ case when a single parameter value has probability mass 1.
 
 The simplest supported prior class are discrete `PointMassPrior` priors.
 To specify a discrete prior, one simply specifies the vector of pivot points 
-with positive mass and the vectro of corresponding probability masses.
+with positive mass and the vector of corresponding probability masses.
 E.g., consider an example where the point $\delta = 0.1$ has probability mass 
 $0.4$ and the point $\delta = 0.25$ has mass $1 - 0.4 = 0.6$. 
 ```{r discrete-prior}
@@ -76,7 +76,7 @@ In practice, the most important operation will be conditioning.
 This is important to implement type one and type two error rate constraints.
 Consider, e.g., the case of power.
 Typically, a power constraint is imposed on a single point in the alternative,
-e.g. using the contraint
+e.g. using the constraint
 ```{r}
 expected(ConditionalPower(
   Normal(), 
