@@ -13,7 +13,8 @@
 \alias{show,ContinuousPrior-method}
 \title{Continuous univariate prior distribution}
 \usage{
-ContinuousPrior(pdf, support, tighten_support = FALSE)
+ContinuousPrior(pdf, support, tighten_support = FALSE,
+  check_normalization = TRUE)
 
 \S4method{bounds}{ContinuousPrior}(dist, ...)
 
@@ -40,6 +41,8 @@ ContinuousPrior(pdf, support, tighten_support = FALSE)
 
 \item{tighten_support}{logical indicating if the support should be tightened
 automatically.}
+
+\item{check_normalization}{}
 
 \item{dist}{data distribution or prior distribution (depending on context) [TODO: make this clearer by renaming arguments in generics!]}
 
