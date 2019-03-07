@@ -135,7 +135,7 @@ over a compact interval of the real numbers.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>ContinuousPrior</span>(<span class='no'>pdf</span>, <span class='no'>support</span>)
+    <pre class="usage"><span class='fu'>ContinuousPrior</span>(<span class='no'>pdf</span>, <span class='no'>support</span>, <span class='kw'>tighten_support</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='co'># S4 method for ContinuousPrior</span>
 <span class='fu'><a href='Prior-class.html'>bounds</a></span>(<span class='no'>dist</span>, <span class='no'>...</span>)
@@ -172,6 +172,11 @@ over a compact interval of the real numbers.</p>
     <tr>
       <th>support</th>
       <td><p>cf. slot <code>support</code></p></td>
+    </tr>
+    <tr>
+      <th>tighten_support</th>
+      <td><p>logical indicating if the support should be tightened
+automatically.</p></td>
     </tr>
     <tr>
       <th>dist</th>
