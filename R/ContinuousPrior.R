@@ -31,7 +31,9 @@ setClass("ContinuousPrior", representation(
 #'
 #' @describeIn ContinuousPrior-class constructor
 #' @export
-ContinuousPrior <- function(pdf, support, tighten_support = FALSE,
+ContinuousPrior <- function(pdf,
+                            support,
+                            tighten_support = FALSE,
                             check_normalization = TRUE) {
     if (length(support) != 2)
         stop("support must be of length 2")
@@ -39,10 +41,12 @@ ContinuousPrior <- function(pdf, support, tighten_support = FALSE,
         stop("support must be finite")
     if (diff(support) <= 0)
         stop("support[2] must be larger (not equal) to support[1]")
+
     if(check_normalization){
         if (abs(stats::integrate(pdf, support[1], support[2], abs.tol = .00001)$value - 1) > .001)
             stop("pdf must integrate to one!")
     }
+
     if (tighten_support) {
         eps <- .001
         while (pdf(support[1] + eps) < .Machine$double.eps^2) {
@@ -55,6 +59,7 @@ ContinuousPrior <- function(pdf, support, tighten_support = FALSE,
         pdf_old <- pdf
         pdf     <- function(theta) pdf_old(theta) / norm
     }
+
     new("ContinuousPrior", pdf = pdf, support = support)
 }
 
@@ -91,7 +96,8 @@ setMethod("condition", signature("ContinuousPrior", "numeric"),
         # compute new normalizing constant
         z <- stats::integrate(dist@pdf, interval[1], interval[2], abs.tol = .00001)$value
         ContinuousPrior(
-            function(theta) dist@pdf(theta)/z, interval
+            function(theta) dist@pdf(theta)/z,
+            c(max(interval[1], dist@support[1]), min(interval[2], dist@support[2]))
         )
     })
 
@@ -130,7 +136,7 @@ setMethod("predictive_cdf", signature("DataDistribution", "ContinuousPrior", "nu
 #' @rdname ContinuousPrior-class
 #' @export
 setMethod("posterior", signature("DataDistribution", "ContinuousPrior", "numeric"),
-    function(dist, prior, x1, n1, tighten_support = FALSE, check_normalization = TRUE, ...) {
+    function(dist, prior, x1, n1, tighten_support = FALSE, check_normalization = FALSE, ...) {
         if (length(x1) != 1)
             stop("no vectorized version in x1")
         prop_pdf <- function(theta) {
@@ -142,7 +148,7 @@ setMethod("posterior", signature("DataDistribution", "ContinuousPrior", "numeric
         ContinuousPrior(
             function(theta) prop_pdf(theta) / z,
             prior@support,
-            tighten_support = tighten_support,
+            tighten_support     = tighten_support,
             check_normalization = check_normalization
         )
     })

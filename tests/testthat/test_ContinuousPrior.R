@@ -93,15 +93,23 @@ test_that("predictive expectation under prior is larger than 0", {
 
 
 
-test_that("conditioning on c(0, .5) leads to correct bounds", {
+test_that("conditioning works", {
 
     prior_cond <<- condition(prior, c(.0, .5))
     expect_equal(
         c(.0, .5),
         bounds(prior_cond)
-    )
+    ) # conditioning on c(0, .5) leads to correct bounds
 
-}) # end 'conditioning on c(0, .5) leads to correct bounds'
+    unif_prior <- ContinuousPrior(function(x) dunif(x, 0, 1), c(0, 1))
+    cond_unif  <- condition(unif_prior, c(-10, 10))
+    expect_equal(
+        bounds(unif_prior),
+        bounds(cond_unif)
+    ) # conditioning on inverval larger than the support does not change anything
+
+
+}) # end 'conditioning works'
 
 
 test_that("tightening can decrease support", {
