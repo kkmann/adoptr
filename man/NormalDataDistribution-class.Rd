@@ -43,13 +43,11 @@ Normal(two_armed = TRUE)
 
 \item{probs}{vector of probabilities}
 
-\item{object}{design to simulate from}
+\item{object}{object of class \code{Normal}}
 
 \item{nsim}{number of simulation runs}
 
 \item{seed}{random seed}
-
-\item{object}{object of class \code{Normal}}
 }
 \description{
 Implements a normal data distribution for z-values given an observed z-value

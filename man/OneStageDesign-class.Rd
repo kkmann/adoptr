@@ -34,7 +34,7 @@ OneStageDesign(n, c)
 
 \item{c}{rejection boundary (c = c1f = c1e)}
 
-\item{object}{object to update}
+\item{object}{object of class \code{OneStageDesign}}
 
 \item{params}{vector of design parameters (must be in same order as returned
 by \code{as.numeric(OneStageDesign)})}
@@ -52,8 +52,6 @@ by \code{as.numeric(OneStageDesign)})}
 \item{s}{an object of class \code{SmoothnessN2}}
 
 \item{design}{an object of class \code{OneStageDesign}}
-
-\item{object}{design to show}
 }
 \description{
 \code{OneStageDesign} allows the usage of a single-stage design.
