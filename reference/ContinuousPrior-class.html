@@ -135,7 +135,8 @@ over a compact interval of the real numbers.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>ContinuousPrior</span>(<span class='no'>pdf</span>, <span class='no'>support</span>, <span class='kw'>tighten_support</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+    <pre class="usage"><span class='fu'>ContinuousPrior</span>(<span class='no'>pdf</span>, <span class='no'>support</span>, <span class='kw'>tighten_support</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>check_normalization</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 <span class='co'># S4 method for ContinuousPrior</span>
 <span class='fu'><a href='Prior-class.html'>bounds</a></span>(<span class='no'>dist</span>, <span class='no'>...</span>)
@@ -157,7 +158,7 @@ over a compact interval of the real numbers.</p>
 
 <span class='co'># S4 method for DataDistribution,ContinuousPrior,numeric</span>
 <span class='fu'><a href='Prior-class.html'>posterior</a></span>(<span class='no'>dist</span>, <span class='no'>prior</span>,
-  <span class='no'>x1</span>, <span class='no'>n1</span>, <span class='no'>...</span>)
+  <span class='no'>x1</span>, <span class='no'>n1</span>, <span class='kw'>tighten_support</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>check_normalization</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
 
 <span class='co'># S4 method for ContinuousPrior</span>
 <span class='fu'>show</span>(<span class='no'>object</span>)</pre>
@@ -177,6 +178,11 @@ over a compact interval of the real numbers.</p>
       <th>tighten_support</th>
       <td><p>logical indicating if the support should be tightened
 automatically.</p></td>
+    </tr>
+    <tr>
+      <th>check_normalization</th>
+      <td><p>logical indicating if normalization of the
+prior density should be checked</p></td>
     </tr>
     <tr>
       <th>dist</th>
