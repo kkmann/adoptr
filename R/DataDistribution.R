@@ -103,7 +103,7 @@ setMethod("quantile", signature("Normal"),
 
 #' @rdname NormalDataDistribution-class
 #'
-#' @param object design to simulate from
+#' @param object object of class \code{Normal}
 #' @param nsim number of simulation runs
 #' @param seed random seed
 #'
@@ -122,8 +122,6 @@ setMethod("simulate", signature("Normal", "numeric"),
 
 
 #' @rdname NormalDataDistribution-class
-#'
-#' @param object object of class \code{Normal}
 #' @export
 setMethod("show", signature(object = "Normal"),
           function(object) cat(class(object)[1]))

@@ -24,16 +24,26 @@ setClass("ContinuousPrior", representation(
 
 #' @param pdf cf. slot \code{pdf}
 #' @param support cf. slot \code{support}
+#' @param tighten_support logical indicating if the support should be tightened
+#'     automatically.
 #'
 #' @describeIn ContinuousPrior-class constructor
 #' @export
-ContinuousPrior <- function(pdf, support) {
+ContinuousPrior <- function(pdf, support, tighten_support = FALSE) {
     if (length(support) != 2)
         stop("support must be of length 2")
     if (any(!is.finite(support)))
         stop("support must be finite")
     if (diff(support) <= 0)
         stop("support[2] must be larger (not equal) to support[1]")
+    if(tighten_support) {
+        while(pdf(support[1]) < .Machine$double.eps^2) {
+            support[1] <- support[1] + .001
+            }
+        while(pdf(support[2]) < .Machine$double.eps^2) {
+            support[2] <- support[2] - .001
+            }
+    }
     if (abs(stats::integrate(pdf, support[1], support[2], abs.tol = .00001)$value - 1) > .001)
         stop("pdf must integrate to one!")
     new("ContinuousPrior", pdf = pdf, support = support)
@@ -69,13 +79,6 @@ setMethod("condition", signature("ContinuousPrior", "numeric"),
             stop("interval must be finite")
         if (diff(interval) < 0)
             stop("interval[2] must be larger or equal to interval[1]")
-        # Update interval
-        while(dist@pdf(interval[1]) < .Machine$double.eps^2) {
-            interval[1] <- interval[1] + .001
-        }
-        while(dist@pdf(interval[2]) < .Machine$double.eps^2) {
-            interval[2] <- interval[2] - .001
-        }
         # compute new normalizing constant
         z <- stats::integrate(dist@pdf, interval[1], interval[2], abs.tol = .00001)$value
         ContinuousPrior(
@@ -129,7 +132,8 @@ setMethod("posterior", signature("DataDistribution", "ContinuousPrior", "numeric
         )$value
         ContinuousPrior(
             function(theta) prop_pdf(theta) / z,
-            prior@support
+            prior@support,
+            tighten_support = FALSE
         )
     })
 
