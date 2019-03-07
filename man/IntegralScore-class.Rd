@@ -3,13 +3,18 @@
 \docType{class}
 \name{IntegralScore-class}
 \alias{IntegralScore-class}
+\alias{show,IntegralScore-method}
 \alias{evaluate,IntegralScore,TwoStageDesign-method}
 \title{Unconditional score class obtained by integration of a \code{ConditionalScore}}
 \usage{
+\S4method{show}{IntegralScore}(object)
+
 \S4method{evaluate}{IntegralScore,TwoStageDesign}(s, design,
   optimization = FALSE, subdivisions = 10000L, ...)
 }
 \arguments{
+\item{object}{object of class \code{IntegralScore}}
+
 \item{s}{an \code{IntegralScore}}
 
 \item{design}{a \code{TwoStageDesign}}
@@ -26,6 +31,8 @@ Unconditional score class obtained by integration of a \code{ConditionalScore}
 }
 \section{Methods (by generic)}{
 \itemize{
+\item \code{show}: returns the class name itself
+
 \item \code{evaluate}: generic implementation of evaluating an integral
 score. Uses adaptive Gaussian quadrature for integration and might be
 more efficiently implemented by specific \code{TwoStageDesign}-classes.

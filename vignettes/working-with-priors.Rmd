@@ -9,59 +9,87 @@ vignette: >
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
+  collapse   = TRUE,
+  comment    = "#>",
+  fig.width  = 7,
+  fig.height = 5
 )
 ```
 
+
+
+## Working with priors in **adoptr**
+
+Internally, **adoptr** is built around the joint distribution of a test 
+statistic and the unknown location parameter of interest given a sample size,
+i.e.
+$$
+\mathcal{L}\big[(X_i, \theta)\,|\,n_i\big]
+$$
+where $X_i$ is the stage-$i$ test statistic and $n_i$ the corresponding sample
+size.
+The distribution class for $X_i$ is defined by specifying a `DataDistribution`
+object, e.g., a normal distribution
 ```{r setup}
 library(adoptr)
+
+datadist <- Normal()
+```
+To completely specify the marginal distribution of $X_i$, the distribution of
+$\theta$ must also be specified. 
+The classical case where $\theta$ is considered fixed, emerges as special
+case when a single parameter value has probability mass 1.
+
+
+
+### Discrete priors
+
+The simplest supported prior class are discrete `PointMassPrior` priors.
+To specify a discrete prior, one simply specifies the vector of pivot points 
+with positive mass and the vectro of corresponding probability masses.
+E.g., consider an example where the point $\delta = 0.1$ has probability mass 
+$0.4$ and the point $\delta = 0.25$ has mass $1 - 0.4 = 0.6$. 
+```{r discrete-prior}
+disc_prior <- PointMassPrior(c(0.1, 0.25), c(0.4, 0.6))
+```
+For details on the provided methods, see `?DiscretePrior`.
+
+
+### Continuous priors
+
+**adoptr** also supports arbitrary continuous priors with support on compact 
+intervals.
+For instance, we could consider a prior based on a truncated normal via:
+```{r}
+cont_prior <- ContinuousPrior(
+  pdf     = function(x) dnorm(x, mean = 0.3, sd = 0.2), 
+  support = c(-2, 3)
+)
 ```
 
-Vignettes are long form documentation commonly included in packages. Because they are part of the distribution of the package, they need to be as compact as possible. The `html_vignette` output type provides a custom style sheet (and tweaks some options) to ensure that the resulting html is as small as possible. The `html_vignette` format:
+For details on the provided methods, see `?ContinuousPrior`.
 
-- Never uses retina figures
-- Has a smaller default figure size
-- Uses a custom CSS stylesheet instead of the default Twitter Bootstrap style
 
-## Vignette Info
+### Conditioning
 
-Note the various macros within the `vignette` section of the metadata block above. These are required in order to instruct R how to build the vignette. Note that you should change the `title` field and the `\VignetteIndexEntry` to match the title of your vignette.
-
-## Styles
-
-The `html_vignette` template includes a basic CSS theme. To override this theme you can specify your own CSS in the document metadata as follows:
-
-    output: 
-      rmarkdown::html_vignette:
-        css: mystyles.css
-
-## Figures
-
-The figure sizes have been customised so that you can easily put two images side-by-side. 
-
-```{r, fig.show='hold'}
-plot(1:10)
-plot(10:1)
+In practice, the most important operation will be conditioning.
+This is important to implement type one and type two error rate constraints.
+Consider, e.g., the case of power.
+Typically, a power constraint is imposed on a single point in the alternative,
+e.g. using the contraint
+```{r}
+expected(ConditionalPower(
+  Normal(), 
+  PointMassPrior(.4, 1)
+)) >= 0.8
 ```
-
-You can enable figure captions by `fig_caption: yes` in YAML:
-
-    output:
-      rmarkdown::html_vignette:
-        fig_caption: yes
-
-Then you can use the chunk option `fig.cap = "Your figure caption."` in **knitr**.
-
-## More Examples
-
-You can write math expressions, e.g. $Y = X\beta + \epsilon$, footnotes^[A footnote here.], and tables, e.g. using `knitr::kable()`.
-
-```{r, echo=FALSE, results='asis'}
-knitr::kable(head(mtcars, 10))
+If uncertainty about the true response rate should be incorporated in the design,
+it makes sense to assume a continuous prior on $\theta$.
+In this case, the prior should be conditioned for the power constraint to
+avoid integrating over the null hypothesis:
+```{r}
+expected(ConditionalPower(
+  Normal(), 
+  condition(cont_prior, c(0, 3))
+)) >= 0.8
 ```
-
-Also a quote using `>`:
-
-> "He who gives up [code] safety for [code] speed deserves neither."
-([via](https://twitter.com/hadleywickham/status/504368538874703872))

@@ -55,10 +55,19 @@ setMethod("expected", signature("ConditionalScore"),
           function(s, ...) new("IntegralScore", cs = s) )
 
 
+#' @describeIn ConditionalScore returns the class name itself
+#'
+#' @param object object of class \code{ConditionalScore}
+#' @export
+setMethod("show", signature(object = "ConditionalScore"),
+          function(object) cat(class(object)[1]))
+
+
+
 #' Score arithmetic
 #'
 #' To facilitate working with simple weighted sums of scores,
-#' \code{otsd} supports some basic arithmetic operations on score object
+#' \code{adoptr} supports some basic arithmetic operations on score object
 #' (both conditional and unconditional ones).
 #' Scores can be scalar-multiplied by a constant and added to produce new
 #' scores.
@@ -101,6 +110,8 @@ setClass("UnconditionalScore")
 
 
 
+
+
 #' @rdname score-arithmetic
 setMethod("+", signature("UnconditionalScore", "numeric"),
           function(e1, e2) AffineUnconditionalScore(list(e1), 1, e2) )
@@ -138,6 +149,15 @@ setClass("IntegralScore", representation(
         cs = "ConditionalScore"
     ),
     contains = "UnconditionalScore")
+
+
+#' @describeIn IntegralScore returns the class name itself
+#'
+#' @param object object of class \code{IntegralScore}
+#' @export
+setMethod("show", signature(object = "IntegralScore"),
+          function(object) cat(class(object)[1]))
+
 
 
 #' @param optimization logical, if TRUE uses a relaxation to real parameters of

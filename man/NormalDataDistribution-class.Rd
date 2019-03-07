@@ -8,6 +8,7 @@
 \alias{cumulative_distribution_function,Normal,numeric,numeric,numeric-method}
 \alias{quantile,Normal-method}
 \alias{simulate,Normal,numeric-method}
+\alias{show,Normal-method}
 \title{Normal data distribution}
 \usage{
 Normal(two_armed = TRUE)
@@ -24,6 +25,8 @@ Normal(two_armed = TRUE)
 
 \S4method{simulate}{Normal,numeric}(object, nsim, n, theta, seed = NULL,
   ...)
+
+\S4method{show}{Normal}(object)
 }
 \arguments{
 \item{two_armed}{s. slot}
@@ -45,6 +48,8 @@ Normal(two_armed = TRUE)
 \item{nsim}{number of simulation runs}
 
 \item{seed}{random seed}
+
+\item{object}{object of class \code{Normal}}
 }
 \description{
 Implements a normal data distribution for z-values given an observed z-value
