@@ -4,89 +4,39 @@
 \name{ContinuousPrior-class}
 \alias{ContinuousPrior-class}
 \alias{ContinuousPrior}
-\alias{bounds,ContinuousPrior-method}
-\alias{expectation,ContinuousPrior,function-method}
-\alias{condition,ContinuousPrior,numeric-method}
-\alias{predictive_pdf,DataDistribution,ContinuousPrior,numeric-method}
-\alias{predictive_cdf,DataDistribution,ContinuousPrior,numeric-method}
-\alias{posterior,DataDistribution,ContinuousPrior,numeric-method}
 \alias{show,ContinuousPrior-method}
-\title{Continuous univariate prior distribution}
+\title{Continuous univariate prior distributions}
 \usage{
 ContinuousPrior(pdf, support, tighten_support = FALSE,
   check_normalization = TRUE)
 
-\S4method{bounds}{ContinuousPrior}(dist, ...)
-
-\S4method{expectation}{ContinuousPrior,`function`}(dist, f,
-  rel.tol = 0.001, ...)
-
-\S4method{condition}{ContinuousPrior,numeric}(dist, interval, ...)
-
-\S4method{predictive_pdf}{DataDistribution,ContinuousPrior,numeric}(dist,
-  prior, x1, n1, k = 33, ...)
-
-\S4method{predictive_cdf}{DataDistribution,ContinuousPrior,numeric}(dist,
-  prior, x1, n1, k = 33, ...)
-
-\S4method{posterior}{DataDistribution,ContinuousPrior,numeric}(dist, prior,
-  x1, n1, tighten_support = FALSE, check_normalization = FALSE, ...)
-
 \S4method{show}{ContinuousPrior}(object)
 }
 \arguments{
-\item{pdf}{cf. slot \code{pdf}}
+\item{pdf}{vectorized univariate PDF function}
 
-\item{support}{cf. slot \code{support}}
+\item{support}{numeric vector of length two with the bounds of
+the compact interval on which the pdf is positive.}
 
-\item{tighten_support}{logical indicating if the support should be tightened
-automatically.}
+\item{tighten_support}{???}
 
-\item{check_normalization}{logical indicating if normalization of the
-prior density should be checked}
-
-\item{dist}{data distribution or prior distribution (depending on context) [TODO: make this clearer by renaming arguments in generics!]}
-
-\item{...}{further optional arguments}
-
-\item{f}{univariate function of parameter to get expected value of}
-
-\item{rel.tol}{relative tolerance used in adaptive gaussian quadrature
-to evaluate the integral}
-
-\item{interval}{numeric vector of length two specifying the interval to condition on.}
-
-\item{prior}{prior distribution}
-
-\item{x1}{stage one outcome (note that n1 is available from \code{design})}
-
-\item{n1}{stage-one sample size}
-
-\item{k}{number of pivots for crude integral approximation [TODO: this needs to be done properly!, cant use integrate since we wnat this vectorized!]}
+\item{check_normalization}{???}
 
 \item{object}{object of class \code{ContinuousPrior}}
 }
 \description{
-\code{ContinuousPrior} is a generic class for representing a univariate prior
-over a compact interval of the real numbers.
+\code{ContinuousPrior} is a sub-class of \code{\link{Prior}} implementing
+a generic representation of continuous prior distributions over a compact
+interval on the real line.
 }
-\details{
-For further details cf. \code{\link{Prior-class}}.
-}
-\section{Functions}{
-\itemize{
-\item \code{ContinuousPrior}: constructor
-}}
-
 \section{Slots}{
 
 \describe{
-\item{\code{pdf}}{function the actual probability density function , only called
-in the interior of support therefore need not be set to zero outside of
-support. Must be vectorized! [TODO: expose via pdf(prior, theta)!]}
+\item{\code{pdf}}{cf. parameter 'pdf'}
 
-\item{\code{support}}{numeric vector of length two with the bounds of the compact
-interval on which the pdf is positive.
-The restriction to compact support simplifies numerical integration.}
+\item{\code{support}}{cf. parameter 'support'}
 }}
 
+\seealso{
+Discrete priors are supported via \code{\link{PointMassPrior}}
+}

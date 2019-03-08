@@ -3,64 +3,19 @@
 \docType{class}
 \name{Prior-class}
 \alias{Prior-class}
-\alias{bounds}
-\alias{expectation}
-\alias{condition}
-\alias{predictive_pdf}
-\alias{predictive_cdf}
-\alias{posterior}
-\title{Abstract univariate prior on model parameter}
-\usage{
-bounds(dist, ...)
-
-expectation(dist, f, ...)
-
-condition(dist, interval, ...)
-
-predictive_pdf(dist, prior, x1, n1, ...)
-
-predictive_cdf(dist, prior, x1, n1, ...)
-
-posterior(dist, prior, x1, n1, ...)
-}
-\arguments{
-\item{dist}{a distribution object of class \code{Prior} or \code{DataDistribution}}
-
-\item{...}{further optional parameters}
-
-\item{f}{a function of the single model parameter, must be vectorized, i.e.
-accept a vector of paramter values and return the vector of function values.}
-
-\item{interval}{length two numeric vector giving the parameter interval to
-condition on}
-
-\item{prior}{a distribution object of class \code{Prior}}
-
-\item{x1}{stage-one outcome}
-
-\item{n1}{stage-one sample size}
-}
+\alias{Prior}
+\title{Univariate prior on model parameter}
 \description{
-\code{Prior} is an abstract class specifying the interface to be implemented
-by an prior class.
+A \code{Prior} object represents a prior distribution on the single model
+parameter of a \code{\link{DataDistribution}} class
+object.
+Together a prior and data-distribution specify the class of the joint
+distribution of the test statisic, X, and its parameter, theta.
+Currently, \pkg{adoptr} only allows simple models with a single parameter.
 Implementations for \link{PointMassPrior} and \link{ContinuousPrior} are available.
-
-\code{bounds()} returns the range of the support of a prior [TODO: rename support()?]
-
-\code{expectation()} evaluates the expected value of a function \code{f}
-    depending on only the parameter value with respect to the prior
-    distribution \code{dist}.
-
-\code{condition()} returns a new object of class prior resulting from
-    conditioning on the given interval.
-
-\code{predictive_pdf()} evaluates the predictive pdf of the model specified
-    by a data distribution dist and prior at he given stage-one outcome
-    (returns PMF for discrete priors).
-
-\code{predictive_cdf()} evaluates the predictive cdf of the model specified
-    by a data distribution dist and prior at he given stage-one outcome.
-
-\code{posterior()} returns a new prior distribution [TODO: okay, maybe rethink naming?]
-    resulting from conditioning on a given stage-one outcome.
+}
+\seealso{
+For the available methods, see \code{\link{bounds}},
+  \code{\link{expectation}}, \code{\link{condition}}, \code{\link{predictive_pdf}},
+  \code{\link{predictive_cdf}}, \code{\link{posterior}}
 }
