@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Abstract univariate prior on model parameter — Prior-class • adoptr</title>
+<title>Univariate prior on model parameter — Prior-class • adoptr</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -36,24 +36,15 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="Abstract univariate prior on model parameter — Prior-class" />
+<meta property="og:title" content="Univariate prior on model parameter — Prior-class" />
 
-<meta property="og:description" content="Prior is an abstract class specifying the interface to be implemented
-by an prior class.
-Implementations for PointMassPrior and ContinuousPrior are available.
-bounds() returns the range of the support of a prior [TODO: rename support()?]
-expectation() evaluates the expected value of a function f
-    depending on only the parameter value with respect to the prior
-    distribution dist.
-condition() returns a new object of class prior resulting from
-    conditioning on the given interval.
-predictive_pdf() evaluates the predictive pdf of the model specified
-    by a data distribution dist and prior at he given stage-one outcome
-    (returns PMF for discrete priors).
-predictive_cdf() evaluates the predictive cdf of the model specified
-    by a data distribution dist and prior at he given stage-one outcome.
-posterior() returns a new prior distribution [TODO: okay, maybe rethink naming?]
-    resulting from conditioning on a given stage-one outcome." />
+<meta property="og:description" content="A Prior object represents a prior distribution on the single model
+parameter of a DataDistribution class
+object.
+Together a prior and data-distribution specify the class of the joint
+distribution of the test statisic, X, and its parameter, theta.
+Currently, adoptr only allows simple models with a single parameter.
+Implementations for PointMassPrior and ContinuousPrior are available." />
 
 <meta property="og:image" content="https://kkmann.github.io/adoptr/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -137,86 +128,38 @@ posterior() returns a new prior distribution [TODO: okay, maybe rethink naming?]
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Abstract univariate prior on model parameter</h1>
+    <h1>Univariate prior on model parameter</h1>
     <small class="dont-index">Source: <a href='https://github.com/kkmann/adoptr/blob/master/R/Prior.R'><code>R/Prior.R</code></a></small>
     <div class="hidden name"><code>Prior-class.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p><code>Prior</code> is an abstract class specifying the interface to be implemented
-by an prior class.
+    <p>A <code>Prior</code> object represents a prior distribution on the single model
+parameter of a <code><a href='DataDistribution-class.html'>DataDistribution</a></code> class
+object.
+Together a prior and data-distribution specify the class of the joint
+distribution of the test statisic, X, and its parameter, theta.
+Currently, <span class="pkg">adoptr</span> only allows simple models with a single parameter.
 Implementations for <a href='PointMassPrior-class.html'>PointMassPrior</a> and <a href='ContinuousPrior-class.html'>ContinuousPrior</a> are available.</p>
-<p><code>bounds()</code> returns the range of the support of a prior [TODO: rename support()?]</p>
-<p><code>expectation()</code> evaluates the expected value of a function <code>f</code>
-    depending on only the parameter value with respect to the prior
-    distribution <code>dist</code>.</p>
-<p><code>condition()</code> returns a new object of class prior resulting from
-    conditioning on the given interval.</p>
-<p><code>predictive_pdf()</code> evaluates the predictive pdf of the model specified
-    by a data distribution dist and prior at he given stage-one outcome
-    (returns PMF for discrete priors).</p>
-<p><code>predictive_cdf()</code> evaluates the predictive cdf of the model specified
-    by a data distribution dist and prior at he given stage-one outcome.</p>
-<p><code>posterior()</code> returns a new prior distribution [TODO: okay, maybe rethink naming?]
-    resulting from conditioning on a given stage-one outcome.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>bounds</span>(<span class='no'>dist</span>, <span class='no'>...</span>)
+        
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-<span class='fu'>expectation</span>(<span class='no'>dist</span>, <span class='no'>f</span>, <span class='no'>...</span>)
-
-<span class='fu'>condition</span>(<span class='no'>dist</span>, <span class='no'>interval</span>, <span class='no'>...</span>)
-
-<span class='fu'>predictive_pdf</span>(<span class='no'>dist</span>, <span class='no'>prior</span>, <span class='no'>x1</span>, <span class='no'>n1</span>, <span class='no'>...</span>)
-
-<span class='fu'>predictive_cdf</span>(<span class='no'>dist</span>, <span class='no'>prior</span>, <span class='no'>x1</span>, <span class='no'>n1</span>, <span class='no'>...</span>)
-
-<span class='fu'>posterior</span>(<span class='no'>dist</span>, <span class='no'>prior</span>, <span class='no'>x1</span>, <span class='no'>n1</span>, <span class='no'>...</span>)</pre>
-    
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>dist</th>
-      <td><p>a distribution object of class <code>Prior</code> or <code>DataDistribution</code></p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>further optional parameters</p></td>
-    </tr>
-    <tr>
-      <th>f</th>
-      <td><p>a function of the single model parameter, must be vectorized, i.e.
-accept a vector of paramter values and return the vector of function values.</p></td>
-    </tr>
-    <tr>
-      <th>interval</th>
-      <td><p>length two numeric vector giving the parameter interval to
-condition on</p></td>
-    </tr>
-    <tr>
-      <th>prior</th>
-      <td><p>a distribution object of class <code>Prior</code></p></td>
-    </tr>
-    <tr>
-      <th>x1</th>
-      <td><p>stage-one outcome</p></td>
-    </tr>
-    <tr>
-      <th>n1</th>
-      <td><p>stage-one sample size</p></td>
-    </tr>
-    </table>
+    <div class='dont-index'><p>For the available methods, see <code><a href='bounds.html'>bounds</a></code>,
+  <code><a href='expectation.html'>expectation</a></code>, <code><a href='condition.html'>condition</a></code>, <code><a href='predictive_pdf.html'>predictive_pdf</a></code>,
+  <code><a href='predictive_cdf.html'>predictive_cdf</a></code>, <code><a href='posterior.html'>posterior</a></code></p></div>
     
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-                </ul>
+      
+      <li><a href="#see-also">See also</a></li>
+          </ul>
 
   </div>
 </div>

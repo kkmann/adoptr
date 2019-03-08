@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Continuous univariate prior distribution — ContinuousPrior-class • adoptr</title>
+<title>Continuous univariate prior distributions — ContinuousPrior-class • adoptr</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -36,10 +36,11 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="Continuous univariate prior distribution — ContinuousPrior-class" />
+<meta property="og:title" content="Continuous univariate prior distributions — ContinuousPrior-class" />
 
-<meta property="og:description" content="ContinuousPrior is a generic class for representing a univariate prior
-over a compact interval of the real numbers." />
+<meta property="og:description" content="ContinuousPrior is a sub-class of Prior implementing
+a generic representation of continuous prior distributions over a compact
+interval on the real line." />
 
 <meta property="og:image" content="https://kkmann.github.io/adoptr/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -123,42 +124,21 @@ over a compact interval of the real numbers." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Continuous univariate prior distribution</h1>
+    <h1>Continuous univariate prior distributions</h1>
     <small class="dont-index">Source: <a href='https://github.com/kkmann/adoptr/blob/master/R/ContinuousPrior.R'><code>R/ContinuousPrior.R</code></a></small>
     <div class="hidden name"><code>ContinuousPrior-class.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p><code>ContinuousPrior</code> is a generic class for representing a univariate prior
-over a compact interval of the real numbers.</p>
+    <p><code>ContinuousPrior</code> is a sub-class of <code><a href='Prior-class.html'>Prior</a></code> implementing
+a generic representation of continuous prior distributions over a compact
+interval on the real line.</p>
     
     </div>
 
     <pre class="usage"><span class='fu'>ContinuousPrior</span>(<span class='no'>pdf</span>, <span class='no'>support</span>, <span class='kw'>tighten_support</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>check_normalization</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-
-<span class='co'># S4 method for ContinuousPrior</span>
-<span class='fu'><a href='Prior-class.html'>bounds</a></span>(<span class='no'>dist</span>, <span class='no'>...</span>)
-
-<span class='co'># S4 method for ContinuousPrior,`function`</span>
-<span class='fu'><a href='Prior-class.html'>expectation</a></span>(<span class='no'>dist</span>, <span class='no'>f</span>,
-  <span class='kw'>rel.tol</span> <span class='kw'>=</span> <span class='fl'>0.001</span>, <span class='no'>...</span>)
-
-<span class='co'># S4 method for ContinuousPrior,numeric</span>
-<span class='fu'><a href='Prior-class.html'>condition</a></span>(<span class='no'>dist</span>, <span class='no'>interval</span>, <span class='no'>...</span>)
-
-<span class='co'># S4 method for DataDistribution,ContinuousPrior,numeric</span>
-<span class='fu'><a href='Prior-class.html'>predictive_pdf</a></span>(<span class='no'>dist</span>,
-  <span class='no'>prior</span>, <span class='no'>x1</span>, <span class='no'>n1</span>, <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>33</span>, <span class='no'>...</span>)
-
-<span class='co'># S4 method for DataDistribution,ContinuousPrior,numeric</span>
-<span class='fu'><a href='Prior-class.html'>predictive_cdf</a></span>(<span class='no'>dist</span>,
-  <span class='no'>prior</span>, <span class='no'>x1</span>, <span class='no'>n1</span>, <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>33</span>, <span class='no'>...</span>)
-
-<span class='co'># S4 method for DataDistribution,ContinuousPrior,numeric</span>
-<span class='fu'><a href='Prior-class.html'>posterior</a></span>(<span class='no'>dist</span>, <span class='no'>prior</span>,
-  <span class='no'>x1</span>, <span class='no'>n1</span>, <span class='kw'>tighten_support</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>check_normalization</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
 
 <span class='co'># S4 method for ContinuousPrior</span>
 <span class='fu'>show</span>(<span class='no'>object</span>)</pre>
@@ -168,58 +148,20 @@ over a compact interval of the real numbers.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>pdf</th>
-      <td><p>cf. slot <code>pdf</code></p></td>
+      <td><p>vectorized univariate PDF function</p></td>
     </tr>
     <tr>
       <th>support</th>
-      <td><p>cf. slot <code>support</code></p></td>
+      <td><p>numeric vector of length two with the bounds of
+the compact interval on which the pdf is positive.</p></td>
     </tr>
     <tr>
       <th>tighten_support</th>
-      <td><p>logical indicating if the support should be tightened
-automatically.</p></td>
+      <td><p>???</p></td>
     </tr>
     <tr>
       <th>check_normalization</th>
-      <td><p>logical indicating if normalization of the
-prior density should be checked</p></td>
-    </tr>
-    <tr>
-      <th>dist</th>
-      <td><p>data distribution or prior distribution (depending on context) [TODO: make this clearer by renaming arguments in generics!]</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>further optional arguments</p></td>
-    </tr>
-    <tr>
-      <th>f</th>
-      <td><p>univariate function of parameter to get expected value of</p></td>
-    </tr>
-    <tr>
-      <th>rel.tol</th>
-      <td><p>relative tolerance used in adaptive gaussian quadrature
-to evaluate the integral</p></td>
-    </tr>
-    <tr>
-      <th>interval</th>
-      <td><p>numeric vector of length two specifying the interval to condition on.</p></td>
-    </tr>
-    <tr>
-      <th>prior</th>
-      <td><p>prior distribution</p></td>
-    </tr>
-    <tr>
-      <th>x1</th>
-      <td><p>stage one outcome (note that n1 is available from <code>design</code>)</p></td>
-    </tr>
-    <tr>
-      <th>n1</th>
-      <td><p>stage-one sample size</p></td>
-    </tr>
-    <tr>
-      <th>k</th>
-      <td><p>number of pivots for crude integral approximation [TODO: this needs to be done properly!, cant use integrate since we wnat this vectorized!]</p></td>
+      <td><p>???</p></td>
     </tr>
     <tr>
       <th>object</th>
@@ -227,27 +169,17 @@ to evaluate the integral</p></td>
     </tr>
     </table>
     
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>For further details cf. <code><a href='Prior-class.html'>Prior-class</a></code>.</p>
-    
-    <h2 class="hasAnchor" id="functions"><a class="anchor" href="#functions"></a>Functions</h2>
-
-    <ul>
-<li><p><code>ContinuousPrior</code>: constructor</p></li>
-</ul>
-    
     <h2 class="hasAnchor" id="slots"><a class="anchor" href="#slots"></a>Slots</h2>
 
     
     <dl class='dl-horizontal'>
-<dt><code>pdf</code></dt><dd><p>function the actual probability density function , only called
-in the interior of support therefore need not be set to zero outside of
-support. Must be vectorized! [TODO: expose via pdf(prior, theta)!]</p></dd>
-    <dt><code>support</code></dt><dd><p>numeric vector of length two with the bounds of the compact
-interval on which the pdf is positive.
-The restriction to compact support simplifies numerical integration.</p></dd>
+<dt><code>pdf</code></dt><dd><p>cf. parameter 'pdf'</p></dd>
+    <dt><code>support</code></dt><dd><p>cf. parameter 'support'</p></dd>
 </dl>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>Discrete priors are supported via <code><a href='PointMassPrior-class.html'>PointMassPrior</a></code></p></div>
     
 
   </div>
@@ -256,11 +188,9 @@ The restriction to compact support simplifies numerical integration.</p></dd>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#details">Details</a></li>
-
-      <li><a href="#functions">Functions</a></li>
-
       <li><a href="#slots">Slots</a></li>
+
+      <li><a href="#see-also">See also</a></li>
           </ul>
 
   </div>

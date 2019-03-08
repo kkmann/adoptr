@@ -73,10 +73,28 @@
     <loc>https://kkmann.github.io/adoptr/reference/boundary-designs.html</loc>
   </url>
   <url>
+    <loc>https://kkmann.github.io/adoptr/reference/bounds.html</loc>
+  </url>
+  <url>
+    <loc>https://kkmann.github.io/adoptr/reference/condition.html</loc>
+  </url>
+  <url>
+    <loc>https://kkmann.github.io/adoptr/reference/expectation.html</loc>
+  </url>
+  <url>
     <loc>https://kkmann.github.io/adoptr/reference/minimize.html</loc>
   </url>
   <url>
+    <loc>https://kkmann.github.io/adoptr/reference/posterior.html</loc>
+  </url>
+  <url>
     <loc>https://kkmann.github.io/adoptr/reference/postprocess.html</loc>
+  </url>
+  <url>
+    <loc>https://kkmann.github.io/adoptr/reference/predictive_cdf.html</loc>
+  </url>
+  <url>
+    <loc>https://kkmann.github.io/adoptr/reference/predictive_pdf.html</loc>
   </url>
   <url>
     <loc>https://kkmann.github.io/adoptr/reference/print.TwoStageDesignSummary.html</loc>

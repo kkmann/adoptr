@@ -38,9 +38,9 @@
 
 <meta property="og:title" content="Adaptive Optimal Two-Stage Designs — adoptr" />
 
-<meta property="og:description" content="This package provides functionality to compute and analyze optimal
-two-stage designs for two-stage superiority tests based on a Z statistic.
-A range of pre-implemented objective/constraint functions are provided." />
+<meta property="og:description" content="The adoptr package provides functionality to explore custim optimal
+two-stage designs for one or two-arm superiority tests.
+Currently, only (asymptotically) normal test statistics are supported." />
 
 <meta property="og:image" content="https://kkmann.github.io/adoptr/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -131,9 +131,9 @@ A range of pre-implemented objective/constraint functions are provided." />
 
     <div class="ref-description">
     
-    <p>This package provides functionality to compute and analyze optimal
-two-stage designs for two-stage superiority tests based on a Z statistic.
-A range of pre-implemented objective/constraint functions are provided.</p>
+    <p>The <span class="pkg">adoptr</span> package provides functionality to explore custim optimal
+two-stage designs for one or two-arm superiority tests.
+Currently, only (asymptotically) normal test statistics are supported.</p>
     
     </div>
 
@@ -141,23 +141,30 @@ A range of pre-implemented objective/constraint functions are provided.</p>
     <h2 class="hasAnchor" id="quickstart"><a class="anchor" href="#quickstart"></a>Quickstart</h2>
 
     
-    <p>For a sample workflow and a quick demo of the capabilities, see the
-vignette .</p>
+    <p>For a sample workflow and a quick demo of the capabilities, see
+<a href='here'>https://kkmann.github.io/adoptr/articles/adoptr.html</a>.</p>
     
     <h2 class="hasAnchor" id="designs"><a class="anchor" href="#designs"></a>Designs</h2>
 
     
-    <p>list designs</p>
+    <p><span class="pkg">adoptr</span> currently supports <code><a href='TwoStageDesign-class.html'>TwoStageDesign</a></code>,
+<code><a href='GroupSequentialDesign-class.html'>GroupSequentialDesign</a></code>, and <code><a href='OneStageDesign-class.html'>OneStageDesign</a></code>.</p>
     
-    <h2 class="hasAnchor" id="prios"><a class="anchor" href="#prios"></a>Prios</h2>
+    <h2 class="hasAnchor" id="data-distributions"><a class="anchor" href="#data-distributions"></a>Data distributions</h2>
 
     
-    <p>List prior classes</p>
+    <p>[Todo]</p>
+    
+    <h2 class="hasAnchor" id="priors"><a class="anchor" href="#priors"></a>Priors</h2>
+
+    
+    <p>Both <code><a href='ContinuousPrior-class.html'>ContinuousPrior</a></code> and <code><a href='PointMassPrior-class.html'>PointMassPrior</a></code> are
+supported for the single parameter of a <code><a href='DataDistribution-class.html'>DataDistribution</a></code>.</p>
     
     <h2 class="hasAnchor" id="scores"><a class="anchor" href="#scores"></a>Scores</h2>
 
     
-    <p>list score classes</p>
+    <p>TODO: list score classes</p>
     
 
   </div>
@@ -169,7 +176,9 @@ vignette .</p>
 
       <li><a href="#designs">Designs</a></li>
 
-      <li><a href="#prios">Prios</a></li>
+      <li><a href="#data-distributions">Data distributions</a></li>
+
+      <li><a href="#priors">Priors</a></li>
 
       <li><a href="#scores">Scores</a></li>
           </ul>

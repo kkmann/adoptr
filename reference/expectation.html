@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Univariate discrete point mass priors — PointMassPrior-class • adoptr</title>
+<title>Expected value of a function — expectation • adoptr</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -36,11 +36,11 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="Univariate discrete point mass priors — PointMassPrior-class" />
+<meta property="og:title" content="Expected value of a function — expectation" />
 
-<meta property="og:description" content="PointMassPrior is a sub-class of Prior
-representing a univariate prior over a discrete set of points with positive
-probability mass." />
+<meta property="og:description" content="Computes the expected value of a vectorized, univariate function f
+with respect to a distribution dist.
+I.e., \(\boldsymbol{E}\big[f(X)\big]\)." />
 
 <meta property="og:image" content="https://kkmann.github.io/adoptr/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -124,61 +124,61 @@ probability mass." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Univariate discrete point mass priors</h1>
-    <small class="dont-index">Source: <a href='https://github.com/kkmann/adoptr/blob/master/R/PointMassPrior.R'><code>R/PointMassPrior.R</code></a></small>
-    <div class="hidden name"><code>PointMassPrior-class.Rd</code></div>
+    <h1>Expected value of a function</h1>
+    <small class="dont-index">Source: <a href='https://github.com/kkmann/adoptr/blob/master/R/Prior.R'><code>R/Prior.R</code></a>, <a href='https://github.com/kkmann/adoptr/blob/master/R/PointMassPrior.R'><code>R/PointMassPrior.R</code></a>, <a href='https://github.com/kkmann/adoptr/blob/master/R/ContinuousPrior.R'><code>R/ContinuousPrior.R</code></a></small>
+    <div class="hidden name"><code>expectation.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p><code>PointMassPrior</code> is a sub-class of <code><a href='Prior-class.html'>Prior</a></code>
-representing a univariate prior over a discrete set of points with positive
-probability mass.</p>
+    <p>Computes the expected value of a vectorized, univariate function <code>f</code>
+with respect to a distribution <code>dist</code>.
+I.e., \(\boldsymbol{E}\big[f(X)\big]\).</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>PointMassPrior</span>(<span class='no'>theta</span>, <span class='no'>mass</span>)
+    <pre class="usage"><span class='fu'>expectation</span>(<span class='no'>dist</span>, <span class='no'>f</span>, <span class='no'>...</span>)
 
-<span class='co'># S4 method for PointMassPrior</span>
-<span class='fu'>show</span>(<span class='no'>object</span>)</pre>
+<span class='co'># S4 method for PointMassPrior,`function`</span>
+<span class='fu'>expectation</span>(<span class='no'>dist</span>, <span class='no'>f</span>, <span class='no'>...</span>)
+
+<span class='co'># S4 method for ContinuousPrior,`function`</span>
+<span class='fu'>expectation</span>(<span class='no'>dist</span>, <span class='no'>f</span>,
+  <span class='kw'>rel.tol</span> <span class='kw'>=</span> <span class='fl'>0.001</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>theta</th>
-      <td><p>numeric vector of pivot points with positive prior mass</p></td>
+      <th>dist</th>
+      <td><p>a univariate distribution object</p></td>
     </tr>
     <tr>
-      <th>mass</th>
-      <td><p>numeric vector of probability masses at the pivot points
-(must sum to 1)</p></td>
+      <th>f</th>
+      <td><p>a univariate function, must be vectorized</p></td>
     </tr>
     <tr>
-      <th>object</th>
-      <td><p>object of class <code>PointMassPrior</code></p></td>
+      <th>...</th>
+      <td><p>further optional arguments</p></td>
+    </tr>
+    <tr>
+      <th>rel.tol</th>
+      <td><p><code>numeric</code>, relative tolerance used in adaptive gaussian
+quadrature to evaluate the integral</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>an object of class <code>PointMassPrior</code></p>
-    
-    <h2 class="hasAnchor" id="slots"><a class="anchor" href="#slots"></a>Slots</h2>
-
-    
-    <dl class='dl-horizontal'>
-<dt><code>theta</code></dt><dd><p>cf. parameter 'theta'</p></dd>
-    <dt><code>mass</code></dt><dd><p>cf. parameter 'mass'</p></dd>
-</dl>
-    
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p>To represent continuous prior distributions use <code>{ContinuousPrior}</code></p></div>
+    <p><code>numeric</code>, expected value of <code>f</code> with respect to <code>dist</code></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>PointMassPrior</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>.5</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>.3</span>, <span class='fl'>.7</span>))</div><div class='output co'>#&gt; PointMassPrior</div><div class='input'>
+    <pre class="examples"><div class='input'><span class='fu'>expectation</span>(<span class='fu'><a href='PointMassPrior-class.html'>PointMassPrior</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>.5</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>.3</span>, <span class='fl'>.7</span>)), <span class='no'>identity</span>) <span class='co'># .35</span></div><div class='output co'>#&gt; [1] 0.35</div><div class='input'>
+<span class='fu'>expectation</span>(
+    <span class='fu'><a href='ContinuousPrior-class.html'>ContinuousPrior</a></span>(<span class='kw'>function</span>(<span class='no'>x</span>) <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Uniform'>dunif</a></span>(<span class='no'>x</span>, <span class='fl'>.2</span>, <span class='fl'>.4</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>.2</span>, <span class='fl'>.4</span>)),
+    <span class='no'>identity</span>
+) <span class='co'># .3</span></div><div class='output co'>#&gt; [1] 0.3</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -187,10 +187,6 @@ probability mass.</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-
-      <li><a href="#slots">Slots</a></li>
-
-      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>
