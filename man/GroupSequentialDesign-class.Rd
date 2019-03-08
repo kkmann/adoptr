@@ -6,6 +6,7 @@
 \alias{GroupSequentialDesign}
 \alias{n2,GroupSequentialDesign,numeric-method}
 \alias{TwoStageDesign,GroupSequentialDesign-method}
+\alias{show,GroupSequentialDesign-method}
 \alias{evaluate,SmoothnessN2,GroupSequentialDesign-method}
 \title{Group-sequential design}
 \usage{
@@ -15,6 +16,8 @@ GroupSequentialDesign(n1, c1f, c1e, n2_pivots, c2_pivots, order = NULL,
 \S4method{n2}{GroupSequentialDesign,numeric}(d, x1, round = TRUE, ...)
 
 \S4method{TwoStageDesign}{GroupSequentialDesign}(d, tunable, ...)
+
+\S4method{show}{GroupSequentialDesign}(object)
 
 \S4method{evaluate}{SmoothnessN2,GroupSequentialDesign}(s, design, ...)
 }
@@ -42,6 +45,8 @@ returned?}
 
 \item{tunable}{c.f. slot}
 
+\item{object}{design to show}
+
 \item{s}{an object of class \code{SmoothnessN2}}
 
 \item{design}{an object of class \code{GroupSequentialDesign}}
@@ -59,6 +64,8 @@ class.
 
 If \code{order} is not defined, the length of the parameter \code{c2_pivots}
 defines the order of the Gaussian quadrature integration rule.
+
+Only states the class itself.
 }
 \section{Slots}{
 

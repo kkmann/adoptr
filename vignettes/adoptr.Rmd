@@ -10,196 +10,217 @@ editor_options:
   chunk_output_type: inline
 ---
 
-```{r setup, include = FALSE}
+```{r setup-knitr, include=FALSE}
 knitr::opts_chunk$set(
-  collapse  = TRUE,
-  comment   = "#>",
-  fig.width = 8
+  collapse   = TRUE,
+  comment    = "#>",
+  fig.width  = 7,
+  fig.height = 5
 )
-library(adoptr)
 ```
 
 
 
-## The core problem
+## Two-stage designs for clinical trials
 
-`adoptr` addresses the problem of finding optimal two-stage designs
-for clinical trials.
-Currently, only (asymptotically) normal test statistics are supported.
-Both Z-tests for a single arm versus a fixed value or one-sided 
-tests comparing the means of two arms are supported.
-In all cases known variance is assumed and in the two-arm case homogeneity
-of variances is required, additionally.
+In prospectively planned confirmatory clinical trials there has been a 
+long-standing debate about the merits of allowing pre-planned interim analyses
+to stop or modify an ongoing trial, cf. 
+[BAUER *et al.*, 2016](https://onlinelibrary.wiley.com/doi/pdf/10.1002/sim.6472).
+It is common consensus that such two-stage designs should still maintain 
+strict control of the maximal type one error rate despite the data dependent
+decision at the interim analysis.
+Most authors use combination function approaches to combine either the
+independent p values or test statistics from the respective stages.
+Doing so with pre-specified weights maintains the type one error rate control.
 
-Consider the simplest case of a two-stage design for a single-arm trial
-aiming to reject the null hypothesis that $\delta\leq 0$ where $\delta$ is
-the mean of the population response. 
-Further assume that a power of 80% at $\delta=0.4$ and a type one error rate
-of 5% on the boundary of the null hypothesis is required ($\delta=0.0$).
+With **adoptr** we provide tools to explore optimal two-stage designs for
+one or two-arm clinical trials with (asymptotically) normally distributed
+and stage-wise independent test statistics.
+In [our paper], it was argued that such techniques are not necessary, in fact,
+that they are counter-productive, since the pre-specified weights might be
+sub-optimal.
+Instead, one may see the problem of defining an optimal two-stage designs as
+a variational problem to find the optimal configuration 
+$$
+\mathcal{D}:=\big(n_1, c_1^e, c_1^f, n_2(\cdot), c_2(\cdot)\big)
+$$ 
+directly for a given objective function and potentially a set of constraints.
+The relaxation of this mixed-integer problem to the real numbers can then
+be solved with standard methods from analysis.
+E.g., one could construct an implicit solution by solving the corresponding
+Euler-Lagrange equation for given first-stage and then find an optimal
+first-stage configuration [our paper].
+Instead, the **adoptr** package implements a direct numerical solution 
+algorithm by embedding the variation problem via a set of pivot points in 
+the $\mathbb{R}^k$ and solving the corresponding finite-dimensional problem 
+using gradient-free numerical optimization procedures (COBYLA / nloptr).
 
-We can start with a a more or less arbitrary initial design [ToDo: can we start with a single stage design fulfilling the power and type one error rate constraints here?].
-`adoptr` internally represents designs as tuples of $(n_1, c_{1f}, c_{1f}, n_2(\cdot), c_2(\cdot))$.
-Here, $n_2$ and $c_2$ are the functions returning the stage-two sample size 
-and critical values given the stage-one test statitic $x_1$ (z-score in our case).
-For any given objective function, the design parameters can be identified via
-a variational problem.
-To numerically solve this problem $n_2$ and $c_2$ are integrated using
-a Gaussian quadrature rule.
-The order of the rule determines the number of pivot points for both functions.
-Since, both $n_2$ and $c_2$ are usually fairly smooth on the continuation
-region, a quadrature rule of order 5 is sufficiently flexible:
 
-```{r define-order-of-gq-rule}
-order <- 5L
-```
+# Example
 
-The initial design may then be defined as follows:
+Consider the two-arm case comparing two group means mean.
+Let $\delta$ be the difference in means and assume that the aim is to 
+reject the null hypothesis $\mathcal{H}_0: \delta \leq 0$. 
+Further assume that a power of 80% at $\delta=0.4$ and a type-one-error rate
+of 2.5% on the boundary of the null hypothesis $\delta\leq0.0$ is required.
 
-```{r create-design}
-design <- TwoStageDesign(
-    n1    = 25, 
-    c1f   = 0,
-    c1e   = 2,
-    n2    = 40.0, 
-    c2    = 1.96,
-    order = order
-  )
-```
-
-[comment: I don't like the gq_design function. If we only use GQ, we should implement this as default constructor of the TwoStageDesign class even though the implementation is more generic.]
-The design can be visualized using the provided `plot()` method.
-
-```{r plot-design}
-plot(design)
-```
-
-In the next step, we define a simple optimization problem for 
-improving this initial design.
-
+In this situation, the one-sided t-test would require a sample size of
+$51$ individuals per-group.
+If we were willing to accept the fact that the sample size of a two-stage
+design is inherently unknown at the planning stage, 
+we could reduce the *expected* sample size under the alternative by optimizing
+a two-stage design with respect to this quantity.
+Since the two-stage design, by definition, has more degrees of freedom than
+the single-stage design, it must be at least as good in terms of expected sample
+size as the single-stage design - for which the expected sample size is 
+always 51.
 
 
 ## Define hypotheses and data-generating mechanism
 
-First, we define the null and alternative hypotheses as
-prior distributions over the unknown $\delta$.
-
-```{r define-hypotheses}
-null        <- PointMassPrior(.0, 1)
-alternative <- PointMassPrior(.4, 1)
+```{r load-adoptr}
+library(adoptr)
 ```
 
-Next, we define the data-generating mechanism.
-Currently, only normally distributed test statistics with known
-variance are supported.
-For medium to large sample sizes, the assumption of known variance
-introduces little error even if the true distribution is, e.g.,
-a t-distribution due to estimation of the unknown variance.
-Here we simply define a normal-model.
-The default is a two-arm trial, but for the sake of simplicity,
-we consider a single-arm trial first.
+First, we define the null and alternative hypotheses as prior distributions 
+over the unknown parameter $\delta$.
+
+```{r define-hypotheses}
+H_0 <- PointMassPrior(.0, 1)
+H_1 <- PointMassPrior(.4, 1)
+```
+
+Next, we define the data-generating mechanism (data distribution).
+Currently, only normally distributed test statistics with known variance are
+supported.
 
 ```{r define data-gernerating-mechanism}
 datadist <- Normal(two_armed = FALSE)
 ```
 
-Note that when using two-armed designs, all sample sizes are given 
-*per-arm*!
 
+## Specify optimization problem
 
-## Define scores
-
-To define the optimization problem we specify a few quantities of interest.
-The overall objective could, e.g., be to minimize the expected sample
-size of the design under the alternative hypothesis subject to 
-the given power and type one error rate constraints.
-Let to this end
+We begin by defining the expected sample size under the alternative hypothesis:
 
 ```{r define-ess}
-ess  <- expected(ConditionalSampleSize(datadist, alternative))
+ess <- expected(ConditionalSampleSize(datadist, H_1))
 ```
 
-be the expected sample size under the alternative. 
-Note that the `ess` object is created by integrating a simple, conditional
-score - the conditional sample size given $X_1 = x_1$ is just $n_1 + n_2(x_1)$ and pre-implemented.
-
-Similarly, we can define the power and type one error rate by
+Similarly, we can define the power and the type-one-error rate by
 integrating conditional power with respect to the alternative or 
 null hypothesis respectively:
 
 ```{r define-power-toer}
-power  <- expected(ConditionalPower(datadist, alternative))
-toer   <- expected(ConditionalPower(datadist, null))
+power  <- expected(ConditionalPower(datadist, H_1))
+toer   <- expected(ConditionalPower(datadist, H_0))
 ```
 
+To complete the problem specification, we only need to provide an initial 
+design and an integration order for the Gaussian quadrature rule to be used for
+the numerical integration of the variational objective between $c_1^f$ and 
+$c_1^e$.
+For the initial design, we simply set the stage-one sample size to half the 
+sample size of the t-test and we use a rule of order 7:
 
-
-## Optimize the design
-
-We can now proceed with defining and solving the optimization problem.
-Before doing so, we need to define box-constraints by providing a
-lower and upper boundary design.
-
-```{r boundary-designs}
-lb_design <- update(
-    design, c(10, -1, 1, numeric(order) + 2, numeric(order) - 5)
-)
-ub_design <- update(
-  design, c(50, 1, 4, numeric(order) + 50, numeric(order) + 5)
+```{r create-design}
+initial_design <- TwoStageDesign(
+    n1    = 25, 
+    c1f   = 0,
+    c1e   = 2.5,
+    n2    = 50, 
+    c2    = 1.96,
+    order = 7L
 )
 ```
+
+The decision boundaries are heuristically picked in concordance with those of
+the single-stage design.
+We can then check whether the initial design fulfills the constraints on the 
+operating characteristics:
+
+```{r check-power}
+evaluate(power, initial_design)
+```
+
+```{r check-toer}
+evaluate(toer, initial_design)
+```
+
+We can now proceed with defining and solving the optimization problem:
 
 ```{r optimize}
-optimal_result <- minimize(
+opt_res <- minimize(
   
   ess,
+  
   subject_to(
     power >= 0.8,
-    toer  <= .05
+    toer  <= .025
   ),
   
-  initial_design        = design,
-  lower_boundary_design = lb_design,
-  upper_boundary_design = ub_design
-  
+  initial_design
 )
-
-optimal_design <- optimal_result$design
 ```
 
-Here, we override the internal defaults to allow a more precise solution.
-Note that since COBYLA is a generic derivative-free optimizer, the process
-may take quite a while. 
-In general it is important to check convergence since partial solutions
-might be non-smooth or otherwise non-intuitive. 
-If the algorithm would not have converged, the function `minimize`
-would have thrown a warning message.
-All the output that was created by `nloptr` can be regarded by
+Here, the default setting for the optimizer and box constraints seem to have 
+worked out.
+The numerical procedure converged after 
 
 ```{r nloptr-output, eval = FALSE}
-optimal_result$details$nloptr_return
+opt_res$nloptr_return$iterations
 ```
 
-The resulting optimized design may again be plotted together with its
-conditional power.
+iterations.
+
+We can plot the resulting optimized design may again be plotted together with 
+its conditional power.
 
 ```{r plot-optimal-design}
 plot(
-  optimal_design, 
-  "Conditional power" = ConditionalPower(datadist, alternative),
-  "Conditional TOER" = ConditionalPower(datadist, null)
+  opt_res$design, 
+  "Conditional power" = ConditionalPower(datadist, H_1)
 )
 ```
 
-This class of designs was previously discussed in [SIM article] where
-an indirect method solving the Euler-Lagrange equation was used to find
-the optimal $n_2$ and $c_2$ functions.
+Numerical integration yields an expected sample size of 
 
+```{r}
+evaluate(ess, opt_res$design)
+```
+
+which is way below the single-stage 51. 
+We can check this results against simulated values 
+```{r}
+df_sim <- simulate(opt_res$design, nsim = 10^6, dist = datadist, theta = .4, seed = 42)
+
+n <- df_sim$n1 + df_sim$n2
+mean(n)
+sd(n) / sqrt(length(n))
+```
+
+Obviously, the values from simulation and numerical integration are almost 
+identical.
+
+The constraints are also met almost perfectly:
+```{r}
+evaluate(toer, opt_res$design)
+evaluate(power, opt_res$design)
+```
 
 
 ## Variations
 
-The purpose of `adoptr` is to provide a high-level interface for exploring 
+The purpose of **adoptr** is to provide a high-level interface for exploring 
 and comparing different designs and to experiment with different 
 combinations of objective functions and constraints.
+In particular, **adoptr** supports:
 
-[...]
+* Arbitrary continuous or discrete [prior distributions](https://kkmann.github.io/adoptr/articles/working-with-priors.html) for the single location 
+parameter $\theta$ of the test statistic.
+
+* Support for simple arithmetic operations on scores to quickly define weighted
+sums etc. (cf. [working with priors](https://kkmann.github.io/adoptr/articles/score-and-constraints-arithmetic.html)).
+
+* Relatively flexible framework for [defining custom scores](https://kkmann.github.io/adoptr/articles/score-and-constraints-arithmetic.html).

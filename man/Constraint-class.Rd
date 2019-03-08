@@ -4,6 +4,7 @@
 \name{Constraint-class}
 \alias{Constraint-class}
 \alias{evaluate,Constraint,TwoStageDesign-method}
+\alias{show,Constraint-method}
 \alias{ConditionalConstraint-class}
 \alias{<=,AbstractConditionalScore,numeric-method}
 \alias{>=,AbstractConditionalScore,numeric-method}
@@ -22,6 +23,8 @@
 \usage{
 \S4method{evaluate}{Constraint,TwoStageDesign}(s, design,
   optimization = FALSE, ...)
+
+\S4method{show}{Constraint}(object)
 
 \S4method{<=}{AbstractConditionalScore,numeric}(e1, e2)
 
@@ -56,6 +59,8 @@
 the underlying design; used for smooth optimization.}
 
 \item{...}{further optional arguments}
+
+\item{object}{object of class \code{Constraint}}
 
 \item{e1}{first comparator}
 

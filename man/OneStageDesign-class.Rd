@@ -9,6 +9,7 @@
 \alias{c2,OneStageDesign,numeric-method}
 \alias{TwoStageDesign,OneStageDesign-method}
 \alias{plot,OneStageDesign-method}
+\alias{show,OneStageDesign-method}
 \alias{evaluate,SmoothnessN2,OneStageDesign-method}
 \title{One-stage design}
 \usage{
@@ -24,6 +25,8 @@ OneStageDesign(n, c)
 
 \S4method{plot}{OneStageDesign}(x, y, ...)
 
+\S4method{show}{OneStageDesign}(object)
+
 \S4method{evaluate}{SmoothnessN2,OneStageDesign}(s, design, ...)
 }
 \arguments{
@@ -31,7 +34,7 @@ OneStageDesign(n, c)
 
 \item{c}{rejection boundary (c = c1f = c1e)}
 
-\item{object}{object to update}
+\item{object}{object of class \code{OneStageDesign}}
 
 \item{params}{vector of design parameters (must be in same order as returned
 by \code{as.numeric(OneStageDesign)})}
@@ -56,6 +59,8 @@ In this case without a second stage, there only exist the first-stage sample
 size \code{n1} and the first-stage rejection boundary \code{c1f}.
 No other parameters have to be set.
 \code{OneStageDesign} is a subclass of \link{TwoStageDesign}.
+
+Only states the class itself.
 }
 \section{Slots}{
 

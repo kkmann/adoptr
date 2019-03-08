@@ -23,44 +23,17 @@ setClass("DataDistribution", representation(
 )
 
 
-#' @param probs numeric vector of probabilities
-#' @describeIn DataDistribution quantile function of the respective distribution.
-#' @export
-setMethod("quantile", signature("DataDistribution"), function(x, probs, n, theta, ...) stop("not implemented"))
-
 
 #' @rdname DataDistribution-class
 #' @export
 setGeneric("probability_density_function", function(dist, x, n, theta, ...) standardGeneric("probability_density_function"))
 
-#' @describeIn DataDistribution probability density function given outcome,
-#'     sample size and parameter; must be implemented.
-#' @export
-setMethod("probability_density_function", signature("DataDistribution", "numeric", "numeric", "numeric"),
-          function(dist, x, n, theta, ...) stop("not implemented"))
 
 
 #' @rdname DataDistribution-class
 #' @export
 setGeneric("cumulative_distribution_function", function(dist, x, n, theta, ...) standardGeneric("cumulative_distribution_function"))
 
-#' @describeIn DataDistribution cumulative distribution function given outcome,
-#'     sample size and parameter; must be implemented.
-#' @export
-setMethod("cumulative_distribution_function", signature("DataDistribution", "numeric", "numeric", "numeric"),
-          function(dist, x, n, theta, ...) stop("not implemented"))
-
-
-
-#' @describeIn DataDistribution sample from distribution given theta
-#'
-#' @param object design to simulate from
-#' @param nsim number of simulation runs
-#' @param seed ranom seed
-#'
-#' @export
-setMethod("simulate", signature("DataDistribution", "numeric"),
-          function(object, nsim, n, theta, seed = NULL, ...) stop("not implemented"))
 
 
 
@@ -130,7 +103,7 @@ setMethod("quantile", signature("Normal"),
 
 #' @rdname NormalDataDistribution-class
 #'
-#' @param object design to simulate from
+#' @param object object of class \code{Normal}
 #' @param nsim number of simulation runs
 #' @param seed random seed
 #'
@@ -146,3 +119,10 @@ setMethod("simulate", signature("Normal", "numeric"),
 
               stats::rnorm(nsim, mean = fct * sqrt(n) * theta, sd = 1)
           })
+
+
+#' @rdname NormalDataDistribution-class
+#' @export
+setMethod("show", signature(object = "Normal"),
+          function(object) cat(class(object)[1]))
+

@@ -4,13 +4,15 @@
 #' and a constraint set (or single constraint) of conditional and/or unconditional
 #' scores and solves the corresponding constraint minimization problem
 #' using \code{nloptr} (using COBYLA by default).
+#' An initial design has to be defined. It is also possible to defined
+#' lower- and upper-boundary designs. If this is not done, these
+#' are computed automatically.
 #'
 #' @param objective objective function
 #' @param subject_to constraint collection
 #' @param initial_design initial guess (x0 for nloptr)
-#' @param lower_boundary_design design specifying the lower boundary
+#' @param lower_boundary_design design specifying the lower boundary.
 #' @param upper_boundary_design design specifying the upper boundary
-#' @param c2_monotone should the c2-function be forced to be monotoneously decreasing?
 #' @param opts options list passed to nloptr
 #' @param ... further optional arguments passed to \code{\link{nloptr}}
 #'
@@ -18,15 +20,13 @@
 #'         \item{nloptr_return}{ Output of the corresponding nloptr call}
 #'         \item{call_args}{ The arguments given to the optimization call}
 #'
-#'
 #' @export
 minimize <- function(
     objective,
     subject_to,
     initial_design,
-    lower_boundary_design,
-    upper_boundary_design,
-    c2_monotone  = FALSE,
+    lower_boundary_design = get_lower_boundary_design(initial_design),
+    upper_boundary_design = get_upper_boundary_design(initial_design),
     opts         =  list(
         algorithm   = "NLOPT_LN_COBYLA",
         xtol_rel    = 1e-5,
@@ -51,9 +51,7 @@ minimize <- function(
         return(c(
             user_cnstr,
             design@c1f - design@c1e + ifelse( # ensure c1e > c1f if not one-stage
-                is(initial_design, "OneStageDesign"), 0, .1),
-            if (c2_monotone == TRUE)
-                diff(c2(design, scaled_integration_pivots(design)))
+                is(initial_design, "OneStageDesign"), 0, .1)
         ))
     }
 

@@ -116,7 +116,20 @@ returned?}
 \item{seed}{random seed}
 }
 \value{
-an object of class \code{TwoStageDesign}
+\code{TwoStageDesign} returns an object of class \code{TwoStageDesign}.
+
+\code{simulate()} returns list with \code{nsim} rows and for each row
+(each simulation run) the following columns \itemize{
+\item{theta }{The effect size}
+\item{n1 }{First-stage sample size}
+\item{c1f }{Stopping for futility boundary}
+\item{c1e }{Stopping for efficacy boundary}
+\item{x1 }{First-stage outcome}
+\item{n2 }{Resulting second-stage sample size after observing x1}
+\item{c2 }{Resulting second-stage decision-boundary after observing x1}
+\item{x2 }{Second-stage outcome}
+\item{reject }{Decision whether the null hypothesis is rejected or not}
+}
 }
 \description{
 \code{TwoStageDesign} is the fundamental design class of this package.

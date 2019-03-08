@@ -68,6 +68,14 @@ setMethod("evaluate", signature("AffineScore", "TwoStageDesign"),
 
 
 
+#' @rdname AffineScore-class
+#'
+#' @param object object of class \code{AffineScore}
+#' @export
+setMethod("show", signature(object = "AffineScore"),
+          function(object) cat(class(object)[1]))
+
+
 
 setClass("AffineUnconditionalScore", contains = c("AffineScore", "UnconditionalScore"))
 
@@ -107,10 +115,10 @@ setMethod("*", signature("numeric", "AffineUnconditionalScore"),
 
 
 
-setClass("AffineConditionalScore", contains = c("AffineScore", "AbstractConditionalScore", "ConditionalScore"))
+setClass("AffineConditionalScore", contains = c("AffineScore", "AbstractConditionalScore"))
 
 AffineConditionalScore <- function(scores, coefs, intercept = 0) {
-    if (!all(sapply(c(scores), function(s) is(s, "ConditionalScore"))))
+    if (!all(sapply(c(scores), function(s) is(s, "AbstractConditionalScore"))))
         stop("all scores must be conditional scores")
     res <- AffineScore(c(scores), coefs, intercept)
     class(res) <- "AffineConditionalScore"

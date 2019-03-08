@@ -40,7 +40,7 @@ OneStageDesign <- function(n, c) {
 
 #' @param params vector of design parameters (must be in same order as returned
 #'     by \code{as.numeric(OneStageDesign)})
-#' @param object object to update
+#' @param object object of class \code{OneStageDesign}
 #'
 #' @rdname OneStageDesign-class
 #' @export
@@ -111,3 +111,14 @@ setMethod("plot", signature("OneStageDesign"),
           function(x, ...)
               stop("plot method is only defined for two-stage designs!")
           )
+
+
+
+#' Show method for OneStageDesign objects
+#'
+#' Only states the class itself.
+#'
+#' @rdname OneStageDesign-class
+#' @export
+setMethod("show", signature(object = "OneStageDesign"),
+          function(object) cat(class(object)[1]))

@@ -11,5 +11,5 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 sticker.R
-vignettes
 ^deploy.sh$
+Index.Rmd

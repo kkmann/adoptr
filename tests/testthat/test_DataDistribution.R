@@ -86,30 +86,16 @@ test_that("simulate respects seed", {
     expect_true(
         all(simulate(Normal(), 10, 25, -.5) != simulate(Normal(), 10, 25, -.5))
     )
-
-})
-
+}) # end 'simulate respects seed'
 
 
-test_that("run through abstract methods", {
 
-    x <- list()
-    class(x) <- "DataDistribution"
+test_that("show method returns class name", {
+    dist <- Normal()
 
-    expect_error(
-        probability_density_function(x, 5, 10, .5)
+    expect_equal(
+        cat(class(dist)[1]),
+        show(dist)
     )
+}) # end 'show method returns class name'
 
-    expect_error(
-        cumulative_distribution_function(x, 5, 10, .5)
-    )
-
-    expect_error(
-        quantile(x, .5, 10, .5)
-    )
-
-    expect_error(
-        simulate(x, 5, 10, .5)
-    )
-
-})
