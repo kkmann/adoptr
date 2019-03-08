@@ -1,17 +1,15 @@
-#' Point-mass prior
+#' Univariate discrete point mass priors
 #'
-#' \code{PointMassPrior} is a generic class for representing a univariate prior
-#' over a discrete set of points with positive probability mass.
-#' All methods for prior distributions [TODO link] are specialized to
-#' the discrete case.
+#' \code{PointMassPrior} is a sub-class of \code{\link[=Prior-class]{Prior}}
+#' representing a univariate prior over a discrete set of points with positive
+#' probability mass.
 #'
-#' @slot theta numeric vector of pivot points (parameter values with positive
-#'     prior mass)
-#' @slot mass numeric vector of the same length as theta - corresponding
-#'     probability masses (must sum to one!)
+#' @slot theta cf. parameter 'theta'
+#' @slot mass cf. parameter 'mass'
 #'
-#' @template PriorTemplate
+#' @seealso To represent continuous prior distributions use \code{{ContinuousPrior}}
 #'
+#' @aliases PointMassPrior
 #' @exportClass PointMassPrior
 setClass("PointMassPrior", representation(
         theta = "numeric",
@@ -21,8 +19,14 @@ setClass("PointMassPrior", representation(
 
 
 
-#' @param theta cf. slot 'theta'
-#' @param mass cf. slot 'mass'
+#' @param theta numeric vector of pivot points with positive prior mass
+#' @param mass numeric vector of probability masses at the pivot points
+#'     (must sum to 1)
+#'
+#' @return an object of class \code{PointMassPrior}
+#'
+#' @examples
+#' PointMassPrior(c(0, .5), c(.3, .7))
 #'
 #' @rdname PointMassPrior-class
 #' @export
@@ -33,19 +37,29 @@ PointMassPrior <- function(theta, mass) {
 }
 
 
-#' @rdname PointMassPrior-class
+#' @examples
+#' bounds(PointMassPrior(c(0, .5), c(.3, .7)))
+#'
+#' @rdname bounds
 #' @export
 setMethod("bounds", signature("PointMassPrior"),
     function(dist, ...) range(dist@theta))
 
 
-#' @rdname PointMassPrior-class
+#' @examples
+#' expectation(PointMassPrior(c(0, .5), c(.3, .7)), identity) # .35
+#'
+#' @rdname expectation
 #' @export
 setMethod("expectation", signature("PointMassPrior", "function"),
     function(dist, f, ...) sum(dist@mass * sapply(dist@theta, f, ...)) )
 
 
-#' @rdname PointMassPrior-class
+#' @examples
+#' tmp <- condition(PointMassPrior(c(0, .5), c(.3, .7)), c(-1, .25))
+#' expectation(tmp, identity) # 0
+#'
+#' @rdname condition
 #' @export
 setMethod("condition", signature("PointMassPrior", "numeric"),
     function(dist, interval, ...) {
@@ -65,7 +79,10 @@ setMethod("condition", signature("PointMassPrior", "numeric"),
     })
 
 
-#' @rdname PointMassPrior-class
+#' @examples
+#' predictive_pdf(Normal(), PointMassPrior(.3, 1), 1.5, 20) # ~.343
+#'
+#' @rdname predictive_pdf
 #' @export
 setMethod("predictive_pdf", signature("DataDistribution", "PointMassPrior", "numeric"),
     function(dist, prior, x1, n1, ...) {
@@ -78,7 +95,10 @@ setMethod("predictive_pdf", signature("DataDistribution", "PointMassPrior", "num
     })
 
 
-#' @rdname PointMassPrior-class
+#' @examples
+#' predictive_cdf(Normal(), PointMassPrior(.0, 1), 0, 20) # .5
+#'
+#' @rdname predictive_cdf
 #' @export
 setMethod("predictive_cdf", signature("DataDistribution", "PointMassPrior", "numeric"),
     function(dist, prior, x1, n1, ...) {
@@ -91,7 +111,10 @@ setMethod("predictive_cdf", signature("DataDistribution", "PointMassPrior", "num
     })
 
 
-#' @rdname PointMassPrior-class
+#' @examples
+#' posterior(Normal(), PointMassPrior(0, 1), 2, 20)
+#'
+#' @rdname posterior
 #' @export
 setMethod("posterior", signature("DataDistribution", "PointMassPrior", "numeric"),
     function(dist, prior, x1, n1, ...) {
@@ -103,7 +126,6 @@ setMethod("posterior", signature("DataDistribution", "PointMassPrior", "numeric"
 
 
 #' @rdname PointMassPrior-class
-#'
 #' @param object object of class \code{PointMassPrior}
 #' @export
 setMethod("show", signature(object = "PointMassPrior"),
