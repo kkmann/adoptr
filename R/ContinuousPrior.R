@@ -101,10 +101,10 @@ setMethod("condition", signature("ContinuousPrior", "numeric"),
         # compute new normalizing constant
         z <- stats::integrate(dist@pdf, interval[1], interval[2], abs.tol = .00001)$value
         new_pdf <- function(theta) {
-            res <- numeric(length(theta))
-            if (interval[1] <= theta && theta <= interval[2])
-                res <- dist@pdf(theta) / z
-            return(res)
+            ifelse(interval[1] <= theta && theta <= interval[2],
+                dist@pdf(theta) / z
+                numeric(length(theta))
+            )
         }
         ContinuousPrior(
             new_pdf,
