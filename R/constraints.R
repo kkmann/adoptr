@@ -122,8 +122,13 @@ setMethod(">=", signature("UnconditionalScore", "UnconditionalScore"),
 
 #' Collection of constraints
 #'
-#' @slot unconditional_constraints [todo]
-#' @slot conditional_constraints [todo]
+#' @slot unconditional_constraints a list of elements of class \code{UnconditionalConstraint}
+#' @slot conditional_constraints a list of elements of class \code{ConditionalConstraint}
+#'
+#' A \code{ConstraintsCollection} is a collection of unconditional and
+#' conditional constraints. In order to evaluate these correctly, they
+#' have to be defined in two different slots.
+#' A \code{ConstraintsCollection} can be created by \code{subject_to()}.
 #'
 #' @param s constraint collection
 #' @param design design

@@ -35,7 +35,13 @@ setClass("AbstractConditionalScore")
 
 #' Class for conditional scoring function
 #'
-#' [ToDo]
+#' \code{ConditionalScore} is an abstract class for conditional scores.
+#' It requires the two slots \code{distribution} and \code{prior} that
+#' determine the data distribution and the prior distribution for the effect
+#' parameter. When defining a specific  \code{ConditionalScore}, a corresponding
+#' method \code{evaluate()} needs to be defined, too.
+#' Any \code{ConditionalScore} can be transformed to an unconditional
+#' \code{\link{IntegralScore}} by means of the method \code{expected()}.
 #'
 #' @param s conditional score object to evaluate
 #' @param ... optional arguments
@@ -102,7 +108,10 @@ setMethod("*", signature("numeric", "ConditionalScore"),
 
 #' Abstract class for unconditional scoring function
 #'
-#' [ToDo]
+#' \code{UnconditionalScore} is an abstract class for unconditional scores.
+#' Currently, all unconditional scores in \code{adoptr} are of class
+#' \code{\link{IntegralScore}}. The class \code{UnconditionalScore} is
+#' only needed for internal use.
 #'
 #'
 #' @exportClass UnconditionalScore
@@ -162,7 +171,9 @@ setMethod("show", signature(object = "IntegralScore"),
 
 #' @param optimization logical, if TRUE uses a relaxation to real parameters of
 #'    the underlying design; used for smooth optimization.
-#' @param subdivisions integer, [TODO]
+#' @param subdivisions integer, number of subdivisions that is used for integration
+#'    on the continuation region; results become more precise with increased
+#'    number of subdivisions; default is \code{10000L}.
 #' @param ... further optimal arguments
 #'
 #' @describeIn IntegralScore generic implementation of evaluating an integral
