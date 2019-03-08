@@ -102,7 +102,7 @@ setMethod("condition", signature("ContinuousPrior", "numeric"),
         z <- stats::integrate(dist@pdf, interval[1], interval[2], abs.tol = .00001)$value
         new_pdf <- function(theta) {
             ifelse(interval[1] <= theta && theta <= interval[2],
-                dist@pdf(theta) / z
+                dist@pdf(theta) / z,
                 numeric(length(theta))
             )
         }
