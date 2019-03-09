@@ -17,6 +17,7 @@
 #'
 #' @template DataDistributionTemplate
 #'
+#' @aliases DataDistribution
 #' @exportClass DataDistribution
 setClass("DataDistribution", representation(
     two_armed = "logical")

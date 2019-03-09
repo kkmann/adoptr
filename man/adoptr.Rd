@@ -6,32 +6,40 @@
 \alias{adoptr-package}
 \title{Adaptive Optimal Two-Stage Designs}
 \description{
-This package provides functionality to compute and analyze optimal
-two-stage designs for two-stage superiority tests based on a Z statistic.
-A range of pre-implemented objective/constraint functions are provided.
+The \pkg{adoptr} package provides functionality to explore custim optimal
+two-stage designs for one or two-arm superiority tests.
+Currently, only (asymptotically) normal test statistics are supported.
 }
 \section{Quickstart}{
 
 
-For a sample workflow and a quick demo of the capabilities, see the
-vignette .
+For a sample workflow and a quick demo of the capabilities, see
+\href{here}{https://kkmann.github.io/adoptr/articles/adoptr.html}.
 }
 
 \section{Designs}{
 
 
-list designs
+\pkg{adoptr} currently supports \code{\link{TwoStageDesign}},
+\code{\link{GroupSequentialDesign}}, and \code{\link{OneStageDesign}}.
 }
 
-\section{Prios}{
+\section{Data distributions}{
 
 
-List prior classes
+[Todo]
+}
+
+\section{Priors}{
+
+
+Both \code{\link{ContinuousPrior}} and \code{\link{PointMassPrior}} are
+supported for the single parameter of a \code{\link{DataDistribution}}.
 }
 
 \section{Scores}{
 
 
-list score classes
+TODO: list score classes
 }
 

@@ -3,6 +3,7 @@
 \docType{class}
 \name{DataDistribution-class}
 \alias{DataDistribution-class}
+\alias{DataDistribution}
 \alias{probability_density_function}
 \alias{cumulative_distribution_function}
 \title{Data distributions}
