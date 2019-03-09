@@ -108,6 +108,14 @@ test_that("conditioning works", {
         bounds(cond_unif)
     ) # conditioning on inverval larger than the support does not change anything
 
+    expect_length(
+        cond_unif@pdf(c(.5, 2)),
+        2
+    ) # conditioned pdf is vectorized
+
+    expect_error(
+        condition(unif_prior, c(2, 3))
+    )
 
 }) # end 'conditioning works'
 

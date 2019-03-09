@@ -107,11 +107,22 @@ setMethod("condition", signature("ContinuousPrior", "numeric"),
             stop("interval must be finite")
         if (diff(interval) < 0)
             stop("interval[2] must be larger or equal to interval[1]")
+
+        interval[1] <- max(interval[1], dist@support[1])
+        interval[2] <- min(interval[2], dist@support[2])
+        if (diff(interval) < 0)
+            stop("resulting interval is empty")
         # compute new normalizing constant
         z <- stats::integrate(dist@pdf, interval[1], interval[2], abs.tol = .00001)$value
+        new_pdf <- function(theta) {
+            ifelse(interval[1] <= theta & theta <= interval[2],
+                dist@pdf(theta) / z,
+                theta
+            )
+        }
         ContinuousPrior(
-            function(theta) dist@pdf(theta)/z,
-            c(max(interval[1], dist@support[1]), min(interval[2], dist@support[2]))
+            new_pdf,
+            interval
         )
     })
 
