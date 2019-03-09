@@ -115,7 +115,7 @@ SmoothnessN2 <- function(h = .1)
 #'    the underlying design; used for smooth optimization.
 #' @param subdivisions integer, maxima number of subdivisions used for daptive
 #'    integration.
-#' @template dotdotdotTemplate
+#' @template dotdotdot
 #'
 #' @rdname SmoothnessN2-class
 #' @export
@@ -207,7 +207,7 @@ N1 <- function() new("N1", dummy = FALSE)
 #' @param design the design to compute the smoothness term for
 #' @param optimization logical, if TRUE uses a relaxation to real parameters of
 #'    the underlying design; used for smooth optimization.
-#' @template dotdotdotTemplate
+#' @template dotdotdot
 #'
 #' @rdname N1-class
 #' @export

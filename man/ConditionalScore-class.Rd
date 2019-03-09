@@ -3,29 +3,29 @@
 \docType{class}
 \name{ConditionalScore-class}
 \alias{ConditionalScore-class}
-\alias{expected,ConditionalScore-method}
+\alias{ConditionalScore}
 \alias{show,ConditionalScore-method}
 \title{Class for conditional scoring function}
 \usage{
-\S4method{expected}{ConditionalScore}(s, ...)
-
 \S4method{show}{ConditionalScore}(object)
 }
 \arguments{
+\item{object}{object of class \code{ConditionalScore}}
+
 \item{s}{conditional score object to evaluate}
 
-\item{...}{optional arguments}
-
-\item{object}{object of class \code{ConditionalScore}}
+\item{...}{further optional arguments}
 }
 \description{
-[ToDo]
+\code{ConditionalScore} is an abstract class for conditional scores.
+It requires the two slots \code{distribution} and \code{prior} that
+determine the data distribution and the prior distribution for the effect
+parameter. When defining a specific  \code{ConditionalScore}, a corresponding
+method \code{evaluate} needs to be defined, too.
+Any \code{ConditionalScore} can be transformed to an unconditional
+\code{\link{IntegralScore}} by means of the method \code{\link{expected}}.
 }
-\section{Methods (by generic)}{
-\itemize{
-\item \code{expected}: integrate a \code{ConditionalScore} over the
-stage-one outcome; return object of class \code{\link{IntegralScore-class}}.
-
-\item \code{show}: returns the class name itself
-}}
-
+\seealso{
+The common conditional scores \code{\link{ConditionalPower}}
+   and \code{\link{ConditionalSampleSize}} are preimplemented in \pkg{adoptr}.
+}

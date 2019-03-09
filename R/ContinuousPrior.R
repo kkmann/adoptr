@@ -21,8 +21,13 @@ setClass("ContinuousPrior", representation(
 #' @param pdf                 vectorized univariate PDF function
 #' @param support             numeric vector of length two with the bounds of
 #'     the compact interval on which the pdf is positive.
-#' @param tighten_support     ???
-#' @param check_normalization ???
+#' @param tighten_support     logical indicating if the support should be
+#'     tightened
+#' @param check_normalization logical indicating if it should be checked
+#'     that \code{pdf} defines a density.
+#'
+#' @examples
+#' ContinuousPrior(function(x) 2*x, c(0, 1))
 #'
 #' @rdname ContinuousPrior-class
 #' @export

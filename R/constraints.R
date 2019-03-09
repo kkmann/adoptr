@@ -9,7 +9,7 @@
 #'
 #' @param e1 first comparator
 #' @param e2 second comparator
-#' @template dotdotdotTemplate
+#' @template dotdotdot
 #'
 #' @examples
 #' cp          <- ConditionalPower(Normal(), PointMassPrior(0.4, 1))

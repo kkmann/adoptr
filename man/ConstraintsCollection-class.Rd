@@ -30,8 +30,13 @@ the underlying design; used for smooth optimization.}
 \section{Slots}{
 
 \describe{
-\item{\code{unconditional_constraints}}{[todo]}
+\item{\code{unconditional_constraints}}{a list of elements of class \code{UnconditionalConstraint}}
 
-\item{\code{conditional_constraints}}{[todo]}
+\item{\code{conditional_constraints}}{a list of elements of class \code{ConditionalConstraint}
+
+A \code{ConstraintsCollection} is a collection of unconditional and
+conditional constraints. In order to evaluate these correctly, they
+have to be defined in two different slots.
+A \code{ConstraintsCollection} can be created by \code{subject_to()}.}
 }}
 

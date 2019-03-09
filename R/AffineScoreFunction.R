@@ -36,7 +36,7 @@ setClass("AffineScore", representation(
 #' @param scores cf. corresponding slot
 #' @param coefs cf. corresponding slot
 #' @param intercept cf. corresponding slot
-#' @template dotdotdotTemplate
+#' @template dotdotdot
 #'
 #' @rdname AffineScore-class
 #' @export
