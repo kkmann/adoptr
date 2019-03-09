@@ -4,7 +4,6 @@
     subject_to,
     lower_boundary_design,
     upper_boundary_design,
-    c2_monotone  = FALSE,
     opts         =  list(
         algorithm   = "NLOPT_LN_COBYLA",
         xtol_rel    = 1e-5,
@@ -49,8 +48,7 @@
         cnstr  <- evaluate(subject_to, design, optimization = TRUE)
         return(c(
             cnstr,
-            design@c1f - design@c1e + .1,
-            if (c2_monotone == TRUE) diff(c2(design, scaled_integration_pivots(design))) # make c2() monotone if desired
+            design@c1f - design@c1e + .1
         ))
     }
 
@@ -87,7 +85,6 @@
     subject_to,
     lower_boundary_design,
     upper_boundary_design,
-    c2_monotone  = FALSE,
     opts         =  list(
         algorithm   = "NLOPT_LN_COBYLA",
         xtol_rel    = 1e-5,
@@ -101,9 +98,9 @@
     n1 <- NULL
 
     # Define continuous design as starting value and fix rounded sample sizes
-    post_design <- optimal_design
+    post_design    <- optimal_design
     post_design@n1 <- round(post_design@n1)
-    post_design <- make_fixed(post_design, n1)
+    post_design    <- make_fixed(post_design, n1)
 
     # Define new lower boundary design and fix rounded sample sizes
     lb_design <- update(post_design, lower_boundary_design@c1f)
