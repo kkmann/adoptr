@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Post-process an optimal design — postprocess • adoptr</title>
+<title>Post-process decision boundaries of a two-stage design — postprocess • adoptr</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -36,12 +36,23 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="Post-process an optimal design — postprocess" />
+<meta property="og:title" content="Post-process decision boundaries of a two-stage design — postprocess" />
 
-<meta property="og:description" content="postprocess takes an optimal design and rounds its sample sizes.
-The corresponding decision boundaries are re-computed such that the
-constraints which were specified in the underlying minimize() call
-are fulfilled." />
+<meta property="og:description" content="The results of a call to minimize is an design optimizing the
+objective by relaxing all sample sizes to continuous variables.
+In practice, sample sizes obviously need to be natural numbers, to
+postprocess can be used to re-solve the same problem defined in
+a call to minimize after rounding all sample sizes to integer values
+(i.e., n1 and n2_pivots).
+These values are then keept constant during optimization and only the
+decision boundaries are re-adjusted.
+Note that this will only have substantial effect on small designs, where
+the discretization error might be substantial.
+Note tha even a non-preprocessed design will return rounded sample sizes by
+default (cf. n).
+The only difference is that the internal slots n1 and n2_pivots
+may still be real numbers and the corresponding critical values are not
+adusted for the post-hoc discretization of these." />
 
 <meta property="og:image" content="https://kkmann.github.io/adoptr/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -125,38 +136,57 @@ are fulfilled." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Post-process an optimal design</h1>
+    <h1>Post-process decision boundaries of a two-stage design</h1>
     <small class="dont-index">Source: <a href='https://github.com/kkmann/adoptr/blob/master/R/postprocess.R'><code>R/postprocess.R</code></a></small>
     <div class="hidden name"><code>postprocess.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p><code>postprocess</code> takes an optimal design and rounds its sample sizes.
-The corresponding decision boundaries are re-computed such that the
-constraints which were specified in the underlying <code><a href='minimize.html'>minimize()</a></code> call
-are fulfilled.</p>
+    <p>The results of a call to <code><a href='minimize.html'>minimize</a></code> is an design optimizing the
+objective by relaxing all sample sizes to continuous variables.
+In practice, sample sizes obviously need to be natural numbers, to
+<code>postprocess</code> can be used to re-solve the same problem defined in
+a call to minimize after rounding all sample sizes to integer values
+(i.e., <code>n1</code> and <code>n2_pivots</code>).
+These values are then keept constant during optimization and only the
+decision boundaries are re-adjusted.
+Note that this will only have substantial effect on small designs, where
+the discretization error might be substantial.
+Note tha even a non-preprocessed design will return rounded sample sizes by
+default (cf. <code><a href='TwoStageDesign-class.html'>n</a></code>).
+The only difference is that the internal slots <code>n1</code> and <code>n2_pivots</code>
+may still be real numbers and the corresponding critical values are not
+adusted for the post-hoc discretization of these.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>postprocess</span>(<span class='no'>results</span>)</pre>
+    <pre class="usage"><span class='fu'>postprocess</span>(<span class='no'>results</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>results</th>
-      <td><p>An object obtained by <code><a href='minimize.html'>minimize</a></code>.</p></td>
+      <td><p>a list, expected to be the return value of a call to
+<code><a href='minimize.html'>minimize</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>further optional arguments</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
+    <p>list with two elements:</p>
+<dt>design</dt><dd><p>the post-processed optimal design</p></dd>
+   <dt>nloptr_return</dt><dd><p><code><a href='https://www.rdocumentation.org/packages/nloptr/topics/nloptr'>nloptr</a></code> output</p></dd>
+
     
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-<dt>design</dt><dd><p>The resulting optimal design</p></dd>
-        <dt>nloptr_return</dt><dd><p>Output of the corresponding nloptr call</p></dd>
-
+    <div class='dont-index'><p><code><a href='minimize.html'>minimize</a></code></p></div>
     
 
   </div>
@@ -166,6 +196,8 @@ are fulfilled.</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#see-also">See also</a></li>
           </ul>
 
   </div>
