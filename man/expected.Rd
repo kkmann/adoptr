@@ -23,7 +23,7 @@ By the method \code{expected} any \code{\link{ConditionalScore}}
 can be integrated over the full \eqn{x_1}-range and returns an
 \code{\link{IntegralScore}}. I.e., for a conditional score
 \eqn{s(design, x_1)}{s(design, x1)} the integral
-\eqn{\int s(design, x_1) \operatorname{d} x_1}{over s(design, x1)}
+\eqn{\int s(design, x_1) d x_1}{over s(design, x1)}
 is computed.
 }
 \examples{
