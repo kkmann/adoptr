@@ -1,178 +1,82 @@
-.postprocess <- function(
-    optimal_design,
-    objective,
-    subject_to,
-    lower_boundary_design,
-    upper_boundary_design,
-    c2_monotone  = FALSE,
-    opts         =  list(
-        algorithm   = "NLOPT_LN_COBYLA",
-        xtol_rel    = 1e-5,
-        maxeval     = 10000
-    ),
-    ...
-) {
+#' Post-process decision boundaries of a two-stage design
+#'
+#' The results of a call to \code{\link{minimize}} is an design optimizing the
+#' objective by relaxing all sample sizes to continuous variables.
+#' In practice, sample sizes obviously need to be natural numbers, to
+#' \code{postprocess} can be used to re-solve the same problem defined in
+#' a call to minimize after rounding all sample sizes to integer values
+#' (i.e., \code{n1} and \code{n2_pivots}).
+#' These values are then keept constant during optimization and only the
+#' decision boundaries are re-adjusted.
+#' Note that this will only have substantial effect on small designs, where
+#' the discretization error might be substantial.
+#' Note tha even a non-preprocessed design will return rounded sample sizes by
+#' default (cf. \code{\link{n}}).
+#' The only difference is that the internal slots \code{n1} and \code{n2_pivots}
+#' may still be real numbers and the corresponding critical values are not
+#' adusted for the post-hoc discretization of these.
+#'
+#' @param results a list, expected to be the return value of a call to
+#'   \code{\link{minimize}}.
+#' @template dotdotdot
+#'
+#' @return list with two elements:
+#'    \item{design}{the post-processed optimal design}
+#'    \item{nloptr_return}{\code{\link[nloptr]{nloptr}} output}
+#'
+#' @seealso \code{\link{minimize}}
+#'
+#' @export
+postprocess <- function(results, ...) {
 
-    args <- c(as.list(environment()), list(...))
+    # calling arguments to minimize
+    args <- results$call_args
 
-    n1 <- NULL
-    n2_pivots <- NULL
+    # change initial design to optimal design with integer sample sizes
+    opt_design_int           <- results$design
+    opt_design_int@n1        <- max(1, round(opt_design_int@n1))
+    opt_design_int@n2_pivots <- pmax(0, round(opt_design_int@n2_pivots))
 
-    # define continuous design as starting value and fix rounded sample sizes
-    post_design           <- optimal_design
-    post_design@n1        <- n1(optimal_design, round = TRUE)
-    post_design@n2_pivots <- round(optimal_design@n2_pivots)
-    post_design           <- make_fixed(post_design, n1, n2_pivots)
+    # fix n1/n2 during optimization for design and boundaries
+    n2_pivots      <- NULL # trick to fool R CMD check into accepting NSE below
+    opt_design_int <- make_fixed(opt_design_int, n1, n2_pivots)
+    lb_design      <- make_fixed(args$lower_boundary_design, n1, n2_pivots)
+    ub_design      <- make_fixed(args$upper_boundary_design, n1, n2_pivots)
 
-    # define new lower boundary design and fix rounded sample sizes
-    lb_design             <- lower_boundary_design
-    lb_design@n1          <- post_design@n1
-    lb_design@n2_pivots   <- post_design@n2_pivots
-    lb_design             <- make_fixed(lb_design, n1, n2_pivots)
-
-    # define new upper boundary design and fix rounded sample sizes
-    ub_design             <- upper_boundary_design
-    ub_design@n1          <- post_design@n1
-    ub_design@n2_pivots   <- post_design@n2_pivots
-    ub_design             <- make_fixed(ub_design, n1, n2_pivots)
-
+    # re-optimize with new constraints
     f_obj <- function(params) {
         evaluate(
-            objective,
-            update(post_design, params),
+            args$objective,
+            update(opt_design_int, params),
             optimization = TRUE
         )
     }
 
     g_cnstr <- function(params) {
-        design <- update(post_design, params)
-        cnstr  <- evaluate(subject_to, design, optimization = TRUE)
-        return(c(
-            cnstr,
-            design@c1f - design@c1e + .1,
-            if (c2_monotone == TRUE) diff(c2(design, scaled_integration_pivots(design))) # make c2() monotone if desired
-        ))
+        design <- update(opt_design_int, params)
+        return(evaluate(args$subject_to, design, optimization = TRUE))
     }
 
-
-    # re-optimize c-values
     res <- nloptr::nloptr(
-        x0 = tunable_parameters(post_design),
+        x0 = tunable_parameters(opt_design_int),
         lb = tunable_parameters(lb_design),
         ub = tunable_parameters(ub_design),
         eval_f      = f_obj,
         eval_g_ineq = g_cnstr,
-        opts        = opts,
+        opts        = args$opts,
         ...
     )
 
     if (res$status == 5 | res$status == 6)
         warning(res$message)
 
-    # re-make parameters tunable for further use
-    post_design <- update(post_design, res$solution)
+    # reset al parameters to being tunable
+    post_design <- update(opt_design_int, res$solution)
     post_design <- make_tunable(post_design, n1, n2_pivots)
 
     return(list(
         design        = post_design,
-        nloptr_return = res,
-        call_args     = args
+        nloptr_return = res
     ))
-}
 
-
-.postprocess_os <- function(
-    optimal_design,
-    objective,
-    subject_to,
-    lower_boundary_design,
-    upper_boundary_design,
-    c2_monotone  = FALSE,
-    opts         =  list(
-        algorithm   = "NLOPT_LN_COBYLA",
-        xtol_rel    = 1e-5,
-        maxeval     = 10000
-    ),
-    ...
-) {
-
-    args <- c(as.list(environment()), list(...))
-
-    n1 <- NULL
-
-    # Define continuous design as starting value and fix rounded sample sizes
-    post_design <- optimal_design
-    post_design@n1 <- round(post_design@n1)
-    post_design <- make_fixed(post_design, n1)
-
-    # Define new lower boundary design and fix rounded sample sizes
-    lb_design <- update(post_design, lower_boundary_design@c1f)
-
-    # Define new upper boundary design and fix rounded sample sizes
-    ub_design <- update(post_design, upper_boundary_design@c1f)
-
-
-    f_obj <- function(params) {
-        evaluate(
-            objective,
-            update(post_design, params),
-            optimization = TRUE
-        )
-    }
-
-    g_cnstr <- function(params) {
-        design <- update(post_design, params)
-        return(evaluate(subject_to, design, optimization = TRUE))
-    }
-
-
-    # re-optimize c-values
-    res <- nloptr::nloptr(
-        x0 = tunable_parameters(post_design),
-        lb = tunable_parameters(lb_design),
-        ub = tunable_parameters(ub_design),
-        eval_f      = f_obj,
-        eval_g_ineq = g_cnstr,
-        opts        = opts,
-        ...
-    )
-
-    if (res$status == 5 | res$status == 6)
-        warning(res$message)
-
-    # re-make parameters tunable for further use
-    post_design <- update(post_design, res$solution)
-    post_design <- make_tunable(post_design, n1)
-
-
-    return(list(
-        design        = post_design,
-        nloptr_return = res,
-        call_args     = args
-    ))
-}
-
-
-
-#' Post-process an optimal design
-#'
-#' \code{postprocess} takes an optimal design and rounds its sample sizes.
-#' The corresponding decision boundaries are re-computed such that the
-#' constraints which were specified in the underlying \code{minimize()} call
-#' are fulfilled.
-#'
-#' @param results An object obtained by \code{\link{minimize}}.
-#'
-#' @return \item{design}{ The resulting optimal design}
-#'         \item{nloptr_return}{ Output of the corresponding nloptr call}
-#'
-#'
-#' @export
-postprocess <- function(results) {
-    results$call_args$initial_design <- NULL
-    if(is(results$design, "OneStageDesign")) {
-        do.call(.postprocess_os, args = c(list(optimal_design = results$design), results$call_args))
-    } else {
-        do.call(.postprocess, args = c(list(optimal_design = results$design), results$call_args))
-    }
 }

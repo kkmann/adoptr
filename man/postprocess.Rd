@@ -2,20 +2,38 @@
 % Please edit documentation in R/postprocess.R
 \name{postprocess}
 \alias{postprocess}
-\title{Post-process an optimal design}
+\title{Post-process decision boundaries of a two-stage design}
 \usage{
-postprocess(results)
+postprocess(results, ...)
 }
 \arguments{
-\item{results}{An object obtained by \code{\link{minimize}}.}
+\item{results}{a list, expected to be the return value of a call to
+\code{\link{minimize}}.}
+
+\item{...}{further optional arguments}
 }
 \value{
-\item{design}{ The resulting optimal design}
-        \item{nloptr_return}{ Output of the corresponding nloptr call}
+list with two elements:
+   \item{design}{the post-processed optimal design}
+   \item{nloptr_return}{\code{\link[nloptr]{nloptr}} output}
 }
 \description{
-\code{postprocess} takes an optimal design and rounds its sample sizes.
-The corresponding decision boundaries are re-computed such that the
-constraints which were specified in the underlying \code{minimize()} call
-are fulfilled.
+The results of a call to \code{\link{minimize}} is an design optimizing the
+objective by relaxing all sample sizes to continuous variables.
+In practice, sample sizes obviously need to be natural numbers, to
+\code{postprocess} can be used to re-solve the same problem defined in
+a call to minimize after rounding all sample sizes to integer values
+(i.e., \code{n1} and \code{n2_pivots}).
+These values are then keept constant during optimization and only the
+decision boundaries are re-adjusted.
+Note that this will only have substantial effect on small designs, where
+the discretization error might be substantial.
+Note tha even a non-preprocessed design will return rounded sample sizes by
+default (cf. \code{\link{n}}).
+The only difference is that the internal slots \code{n1} and \code{n2_pivots}
+may still be real numbers and the corresponding critical values are not
+adusted for the post-hoc discretization of these.
+}
+\seealso{
+\code{\link{minimize}}
 }
