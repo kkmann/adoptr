@@ -11,10 +11,6 @@
 }
 \arguments{
 \item{object}{object of class \code{ConditionalScore}}
-
-\item{s}{conditional score object to evaluate}
-
-\item{...}{further optional arguments}
 }
 \description{
 \code{ConditionalScore} is an abstract class for conditional scores.

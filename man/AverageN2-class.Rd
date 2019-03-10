@@ -4,26 +4,12 @@
 \name{AverageN2-class}
 \alias{AverageN2-class}
 \alias{AverageN2}
-\alias{evaluate,AverageN2,TwoStageDesign-method}
 \title{Regularization via L1 norm}
 \usage{
 AverageN2()
-
-\S4method{evaluate}{AverageN2,TwoStageDesign}(s, design,
-  optimization = FALSE, subdivisions = 10000L, ...)
 }
-\arguments{
-\item{s}{a score of class \code{AverageN2}}
-
-\item{design}{a \code{TwoStageDesign}}
-
-\item{optimization}{logical, if TRUE uses a relaxation to real parameters of
-the underlying design; used for smooth optimization.}
-
-\item{subdivisions}{integer, maxima number of subdivisions used for daptive
-integration.}
-
-\item{...}{further optimal arguments}
+\value{
+an object of class \code{\link{AverageN2}}
 }
 \description{
 Implements the L1-norm of the design's stage-two sample size function.
@@ -34,10 +20,10 @@ the continuation region.
 Adding the L1-norm with a small regularization parameter can make
 the optimization more stable.
 }
-\section{Methods (by generic)}{
-\itemize{
-\item \code{evaluate}: generic implementation of evaluating a smoothness
-score. Uses adaptive Gaussian quadrature for integration and might be
-more efficiently implemented by specific \code{TwoStageDesign}-classes.
-}}
+\examples{
+avn2 <- AverageN2()
 
+}
+\seealso{
+\code{\link{N1}} for penalizing n1 values
+}

@@ -8,11 +8,9 @@
 #' Adding the L1-norm with a small regularization parameter can make
 #' the optimization more stable.
 #'
-#' @param s a score of class \code{AverageN2}
-#' @param design a \code{TwoStageDesign}
+#' @seealso \code{\link{N1}} for penalizing n1 values
 #'
-#' @rdname AverageN2-class
-#'
+#' @aliases AverageN2
 #' @exportClass AverageN2
 setClass("AverageN2", representation(
     dummy = 'logical'
@@ -20,22 +18,24 @@ setClass("AverageN2", representation(
     contains = "UnconditionalScore")
 
 
-
+#' @examples
+#' avn2 <- AverageN2()
+#'
+#' @return an object of class \code{\link{AverageN2}}
+#'
 #' @rdname AverageN2-class
 #' @export
 AverageN2 <- function() new("AverageN2", dummy = FALSE)
 
-#' Evaluation of a AverageN2 score
+
+#' @examples
+#' evaluate(
+#'    AverageN2(),
+#'    TwoStageDesign(100, 0.5, 1.5, 60.0, 1.96, order = 5L)
+#' ) # 60
 #'
-#' @param optimization logical, if TRUE uses a relaxation to real parameters of
-#'    the underlying design; used for smooth optimization.
-#' @param subdivisions integer, maxima number of subdivisions used for daptive
-#'    integration.
-#' @param ... further optimal arguments
-#'
-#' @describeIn AverageN2 generic implementation of evaluating a smoothness
-#'     score. Uses adaptive Gaussian quadrature for integration and might be
-#'     more efficiently implemented by specific \code{TwoStageDesign}-classes.
+#' @rdname evaluate
+#' @export
 setMethod("evaluate", signature("AverageN2", "TwoStageDesign"),
           function(s, design, optimization = FALSE, subdivisions = 10000L, ...) {
               if (optimization) {
@@ -76,15 +76,16 @@ setMethod(".evaluate", signature("AverageN2", "TwoStageDesign"),
 #' Quadratic smoothness penalty term
 #'
 #' \code{SmoothnessN2} is a generic class for implementing a smoothness penalty
-#' via the average squared second derivative of the stage two sample size function
-#' \code{n2} of a two-stage design.
-#' The only parameter is the width used for the finite differences, \code{h}.
-#' The generic implementation only evluates \code{n2} in the interior of the
-#' continuation region of a design.
+#' via the average squared second derivative of the stage two sample size
+#' function \eqn{n_2}{n2} of a two-stage design.
+#' The only parameter is the width used for the finite differences, \eqn{h}{h}.
+#' The generic implementation only evaluates \eqn{n_2}{n2} in the interior of
+#' the continuation region of a design.
 #'
 #' @slot h positive number giving the width of the central finite difference
 #'     interval for approximating the second derivative.
 #'
+#' @aliases SmothnessN2
 #' @exportClass SmoothnessN2
 setClass("SmoothnessN2", representation(
     h = "numeric"
@@ -95,6 +96,8 @@ setClass("SmoothnessN2", representation(
 
 #' @param h positive number, see slot \code{h}
 #'
+#' @return an object of class \code{\link{SmoothnessN2}}
+#'
 #' @rdname SmoothnessN2-class
 #' @export
 SmoothnessN2 <- function(h = .1)
@@ -103,21 +106,13 @@ SmoothnessN2 <- function(h = .1)
 
 
 
-#' A generic implementation for arbitrary two-stage designs based on adaptive
-#' Gaussian quadrature integration of the finite-differences approximation to
-#' the second derivative is provided.
-#' For \code{TwoStageDesign} and its subclasses a specific implementation
-#' is avaible which is recommended to use.
+#' @examples
+#' evaluate(
+#'    SmoothnessN2(),
+#'    TwoStageDesign(50, 0, 2, rep(50, 7), rep(2, 7))
+#' ) # 0
 #'
-#' @param s an object of class \code{SmoothnessN2}
-#' @param design the design to compute the smoothness term for
-#' @param optimization logical, if TRUE uses a relaxation to real parameters of
-#'    the underlying design; used for smooth optimization.
-#' @param subdivisions integer, maxima number of subdivisions used for daptive
-#'    integration.
-#' @template dotdotdot
-#'
-#' @rdname SmoothnessN2-class
+#' @rdname evaluate
 #' @export
 setMethod("evaluate", signature("SmoothnessN2", "TwoStageDesign"),
           function(s, design, optimization = FALSE, subdivisions = 10000L, ...) {
@@ -155,25 +150,20 @@ setMethod(".evaluate", signature("SmoothnessN2", "TwoStageDesign"),
 )
 
 
-
-#' Return smootheness of a group-sequential design as 0.
+#' @examples
+#' evaluate(
+#'    SmoothnessN2(),
+#'    GroupSequentialDesign(50, 0, 2, 50, rep(2, 7))
+#' ) # 0
 #'
-#' @param s an object of class \code{SmoothnessN2}
-#' @param design an object of class \code{GroupSequentialDesign}
-#'
-#' @rdname GroupSequentialDesign-class
+#' @rdname evaluate
 #' @export
 setMethod("evaluate", signature("SmoothnessN2", "GroupSequentialDesign"),
           function(s, design, ...) 0 )
 
 
 
-#' Return smootheness of a one-stage design as 0.
-#'
-#' @param s an object of class \code{SmoothnessN2}
-#' @param design an object of class \code{OneStageDesign}
-#'
-#' @rdname OneStageDesign-class
+#' @rdname evaluate
 #' @export
 setMethod("evaluate", signature("SmoothnessN2", "OneStageDesign"),
           function(s, design, ...) 0 )
@@ -183,33 +173,32 @@ setMethod("evaluate", signature("SmoothnessN2", "OneStageDesign"),
 
 #' Regularize n1
 #'
-#' \code{N1} is a class that penalizes the \code{n1} value of
-#' a design.
+#' \code{N1} is a class that computes the \code{n1} value of a design.
 #'
-#'
+#' @aliases N1
 #' @exportClass N1
 setClass("N1", representation(
     dummy = 'logical'
 ),
 contains = "UnconditionalScore")
 
-
-
+#' @examples
+#' n1_score <- N1()
+#'
+#' @return an object of class \code{\link{N1}}
+#'
 #' @rdname N1-class
 #' @export
 N1 <- function() new("N1", dummy = FALSE)
 
 
-#' Returns the n1-value of a \code{TwoStageDesign}.
-#' This can be used as penalty term in the optimization.
+#' @examples
+#' evaluate(
+#'    N1(),
+#'    TwoStageDesign(70, 0, 2, rep(60, 6), rep(1.7, 6))
+#' ) # 70
 #'
-#' @param s an object of class \code{N1}
-#' @param design the design to compute the smoothness term for
-#' @param optimization logical, if TRUE uses a relaxation to real parameters of
-#'    the underlying design; used for smooth optimization.
-#' @template dotdotdot
-#'
-#' @rdname N1-class
+#' @rdname evaluate
 #' @export
 setMethod("evaluate", signature("N1", "TwoStageDesign"),
           function(s, design, optimization = FALSE, ...)

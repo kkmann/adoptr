@@ -3,29 +3,14 @@
 \docType{class}
 \name{ConstraintsCollection-class}
 \alias{ConstraintsCollection-class}
-\alias{evaluate,ConstraintsCollection,TwoStageDesign-method}
-\alias{subject_to}
 \title{Collection of constraints}
-\usage{
-\S4method{evaluate}{ConstraintsCollection,TwoStageDesign}(s, design,
-  optimization = FALSE, ...)
-
-subject_to(...)
-}
 \arguments{
 \item{s}{constraint collection}
 
 \item{design}{design}
-
-\item{optimization}{logical, if TRUE uses a relaxation to real parameters of
-the underlying design; used for smooth optimization.}
-
-\item{...}{arbitrary number of (un)conditional constraints}
 }
 \description{
-\code{subject_to(...)} can be used to generate an object of class
-     \code{ConstrintsCollection} from an arbitrary number of (un)conditional
-     constraints.
+Collection of constraints
 }
 \section{Slots}{
 
@@ -36,7 +21,9 @@ the underlying design; used for smooth optimization.}
 
 A \code{ConstraintsCollection} is a collection of unconditional and
 conditional constraints. In order to evaluate these correctly, they
-have to be defined in two different slots.
-A \code{ConstraintsCollection} can be created by \code{subject_to()}.}
+have to be defined in two different slots.}
 }}
 
+\seealso{
+A \code{ConstraintsCollection} can be created by \code{subject_to()}.
+}

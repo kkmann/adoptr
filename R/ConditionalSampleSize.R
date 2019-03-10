@@ -22,12 +22,12 @@ ConditionalSampleSize <- function(dist, prior) new("ConditionalSampleSize", dist
 
 
 #' @examples
-#' design <- TwoStageDesign(50, .0, 2.0, 50, 2.0) # dummy design
-#'  evaluate(
-#'     ConditionalSampleSize(Normal(), PointMassPrior(.3, 1)),
-#'     design,
-#'     x1 = 3
-#'  ) # 50
+#' # evaluate conditional sample size
+#' evaluate(
+#'    ConditionalSampleSize(Normal(), PointMassPrior(.3, 1)),
+#'    TwoStageDesign(50, .0, 2.0, 50, 2.0, order = 5L),
+#'    x1 = 3
+#' ) # 50
 #'
 #' @rdname evaluate
 #' @export

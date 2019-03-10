@@ -22,12 +22,12 @@ setClass("ConditionalPower", contains = "ConditionalScore")
 ConditionalPower <- function(dist, prior) new("ConditionalPower", distribution = dist, prior = prior)
 
 #' @examples
-#' design <- TwoStageDesign(50, .0, 2.0, 50, 2.0) # dummy design
-#'  evaluate(
-#'     ConditionalPower(Normal(), PointMassPrior(.3, 1)),
-#'     design,
-#'     x1 = 1
-#'  )
+#' # evaluate conditional power
+#' evaluate(
+#'    ConditionalPower(Normal(), PointMassPrior(.3, 1)),
+#'    TwoStageDesign(50, .0, 2.0, 50, 2.0, order = 5L),
+#'    x1 = 1
+#' )
 #'
 #' @template x1
 #'

@@ -12,10 +12,6 @@
 }
 \arguments{
 \item{object}{object of class \code{IntegralScore}}
-
-\item{s}{an \code{IntegralScore}}
-
-\item{design}{a \code{TwoStageDesign}}
 }
 \description{
 Unconditional score class obtained by integration of a

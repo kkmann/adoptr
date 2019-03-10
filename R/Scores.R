@@ -1,11 +1,15 @@
 #' Evaluation of a score
 #'
 #' Both \code{\link{ConditionalScore}} as well as
-#' \code{\link{IntegralScore}} implement \code{evaluate} methods
+#' \code{\link{UnconditionalScore}} implement \code{evaluate} methods
 #' which handle the actual computation of the score given a design and
 #' (for conditional scores) an interim result.
-#' Conditional scores additionally implement an \code{expected} method
-#' to obtain the corresponding unconditional \code{\link{IntegralScore}}.
+#'
+#' @seealso Conditional scores additionally implement an \code{expected} method
+#'    to obtain the corresponding unconditional \code{\link{IntegralScore}}.
+#'
+#' @details The method \code{evaluate} is preimplemented for all preimplemented
+#'    scores in \pkg{adoptr}.
 #'
 #' @param s score
 #' @param design \code{TwoStageDesign} object
@@ -16,7 +20,12 @@ setGeneric("evaluate", function(s, design, ...) standardGeneric("evaluate"))
 
 #' Compute the expectation of a conditional score
 #'
-#' TODO
+#' By the method \code{expected} any \code{\link{ConditionalScore}}
+#' can be integrated over the full \eqn{x_1}-range and returns an
+#' \code{\link{IntegralScore}}. I.e., for a conditional score
+#' \eqn{s(design, x_1)}{s(design, x1)} the integral
+#' \eqn{\int s(design, x_1) \operatorname{d} x_1}{over s(design, x1)}
+#' is computed.
 #'
 #' @param s ConditionalScore
 #' @template dotdotdot
@@ -46,9 +55,6 @@ setClass("AbstractConditionalScore")
 #' method \code{evaluate} needs to be defined, too.
 #' Any \code{ConditionalScore} can be transformed to an unconditional
 #' \code{\link{IntegralScore}} by means of the method \code{\link{expected}}.
-#'
-#' @param s conditional score object to evaluate
-#' @template dotdotdot
 #'
 #' @seealso The common conditional scores \code{\link{ConditionalPower}}
 #'    and \code{\link{ConditionalSampleSize}} are preimplemented in \pkg{adoptr}.
@@ -116,7 +122,19 @@ setMethod("*", signature("numeric", "ConditionalScore"),
 
 
 
-# internal use only
+#' Class for unconditional scoring function
+#'
+#' \code{UnconditionalScore} is an abstract class for unconditional scores.
+#' When defining a new \code{UnconditionalScore}, a corresponding
+#' method \code{evaluate} needs to be defined, too.
+#'
+#' @seealso There are regularization scores \code{\link{N1}} and
+#'    \code{\link{AverageN2}} for sample sizes.
+#'    The class \code{\link{IntegralScore}} is a specific subclass that defines
+#'    uncondtional scores which are expected conditional scores.
+#'
+#' @aliases UnconditionalScore
+#' @exportClass UnconditionalScore
 setClass("UnconditionalScore")
 
 
@@ -149,9 +167,6 @@ setMethod("*", signature("numeric", "UnconditionalScore"),
 #' Unconditional score class obtained by integration of a
 #' \code{\link{ConditionalScore}}
 #'
-#' @param s an \code{IntegralScore}
-#' @param design a \code{TwoStageDesign}
-#'
 #' @slot cs the underlying \code{\link{ConditionalScore}}
 #'
 #' @seealso The method \code{\link{expected}} creates a \code{IntegralScore}
@@ -173,7 +188,16 @@ setMethod("show", signature(object = "IntegralScore"),
           function(object) cat(class(object)[1]))
 
 
-
+#' @examples
+#' # create a dummy design
+#' design <- TwoStageDesign(50, .0, 2.0, 50, 2.0, order = 5L)
+#'
+#' # define type one error als IntegralScore
+#' toer <- expected(ConditionalPower(Normal(), PointMassPrior(.0, 1)))
+#'
+#' # evaluate
+#' evaluate(toer, design)
+#'
 #' @template optimization
 #' @param subdivisions integer, number of subdivisions that is used for integration
 #'    on the continuation region; results become more precise with increased
