@@ -306,4 +306,10 @@ test_that("conditional constraints work", {
         .95 + tol
     )
 
+    # test that c2 is monotonously increasing
+    expect_equal(
+        sign(diff(opt_ts$design@c2_pivots)),
+        rep(-1, (order - 1))
+    )
+
 }) # end 'conditional constraints work'
