@@ -69,8 +69,8 @@ setClass("ConditionalScore", representation(
 
 
 #' @examples
-#' expected(ConditionalPower(Normal(), PointMassPrior(.3, 1))
 #' # creates power under point mass prior
+#' expected(ConditionalPower(Normal(), PointMassPrior(.3, 1)))
 #'
 #' @rdname expected
 #' @export

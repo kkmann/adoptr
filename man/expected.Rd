@@ -27,7 +27,7 @@ can be integrated over the full \eqn{x_1}-range and returns an
 is computed.
 }
 \examples{
-expected(ConditionalPower(Normal(), PointMassPrior(.3, 1))
 # creates power under point mass prior
+expected(ConditionalPower(Normal(), PointMassPrior(.3, 1)))
 
 }

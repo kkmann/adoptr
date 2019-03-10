@@ -136,6 +136,7 @@ setMethod(">=", signature("UnconditionalScore", "UnconditionalScore"),
 #' @param s constraint collection
 #' @param design design
 #'
+#' @aliases ConstraintsCollection
 #' @exportClass ConstraintsCollection
 setClass("ConstraintsCollection", representation(
         unconditional_constraints = "list",

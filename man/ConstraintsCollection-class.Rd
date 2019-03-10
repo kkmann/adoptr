@@ -3,6 +3,7 @@
 \docType{class}
 \name{ConstraintsCollection-class}
 \alias{ConstraintsCollection-class}
+\alias{ConstraintsCollection}
 \title{Collection of constraints}
 \arguments{
 \item{s}{constraint collection}
