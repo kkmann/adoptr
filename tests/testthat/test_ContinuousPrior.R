@@ -117,6 +117,11 @@ test_that("conditioning works", {
         condition(unif_prior, c(2, 3))
     )
 
+    expect_equal(
+        cond_unif@pdf(c(-.5, 1.5)),
+        c(0, 0)
+    ) # pdf is 0 outside support after conditioning
+
 }) # end 'conditioning works'
 
 

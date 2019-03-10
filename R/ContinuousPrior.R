@@ -117,7 +117,7 @@ setMethod("condition", signature("ContinuousPrior", "numeric"),
         new_pdf <- function(theta) {
             ifelse(interval[1] <= theta & theta <= interval[2],
                 dist@pdf(theta) / z,
-                theta
+                0
             )
         }
         ContinuousPrior(
