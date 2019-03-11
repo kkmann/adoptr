@@ -75,6 +75,9 @@ setMethod("c2", signature("OneStageDesign", "numeric"),
 
 
 
+#' @template d
+#' @template dotdotdot
+#'
 #' @rdname OneStageDesign-class
 #' @export
 setMethod("TwoStageDesign", signature("OneStageDesign"),

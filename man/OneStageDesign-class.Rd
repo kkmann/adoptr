@@ -19,6 +19,10 @@ OneStageDesign(n, c)
 
 \item{c}{rejection boundary (c = c1f = c1e)}
 
+\item{d}{design}
+
+\item{...}{further optional arguments}
+
 \item{x}{not used}
 
 \item{y}{not used}
