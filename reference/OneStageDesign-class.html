@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>One-stage design — OneStageDesign-class • adoptr</title>
+<title>One-stage designs — OneStageDesign-class • adoptr</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -36,14 +36,14 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="One-stage design — OneStageDesign-class" />
+<meta property="og:title" content="One-stage designs — OneStageDesign-class" />
 
-<meta property="og:description" content="OneStageDesign allows the usage of a single-stage design.
-In this case without a second stage, there only exist the first-stage sample
-size n1 and the first-stage rejection boundary c1f.
-No other parameters have to be set.
-OneStageDesign is a subclass of TwoStageDesign.
-Only states the class itself." />
+<meta property="og:description" content="OneStageDesign implements a one-stage design as special case of
+a two-stage design, i.e. as sub-class of TwoStageDesign.
+This is possible by defining n2 = 0, c:=c1f=c1e, c2(x1) = ifelse(x1 &amp;lt; c, Inf, -Inf).
+No integration pivots etc are required (set to NaN).
+Note that the default plot method
+is not supported for OneStageDesign objects." />
 
 <meta property="og:image" content="https://kkmann.github.io/adoptr/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -127,41 +127,29 @@ Only states the class itself." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>One-stage design</h1>
+    <h1>One-stage designs</h1>
     <small class="dont-index">Source: <a href='https://github.com/kkmann/adoptr/blob/master/R/OneStageDesign.R'><code>R/OneStageDesign.R</code></a></small>
     <div class="hidden name"><code>OneStageDesign-class.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p><code>OneStageDesign</code> allows the usage of a single-stage design.
-In this case without a second stage, there only exist the first-stage sample
-size <code>n1</code> and the first-stage rejection boundary <code>c1f</code>.
-No other parameters have to be set.
-<code>OneStageDesign</code> is a subclass of <a href='TwoStageDesign-class.html'>TwoStageDesign</a>.</p>
-<p>Only states the class itself.</p>
+    <p><code>OneStageDesign</code> implements a one-stage design as special case of
+a two-stage design, i.e. as sub-class of <code><a href='TwoStageDesign-class.html'>TwoStageDesign</a></code>.
+This is possible by defining n2 = 0, c:=c1f=c1e, c2(x1) = ifelse(x1 &lt; c, Inf, -Inf).
+No integration pivots etc are required (set to NaN).
+Note that the default <code>plot</code> method
+is not supported for <code>OneStageDesign</code> objects.</p>
     
     </div>
 
     <pre class="usage"><span class='fu'>OneStageDesign</span>(<span class='no'>n</span>, <span class='no'>c</span>)
 
 <span class='co'># S4 method for OneStageDesign</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/update'>update</a></span>(<span class='no'>object</span>, <span class='no'>params</span>, <span class='no'>...</span>)
-
-<span class='co'># S4 method for OneStageDesign,numeric</span>
-<span class='fu'><a href='TwoStageDesign-class.html'>n2</a></span>(<span class='no'>d</span>, <span class='no'>x1</span>, <span class='no'>...</span>)
-
-<span class='co'># S4 method for OneStageDesign,numeric</span>
-<span class='fu'><a href='TwoStageDesign-class.html'>c2</a></span>(<span class='no'>d</span>, <span class='no'>x1</span>, <span class='no'>...</span>)
-
-<span class='co'># S4 method for OneStageDesign</span>
 <span class='fu'><a href='TwoStageDesign-class.html'>TwoStageDesign</a></span>(<span class='no'>d</span>, <span class='no'>...</span>)
 
 <span class='co'># S4 method for OneStageDesign</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/plot'>plot</a></span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='no'>...</span>)
-
-<span class='co'># S4 method for OneStageDesign</span>
-<span class='fu'>show</span>(<span class='no'>object</span>)</pre>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/plot'>plot</a></span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -175,25 +163,12 @@ No other parameters have to be set.
       <td><p>rejection boundary (c = c1f = c1e)</p></td>
     </tr>
     <tr>
-      <th>object</th>
-      <td><p>object of class <code>OneStageDesign</code></p></td>
-    </tr>
-    <tr>
-      <th>params</th>
-      <td><p>vector of design parameters (must be in same order as returned
-by <code><a href='https://www.rdocumentation.org/packages/base/topics/numeric'>as.numeric(OneStageDesign)</a></code>)</p></td>
+      <th>d</th>
+      <td><p>design</p></td>
     </tr>
     <tr>
       <th>...</th>
       <td><p>further optional arguments</p></td>
-    </tr>
-    <tr>
-      <th>d</th>
-      <td><p>object of class <code>OneStageDesign</code></p></td>
-    </tr>
-    <tr>
-      <th>x1</th>
-      <td><p>stage-one outcome</p></td>
     </tr>
     <tr>
       <th>x</th>
@@ -205,29 +180,42 @@ by <code><a href='https://www.rdocumentation.org/packages/base/topics/numeric'>a
     </tr>
     </table>
     
-    <h2 class="hasAnchor" id="slots"><a class="anchor" href="#slots"></a>Slots</h2>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    
-    <dl class='dl-horizontal'>
-<dt><code>n1</code></dt><dd><p>sample size</p></dd>
-    <dt><code>c1f</code></dt><dd><p>rejection boundary</p></dd>
-    <dt><code>c1e</code></dt><dd><p>rejection boundary</p></dd>
-    <dt><code>n2_pivots</code></dt><dd><p>constant 0</p></dd>
-    <dt><code>c2_pivots</code></dt><dd><p><code>+/- Inf</code></p></dd>
-    <dt><code>x1_norm_pivots</code></dt><dd><p>is ignored for OneStageDesign</p></dd>
-    <dt><code>weights</code></dt><dd><p>is ignored for OneStageDesign</p></dd>
-    <dt><code>tunable</code></dt><dd><p>is ignored for OneStageDesign</p></dd>
-</dl>
+    <div class='dont-index'><p><code><a href='TwoStageDesign-class.html'>TwoStageDesign</a></code>, <code><a href='GroupSequentialDesign-class.html'>GroupSequentialDesign</a></code></p></div>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>design</span> <span class='kw'>&lt;-</span> <span class='fu'>OneStageDesign</span>(<span class='fl'>30</span>, <span class='fl'>1.96</span>)
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/summary'>summary</a></span>(<span class='no'>design</span>)</div><div class='output co'>#&gt; OneStageDesign with:
+#&gt;      n1:  30.00
+#&gt;     c1f:   1.96
+#&gt;     c1e:   1.96
+#&gt;  max n2:   0.00
+#&gt;  min n2:   0.00
+#&gt; 1 integration pivots at: NaN
+#&gt;     integration weights: NaN
+#&gt; </div><div class='input'><span class='no'>design</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='TwoStageDesign-class.html'>TwoStageDesign</a></span>(<span class='no'>design</span>)
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/summary'>summary</a></span>(<span class='no'>design</span>)</div><div class='output co'>#&gt; TwoStageDesign with:
+#&gt;      n1:  30.00
+#&gt;     c1f:   1.95
+#&gt;     c1e:   1.97
+#&gt;  max n2:   0.00
+#&gt;  min n2:   0.00
+#&gt; 2 integration pivots at: 1.96, 1.96
+#&gt;     integration weights: 1.00, 1.00
+#&gt; </div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#slots">Slots</a></li>
-          </ul>
+      <li><a href="#see-also">See also</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

@@ -31,12 +31,6 @@
     <loc>https://kkmann.github.io/adoptr/reference/DataDistribution-class.html</loc>
   </url>
   <url>
-    <loc>https://kkmann.github.io/adoptr/reference/GaussLegendreIntegral.html</loc>
-  </url>
-  <url>
-    <loc>https://kkmann.github.io/adoptr/reference/GaussLegendreRule.html</loc>
-  </url>
-  <url>
     <loc>https://kkmann.github.io/adoptr/reference/GroupSequentialDesign-class.html</loc>
   </url>
   <url>
@@ -79,6 +73,9 @@
     <loc>https://kkmann.github.io/adoptr/reference/condition.html</loc>
   </url>
   <url>
+    <loc>https://kkmann.github.io/adoptr/reference/critical-values.html</loc>
+  </url>
+  <url>
     <loc>https://kkmann.github.io/adoptr/reference/evaluate.html</loc>
   </url>
   <url>
@@ -88,7 +85,16 @@
     <loc>https://kkmann.github.io/adoptr/reference/expected.html</loc>
   </url>
   <url>
+    <loc>https://kkmann.github.io/adoptr/reference/make_tunable.html</loc>
+  </url>
+  <url>
     <loc>https://kkmann.github.io/adoptr/reference/minimize.html</loc>
+  </url>
+  <url>
+    <loc>https://kkmann.github.io/adoptr/reference/n.html</loc>
+  </url>
+  <url>
+    <loc>https://kkmann.github.io/adoptr/reference/plot-TwoStageDesign-method.html</loc>
   </url>
   <url>
     <loc>https://kkmann.github.io/adoptr/reference/posterior.html</loc>
@@ -103,19 +109,16 @@
     <loc>https://kkmann.github.io/adoptr/reference/predictive_pdf.html</loc>
   </url>
   <url>
-    <loc>https://kkmann.github.io/adoptr/reference/print.TwoStageDesignSummary.html</loc>
-  </url>
-  <url>
     <loc>https://kkmann.github.io/adoptr/reference/score-arithmetic.html</loc>
   </url>
   <url>
-    <loc>https://kkmann.github.io/adoptr/reference/show-TwoStageDesign-method.html</loc>
+    <loc>https://kkmann.github.io/adoptr/reference/simulate-TwoStageDesign-numeric-method.html</loc>
   </url>
   <url>
     <loc>https://kkmann.github.io/adoptr/reference/subject_to.html</loc>
   </url>
   <url>
-    <loc>https://kkmann.github.io/adoptr/reference/summary-TwoStageDesign-method.html</loc>
+    <loc>https://kkmann.github.io/adoptr/reference/tunable_parameters.html</loc>
   </url>
   <url>
     <loc>https://kkmann.github.io/adoptr/articles/adoptr.html</loc>

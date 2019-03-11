@@ -38,14 +38,11 @@
 
 <meta property="og:title" content="Two-stage designs — TwoStageDesign-class" />
 
-<meta property="og:description" content="TwoStageDesign is the fundamental design class of this package.
-It consits of three first-stage parameters, two-stage two vectors
-and additional parameters for implementation.
-The argument order defines the order of the Gaussian quadrature rule.
-If it is missing, the length of n2_pivots is used.
-This function allows to plot the stage-two sample size and decision boundary
-functions of a TwoStageDesign and
-user-defined elements of the class ConditionalScore." />
+<meta property="og:description" content="TwoStageDesign is the fundamental design class of the
+adoptr package.
+Formally, we represent a generic two-stage design as
+[TODO] [TODO link to vignettes as well!]
+For available methods, see the 'See Also' section at the end of this page." />
 
 <meta property="og:image" content="https://kkmann.github.io/adoptr/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -136,14 +133,11 @@ user-defined elements of the class ConditionalScore." />
 
     <div class="ref-description">
     
-    <p><code>TwoStageDesign</code> is the fundamental design class of this package.
-It consits of three first-stage parameters, two-stage two vectors
-and additional parameters for implementation.</p>
-<p>The argument <code>order</code> defines the order of the Gaussian quadrature rule.
-If it is missing, the length of <code>n2_pivots</code> is used.</p>
-<p>This function allows to plot the stage-two sample size and decision boundary
-functions of a <code>TwoStageDesign</code> and
-user-defined elements of the class <code>ConditionalScore</code>.</p>
+    <p><code>TwoStageDesign</code> is the fundamental design class of the
+<span class="pkg"><a href='adoptr.html'>adoptr</a></span> package.
+Formally, we represent a generic two-stage design as
+[TODO] [TODO link to vignettes as well!]
+For available methods, see the 'See Also' section at the end of this page.</p>
     
     </div>
 
@@ -153,224 +147,127 @@ user-defined elements of the class <code>ConditionalScore</code>.</p>
 <span class='fu'>TwoStageDesign</span>(<span class='no'>n1</span>, <span class='no'>c1f</span>, <span class='no'>c1e</span>, <span class='no'>n2_pivots</span>, <span class='no'>c2_pivots</span>,
   <span class='kw'>order</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
 
-<span class='fu'>tunable_parameters</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+<span class='co'># S4 method for TwoStageDesign</span>
+<span class='fu'>show</span>(<span class='no'>object</span>)
 
 <span class='co'># S4 method for TwoStageDesign</span>
-<span class='fu'>tunable_parameters</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/summary'>summary</a></span>(<span class='no'>object</span>, <span class='no'>...</span>, <span class='kw'>rounded</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
-<span class='fu'>make_tunable</span>(<span class='no'>x</span>, <span class='no'>...</span>)
-
-<span class='co'># S4 method for TwoStageDesign</span>
-<span class='fu'>make_tunable</span>(<span class='no'>x</span>, <span class='no'>...</span>)
-
-<span class='fu'>make_fixed</span>(<span class='no'>x</span>, <span class='no'>...</span>)
-
-<span class='co'># S4 method for TwoStageDesign</span>
-<span class='fu'>make_fixed</span>(<span class='no'>x</span>, <span class='no'>...</span>)
-
-<span class='co'># S4 method for TwoStageDesign</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/update'>update</a></span>(<span class='no'>object</span>, <span class='no'>params</span>, <span class='no'>...</span>)
-
-<span class='fu'>n1</span>(<span class='no'>d</span>, <span class='no'>...</span>)
-
-<span class='co'># S4 method for TwoStageDesign</span>
-<span class='fu'>n1</span>(<span class='no'>d</span>, <span class='kw'>round</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)
-
-<span class='fu'>n2</span>(<span class='no'>d</span>, <span class='no'>x1</span>, <span class='no'>...</span>)
-
-<span class='co'># S4 method for TwoStageDesign,numeric</span>
-<span class='fu'>n2</span>(<span class='no'>d</span>, <span class='no'>x1</span>, <span class='kw'>round</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)
-
-<span class='fu'>n</span>(<span class='no'>d</span>, <span class='no'>x1</span>, <span class='no'>...</span>)
-
-<span class='co'># S4 method for TwoStageDesign,numeric</span>
-<span class='fu'>n</span>(<span class='no'>d</span>, <span class='no'>x1</span>, <span class='kw'>round</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)
-
-<span class='fu'>c2</span>(<span class='no'>d</span>, <span class='no'>x1</span>, <span class='no'>...</span>)
-
-<span class='co'># S4 method for TwoStageDesign,numeric</span>
-<span class='fu'>c2</span>(<span class='no'>d</span>, <span class='no'>x1</span>, <span class='no'>...</span>)
-
-<span class='fu'>scaled_integration_pivots</span>(<span class='no'>d</span>, <span class='no'>...</span>)
-
-<span class='co'># S4 method for TwoStageDesign</span>
-<span class='fu'>scaled_integration_pivots</span>(<span class='no'>d</span>, <span class='no'>...</span>)
-
-<span class='co'># S4 method for TwoStageDesign</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/plot'>plot</a></span>(<span class='no'>x</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>rounded</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>,
-  <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>100</span>)
-
-<span class='co'># S4 method for TwoStageDesign,numeric</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/simulate'>simulate</a></span>(<span class='no'>object</span>, <span class='no'>nsim</span>, <span class='no'>dist</span>, <span class='no'>theta</span>,
-  <span class='kw'>seed</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+<span class='co'># S3 method for TwoStageDesignSummary</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>x</span>, <span class='no'>...</span>, <span class='kw'>round</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>...</th>
-      <td><p>optional arguments depending on implementation</p></td>
+      <td><p>further optional arguments</p></td>
     </tr>
     <tr>
       <th>n1</th>
-      <td><p>cf. slot</p></td>
+      <td><p>stage-one sample size</p></td>
     </tr>
     <tr>
       <th>c1f</th>
-      <td><p>cf. slot</p></td>
+      <td><p>early futility stopping boundary</p></td>
     </tr>
     <tr>
       <th>c1e</th>
-      <td><p>cf. slot</p></td>
+      <td><p>early efficacy stopping boundary</p></td>
     </tr>
     <tr>
       <th>n2_pivots</th>
-      <td><p>cf. slot</p></td>
+      <td><p>numeric vector, stage-two sample size on the integration
+pivot points</p></td>
     </tr>
     <tr>
       <th>c2_pivots</th>
-      <td><p>cf. slot</p></td>
+      <td><p>numeric vector, stage-two critical values on the integration
+pivot points</p></td>
     </tr>
     <tr>
       <th>order</th>
-      <td><p>order (i.e. number of pivot points in the interior of [c1f, c1e])
-of the Gaussian quadrature rule to use for integration</p></td>
-    </tr>
-    <tr>
-      <th>x</th>
-      <td><p>design</p></td>
+      <td><p><code>integer</code>, integration order of the employed Gaussian quadrature
+integration rule to evaluate scores. Automatically set to <code><a href='https://www.rdocumentation.org/packages/base/topics/length'>length(n2_pivots)</a></code>
+if <code>length(n2_pivots) == length(c2_pivots) &gt; 1</code>, otherwise c2 and n2
+are taken to be constant in stage-two and replicated to match the number of
+pivots specified by <code>order</code></p></td>
     </tr>
     <tr>
       <th>object</th>
-      <td><p>object to update</p></td>
-    </tr>
-    <tr>
-      <th>params</th>
-      <td><p>vector of design parameters (must be in same order as returned
-by <code><a href='https://www.rdocumentation.org/packages/base/topics/numeric'>as.numeric(design)</a></code>)</p></td>
-    </tr>
-    <tr>
-      <th>d</th>
-      <td><p>design object</p></td>
-    </tr>
-    <tr>
-      <th>round</th>
-      <td><p>logical, should integer sample size or real sample size be
-returned?</p></td>
-    </tr>
-    <tr>
-      <th>x1</th>
-      <td><p>stage-one outcome</p></td>
-    </tr>
-    <tr>
-      <th>y</th>
-      <td><p>not used</p></td>
+      <td><p>design to show or summarize</p></td>
     </tr>
     <tr>
       <th>rounded</th>
-      <td><p>should n-values be rounded?</p></td>
+      <td><p>should rounded n-values be used?</p></td>
     </tr>
     <tr>
-      <th>k</th>
-      <td><p>number of points to use for plotting</p></td>
+      <th>x</th>
+      <td><p>return value of call to <code>summary</code></p></td>
     </tr>
     <tr>
-      <th>nsim</th>
-      <td><p>number of simulation runs</p></td>
-    </tr>
-    <tr>
-      <th>dist</th>
-      <td><p>data distribution</p></td>
-    </tr>
-    <tr>
-      <th>theta</th>
-      <td><p>location parameter of the data distribution</p></td>
-    </tr>
-    <tr>
-      <th>seed</th>
-      <td><p>random seed</p></td>
+      <th>round</th>
+      <td><p><code>logical</code> should sample sizes be rounded to next integer?</p></td>
     </tr>
     </table>
     
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p><code>TwoStageDesign</code> returns an object of class <code>TwoStageDesign</code>.</p>
-<p><code><a href='https://www.rdocumentation.org/packages/stats/topics/simulate'>simulate()</a></code> returns list with <code>nsim</code> rows and for each row
-(each simulation run) the following columns</p><ul>
-<li><p>theta The effect size</p></li>
-<li><p>n1 First-stage sample size</p></li>
-<li><p>c1f Stopping for futility boundary</p></li>
-<li><p>c1e Stopping for efficacy boundary</p></li>
-<li><p>x1 First-stage outcome</p></li>
-<li><p>n2 Resulting second-stage sample size after observing x1</p></li>
-<li><p>c2 Resulting second-stage decision-boundary after observing x1</p></li>
-<li><p>x2 Second-stage outcome</p></li>
-<li><p>reject Decision whether the null hypothesis is rejected or not</p></li>
-</ul>
-
-    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><code>n1</code> denotes the sample size of the first stage.
-<code>c1f</code> and <code>c1e</code> define decision boundary.
-If the first-stage test statistic <code>Z_1</code> is larger than <code>c1e</code>,
-than the trial is stopped early for efficacy and the null hypothesis is
-rejected.
-If <code>Z_1</code> is smaller than <code>c1f</code>, than the null hypothesis is
-accpected and the trial is stopped early for futility.
-Otherwise, the trial enters in the second stage. In this case,
-the stage-two sample size function <code>n2(Z_1)</code> and the stage-two
-rejection boundary <code>c2(Z_1)</code> are computed.
-As these are functions, they are approximated by a vector of pivots
-denoted by <code>n2_pivots</code> and <code>c2_pivots</code>, respectively.
-The slots <code>x1_norm_pivots</code> and <code>weights</code> are defined
-for numerical implementation rules.
-The generic implementation of this package is a Gaussian quadrature and
-a corresponding design can be built by calling <code>TwoStageDesign()</code>.
-The user is free to implement own integration rules.
-He has to be aware that all elements of <code>x1_norm_pivots</code> have
-to be inside the interval [-1, 1] and have to be scaled by the
-applied integration rule.
-The parameter <code>tunable</code> is a logical one and indicates which
-design parameters should be tunable for use in optimization.
-Rounded sample size values can be applied by the logical parameter
-<code>rounded</code>.</p>
-<p>If <code>order</code> is specified, <code>n2_pivots</code> and <code>c2_pivots</code> should
-be one-dimensional. They are converted to vectors of length order
-automatically.</p>
-    
-    <h2 class="hasAnchor" id="methods-by-generic-"><a class="anchor" href="#methods-by-generic-"></a>Methods (by generic)</h2>
-
-    <ul>
-<li><p><code>n</code>: overall sample size given stage-one outcome</p></li>
-<li><p><code>scaled_integration_pivots</code>: get the actual pivots points (knots) of the numerical integration routine
-rule.</p></li>
-<li><p><code>simulate</code>: simulate from the given design under parameter theta.</p></li>
-</ul>
+    <p><code>summary</code> can be used to quickly compute and display basic facts about
+a TwoStageDesign.
+An arbitrary number of names <code><a href='UnconditionalScore-class.html'>UnconditionalScore</a></code> objects can be
+provided via <code>...</code> and are included in the summary displayed using
+<code><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></code>.</p>
     
     <h2 class="hasAnchor" id="slots"><a class="anchor" href="#slots"></a>Slots</h2>
 
     
     <dl class='dl-horizontal'>
-<dt><code>n1</code></dt><dd><p>stage-one sample size</p></dd>
-    <dt><code>c1f</code></dt><dd><p>early stopping for futility boundary</p></dd>
-    <dt><code>c1e</code></dt><dd><p>early stopping for efficacy boundary</p></dd>
-    <dt><code>n2_pivots</code></dt><dd><p>vector of length order giving the values of n2 at the
-pivot points of the numeric integration rule [TODO: these are not available during construction]</p></dd>
+<dt><code>n1</code></dt><dd><p>cf. parameter 'n1'</p></dd>
+    <dt><code>c1f</code></dt><dd><p>cf. parameter 'c1f'</p></dd>
+    <dt><code>c1e</code></dt><dd><p>cf. parameter 'c1e'</p></dd>
+    <dt><code>n2_pivots</code></dt><dd><p>vector of length 'order' giving the values of n2 at the
+pivot points of the numeric integration rule</p></dd>
     <dt><code>c2_pivots</code></dt><dd><p>vector of length order giving the values of c2 at the
-pivot points of the numeric integration rule [TODO: these are not available during construction]</p></dd>
-    <dt><code>x1_norm_pivots</code></dt><dd><p>normalized pivots for integration rule (in [-1, 1])</p></dd>
-    <dt><code>weights</code></dt><dd><p>weights of conditional score values at x1_norm_pivots for
-approximating the integral over x1.</p></dd>
-    <dt><code>tunable</code></dt><dd><p>named logical vector indicating whether corresponding slot is considered a tunable parameter</p></dd>
+pivot points of the numeric integration rule</p></dd>
+    <dt><code>x1_norm_pivots</code></dt><dd><p>normalized pivots for integration rule (in [-1, 1])
+the actual pivots are scaled to the interval [c1f, c1e] and can be
+obtained by the internal method <code>adoptr:::scaled_integration_pivots(design)</code></p></dd>
+    <dt><code>weights</code></dt><dd><p>weights of of integration rule at <code>x1_norm_pivots</code> for
+approximating integrals over <code>x1</code></p></dd>
+    <dt><code>tunable</code></dt><dd><p>named logical vector indicating whether corresponding slot is
+considered a tunable parameter (i.e. whether it can be changed during
+optimization via <code><a href='minimize.html'>minimize</a></code> or not; cf. <code><a href='make_tunable.html'>make_fixed</a></code>)</p></dd>
 </dl>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>for accessing sample sizes and critical values safely, see methods in
+<code><a href='n.html'>n</a></code> and <code><a href='critical-values.html'>c2</a></code>; for modifying behaviour during optimizaton
+see <code><a href='make_tunable.html'>make_tunable</a></code>; to convert between S4 class represenation and
+numeric vector, see <code><a href='tunable_parameters.html'>tunable_parameters</a></code>; for simulating from a given
+design, see <code><a href='simulate-TwoStageDesign-numeric-method.html'>simulate</a></code>;
+for plotting see <code><a href='plot-TwoStageDesign-method.html'>plot</a></code>.
+Both <a href='GroupSequentialDesign-class.html'>group-sequential</a> and
+<a href='OneStageDesign-class.html'>one-stage designs</a> (!) are implemented as subclasses of
+<code>TwoStageDesign</code>.</p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>order</span>  <span class='kw'>&lt;-</span> <span class='fl'>5L</span>
-<span class='no'>design</span> <span class='kw'>&lt;-</span> <span class='fu'>TwoStageDesign</span>(<span class='fl'>50</span>, <span class='fl'>0</span>, <span class='fl'>2</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/rep'>rep</a></span>(<span class='fl'>50.0</span>, <span class='no'>order</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/rep'>rep</a></span>(<span class='fl'>2.0</span>, <span class='no'>order</span>))
-<span class='no'>cp</span>     <span class='kw'>&lt;-</span> <span class='fu'><a href='ConditionalPower-class.html'>ConditionalPower</a></span>(<span class='kw'>dist</span> <span class='kw'>=</span> <span class='fu'><a href='NormalDataDistribution-class.html'>Normal</a></span>(), <span class='kw'>prior</span> <span class='kw'>=</span> <span class='fu'><a href='PointMassPrior-class.html'>PointMassPrior</a></span>(<span class='fl'>.4</span>, <span class='fl'>1</span>))
-<span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/plot'>plot</a></span>(<span class='no'>design</span>, <span class='st'>"Conditional Power"</span> <span class='kw'>=</span> <span class='no'>cp</span>)</div><div class='img'><img src='TwoStageDesign-class-1.png' alt='' width='700' height='433' /></div><div class='input'>
+    <pre class="examples"><div class='input'><span class='no'>design</span> <span class='kw'>&lt;-</span> <span class='fu'>TwoStageDesign</span>(<span class='fl'>50</span>, <span class='fl'>0</span>, <span class='fl'>2</span>, <span class='fl'>50.0</span>, <span class='fl'>2.0</span>, <span class='fl'>5</span>)
+<span class='no'>pow</span>    <span class='kw'>&lt;-</span> <span class='fu'><a href='expected.html'>expected</a></span>(<span class='fu'><a href='ConditionalPower-class.html'>ConditionalPower</a></span>(<span class='kw'>dist</span> <span class='kw'>=</span> <span class='fu'><a href='NormalDataDistribution-class.html'>Normal</a></span>(), <span class='kw'>prior</span> <span class='kw'>=</span> <span class='fu'><a href='PointMassPrior-class.html'>PointMassPrior</a></span>(<span class='fl'>.4</span>, <span class='fl'>1</span>)))
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/summary'>summary</a></span>(<span class='no'>design</span>, <span class='st'>"Power"</span> <span class='kw'>=</span> <span class='no'>pow</span>)</div><div class='output co'>#&gt; TwoStageDesign with:
+#&gt;      n1:  50.00
+#&gt;     c1f:   0.00
+#&gt;     c1e:   2.00
+#&gt;  max n2:  50.00
+#&gt;  min n2:  50.00
+#&gt; 5 integration pivots at: 0.09, 0.46, 1.00, 1.54, 1.91
+#&gt;     integration weights: 0.24, 0.48, 0.57, 0.48, 0.24
+#&gt; Unconditional scores:
+#&gt;     Power:   0.739
+#&gt; 
+#&gt; </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -378,13 +275,11 @@ approximating the integral over x1.</p></dd>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#value">Value</a></li>
-
       <li><a href="#details">Details</a></li>
 
-      <li><a href="#methods-by-generic-">Methods (by generic)</a></li>
-
       <li><a href="#slots">Slots</a></li>
+
+      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Group-sequential design — GroupSequentialDesign-class • adoptr</title>
+<title>Group-sequential two-stage designs — GroupSequentialDesign-class • adoptr</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -36,17 +36,13 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="Group-sequential design — GroupSequentialDesign-class" />
+<meta property="og:title" content="Group-sequential two-stage designs — GroupSequentialDesign-class" />
 
-<meta property="og:description" content="The class GroupSequentialDesign allows the implementation
-and usage of group-sequential designs. These are two-stage designs
-with a constant stage-two sample size function.
-Therefore, the length of n2_pivots is required to be 1 in this
-class.
-GroupSequentialDesign is a subclass of TwoStageDesign.
-If order is not defined, the length of the parameter c2_pivots
-defines the order of the Gaussian quadrature integration rule.
-Only states the class itself." />
+<meta property="og:description" content="Group-sequential designs are a sub-class of the TwoStageDesign
+class with constant stage-two sample size.
+See TwoStageDesign for slot details.
+Any group-sequential design can be converted to a fully flexible
+TwoStageDesign (see examples section)." />
 
 <meta property="og:image" content="https://kkmann.github.io/adoptr/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -130,63 +126,56 @@ Only states the class itself." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Group-sequential design</h1>
+    <h1>Group-sequential two-stage designs</h1>
     <small class="dont-index">Source: <a href='https://github.com/kkmann/adoptr/blob/master/R/GroupSequentialDesign.R'><code>R/GroupSequentialDesign.R</code></a></small>
     <div class="hidden name"><code>GroupSequentialDesign-class.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>The class <code>GroupSequentialDesign</code> allows the implementation
-and usage of group-sequential designs. These are two-stage designs
-with a constant stage-two sample size function.
-Therefore, the length of <code>n2_pivots</code> is required to be 1 in this
-class.
-<code>GroupSequentialDesign</code> is a subclass of <a href='TwoStageDesign-class.html'>TwoStageDesign</a>.</p>
-<p>If <code>order</code> is not defined, the length of the parameter <code>c2_pivots</code>
-defines the order of the Gaussian quadrature integration rule.</p>
-<p>Only states the class itself.</p>
+    <p>Group-sequential designs are a sub-class of the <code>TwoStageDesign</code>
+class with constant stage-two sample size.
+See <code><a href='TwoStageDesign-class.html'>TwoStageDesign</a></code> for slot details.
+Any group-sequential design can be converted to a fully flexible
+<code>TwoStageDesign</code> (see examples section).</p>
     
     </div>
 
     <pre class="usage"><span class='fu'>GroupSequentialDesign</span>(<span class='no'>n1</span>, <span class='no'>c1f</span>, <span class='no'>c1e</span>, <span class='no'>n2_pivots</span>, <span class='no'>c2_pivots</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='no'>...</span>)
 
-<span class='co'># S4 method for GroupSequentialDesign,numeric</span>
-<span class='fu'><a href='TwoStageDesign-class.html'>n2</a></span>(<span class='no'>d</span>, <span class='no'>x1</span>, <span class='kw'>round</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)
-
 <span class='co'># S4 method for GroupSequentialDesign</span>
-<span class='fu'><a href='TwoStageDesign-class.html'>TwoStageDesign</a></span>(<span class='no'>d</span>, <span class='no'>tunable</span>, <span class='no'>...</span>)
-
-<span class='co'># S4 method for GroupSequentialDesign</span>
-<span class='fu'>show</span>(<span class='no'>object</span>)</pre>
+<span class='fu'><a href='TwoStageDesign-class.html'>TwoStageDesign</a></span>(<span class='no'>d</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>n1</th>
-      <td><p>cf. slot</p></td>
+      <td><p>stage-one sample size</p></td>
     </tr>
     <tr>
       <th>c1f</th>
-      <td><p>cf. slot</p></td>
+      <td><p>early futility stopping boundary</p></td>
     </tr>
     <tr>
       <th>c1e</th>
-      <td><p>cf. slot</p></td>
+      <td><p>early efficacy stopping boundary</p></td>
     </tr>
     <tr>
       <th>n2_pivots</th>
-      <td><p>stage-two sample size</p></td>
+      <td><p>numeric of length one, stage-two sample size</p></td>
     </tr>
     <tr>
       <th>c2_pivots</th>
-      <td><p>stage-two rejection boundary</p></td>
+      <td><p>numeric vector, stage-two critical values on the integration
+pivot points</p></td>
     </tr>
     <tr>
       <th>order</th>
-      <td><p>order of Gaussian quadrature</p></td>
+      <td><p>of the Gaussian uadrature rule to use for integration, set to
+length(c2_pivots) if NULL, otherwise first value of c2_pivots is repeated
+'order'-times.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -194,58 +183,38 @@ defines the order of the Gaussian quadrature integration rule.</p>
     </tr>
     <tr>
       <th>d</th>
-      <td><p>object of class <code>GSDesign</code></p></td>
-    </tr>
-    <tr>
-      <th>x1</th>
-      <td><p>stage-one outcome</p></td>
-    </tr>
-    <tr>
-      <th>round</th>
-      <td><p>logical, should integer sample size or real sample size be
-returned?</p></td>
-    </tr>
-    <tr>
-      <th>tunable</th>
-      <td><p>c.f. slot</p></td>
-    </tr>
-    <tr>
-      <th>object</th>
-      <td><p>design to show</p></td>
+      <td><p>design</p></td>
     </tr>
     </table>
     
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p>an object of class <code>GroupSequentialDesign</code></p>
-    
-    <h2 class="hasAnchor" id="slots"><a class="anchor" href="#slots"></a>Slots</h2>
-
-    
-    <dl class='dl-horizontal'>
-<dt><code>n1</code></dt><dd><p>stage-one sample size</p></dd>
-    <dt><code>c1f</code></dt><dd><p>early stopping for futility boundary</p></dd>
-    <dt><code>c1e</code></dt><dd><p>early stopping for efficacy boundary</p></dd>
-    <dt><code>n2_pivots</code></dt><dd><p>stage-two sample size upon continuation</p></dd>
-    <dt><code>c2_pivots</code></dt><dd><p>vector of length order giving the values of c2 at the
-pivot points of the numeric integration rule [TODO: these are not available during construction]</p></dd>
-    <dt><code>x1_norm_pivots</code></dt><dd><p>normalized pivots for integration rule (in [-1, 1])</p></dd>
-    <dt><code>weights</code></dt><dd><p>weights of conditional score values at x1_norm_pivots for
-approximating the integral over x1.</p></dd>
-    <dt><code>tunable</code></dt><dd><p>named logical vector indicating whether corresponding slot is considered a tunable parameter</p></dd>
-</dl>
+    <div class='dont-index'><p><code><a href='TwoStageDesign-class.html'>TwoStageDesign</a></code> for superclass and inherited methods</p></div>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>design</span> <span class='kw'>&lt;-</span> <span class='fu'>GroupSequentialDesign</span>(<span class='fl'>25</span>, <span class='fl'>0</span>, <span class='fl'>2</span>, <span class='fl'>25</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>1.5</span>, <span class='fl'>2.5</span>))
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/summary'>summary</a></span>(<span class='no'>design</span>)</div><div class='output co'>#&gt; GroupSequentialDesign with:
+#&gt;      n1:  25.00
+#&gt;     c1f:   0.00
+#&gt;     c1e:   2.00
+#&gt;  max n2:  25.00
+#&gt;  min n2:  25.00
+#&gt; 3 integration pivots at: 0.23, 1.00, 1.77
+#&gt;     integration weights: 0.56, 0.89, 0.56
+#&gt; </div><div class='input'>
+<span class='fu'><a href='TwoStageDesign-class.html'>TwoStageDesign</a></span>(<span class='no'>design</span>)</div><div class='output co'>#&gt; TwoStageDesign</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#value">Value</a></li>
-
-      <li><a href="#slots">Slots</a></li>
-          </ul>
+      <li><a href="#see-also">See also</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>
