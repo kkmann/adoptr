@@ -4,14 +4,7 @@
 \name{DataDistribution-class}
 \alias{DataDistribution-class}
 \alias{DataDistribution}
-\alias{probability_density_function}
-\alias{cumulative_distribution_function}
 \title{Data distributions}
-\usage{
-probability_density_function(dist, x, n, theta, ...)
-
-cumulative_distribution_function(dist, x, n, theta, ...)
-}
 \arguments{
 \item{dist}{data distribution object}
 
