@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Affine functions of scores — AffineScore-class • adoptr</title>
+<title>Create a collection of constraints — subject_to • adoptr</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -36,14 +36,11 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="Affine functions of scores — AffineScore-class" />
+<meta property="og:title" content="Create a collection of constraints — subject_to" />
 
-<meta property="og:description" content="These methods allow to add and multiplicate two or several
-conditional resp. unconditional scores.
-They can also be weighted by numeric coefficients and shifted
-by a numeric intercept.
-This yields to new scores as sum of scores and is therefore a useful
-tool to combine scores." />
+<meta property="og:description" content="subject_to(...) can be used to generate an object of class
+ConstrintsCollection from an arbitrary number of (un)conditional
+constraints." />
 
 <meta property="og:image" content="https://kkmann.github.io/adoptr/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -127,92 +124,69 @@ tool to combine scores." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Affine functions of scores</h1>
-    <small class="dont-index">Source: <a href='https://github.com/kkmann/adoptr/blob/master/R/AffineScoreFunction.R'><code>R/AffineScoreFunction.R</code></a></small>
-    <div class="hidden name"><code>AffineScore-class.Rd</code></div>
+    <h1>Create a collection of constraints</h1>
+    <small class="dont-index">Source: <a href='https://github.com/kkmann/adoptr/blob/master/R/constraints.R'><code>R/constraints.R</code></a></small>
+    <div class="hidden name"><code>subject_to.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>These methods allow to add and multiplicate two or several
-conditional resp. unconditional scores.
-They can also be weighted by numeric coefficients and shifted
-by a numeric intercept.
-This yields to new scores as sum of scores and is therefore a useful
-tool to combine scores.</p>
+    <p><code>subject_to(...)</code> can be used to generate an object of class
+<code>ConstrintsCollection</code> from an arbitrary number of (un)conditional
+constraints.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>AffineScore</span>(<span class='no'>scores</span>, <span class='no'>coefs</span>, <span class='no'>intercept</span>)
-
-<span class='co'># S4 method for AffineScore</span>
-<span class='fu'>show</span>(<span class='no'>object</span>)
-
-<span class='fu'>AffineUnconditionalScore</span>(<span class='no'>scores</span>, <span class='no'>coefs</span>, <span class='kw'>intercept</span> <span class='kw'>=</span> <span class='fl'>0</span>)
-
-<span class='fu'>AffineConditionalScore</span>(<span class='no'>scores</span>, <span class='no'>coefs</span>, <span class='kw'>intercept</span> <span class='kw'>=</span> <span class='fl'>0</span>)</pre>
+    <pre class="usage"><span class='fu'>subject_to</span>(<span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>scores</th>
-      <td><p>cf. corresponding slot</p></td>
-    </tr>
-    <tr>
-      <th>coefs</th>
-      <td><p>cf. corresponding slot</p></td>
-    </tr>
-    <tr>
-      <th>intercept</th>
-      <td><p>cf. corresponding slot</p></td>
-    </tr>
-    <tr>
-      <th>object</th>
-      <td><p>object of class <code>AffineScore</code></p></td>
-    </tr>
-    <tr>
       <th>...</th>
-      <td><p>further optional arguments</p></td>
+      <td><p>arbitrary number of (un)conditional constraints</p></td>
     </tr>
     </table>
     
-    <h2 class="hasAnchor" id="slots"><a class="anchor" href="#slots"></a>Slots</h2>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
+    <p>an object of class <code><a href='ConstraintsCollection-class.html'>ConstraintsCollection</a></code></p>
     
-    <dl class='dl-horizontal'>
-<dt><code>scores</code></dt><dd><p>the list of scores</p></dd>
-    <dt><code>coefs</code></dt><dd><p>numeric vector of the same length as <code>scores</code>, holding the
-coefficients</p></dd>
-    <dt><code>intercept</code></dt><dd><p>the intercept for the affine function
-    <code>AffineScore</code> allows to add scores of arbitrary class and shift
-them by the <code>intercept</code>.
-<code>AffineUnconditionalScore</code> allows the same for scores of class
-<code><a href='UnconditionalScore-class.html'>UnconditionalScore</a></code> and <code>AffineConditionalScore</code> for
-scores of class <code><a href='ConditionalScore-class.html'>ConditionalScore</a></code>.
-By the methods <code>+</code> and <code>*</code> scores can be added and multiplicated,
-respectively.
-Note that it is not possible to use these methods for a mixture of
-<code><a href='ConditionalScore-class.html'>ConditionalScore</a></code> and <code><a href='UnconditionalScore-class.html'>UnconditionalScore</a></code> as these
-require different evaluation techniques.
-However, for both score classes multiplication and addition with
-numerics is provided.</p></dd>
-</dl>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code>subject_to</code> can be used for the constraints in
+   <code><a href='minimize.html'>minimize</a></code>.</p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># shift score AverageN2() by 10 and multiply by factor 2</span>
-<span class='no'>affine_avn2</span> <span class='kw'>&lt;-</span> <span class='fl'>2</span> * <span class='fu'><a href='AverageN2-class.html'>AverageN2</a></span>() + <span class='fl'>10</span>
+    <pre class="examples"><div class='input'><span class='co'># Define Type one error rate</span>
+<span class='no'>toer</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='expected.html'>expected</a></span>(<span class='fu'><a href='ConditionalPower-class.html'>ConditionalPower</a></span>(<span class='fu'><a href='NormalDataDistribution-class.html'>Normal</a></span>(), <span class='fu'><a href='PointMassPrior-class.html'>PointMassPrior</a></span>(<span class='fl'>0.0</span>, <span class='fl'>1</span>)))
 
-<span class='co'># shift conditional sample size by 5 and divide by 2</span>
-<span class='no'>aff_css</span> <span class='kw'>&lt;-</span> <span class='fl'>0.5</span> * <span class='fu'><a href='ConditionalSampleSize-class.html'>ConditionalSampleSize</a></span>(<span class='fu'><a href='NormalDataDistribution-class.html'>Normal</a></span>(), <span class='fu'><a href='PointMassPrior-class.html'>PointMassPrior</a></span>(<span class='fl'>.25</span>, <span class='fl'>1</span>)) + <span class='fl'>5</span></div></pre>
+<span class='co'># Define Power at delta = 0.4</span>
+<span class='no'>pow</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='expected.html'>expected</a></span>(<span class='fu'><a href='ConditionalPower-class.html'>ConditionalPower</a></span>(<span class='fu'><a href='NormalDataDistribution-class.html'>Normal</a></span>(), <span class='fu'><a href='PointMassPrior-class.html'>PointMassPrior</a></span>(<span class='fl'>0.4</span>, <span class='fl'>1</span>)))
+
+<span class='co'># Define expected sample size at delta = 0.4</span>
+<span class='no'>ess</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='expected.html'>expected</a></span>(<span class='fu'><a href='ConditionalSampleSize-class.html'>ConditionalSampleSize</a></span>(<span class='fu'><a href='NormalDataDistribution-class.html'>Normal</a></span>(), <span class='fu'><a href='PointMassPrior-class.html'>PointMassPrior</a></span>(<span class='fl'>0.4</span>, <span class='fl'>1</span>)))
+
+<span class='co'># Compute design minimizing ess subject to power and toer constraints</span></div><span class='co'># NOT RUN {</span>
+<span class='fu'><a href='minimize.html'>minimize</a></span>(
+   <span class='no'>ess</span>,
+   <span class='fu'>subject_to</span>(
+      <span class='no'>toer</span> <span class='kw'>&lt;=</span> <span class='fl'>0.025</span>,
+      <span class='no'>pow</span>  <span class='kw'>&gt;=</span> <span class='fl'>0.9</span>
+   ),
+   <span class='kw'>initial_design</span> <span class='kw'>=</span> <span class='fu'><a href='TwoStageDesign-class.html'>TwoStageDesign</a></span>(<span class='fl'>50</span>, <span class='fl'>.0</span>, <span class='fl'>2.0</span>, <span class='fl'>60.0</span>, <span class='fl'>2.0</span>, <span class='fl'>5L</span>)
+)
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#slots">Slots</a></li>
+      <li><a href="#value">Value</a></li>
+
+      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

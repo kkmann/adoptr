@@ -39,11 +39,11 @@
 <meta property="og:title" content="Quadratic smoothness penalty term — SmoothnessN2-class" />
 
 <meta property="og:description" content="SmoothnessN2 is a generic class for implementing a smoothness penalty
-via the average squared second derivative of the stage two sample size function
-n2 of a two-stage design.
-The only parameter is the width used for the finite differences, h.
-The generic implementation only evluates n2 in the interior of the
-continuation region of a design." />
+via the average squared second derivative of the stage two sample size
+function \(n_2\) of a two-stage design.
+The only parameter is the width used for the finite differences, \(h\).
+The generic implementation only evaluates \(n_2\) in the interior of
+the continuation region of a design." />
 
 <meta property="og:image" content="https://kkmann.github.io/adoptr/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -135,19 +135,15 @@ continuation region of a design." />
     <div class="ref-description">
     
     <p><code>SmoothnessN2</code> is a generic class for implementing a smoothness penalty
-via the average squared second derivative of the stage two sample size function
-<code>n2</code> of a two-stage design.
-The only parameter is the width used for the finite differences, <code>h</code>.
-The generic implementation only evluates <code>n2</code> in the interior of the
-continuation region of a design.</p>
+via the average squared second derivative of the stage two sample size
+function \(n_2\) of a two-stage design.
+The only parameter is the width used for the finite differences, \(h\).
+The generic implementation only evaluates \(n_2\) in the interior of
+the continuation region of a design.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>SmoothnessN2</span>(<span class='kw'>h</span> <span class='kw'>=</span> <span class='fl'>0.1</span>)
-
-<span class='co'># S4 method for SmoothnessN2,TwoStageDesign</span>
-<span class='fu'><a href='working-with-scores.html'>evaluate</a></span>(<span class='no'>s</span>, <span class='no'>design</span>,
-  <span class='kw'>optimization</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>subdivisions</span> <span class='kw'>=</span> <span class='fl'>10000L</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>SmoothnessN2</span>(<span class='kw'>h</span> <span class='kw'>=</span> <span class='fl'>0.1</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -156,29 +152,11 @@ continuation region of a design.</p>
       <th>h</th>
       <td><p>positive number, see slot <code>h</code></p></td>
     </tr>
-    <tr>
-      <th>s</th>
-      <td><p>an object of class <code>SmoothnessN2</code></p></td>
-    </tr>
-    <tr>
-      <th>design</th>
-      <td><p>the design to compute the smoothness term for</p></td>
-    </tr>
-    <tr>
-      <th>optimization</th>
-      <td><p>logical, if TRUE uses a relaxation to real parameters of
-the underlying design; used for smooth optimization.</p></td>
-    </tr>
-    <tr>
-      <th>subdivisions</th>
-      <td><p>integer, maxima number of subdivisions used for daptive
-integration.</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>further optional arguments</p></td>
-    </tr>
     </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>an object of class <code>SmoothnessN2</code></p>
     
     <h2 class="hasAnchor" id="slots"><a class="anchor" href="#slots"></a>Slots</h2>
 
@@ -195,6 +173,8 @@ interval for approximating the second derivative.</p></dd>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
+      <li><a href="#value">Value</a></li>
+
       <li><a href="#slots">Slots</a></li>
           </ul>
 

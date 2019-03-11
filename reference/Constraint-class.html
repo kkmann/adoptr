@@ -139,11 +139,7 @@ Currently,  constraints of the form 'score &lt;=/&gt;= x',
     
     </div>
 
-    <pre class="usage"># S4 method for Constraint,TwoStageDesign
-evaluate(s, design,
-  optimization = FALSE, ...)
-
-# S4 method for Constraint
+    <pre class="usage"># S4 method for Constraint
 show(object)
 
 # S4 method for AbstractConditionalScore,numeric
@@ -186,23 +182,6 @@ show(object)
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>s</th>
-      <td><p>constraint to evaluate</p></td>
-    </tr>
-    <tr>
-      <th>design</th>
-      <td><p>TwoStageDesign to evaluate</p></td>
-    </tr>
-    <tr>
-      <th>optimization</th>
-      <td><p>logical, if TRUE uses a relaxation to real parameters of
-the underlying design; used for smooth optimization.</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>further optional arguments</p></td>
-    </tr>
-    <tr>
       <th>object</th>
       <td><p>object of class <code>Constraint</code></p></td>
     </tr>
@@ -214,6 +193,10 @@ the underlying design; used for smooth optimization.</p></td>
       <th>e2</th>
       <td><p>second comparator</p></td>
     </tr>
+    <tr>
+      <th>...</th>
+      <td><p>further optional arguments</p></td>
+    </tr>
     </table>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
@@ -223,7 +206,7 @@ the underlying design; used for smooth optimization.</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>cp</span>          <span class='kw'>&lt;-</span> <span class='fu'><a href='ConditionalPower-class.html'>ConditionalPower</a></span>(<span class='fu'><a href='NormalDataDistribution-class.html'>Normal</a></span>(), <span class='fu'><a href='PointMassPrior-class.html'>PointMassPrior</a></span>(<span class='fl'>0.4</span>, <span class='fl'>1</span>))
-<span class='no'>pow</span>         <span class='kw'>&lt;-</span> <span class='fu'><a href='working-with-scores.html'>expected</a></span>(<span class='no'>cp</span>)
+<span class='no'>pow</span>         <span class='kw'>&lt;-</span> <span class='fu'><a href='expected.html'>expected</a></span>(<span class='no'>cp</span>)
 <span class='no'>constraint1</span> <span class='kw'>&lt;-</span> <span class='no'>pow</span> <span class='kw'>&gt;=</span> <span class='fl'>0.8</span> <span class='co'># an unconditional power constraint</span>
 <span class='no'>constraint2</span> <span class='kw'>&lt;-</span> <span class='no'>cp</span> <span class='kw'>&gt;=</span> <span class='fl'>0.7</span> <span class='co'># a conditional power constraint</span>
 <span class='no'>constraint3</span> <span class='kw'>&lt;-</span> <span class='fl'>0.7</span> <span class='kw'>&lt;=</span> <span class='no'>cp</span> <span class='co'># yields the same as constraint2</span></div></pre>

@@ -79,7 +79,13 @@
     <loc>https://kkmann.github.io/adoptr/reference/condition.html</loc>
   </url>
   <url>
+    <loc>https://kkmann.github.io/adoptr/reference/evaluate.html</loc>
+  </url>
+  <url>
     <loc>https://kkmann.github.io/adoptr/reference/expectation.html</loc>
+  </url>
+  <url>
+    <loc>https://kkmann.github.io/adoptr/reference/expected.html</loc>
   </url>
   <url>
     <loc>https://kkmann.github.io/adoptr/reference/minimize.html</loc>
@@ -106,10 +112,10 @@
     <loc>https://kkmann.github.io/adoptr/reference/show-TwoStageDesign-method.html</loc>
   </url>
   <url>
-    <loc>https://kkmann.github.io/adoptr/reference/summary-TwoStageDesign-method.html</loc>
+    <loc>https://kkmann.github.io/adoptr/reference/subject_to.html</loc>
   </url>
   <url>
-    <loc>https://kkmann.github.io/adoptr/reference/working-with-scores.html</loc>
+    <loc>https://kkmann.github.io/adoptr/reference/summary-TwoStageDesign-method.html</loc>
   </url>
   <url>
     <loc>https://kkmann.github.io/adoptr/articles/adoptr.html</loc>

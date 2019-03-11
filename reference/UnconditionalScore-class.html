@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Abstract class for unconditional scoring function — UnconditionalScore-class • adoptr</title>
+<title>Class for unconditional scoring function — UnconditionalScore-class • adoptr</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -36,9 +36,11 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="Abstract class for unconditional scoring function — UnconditionalScore-class" />
+<meta property="og:title" content="Class for unconditional scoring function — UnconditionalScore-class" />
 
-<meta property="og:description" content="[ToDo]" />
+<meta property="og:description" content="UnconditionalScore is an abstract class for unconditional scores.
+When defining a new UnconditionalScore, a corresponding
+method evaluate needs to be defined, too." />
 
 <meta property="og:image" content="https://kkmann.github.io/adoptr/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -122,24 +124,35 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Abstract class for unconditional scoring function</h1>
+    <h1>Class for unconditional scoring function</h1>
     <small class="dont-index">Source: <a href='https://github.com/kkmann/adoptr/blob/master/R/Scores.R'><code>R/Scores.R</code></a></small>
     <div class="hidden name"><code>UnconditionalScore-class.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>[ToDo]</p>
+    <p><code>UnconditionalScore</code> is an abstract class for unconditional scores.
+When defining a new <code>UnconditionalScore</code>, a corresponding
+method <code>evaluate</code> needs to be defined, too.</p>
     
     </div>
 
         
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>There are regularization scores <code><a href='N1-class.html'>N1</a></code> and
+   <code><a href='AverageN2-class.html'>AverageN2</a></code> for sample sizes.
+   The class <code><a href='IntegralScore-class.html'>IntegralScore</a></code> is a specific subclass that defines
+   uncondtional scores which are expected conditional scores.</p></div>
+    
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-                </ul>
+      
+      <li><a href="#see-also">See also</a></li>
+          </ul>
 
   </div>
 </div>

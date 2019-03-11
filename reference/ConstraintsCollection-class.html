@@ -38,9 +38,7 @@
 
 <meta property="og:title" content="Collection of constraints — ConstraintsCollection-class" />
 
-<meta property="og:description" content="subject_to(...) can be used to generate an object of class
-     ConstrintsCollection from an arbitrary number of (un)conditional
-     constraints." />
+<meta property="og:description" content="Collection of constraints" />
 
 <meta property="og:image" content="https://kkmann.github.io/adoptr/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -131,17 +129,10 @@
 
     <div class="ref-description">
     
-    <p><code>subject_to(...)</code> can be used to generate an object of class
-     <code>ConstrintsCollection</code> from an arbitrary number of (un)conditional
-     constraints.</p>
+    <p>Collection of constraints</p>
     
     </div>
 
-    <pre class="usage"><span class='co'># S4 method for ConstraintsCollection,TwoStageDesign</span>
-<span class='fu'><a href='working-with-scores.html'>evaluate</a></span>(<span class='no'>s</span>, <span class='no'>design</span>,
-  <span class='kw'>optimization</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
-
-<span class='fu'>subject_to</span>(<span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -154,24 +145,22 @@
       <th>design</th>
       <td><p>design</p></td>
     </tr>
-    <tr>
-      <th>optimization</th>
-      <td><p>logical, if TRUE uses a relaxation to real parameters of
-the underlying design; used for smooth optimization.</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>arbitrary number of (un)conditional constraints</p></td>
-    </tr>
     </table>
     
     <h2 class="hasAnchor" id="slots"><a class="anchor" href="#slots"></a>Slots</h2>
 
     
     <dl class='dl-horizontal'>
-<dt><code>unconditional_constraints</code></dt><dd><p>[todo]</p></dd>
-    <dt><code>conditional_constraints</code></dt><dd><p>[todo]</p></dd>
+<dt><code>unconditional_constraints</code></dt><dd><p>a list of elements of class <code>UnconditionalConstraint</code></p></dd>
+    <dt><code>conditional_constraints</code></dt><dd><p>a list of elements of class <code>ConditionalConstraint</code>
+    A <code>ConstraintsCollection</code> is a collection of unconditional and
+conditional constraints. In order to evaluate these correctly, they
+have to be defined in two different slots.</p></dd>
 </dl>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>A <code>ConstraintsCollection</code> can be created by <code><a href='subject_to.html'>subject_to()</a></code>.</p></div>
     
 
   </div>
@@ -181,6 +170,8 @@ the underlying design; used for smooth optimization.</p></td>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#slots">Slots</a></li>
+
+      <li><a href="#see-also">See also</a></li>
           </ul>
 
   </div>

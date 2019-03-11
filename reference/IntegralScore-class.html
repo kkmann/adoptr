@@ -6,7 +6,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Unconditional score class obtained by integration of a <code>ConditionalScore</code> — IntegralScore-class • adoptr</title>
+<title>Unconditional score class obtained by integration of a
+<code><a href='ConditionalScore-class.html'>ConditionalScore</a></code> — IntegralScore-class • adoptr</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -36,9 +37,11 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="Unconditional score class obtained by integration of a <code>ConditionalScore</code> — IntegralScore-class" />
+<meta property="og:title" content="Unconditional score class obtained by integration of a
+<code><a href='ConditionalScore-class.html'>ConditionalScore</a></code> — IntegralScore-class" />
 
-<meta property="og:description" content="Unconditional score class obtained by integration of a ConditionalScore" />
+<meta property="og:description" content="Unconditional score class obtained by integration of a
+ConditionalScore" />
 
 <meta property="og:image" content="https://kkmann.github.io/adoptr/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -122,23 +125,21 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Unconditional score class obtained by integration of a <code>ConditionalScore</code></h1>
+    <h1>Unconditional score class obtained by integration of a
+<code><a href='ConditionalScore-class.html'>ConditionalScore</a></code></h1>
     <small class="dont-index">Source: <a href='https://github.com/kkmann/adoptr/blob/master/R/Scores.R'><code>R/Scores.R</code></a></small>
     <div class="hidden name"><code>IntegralScore-class.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Unconditional score class obtained by integration of a <code>ConditionalScore</code></p>
+    <p>Unconditional score class obtained by integration of a
+<code><a href='ConditionalScore-class.html'>ConditionalScore</a></code></p>
     
     </div>
 
     <pre class="usage"><span class='co'># S4 method for IntegralScore</span>
-<span class='fu'>show</span>(<span class='no'>object</span>)
-
-<span class='co'># S4 method for IntegralScore,TwoStageDesign</span>
-<span class='fu'><a href='working-with-scores.html'>evaluate</a></span>(<span class='no'>s</span>, <span class='no'>design</span>,
-  <span class='kw'>optimization</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>subdivisions</span> <span class='kw'>=</span> <span class='fl'>10000L</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>show</span>(<span class='no'>object</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -147,44 +148,19 @@
       <th>object</th>
       <td><p>object of class <code>IntegralScore</code></p></td>
     </tr>
-    <tr>
-      <th>s</th>
-      <td><p>an <code>IntegralScore</code></p></td>
-    </tr>
-    <tr>
-      <th>design</th>
-      <td><p>a <code>TwoStageDesign</code></p></td>
-    </tr>
-    <tr>
-      <th>optimization</th>
-      <td><p>logical, if TRUE uses a relaxation to real parameters of
-the underlying design; used for smooth optimization.</p></td>
-    </tr>
-    <tr>
-      <th>subdivisions</th>
-      <td><p>integer, [TODO]</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>further optimal arguments</p></td>
-    </tr>
     </table>
-    
-    <h2 class="hasAnchor" id="methods-by-generic-"><a class="anchor" href="#methods-by-generic-"></a>Methods (by generic)</h2>
-
-    <ul>
-<li><p><code>show</code>: returns the class name itself</p></li>
-<li><p><code>evaluate</code>: generic implementation of evaluating an integral
-score. Uses adaptive Gaussian quadrature for integration and might be
-more efficiently implemented by specific <code>TwoStageDesign</code>-classes.</p></li>
-</ul>
     
     <h2 class="hasAnchor" id="slots"><a class="anchor" href="#slots"></a>Slots</h2>
 
     
     <dl class='dl-horizontal'>
-<dt><code>cs</code></dt><dd><p>the underlying <code>ConditionalScore</code></p></dd>
+<dt><code>cs</code></dt><dd><p>the underlying <code><a href='ConditionalScore-class.html'>ConditionalScore</a></code></p></dd>
 </dl>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>The method <code><a href='expected.html'>expected</a></code> creates a <code>IntegralScore</code>
+   from a <code><a href='ConditionalScore-class.html'>ConditionalScore</a></code>.</p></div>
     
 
   </div>
@@ -193,9 +169,9 @@ more efficiently implemented by specific <code>TwoStageDesign</code>-classes.</p
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#methods-by-generic-">Methods (by generic)</a></li>
-
       <li><a href="#slots">Slots</a></li>
+
+      <li><a href="#see-also">See also</a></li>
           </ul>
 
   </div>

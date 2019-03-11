@@ -38,7 +38,13 @@
 
 <meta property="og:title" content="Class for conditional scoring function — ConditionalScore-class" />
 
-<meta property="og:description" content="[ToDo]" />
+<meta property="og:description" content="ConditionalScore is an abstract class for conditional scores.
+It requires the two slots distribution and prior that
+determine the data distribution and the prior distribution for the effect
+parameter. When defining a specific  ConditionalScore, a corresponding
+method evaluate needs to be defined, too.
+Any ConditionalScore can be transformed to an unconditional
+IntegralScore by means of the method expected." />
 
 <meta property="og:image" content="https://kkmann.github.io/adoptr/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -129,40 +135,32 @@
 
     <div class="ref-description">
     
-    <p>[ToDo]</p>
+    <p><code>ConditionalScore</code> is an abstract class for conditional scores.
+It requires the two slots <code>distribution</code> and <code>prior</code> that
+determine the data distribution and the prior distribution for the effect
+parameter. When defining a specific  <code>ConditionalScore</code>, a corresponding
+method <code>evaluate</code> needs to be defined, too.
+Any <code>ConditionalScore</code> can be transformed to an unconditional
+<code><a href='IntegralScore-class.html'>IntegralScore</a></code> by means of the method <code><a href='expected.html'>expected</a></code>.</p>
     
     </div>
 
     <pre class="usage"><span class='co'># S4 method for ConditionalScore</span>
-<span class='fu'><a href='working-with-scores.html'>expected</a></span>(<span class='no'>s</span>, <span class='no'>...</span>)
-
-<span class='co'># S4 method for ConditionalScore</span>
 <span class='fu'>show</span>(<span class='no'>object</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>s</th>
-      <td><p>conditional score object to evaluate</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>optional arguments</p></td>
-    </tr>
-    <tr>
       <th>object</th>
       <td><p>object of class <code>ConditionalScore</code></p></td>
     </tr>
     </table>
     
-    <h2 class="hasAnchor" id="methods-by-generic-"><a class="anchor" href="#methods-by-generic-"></a>Methods (by generic)</h2>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <ul>
-<li><p><code>expected</code>: integrate a <code>ConditionalScore</code> over the
-stage-one outcome; return object of class <code><a href='IntegralScore-class.html'>IntegralScore-class</a></code>.</p></li>
-<li><p><code>show</code>: returns the class name itself</p></li>
-</ul>
+    <div class='dont-index'><p>The common conditional scores <code><a href='ConditionalPower-class.html'>ConditionalPower</a></code>
+   and <code><a href='ConditionalSampleSize-class.html'>ConditionalSampleSize</a></code> are preimplemented in <span class="pkg">adoptr</span>.</p></div>
     
 
   </div>
@@ -171,7 +169,7 @@ stage-one outcome; return object of class <code><a href='IntegralScore-class.htm
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#methods-by-generic-">Methods (by generic)</a></li>
+      <li><a href="#see-also">See also</a></li>
           </ul>
 
   </div>

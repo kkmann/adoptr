@@ -157,11 +157,13 @@ the compact interval on which the pdf is positive.</p></td>
     </tr>
     <tr>
       <th>tighten_support</th>
-      <td><p>???</p></td>
+      <td><p>logical indicating if the support should be
+tightened</p></td>
     </tr>
     <tr>
       <th>check_normalization</th>
-      <td><p>???</p></td>
+      <td><p>logical indicating if it should be checked
+that <code>pdf</code> defines a density.</p></td>
     </tr>
     <tr>
       <th>object</th>
@@ -182,6 +184,9 @@ the compact interval on which the pdf is positive.</p></td>
     <div class='dont-index'><p>Discrete priors are supported via <code><a href='PointMassPrior-class.html'>PointMassPrior</a></code></p></div>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'>ContinuousPrior</span>(<span class='kw'>function</span>(<span class='no'>x</span>) <span class='fl'>2</span>*<span class='no'>x</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>))</div><div class='output co'>#&gt; ContinuousPrior</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -191,7 +196,9 @@ the compact interval on which the pdf is positive.</p></td>
       <li><a href="#slots">Slots</a></li>
 
       <li><a href="#see-also">See also</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

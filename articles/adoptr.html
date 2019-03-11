@@ -85,7 +85,7 @@
     <div class="page-header toc-ignore">
       <h1>Get started with adoptr</h1>
             
-            <h4 class="date">2019-03-10</h4>
+            <h4 class="date">2019-03-11</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/kkmann/adoptr/blob/master/vignettes/adoptr.Rmd"><code>vignettes/adoptr.Rmd</code></a></small>
       <div class="hidden name"><code>adoptr.Rmd</code></div>
@@ -121,10 +121,10 @@
 <h2 class="hasAnchor">
 <a href="#specify-optimization-problem" class="anchor"></a>Specify optimization problem</h2>
 <p>We begin by defining the expected sample size under the alternative hypothesis:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">ess &lt;-<span class="st"> </span><span class="kw"><a href="../reference/working-with-scores.html">expected</a></span>(<span class="kw"><a href="../reference/ConditionalSampleSize-class.html">ConditionalSampleSize</a></span>(datadist, H_<span class="dv">1</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">ess &lt;-<span class="st"> </span><span class="kw"><a href="../reference/expected.html">expected</a></span>(<span class="kw"><a href="../reference/ConditionalSampleSize-class.html">ConditionalSampleSize</a></span>(datadist, H_<span class="dv">1</span>))</a></code></pre></div>
 <p>Similarly, we can define the power and the type-one-error rate by integrating conditional power with respect to the alternative or null hypothesis respectively:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">power  &lt;-<span class="st"> </span><span class="kw"><a href="../reference/working-with-scores.html">expected</a></span>(<span class="kw"><a href="../reference/ConditionalPower-class.html">ConditionalPower</a></span>(datadist, H_<span class="dv">1</span>))</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2">toer   &lt;-<span class="st"> </span><span class="kw"><a href="../reference/working-with-scores.html">expected</a></span>(<span class="kw"><a href="../reference/ConditionalPower-class.html">ConditionalPower</a></span>(datadist, H_<span class="dv">0</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">power  &lt;-<span class="st"> </span><span class="kw"><a href="../reference/expected.html">expected</a></span>(<span class="kw"><a href="../reference/ConditionalPower-class.html">ConditionalPower</a></span>(datadist, H_<span class="dv">1</span>))</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">toer   &lt;-<span class="st"> </span><span class="kw"><a href="../reference/expected.html">expected</a></span>(<span class="kw"><a href="../reference/ConditionalPower-class.html">ConditionalPower</a></span>(datadist, H_<span class="dv">0</span>))</a></code></pre></div>
 <p>To complete the problem specification, we only need to provide an initial design and an integration order for the Gaussian quadrature rule to be used for the numerical integration of the variational objective between <span class="math inline">\(c_1^f\)</span> and <span class="math inline">\(c_1^e\)</span>. For the initial design, we simply set the stage-one sample size to half the sample size of the t-test and we use a rule of order 7:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">initial_design &lt;-<span class="st"> </span><span class="kw"><a href="../reference/TwoStageDesign-class.html">TwoStageDesign</a></span>(</a>
 <a class="sourceLine" id="cb6-2" data-line-number="2">    <span class="dt">n1    =</span> <span class="dv">25</span>, </a>
@@ -135,16 +135,16 @@
 <a class="sourceLine" id="cb6-7" data-line-number="7">    <span class="dt">order =</span> 7L</a>
 <a class="sourceLine" id="cb6-8" data-line-number="8">)</a></code></pre></div>
 <p>The decision boundaries are heuristically picked in concordance with those of the single-stage design. We can then check whether the initial design fulfills the constraints on the operating characteristics:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="../reference/working-with-scores.html">evaluate</a></span>(power, initial_design)</a>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="../reference/evaluate.html">evaluate</a></span>(power, initial_design)</a>
 <a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co">#&gt; [1] 0.8484691</span></a></code></pre></div>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="../reference/working-with-scores.html">evaluate</a></span>(toer, initial_design)</a>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="../reference/evaluate.html">evaluate</a></span>(toer, initial_design)</a>
 <a class="sourceLine" id="cb8-2" data-line-number="2"><span class="co">#&gt; [1] 0.01855338</span></a></code></pre></div>
 <p>We can now proceed with defining and solving the optimization problem:</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">opt_res &lt;-<span class="st"> </span><span class="kw"><a href="../reference/minimize.html">minimize</a></span>(</a>
 <a class="sourceLine" id="cb9-2" data-line-number="2">  </a>
 <a class="sourceLine" id="cb9-3" data-line-number="3">  ess,</a>
 <a class="sourceLine" id="cb9-4" data-line-number="4">  </a>
-<a class="sourceLine" id="cb9-5" data-line-number="5">  <span class="kw"><a href="../reference/ConstraintsCollection-class.html">subject_to</a></span>(</a>
+<a class="sourceLine" id="cb9-5" data-line-number="5">  <span class="kw"><a href="../reference/subject_to.html">subject_to</a></span>(</a>
 <a class="sourceLine" id="cb9-6" data-line-number="6">    power <span class="op">&gt;=</span><span class="st"> </span><span class="fl">0.8</span>,</a>
 <a class="sourceLine" id="cb9-7" data-line-number="7">    toer  <span class="op">&lt;=</span><span class="st"> </span><span class="fl">.025</span></a>
 <a class="sourceLine" id="cb9-8" data-line-number="8">  ),</a>
@@ -161,7 +161,7 @@
 <a class="sourceLine" id="cb11-4" data-line-number="4">)</a></code></pre></div>
 <p><img src="adoptr_files/figure-html/plot-optimal-design-1.png" width="672"></p>
 <p>Numerical integration yields an expected sample size of</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw"><a href="../reference/working-with-scores.html">evaluate</a></span>(ess, opt_res<span class="op">$</span>design)</a>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw"><a href="../reference/evaluate.html">evaluate</a></span>(ess, opt_res<span class="op">$</span>design)</a>
 <a class="sourceLine" id="cb12-2" data-line-number="2"><span class="co">#&gt; [1] 39.80969</span></a></code></pre></div>
 <p>which is way below the single-stage 51. We can check this results against simulated values</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">df_sim &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/simulate">simulate</a></span>(opt_res<span class="op">$</span>design, <span class="dt">nsim =</span> <span class="dv">10</span><span class="op">^</span><span class="dv">6</span>, <span class="dt">dist =</span> datadist, <span class="dt">theta =</span> <span class="fl">.4</span>, <span class="dt">seed =</span> <span class="dv">42</span>)</a>
@@ -173,9 +173,9 @@
 <a class="sourceLine" id="cb13-7" data-line-number="7"><span class="co">#&gt; [1] 0.01372656</span></a></code></pre></div>
 <p>Obviously, the values from simulation and numerical integration are almost identical.</p>
 <p>The constraints are also met almost perfectly:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw"><a href="../reference/working-with-scores.html">evaluate</a></span>(toer, opt_res<span class="op">$</span>design)</a>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw"><a href="../reference/evaluate.html">evaluate</a></span>(toer, opt_res<span class="op">$</span>design)</a>
 <a class="sourceLine" id="cb14-2" data-line-number="2"><span class="co">#&gt; [1] 0.02500571</span></a>
-<a class="sourceLine" id="cb14-3" data-line-number="3"><span class="kw"><a href="../reference/working-with-scores.html">evaluate</a></span>(power, opt_res<span class="op">$</span>design)</a>
+<a class="sourceLine" id="cb14-3" data-line-number="3"><span class="kw"><a href="../reference/evaluate.html">evaluate</a></span>(power, opt_res<span class="op">$</span>design)</a>
 <a class="sourceLine" id="cb14-4" data-line-number="4"><span class="co">#&gt; [1] 0.7999964</span></a></code></pre></div>
 </div>
 <div id="variations" class="section level2">
