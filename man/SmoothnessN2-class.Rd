@@ -3,37 +3,25 @@
 \docType{class}
 \name{SmoothnessN2-class}
 \alias{SmoothnessN2-class}
+\alias{SmothnessN2}
 \alias{SmoothnessN2}
-\alias{evaluate,SmoothnessN2,TwoStageDesign-method}
 \title{Quadratic smoothness penalty term}
 \usage{
 SmoothnessN2(h = 0.1)
-
-\S4method{evaluate}{SmoothnessN2,TwoStageDesign}(s, design,
-  optimization = FALSE, subdivisions = 10000L, ...)
 }
 \arguments{
 \item{h}{positive number, see slot \code{h}}
-
-\item{s}{an object of class \code{SmoothnessN2}}
-
-\item{design}{the design to compute the smoothness term for}
-
-\item{optimization}{logical, if TRUE uses a relaxation to real parameters of
-the underlying design; used for smooth optimization.}
-
-\item{subdivisions}{integer, maxima number of subdivisions used for daptive
-integration.}
-
-\item{...}{further optional arguments}
+}
+\value{
+an object of class \code{\link{SmoothnessN2}}
 }
 \description{
 \code{SmoothnessN2} is a generic class for implementing a smoothness penalty
-via the average squared second derivative of the stage two sample size function
-\code{n2} of a two-stage design.
-The only parameter is the width used for the finite differences, \code{h}.
-The generic implementation only evluates \code{n2} in the interior of the
-continuation region of a design.
+via the average squared second derivative of the stage two sample size
+function \eqn{n_2}{n2} of a two-stage design.
+The only parameter is the width used for the finite differences, \eqn{h}{h}.
+The generic implementation only evaluates \eqn{n_2}{n2} in the interior of
+the continuation region of a design.
 }
 \section{Slots}{
 

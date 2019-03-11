@@ -9,7 +9,7 @@
 #'
 #' @param e1 first comparator
 #' @param e2 second comparator
-#' @template dotdotdotTemplate
+#' @template dotdotdot
 #'
 #' @examples
 #' cp          <- ConditionalPower(Normal(), PointMassPrior(0.4, 1))
@@ -18,15 +18,17 @@
 #' constraint2 <- cp >= 0.7 # a conditional power constraint
 #' constraint3 <- 0.7 <= cp # yields the same as constraint2
 #'
+#' @aliases Constraint
 #' @exportClass Constraint
 setClass("Constraint")
 
-#' @param s constraint to evaluate
-#' @param design TwoStageDesign to evaluate
-#' @param optimization logical, if TRUE uses a relaxation to real parameters of
-#'       the underlying design; used for smooth optimization.
+#' @examples
+#' evaluate(
+#'    expected(ConditionalPower(Normal(), PointMassPrior(.0, 1))) <= 0.05,
+#'    OneStageDesign(50, 1.96)
+#' ) # -0.025
 #'
-#' @rdname Constraint-class
+#' @rdname evaluate
 #' @export
 setMethod("evaluate", signature("Constraint", "TwoStageDesign"),
           function(s, design, optimization = FALSE, ...) {
@@ -122,21 +124,40 @@ setMethod(">=", signature("UnconditionalScore", "UnconditionalScore"),
 
 #' Collection of constraints
 #'
-#' @slot unconditional_constraints [todo]
-#' @slot conditional_constraints [todo]
+#' @slot unconditional_constraints a list of elements of class \code{UnconditionalConstraint}
+#' @slot conditional_constraints a list of elements of class \code{ConditionalConstraint}
+#'
+#' A \code{ConstraintsCollection} is a collection of unconditional and
+#' conditional constraints. In order to evaluate these correctly, they
+#' have to be defined in two different slots.
+#'
+#' @seealso A \code{ConstraintsCollection} can be created by \code{subject_to()}.
 #'
 #' @param s constraint collection
 #' @param design design
 #'
+#' @aliases ConstraintsCollection
 #' @exportClass ConstraintsCollection
 setClass("ConstraintsCollection", representation(
         unconditional_constraints = "list",
         conditional_constraints = "list"))
 
 
-#' @param optimization logical, if TRUE uses a relaxation to real parameters of
-#'    the underlying design; used for smooth optimization.
-#' @rdname ConstraintsCollection-class
+#' @examples
+#' # define power at delta = 0.3 and type one error rate
+#' pow  <- expected(ConditionalPower(Normal(), PointMassPrior(.3, 1)))
+#' toer <- expected(ConditionalPower(Normal(), PointMassPrior(.0, 1)))
+#' # evaluate if power >= 0.8 and toer <= 0.025
+#' evaluate(
+#'    subject_to(
+#'       pow  >= 0.8,
+#'       toer <= 0.025
+#'    ),
+#'    TwoStageDesign(50.0, 0.0, 2.0, rep(60.0, 5), seq(2.0, 0.0, length.out = 5))
+#' )
+#'
+#'
+#' @rdname evaluate
 #' @export
 setMethod("evaluate", signature("ConstraintsCollection", "TwoStageDesign"),
           function(s, design, optimization = FALSE, ...) {
@@ -153,13 +174,40 @@ setMethod("evaluate", signature("ConstraintsCollection", "TwoStageDesign"),
         })
 
 
-#' @description \code{subject_to(...)} can be used to generate an object of class
-#'      \code{ConstrintsCollection} from an arbitrary number of (un)conditional
-#'      constraints.
+#' Create a collection of constraints
+#'
+#' \code{subject_to(...)} can be used to generate an object of class
+#' \code{ConstrintsCollection} from an arbitrary number of (un)conditional
+#' constraints.
 #'
 #' @param ... arbitrary number of (un)conditional constraints
 #'
-#' @rdname ConstraintsCollection-class
+#' @return an object of class \code{\link{ConstraintsCollection}}
+#'
+#' @seealso \code{subject_to} can be used for the constraints in
+#'    \code{\link{minimize}}.
+#'
+#' @examples
+#' # Define Type one error rate
+#' toer <- expected(ConditionalPower(Normal(), PointMassPrior(0.0, 1)))
+#'
+#' # Define Power at delta = 0.4
+#' pow <- expected(ConditionalPower(Normal(), PointMassPrior(0.4, 1)))
+#'
+#' # Define expected sample size at delta = 0.4
+#' ess <- expected(ConditionalSampleSize(Normal(), PointMassPrior(0.4, 1)))
+#'
+#' # Compute design minimizing ess subject to power and toer constraints
+#' \dontrun{
+#' minimize(
+#'    ess,
+#'    subject_to(
+#'       toer <= 0.025,
+#'       pow  >= 0.9
+#'    ),
+#'    initial_design = TwoStageDesign(50, .0, 2.0, 60.0, 2.0, 5L)
+#' )
+#' }
 #' @export
 subject_to <- function(...) {
     args <- list(...)

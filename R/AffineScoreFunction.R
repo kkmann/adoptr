@@ -15,16 +15,17 @@
 #' \code{AffineScore} allows to add scores of arbitrary class and shift
 #' them by the \code{intercept}.
 #' \code{AffineUnconditionalScore} allows the same for scores of class
-#' \code{UnconditionalScore} and \code{AffineConditionalScore} for
-#' scores of class \code{ConditionalScore}.
+#' \code{\link{UnconditionalScore}} and \code{AffineConditionalScore} for
+#' scores of class \code{\link{ConditionalScore}}.
 #' By the methods \code{+} and \code{*} scores can be added and multiplicated,
 #' respectively.
 #' Note that it is not possible to use these methods for a mixture of
-#' \code{ConditionalScore} and \code{UnconditionalScore} as these
+#' \code{\link{ConditionalScore}} and \code{\link{UnconditionalScore}} as these
 #' require different evaluation techniques.
 #' However, for both score classes multiplication and addition with
 #' numerics is provided.
 #'
+#' @aliases AffineScore
 #' @exportClass AffineScore
 setClass("AffineScore", representation(
     scores    = "list",
@@ -36,7 +37,7 @@ setClass("AffineScore", representation(
 #' @param scores cf. corresponding slot
 #' @param coefs cf. corresponding slot
 #' @param intercept cf. corresponding slot
-#' @template dotdotdotTemplate
+#' @template dotdotdot
 #'
 #' @rdname AffineScore-class
 #' @export
@@ -52,10 +53,15 @@ AffineScore <- function(scores, coefs, intercept) {
 
 
 
-#' @param s score
-#' @param design design
+#' @examples
+#' # evaluate affine N1 score
+#' aff_n1 <- N1() + 10
+#' evaluate(
+#'    aff_n1,
+#'    OneStageDesign(50, 1.96)
+#' ) # 60
 #'
-#' @rdname AffineScore-class
+#' @rdname evaluate
 #' @export
 setMethod("evaluate", signature("AffineScore", "TwoStageDesign"),
           function(s, design, ...) {
@@ -76,9 +82,16 @@ setMethod("show", signature(object = "AffineScore"),
           function(object) cat(class(object)[1]))
 
 
-
+#' @rdname AffineScore-class
 setClass("AffineUnconditionalScore", contains = c("AffineScore", "UnconditionalScore"))
 
+
+#' @examples
+#' # shift score AverageN2() by 10 and multiply by factor 2
+#' affine_avn2 <- 2 * AverageN2() + 10
+#'
+#' @rdname AffineScore-class
+#' @export
 AffineUnconditionalScore <- function(scores, coefs, intercept = 0) {
     if (!all(sapply(c(scores), function(s) is(s, "UnconditionalScore"))))
         stop("all scores must be unconditional scores")
@@ -114,9 +127,15 @@ setMethod("*", signature("numeric", "AffineUnconditionalScore"),
           function(e1, e2) e2 * e1 )
 
 
-
+#' @rdname AffineScore-class
 setClass("AffineConditionalScore", contains = c("AffineScore", "AbstractConditionalScore"))
 
+#' @examples
+#' # shift conditional sample size by 5 and divide by 2
+#' aff_css <- 0.5 * ConditionalSampleSize(Normal(), PointMassPrior(.25, 1)) + 5
+#'
+#' @rdname AffineScore-class
+#' @export
 AffineConditionalScore <- function(scores, coefs, intercept = 0) {
     if (!all(sapply(c(scores), function(s) is(s, "AbstractConditionalScore"))))
         stop("all scores must be conditional scores")

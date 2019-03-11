@@ -1,26 +1,38 @@
 #' Conditional power of a design given stage-one outcome
 #'
-#' This score evaluates to \eqn{P[X_2 > c2(design, X_1)|X_1 = x_1]}.
+#' This score evaluates to \eqn{\boldsymbol{P}[X_2 > c2(design, X_1)|X_1 = x_1]}.
 #' Note that the distribution of \eqn{X_2} is the posterior predictive after
 #' observing \eqn{X_1=x_1}.
 #'
-#' @details See documentation in \link{ConditionalScore-class}
-#'     for further details and inherited methods.
+#' @template dist
+#' @template prior
 #'
-#' @template ConditionalScoreTemplate
-#' @param dist data distribution
-#' @param prior prior distribution
+#' @seealso The method \code{\link{evaluate}} provides evaluation of the
+#'    \code{ConditionalPower}.
 #'
+#' @aliases ConditionalPower
 #' @exportClass ConditionalPower
 setClass("ConditionalPower", contains = "ConditionalScore")
 
-#' @describeIn ConditionalPower-class constructor
+#' @examples
+#' cp <- ConditionalPower(dist = Normal(), prior = PointMassPrior(.4, 1))
+#'
+#' @rdname ConditionalPower-class
 #' @export
 ConditionalPower <- function(dist, prior) new("ConditionalPower", distribution = dist, prior = prior)
 
-#' @param optimization logical, if TRUE uses a relaxation to real parameters of
-#'    the underlying design; used for smooth optimization.
-#' @rdname ConditionalPower-class
+#' @examples
+#' # evaluate conditional power
+#' evaluate(
+#'    ConditionalPower(Normal(), PointMassPrior(.3, 1)),
+#'    TwoStageDesign(50, .0, 2.0, 50, 2.0, order = 5L),
+#'    x1 = 1
+#' )
+#'
+#' @template x1
+#'
+#' @rdname evaluate
+#' @export
 setMethod("evaluate", signature("ConditionalPower", "TwoStageDesign"),
           function(s, design, x1, optimization = FALSE, ...) {
               sapply(x1,

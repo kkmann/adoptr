@@ -4,25 +4,17 @@
 \name{N1-class}
 \alias{N1-class}
 \alias{N1}
-\alias{evaluate,N1,TwoStageDesign-method}
 \title{Regularize n1}
 \usage{
 N1()
-
-\S4method{evaluate}{N1,TwoStageDesign}(s, design, optimization = FALSE,
-  ...)
 }
-\arguments{
-\item{s}{an object of class \code{N1}}
-
-\item{design}{the design to compute the smoothness term for}
-
-\item{optimization}{logical, if TRUE uses a relaxation to real parameters of
-the underlying design; used for smooth optimization.}
-
-\item{...}{further optional arguments}
+\value{
+an object of class \code{\link{N1}}
 }
 \description{
-\code{N1} is a class that penalizes the \code{n1} value of
-a design.
+\code{N1} is a class that computes the \code{n1} value of a design.
+}
+\examples{
+n1_score <- N1()
+
 }
