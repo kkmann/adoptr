@@ -12,14 +12,6 @@
 \alias{make_fixed}
 \alias{make_fixed,TwoStageDesign-method}
 \alias{update,TwoStageDesign-method}
-\alias{n1}
-\alias{n1,TwoStageDesign-method}
-\alias{n2}
-\alias{n2,TwoStageDesign,numeric-method}
-\alias{n}
-\alias{n,TwoStageDesign,numeric-method}
-\alias{c2}
-\alias{c2,TwoStageDesign,numeric-method}
 \alias{scaled_integration_pivots}
 \alias{scaled_integration_pivots,TwoStageDesign-method}
 \alias{plot,TwoStageDesign-method}
@@ -44,22 +36,6 @@ make_fixed(x, ...)
 \S4method{make_fixed}{TwoStageDesign}(x, ...)
 
 \S4method{update}{TwoStageDesign}(object, params, ...)
-
-n1(d, ...)
-
-\S4method{n1}{TwoStageDesign}(d, round = TRUE, ...)
-
-n2(d, x1, ...)
-
-\S4method{n2}{TwoStageDesign,numeric}(d, x1, round = TRUE, ...)
-
-n(d, x1, ...)
-
-\S4method{n}{TwoStageDesign,numeric}(d, x1, round = TRUE, ...)
-
-c2(d, x1, ...)
-
-\S4method{c2}{TwoStageDesign,numeric}(d, x1, ...)
 
 scaled_integration_pivots(d, ...)
 
@@ -94,12 +70,7 @@ of the Gaussian quadrature rule to use for integration}
 \item{params}{vector of design parameters (must be in same order as returned
 by \code{as.numeric(design)})}
 
-\item{d}{design object}
-
-\item{round}{logical, should integer sample size or real sample size be
-returned?}
-
-\item{x1}{stage-one outcome}
+\item{d}{design}
 
 \item{y}{not used}
 
@@ -175,8 +146,6 @@ automatically.
 }
 \section{Methods (by generic)}{
 \itemize{
-\item \code{n}: overall sample size given stage-one outcome
-
 \item \code{scaled_integration_pivots}: get the actual pivots points (knots) of the numerical integration routine
 rule.
 

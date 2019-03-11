@@ -42,6 +42,8 @@
 #'     approximating the integral over x1.
 #' @slot tunable named logical vector indicating whether corresponding slot is considered a tunable parameter
 #'
+#' @template d
+#'
 #' @exportClass TwoStageDesign
 setClass("TwoStageDesign", representation(
         n1        = "numeric",
@@ -188,16 +190,13 @@ setMethod("update", signature("TwoStageDesign"),
 
 
 
-#' @param d design object
-#'
-#' @rdname TwoStageDesign-class
+
+
+#' @rdname n
 #' @export
 setGeneric("n1", function(d, ...) standardGeneric("n1"))
 
-#' @param round logical, should integer sample size or real sample size be
-#'    returned?
-#'
-#' @rdname TwoStageDesign-class
+#' @rdname n
 #' @export
 setMethod("n1", signature("TwoStageDesign"),
           function(d, round = TRUE, ...) {
@@ -209,13 +208,11 @@ setMethod("n1", signature("TwoStageDesign"),
 
 
 
-#' @param x1 stage-one outcome
-#'
-#' @rdname TwoStageDesign-class
+#' @rdname n
 #' @export
 setGeneric("n2", function(d, x1, ...) standardGeneric("n2"))
 
-#' @rdname TwoStageDesign-class
+#' @rdname n
 #' @export
 setMethod("n2", signature("TwoStageDesign", "numeric"),
           function(d, x1, round = TRUE, ...) {
@@ -235,22 +232,60 @@ setMethod("n2", signature("TwoStageDesign", "numeric"),
 
 
 
-#' @rdname TwoStageDesign-class
+#' Query sample size of a design
+#'
+#' Methods to access the stage-one, stage-two, or overall sample size of a
+#' \code{\link{TwoStageDesign}}.
+#' \code{n1} returns the first-stage sample size of a design,
+#' \code{n2} the stage-two sample size conditional on the stage-one test
+#' statistic and \code{n} the overall sample size \code{n1 + n2}.
+#' Internally, objects of the class \code{TwoStageDesign} allow non-natural,
+#' real sample sizes to allow smooth optimization (cf. \code{\link{minimize}} for
+#' details).
+#' The optional argument \code{round} allows to switch between the internal
+#' real representation and a rounded version (rounding to the next positive
+#' integer).
+#'
+#' @template d
+#' @template x1
+#' @template round
+#' @template dotdotdot
+#'
+#' @seealso \code{\link{TwoStageDesign}}, see \code{\link{c2}} for accessing
+#' the critical values
+#'
+#' @rdname n
 #' @export
 setGeneric("n", function(d, x1, ...) standardGeneric("n"))
 
-#' @describeIn TwoStageDesign overall sample size given stage-one outcome
+#' @rdname n
 #' @export
 setMethod("n", signature("TwoStageDesign", "numeric"),
           function(d, x1, round = TRUE, ...) n2(d, x1, round, ...) + n1(d, round, ...))
 
 
 
-#' @rdname TwoStageDesign-class
+
+
+#' Query critical values of a design
+#'
+#' Methods to access the stage-two critical values of a
+#' \code{\link{TwoStageDesign}}.
+#' \code{c2} returns the stage-two sample size conditional on the stage-one test
+#' statistic.
+#'
+#' @template d
+#' @template x1
+#' @template dotdotdot
+#'
+#' @seealso \code{\link{TwoStageDesign}}, see \code{\link{n}} for accessing
+#' the sample size of a design
+#'
+#' @rdname critical-values
 #' @export
 setGeneric("c2", function(d, x1, ...) standardGeneric("c2"))
 
-#' @rdname TwoStageDesign-class
+#' @rdname critical-values
 #' @export
 setMethod("c2", signature("TwoStageDesign", "numeric"),
           function(d, x1, ...) ifelse(x1 < d@c1f, Inf,
@@ -263,6 +298,9 @@ setMethod("c2", signature("TwoStageDesign", "numeric"),
                                              )
           )
 )
+
+
+
 
 
 #' @rdname TwoStageDesign-class
