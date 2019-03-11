@@ -4,74 +4,40 @@
 \name{OneStageDesign-class}
 \alias{OneStageDesign-class}
 \alias{OneStageDesign}
-\alias{update,OneStageDesign-method}
-\alias{n2,OneStageDesign,numeric-method}
-\alias{c2,OneStageDesign,numeric-method}
 \alias{TwoStageDesign,OneStageDesign-method}
 \alias{plot,OneStageDesign-method}
-\alias{show,OneStageDesign-method}
-\title{One-stage design}
+\title{One-stage designs}
 \usage{
 OneStageDesign(n, c)
-
-\S4method{update}{OneStageDesign}(object, params, ...)
-
-\S4method{n2}{OneStageDesign,numeric}(d, x1, ...)
-
-\S4method{c2}{OneStageDesign,numeric}(d, x1, ...)
 
 \S4method{TwoStageDesign}{OneStageDesign}(d, ...)
 
 \S4method{plot}{OneStageDesign}(x, y, ...)
-
-\S4method{show}{OneStageDesign}(object)
 }
 \arguments{
 \item{n}{sample size (stage-one sample size)}
 
 \item{c}{rejection boundary (c = c1f = c1e)}
 
-\item{object}{object of class \code{OneStageDesign}}
-
-\item{params}{vector of design parameters (must be in same order as returned
-by \code{as.numeric(OneStageDesign)})}
-
-\item{...}{further optional arguments}
-
-\item{d}{object of class \code{OneStageDesign}}
-
-\item{x1}{stage-one outcome}
-
 \item{x}{not used}
 
 \item{y}{not used}
 }
 \description{
-\code{OneStageDesign} allows the usage of a single-stage design.
-In this case without a second stage, there only exist the first-stage sample
-size \code{n1} and the first-stage rejection boundary \code{c1f}.
-No other parameters have to be set.
-\code{OneStageDesign} is a subclass of \link{TwoStageDesign}.
-
-Only states the class itself.
+\code{OneStageDesign} implements a one-stage design as special case of
+a two-stage design, i.e. as sub-class of \code{\link{TwoStageDesign}}.
+This is possible by defining n2 = 0, c:=c1f=c1e, c2(x1) = ifelse(x1 < c, Inf, -Inf).
+No integration pivots etc are required (set to NaN).
+Note that the default \code{\link[plot,TwoStageDesign-method]{plot}} method
+is not supported for \code{OneStageDesign} objects.
 }
-\section{Slots}{
+\examples{
+design <- OneStageDesign(30, 1.96)
+summary(design)
+design <- TwoStageDesign(design)
+summary(design)
 
-\describe{
-\item{\code{n1}}{sample size}
-
-\item{\code{c1f}}{rejection boundary}
-
-\item{\code{c1e}}{rejection boundary}
-
-\item{\code{n2_pivots}}{constant 0}
-
-\item{\code{c2_pivots}}{\code{+/- Inf}}
-
-\item{\code{x1_norm_pivots}}{is ignored for OneStageDesign}
-
-\item{\code{weights}}{is ignored for OneStageDesign}
-
-\item{\code{tunable}}{is ignored for OneStageDesign}
-}}
-
+}
+\seealso{
+\code{\link{TwoStageDesign}}, \code{\link{GroupSequentialDesign}}
+}
