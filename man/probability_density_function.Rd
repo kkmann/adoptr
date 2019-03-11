@@ -20,6 +20,8 @@ probability_density_function(dist, x, n, theta, ...)
 \item{n}{sample size}
 
 \item{theta}{location parameter}
+
+\item{...}{further optional arguments}
 }
 \description{
 \code{probability_density_function} evaluates the probability density

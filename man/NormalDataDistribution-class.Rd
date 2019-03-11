@@ -36,8 +36,6 @@ Normal(two_armed = TRUE)
 \item{nsim}{number of simulation runs}
 
 \item{seed}{random seed}
-
-\item{dist}{data distribution object}
 }
 \value{
 An object of class \code{Normal}

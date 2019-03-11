@@ -6,8 +6,6 @@
 \alias{DataDistribution}
 \title{Data distributions}
 \arguments{
-\item{dist}{data distribution object}
-
 \item{x}{outcome}
 
 \item{n}{sample size}

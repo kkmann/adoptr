@@ -20,6 +20,8 @@ cumulative_distribution_function(dist, x, n, theta, ...)
 \item{n}{sample size}
 
 \item{theta}{location parameter}
+
+\item{...}{further optional arguments}
 }
 \description{
 \code{cumulative_distribution_function} evaluates the cumulative distribution

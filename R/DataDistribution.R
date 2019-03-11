@@ -34,6 +34,7 @@ setClass("DataDistribution", representation(
 #' @param x value where the pdf is evaluated
 #' @param n sample size
 #' @param theta location parameter
+#' @template dotdotdot
 #'
 #' @export
 setGeneric("probability_density_function", function(dist, x, n, theta, ...) standardGeneric("probability_density_function"))
@@ -49,6 +50,7 @@ setGeneric("probability_density_function", function(dist, x, n, theta, ...) stan
 #' @param x value where the pdf is evaluated
 #' @param n sample size
 #' @param theta location parameter
+#' @template dotdotdot
 #'
 #' @export
 setGeneric("cumulative_distribution_function", function(dist, x, n, theta, ...) standardGeneric("cumulative_distribution_function"))
