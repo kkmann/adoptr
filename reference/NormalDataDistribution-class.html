@@ -147,16 +147,6 @@ See <code><a href='DataDistribution-class.html'>DataDistribution-class</a></code
 
     <pre class="usage"><span class='fu'>Normal</span>(<span class='kw'>two_armed</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
-
-  <span class='co'># S4 method for Normal,numeric,numeric,numeric</span>
-<span class='fu'><a href='DataDistribution-class.html'>probability_density_function</a></span>(<span class='no'>dist</span>,
-  <span class='no'>x</span>, <span class='no'>n</span>, <span class='no'>theta</span>, <span class='no'>...</span>)
-
-
-  <span class='co'># S4 method for Normal,numeric,numeric,numeric</span>
-<span class='fu'><a href='DataDistribution-class.html'>cumulative_distribution_function</a></span>(<span class='no'>dist</span>,
-  <span class='no'>x</span>, <span class='no'>n</span>, <span class='no'>theta</span>, <span class='no'>...</span>)
-
 <span class='co'># S4 method for Normal</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/quantile'>quantile</a></span>(<span class='no'>x</span>, <span class='no'>probs</span>, <span class='no'>n</span>, <span class='no'>theta</span>, <span class='no'>...</span>)
 
@@ -172,15 +162,15 @@ See <code><a href='DataDistribution-class.html'>DataDistribution-class</a></code
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>two_armed</th>
-      <td><p>s. slot</p></td>
-    </tr>
-    <tr>
-      <th>dist</th>
-      <td><p>data distribution object</p></td>
+      <td><p>logical indicating if a two-armed trial is regarded</p></td>
     </tr>
     <tr>
       <th>x</th>
       <td><p>outcome</p></td>
+    </tr>
+    <tr>
+      <th>probs</th>
+      <td><p>vector of probabilities</p></td>
     </tr>
     <tr>
       <th>n</th>
@@ -193,10 +183,6 @@ See <code><a href='DataDistribution-class.html'>DataDistribution-class</a></code
     <tr>
       <th>...</th>
       <td><p>further optional arguments</p></td>
-    </tr>
-    <tr>
-      <th>probs</th>
-      <td><p>vector of probabilities</p></td>
     </tr>
     <tr>
       <th>object</th>
@@ -212,13 +198,25 @@ See <code><a href='DataDistribution-class.html'>DataDistribution-class</a></code
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
+    <div class='dont-index'><p>see <code><a href='probability_density_function.html'>probability_density_function</a></code> and
+   <code><a href='cumulative_distribution_function.html'>cumulative_distribution_function</a></code> to evaluate the pdf
+   and the cdf, respectively.</p></div>
+    
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>datadist</span> <span class='kw'>&lt;-</span> <span class='fu'>Normal</span>(<span class='kw'>two_armed</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+      
+      <li><a href="#see-also">See also</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

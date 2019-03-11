@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Data distributions — DataDistribution-class • adoptr</title>
+<title>Cumulative distribution function — cumulative_distribution_function • adoptr</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -36,11 +36,10 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="Data distributions — DataDistribution-class" />
+<meta property="og:title" content="Cumulative distribution function — cumulative_distribution_function" />
 
-<meta property="og:description" content="DataDistribution is an abstract class used to represent the distribution
-of a sufficient statistic x given a sample size n and a
-single parameter value theta." />
+<meta property="og:description" content="cumulative_distribution_function evaluates the cumulative distribution
+function of a specific distribution dist at a point x." />
 
 <meta property="og:image" content="https://kkmann.github.io/adoptr/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -124,23 +123,32 @@ single parameter value theta." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Data distributions</h1>
+    <h1>Cumulative distribution function</h1>
     <small class="dont-index">Source: <a href='https://github.com/kkmann/adoptr/blob/master/R/DataDistribution.R'><code>R/DataDistribution.R</code></a></small>
-    <div class="hidden name"><code>DataDistribution-class.Rd</code></div>
+    <div class="hidden name"><code>cumulative_distribution_function.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p><code>DataDistribution</code> is an abstract class used to represent the distribution
-of a sufficient statistic <code>x</code> given a sample size <code>n</code> and a
-single parameter value <code>theta</code>.</p>
+    <p><code>cumulative_distribution_function</code> evaluates the cumulative distribution
+function of a specific distribution <code>dist</code> at a point <code>x</code>.</p>
     
     </div>
 
+    <pre class="usage"><span class='fu'>cumulative_distribution_function</span>(<span class='no'>dist</span>, <span class='no'>x</span>, <span class='no'>n</span>, <span class='no'>theta</span>, <span class='no'>...</span>)
+
+
+  <span class='co'># S4 method for Normal,numeric,numeric,numeric</span>
+<span class='fu'>cumulative_distribution_function</span>(<span class='no'>dist</span>,
+  <span class='no'>x</span>, <span class='no'>n</span>, <span class='no'>theta</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>dist</th>
+      <td><p>a univariate distribution object</p></td>
+    </tr>
     <tr>
       <th>x</th>
       <td><p>outcome</p></td>
@@ -161,22 +169,13 @@ single parameter value <code>theta</code>.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This abstraction layer allows representation of t-distributions
-(unknown variance), normal distribution (known variance), and normal
-approximation of a binary endpoint.
-Currently, only the normal case is implemented with <code><a href='NormalDataDistribution-class.html'>Normal-class</a></code>.</p>
-<p>The logical option <code>two_armed</code> allows to decide whether a one-arm or
-a two-arm (the default) design should be computed. In the case of a two-arm
-design all sample sizes are per group.</p>
-    
-    <h2 class="hasAnchor" id="slots"><a class="anchor" href="#slots"></a>Slots</h2>
-
-    
-    <dl class='dl-horizontal'>
-<dt><code>two_armed</code></dt><dd><p>Should a two-armed design be used?</p></dd>
-</dl>
+    <p>If the distribution is <code><a href='NormalDataDistribution-class.html'>Normal</a></code>, then
+  the mean is assumed to be \(\sqrt{n} \theta\).</p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'>cumulative_distribution_function</span>(<span class='fu'><a href='NormalDataDistribution-class.html'>Normal</a></span>(), <span class='fl'>1</span>, <span class='fl'>50</span>, <span class='fl'>.3</span>)</div><div class='output co'>#&gt; [1] 0.3085375</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -184,9 +183,9 @@ design all sample sizes are per group.</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#details">Details</a></li>
-
-      <li><a href="#slots">Slots</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

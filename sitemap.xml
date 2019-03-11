@@ -76,6 +76,9 @@
     <loc>https://kkmann.github.io/adoptr/reference/critical-values.html</loc>
   </url>
   <url>
+    <loc>https://kkmann.github.io/adoptr/reference/cumulative_distribution_function.html</loc>
+  </url>
+  <url>
     <loc>https://kkmann.github.io/adoptr/reference/evaluate.html</loc>
   </url>
   <url>
@@ -107,6 +110,9 @@
   </url>
   <url>
     <loc>https://kkmann.github.io/adoptr/reference/predictive_pdf.html</loc>
+  </url>
+  <url>
+    <loc>https://kkmann.github.io/adoptr/reference/probability_density_function.html</loc>
   </url>
   <url>
     <loc>https://kkmann.github.io/adoptr/reference/score-arithmetic.html</loc>
