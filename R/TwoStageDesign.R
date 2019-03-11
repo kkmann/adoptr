@@ -27,7 +27,7 @@
 #' see \code{\link{make_tunable}}; to convert between S4 class represenation and
 #' numeric vector, see \code{\link{tunable_parameters}}; for simulating from a given
 #' design, see \code{\link[=simulate,TwoStageDesign,numeric-method]{simulate}};
-#' for plotting see \code{\link[=plot,TwoStageDesign-method]{plot}}.
+#' for plotting see \code{\link{plot,TwoStageDesign-method}}.
 #' Both \link[=GroupSequentialDesign-class]{group-sequential} and
 #' \link[=OneStageDesign]{one-stage designs} (!) are implemented as subclasses of
 #' \code{TwoStageDesign}.
@@ -44,11 +44,12 @@ setClass("TwoStageDesign", representation(
         tunable   = "logical"
     ))
 
+#' @param n1 stage-one sample size
+#'
 #' @rdname TwoStageDesign-class
 #' @export
-setGeneric("TwoStageDesign", function(...) standardGeneric("TwoStageDesign"))
+setGeneric("TwoStageDesign", function(n1, ...) standardGeneric("TwoStageDesign"))
 
-#' @template n1
 #' @template c1f
 #' @template c1e
 #' @param n2_pivots numeric vector, stage-two sample size on the integration
@@ -438,7 +439,7 @@ setMethod("summary", signature("TwoStageDesign"),
               return(res)
           })
 
-#' @param x return value of call to \code{summary}
+#' @param  x return value of call to \code{summary}
 #' @template round
 #'
 #' @rdname TwoStageDesign-class
