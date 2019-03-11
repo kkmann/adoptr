@@ -1,27 +1,25 @@
-#' One-stage design
+#' One-stage designs
 #'
-#' \code{OneStageDesign} allows the usage of a single-stage design.
-#' In this case without a second stage, there only exist the first-stage sample
-#' size \code{n1} and the first-stage rejection boundary \code{c1f}.
-#' No other parameters have to be set.
-#' \code{OneStageDesign} is a subclass of \link{TwoStageDesign}.
+#' \code{OneStageDesign} implements a one-stage design as special case of
+#' a two-stage design, i.e. as sub-class of \code{\link{TwoStageDesign}}.
+#' This is possible by defining n2 = 0, c:=c1f=c1e, c2(x1) = ifelse(x1 < c, Inf, -Inf).
+#' No integration pivots etc are required (set to NaN).
+#' Note that the default \code{\link[plot,TwoStageDesign-method]{plot}} method
+#' is not supported for \code{OneStageDesign} objects.
 #'
-#' @slot n1 sample size
-#' @slot c1f rejection boundary
-#' @slot c1e rejection boundary
-#' @slot n2_pivots constant 0
-#' @slot c2_pivots \code{+/- Inf}
-#' @slot x1_norm_pivots is ignored for OneStageDesign
-#' @slot weights is ignored for OneStageDesign
-#' @slot tunable is ignored for OneStageDesign
+#' @seealso \code{\link{TwoStageDesign}}, \code{\link{GroupSequentialDesign}}
 #'
 #' @exportClass OneStageDesign
 setClass("OneStageDesign",  contains = "TwoStageDesign")
 
-
-
 #' @param n sample size (stage-one sample size)
 #' @param c rejection boundary (c = c1f = c1e)
+#'
+#' @examples
+#' design <- OneStageDesign(30, 1.96)
+#' summary(design)
+#' design <- TwoStageDesign(design)
+#' summary(design)
 #'
 #' @rdname OneStageDesign-class
 #' @export
@@ -38,11 +36,7 @@ OneStageDesign <- function(n, c) {
 
 
 
-#' @param params vector of design parameters (must be in same order as returned
-#'     by \code{as.numeric(OneStageDesign)})
-#' @param object object of class \code{OneStageDesign}
-#'
-#' @rdname OneStageDesign-class
+#' @rdname tunable_parameters
 #' @export
 setMethod("update", signature("OneStageDesign"),
           function(object, params, ...) {
@@ -61,25 +55,28 @@ setMethod("update", signature("OneStageDesign"),
 
 
 
-#' @param x1 stage-one outcome
-#' @param d object of class \code{OneStageDesign}
-#' @param ... further optional arguments
-#'
-#' @rdname OneStageDesign-class
+
+
+#' @rdname n
 #' @export
 setMethod("n2", signature("OneStageDesign", "numeric"),
           function(d, x1, ...) 0 )
 
 
-#' @rdname OneStageDesign-class
+
+
+
+#' @rdname critical-values
 #' @export
 setMethod("c2", signature("OneStageDesign", "numeric"),
           function(d, x1, ...) ifelse(x1 <= d@c1f, Inf, -Inf) )
 
 
 
-#' Convert a one-stage design to a two-stage design
-#'
+
+
+#' @template d
+#' @template dotdotdot
 #'
 #' @rdname OneStageDesign-class
 #' @export
@@ -100,7 +97,7 @@ setMethod("TwoStageDesign", signature("OneStageDesign"),
 
 
 
-#' plot() is not defined for one stage designs - what should be plotted?
+#' plot() is not defined for one stage designs
 #'
 #' @param x not used
 #' @param y not used
@@ -108,17 +105,6 @@ setMethod("TwoStageDesign", signature("OneStageDesign"),
 #' @rdname OneStageDesign-class
 #' @export
 setMethod("plot", signature("OneStageDesign"),
-          function(x, ...)
+          function(x, y, ...)
               stop("plot method is only defined for two-stage designs!")
           )
-
-
-
-#' Show method for OneStageDesign objects
-#'
-#' Only states the class itself.
-#'
-#' @rdname OneStageDesign-class
-#' @export
-setMethod("show", signature(object = "OneStageDesign"),
-          function(object) cat(class(object)[1]))
