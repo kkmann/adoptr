@@ -15,18 +15,21 @@ cumulative_distribution_function(dist, x, n, theta, ...)
 \arguments{
 \item{dist}{a univariate distribution object}
 
-\item{x}{value where the pdf is evaluated}
+\item{x}{outcome}
 
 \item{n}{sample size}
 
-\item{theta}{location parameter}
+\item{theta}{distribution parameter}
 
 \item{...}{further optional arguments}
 }
 \description{
 \code{cumulative_distribution_function} evaluates the cumulative distribution
 function of a specific distribution \code{dist} at a point \code{x}.
-The mean is assumed to be \eqn{\sqrt{n} \theta}{n^(1/2)  theta}.
+}
+\details{
+If the distribution is \code{\link{Normal}}, then
+  the mean is assumed to be \eqn{\sqrt{n} \theta}{n^(1/2)  theta}.
 }
 \examples{
 cumulative_distribution_function(Normal(), 1, 50, .3)

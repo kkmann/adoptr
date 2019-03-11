@@ -37,9 +37,6 @@ Normal(two_armed = TRUE)
 
 \item{seed}{random seed}
 }
-\value{
-An object of class \code{Normal}
-}
 \description{
 Implements a normal data distribution for z-values given an observed z-value
 and stage size.

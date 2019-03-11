@@ -15,18 +15,21 @@ probability_density_function(dist, x, n, theta, ...)
 \arguments{
 \item{dist}{a univariate distribution object}
 
-\item{x}{value where the pdf is evaluated}
+\item{x}{outcome}
 
 \item{n}{sample size}
 
-\item{theta}{location parameter}
+\item{theta}{distribution parameter}
 
 \item{...}{further optional arguments}
 }
 \description{
 \code{probability_density_function} evaluates the probability density
 function of a specific distribution \code{dist} at a point \code{x}.
-The mean is assumed to be \eqn{\sqrt{n} \theta}{n^(1/2)  theta}.
+}
+\details{
+If the distribution is \code{\link{Normal}}, then
+  the mean is assumed to be \eqn{\sqrt{n} \theta}{n^(1/2)  theta}.
 }
 \examples{
 probability_density_function(Normal(), 1, 50, .3)
