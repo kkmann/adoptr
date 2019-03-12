@@ -85,7 +85,7 @@
     <div class="page-header toc-ignore">
       <h1>Get started with adoptr</h1>
             
-            <h4 class="date">2019-03-11</h4>
+            <h4 class="date">2019-03-12</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/kkmann/adoptr/blob/master/vignettes/adoptr.Rmd"><code>vignettes/adoptr.Rmd</code></a></small>
       <div class="hidden name"><code>adoptr.Rmd</code></div>
@@ -127,7 +127,7 @@
 <a class="sourceLine" id="cb5-2" data-line-number="2">toer   &lt;-<span class="st"> </span><span class="kw"><a href="../reference/expected.html">expected</a></span>(<span class="kw"><a href="../reference/ConditionalPower-class.html">ConditionalPower</a></span>(datadist, H_<span class="dv">0</span>))</a></code></pre></div>
 <p>To complete the problem specification, we only need to provide an initial design and an integration order for the Gaussian quadrature rule to be used for the numerical integration of the variational objective between <span class="math inline">\(c_1^f\)</span> and <span class="math inline">\(c_1^e\)</span>. For the initial design, we simply set the stage-one sample size to half the sample size of the t-test and we use a rule of order 7:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">initial_design &lt;-<span class="st"> </span><span class="kw"><a href="../reference/TwoStageDesign-class.html">TwoStageDesign</a></span>(</a>
-<a class="sourceLine" id="cb6-2" data-line-number="2">    <span class="dt">n1    =</span> <span class="dv">25</span>, </a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">    <span class="dt">n1    =</span> <span class="dv">25</span>,</a>
 <a class="sourceLine" id="cb6-3" data-line-number="3">    <span class="dt">c1f   =</span> <span class="dv">0</span>,</a>
 <a class="sourceLine" id="cb6-4" data-line-number="4">    <span class="dt">c1e   =</span> <span class="fl">2.5</span>,</a>
 <a class="sourceLine" id="cb6-5" data-line-number="5">    <span class="dt">n2    =</span> <span class="dv">50</span>, </a>

@@ -141,7 +141,7 @@ For available methods, see the 'See Also' section at the end of this page.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>TwoStageDesign</span>(<span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>TwoStageDesign</span>(<span class='no'>n1</span>, <span class='no'>...</span>)
 
 <span class='co'># S4 method for numeric</span>
 <span class='fu'>TwoStageDesign</span>(<span class='no'>n1</span>, <span class='no'>c1f</span>, <span class='no'>c1e</span>, <span class='no'>n2_pivots</span>, <span class='no'>c2_pivots</span>,
@@ -160,12 +160,12 @@ For available methods, see the 'See Also' section at the end of this page.</p>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>...</th>
-      <td><p>further optional arguments</p></td>
-    </tr>
-    <tr>
       <th>n1</th>
       <td><p>stage-one sample size</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>further optional arguments</p></td>
     </tr>
     <tr>
       <th>c1f</th>
@@ -247,7 +247,7 @@ optimization via <code><a href='minimize.html'>minimize</a></code> or not; cf. <
 see <code><a href='make_tunable.html'>make_tunable</a></code>; to convert between S4 class represenation and
 numeric vector, see <code><a href='tunable_parameters.html'>tunable_parameters</a></code>; for simulating from a given
 design, see <code><a href='simulate-TwoStageDesign-numeric-method.html'>simulate</a></code>;
-for plotting see <code><a href='plot-TwoStageDesign-method.html'>plot</a></code>.
+for plotting see <code><a href='plot-TwoStageDesign-method.html'>plot,TwoStageDesign-method</a></code>.
 Both <a href='GroupSequentialDesign-class.html'>group-sequential</a> and
 <a href='OneStageDesign-class.html'>one-stage designs</a> (!) are implemented as subclasses of
 <code>TwoStageDesign</code>.</p></div>
