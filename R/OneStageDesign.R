@@ -75,31 +75,41 @@ setMethod("c2", signature("OneStageDesign", "numeric"),
 
 
 
-#' @template d
+#' @param n1 \code{OneStageDesign} object to convert, overloaded from
+#'   \code{\link{TwoStageDesign}}
+#' @param order integer >= 2, default is 5; order of Gaussian quadrature
+#'   integration rule to use for new TwoStageDesign.
+#' @param eps numeric > 0, default = .01; the single critical value c must be
+#'   split in a continuation interval [c1f, c1e]; this is given by c +/- eps.
 #' @template dotdotdot
 #'
 #' @rdname OneStageDesign-class
 #' @export
 setMethod("TwoStageDesign", signature("OneStageDesign"),
-     function(d, ...){
-         tunable <- rep(TRUE, 2)
-         names(tunable) <- c("n1", "c1f")
-         new("TwoStageDesign",
-             n1  = d@n1,
-             c1f = d@c1f - .01, # needs to be done for interpolation
-             c1e = d@c1f + .01, # needs to be done for interpolation
-             n2_pivots = rep(0, 2),
-             c2_pivots = c(10, -10),
-             x1_norm_pivots = c(-.5, .5),
-             weights = c(1, 1),
-             tunable = tunable)
+     function(n1, order = 5L, eps = .01, ...){
+
+         rule <- adoptr:::GaussLegendreRule(order)
+
+         c2 <- numeric(order)
+         c2[1 : floor(order / 2)] <- rep(3, floor(order / 2))
+         c2[(ceiling(order / 2) + 1) : order] <- rep(-3, floor(order / 2))
+
+         return(
+             TwoStageDesign(
+                 n1             = n1@n1,
+                 c1f            = n1@c1f - eps, # needs to be done for interpolation
+                 c1e            = n1@c1f + eps, # needs to be done for interpolation
+                 n2_pivots      = rep(0, order),
+                 c2_pivots      = c2 # acceptance left/rejection right from c
+            )
+         )
+
 })
 
 
 
 #' plot() is not defined for one stage designs
 #'
-#' @param x not used
 #' @param y not used
 #'
 #' @rdname OneStageDesign-class

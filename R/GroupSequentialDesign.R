@@ -61,7 +61,8 @@ setMethod("n2", signature("GroupSequentialDesign", "numeric"),
           }
 )
 
-#' @template d
+#' @param n1 \code{GroupSequentialDesign} object to convert
+#'   (overloaded from \code{\link{TwoStageDesign}})
 #'
 #' @examples
 #' TwoStageDesign(design)
@@ -69,13 +70,13 @@ setMethod("n2", signature("GroupSequentialDesign", "numeric"),
 #' @rdname GroupSequentialDesign-class
 #' @export
 setMethod("TwoStageDesign", signature("GroupSequentialDesign"),
-     function(d, ...){
+     function(n1, ...){
          tunable <- logical(8) # initialize to all false
          tunable[1:5] <- TRUE
          names(tunable) <- c("n1", "c1f", "c1e", "n2_pivots", "c2_pivots", "x1_norm_pivots", "weights", "tunable")
-         new("TwoStageDesign", n1 = d@n1, c1f = d@c1f, c1e = d@c1e,
-                        n2_pivots = rep(d@n2_pivots, length(d@weights)),
-                        c2_pivots = d@c2_pivots,
-                        x1_norm_pivots = d@x1_norm_pivots, weights = d@weights,
+         new("TwoStageDesign", n1 = n1@n1, c1f = n1@c1f, c1e = n1@c1e,
+                        n2_pivots = rep(n1@n2_pivots, length(n1@weights)),
+                        c2_pivots = n1@c2_pivots,
+                        x1_norm_pivots = n1@x1_norm_pivots, weights = n1@weights,
                         tunable = tunable)
 })

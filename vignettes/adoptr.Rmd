@@ -126,7 +126,7 @@ sample size of the t-test and we use a rule of order 7:
 
 ```{r create-design}
 initial_design <- TwoStageDesign(
-    n1    = 25, 
+    n1    = 25,
     c1f   = 0,
     c1e   = 2.5,
     n2    = 50, 

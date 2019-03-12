@@ -131,10 +131,19 @@ test_that("error definition works", {
 
 
 test_that("OneStageDesign can be converted to TwoStageDesign", {
+
     design1 <- OneStageDesign(87.21, 1.96)
-    design2 <- TwoStageDesign(design1)
+    design2 <- TwoStageDesign(design1, order = 7)
 
     pow <- expected(ConditionalPower(Normal(two_armed = FALSE), PointMassPrior(.3, 1)))
+
+    expect_true(
+        length(design2@x1_norm_pivots) == 7
+    )
+
+    expect_true(
+        length(design2@n2_pivots) == 7
+    )
 
     expect_equal(
         evaluate(pow, design1),

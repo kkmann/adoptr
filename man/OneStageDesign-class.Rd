@@ -10,7 +10,8 @@
 \usage{
 OneStageDesign(n, c)
 
-\S4method{TwoStageDesign}{OneStageDesign}(d, ...)
+\S4method{TwoStageDesign}{OneStageDesign}(n1, order = 5L, eps = 0.01,
+  ...)
 
 \S4method{plot}{OneStageDesign}(x, y, ...)
 }
@@ -19,11 +20,16 @@ OneStageDesign(n, c)
 
 \item{c}{rejection boundary (c = c1f = c1e)}
 
-\item{d}{design}
+\item{n1}{\code{OneStageDesign} object to convert, overloaded from
+\code{\link{TwoStageDesign}}}
+
+\item{order}{integer >= 2, default is 5; order of Gaussian quadrature
+integration rule to use for new TwoStageDesign.}
+
+\item{eps}{numeric > 0, default = .01; the single critical value c must be
+split in a continuation interval [c1f, c1e]; this is given by c +/- eps.}
 
 \item{...}{further optional arguments}
-
-\item{x}{not used}
 
 \item{y}{not used}
 }

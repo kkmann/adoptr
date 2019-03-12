@@ -10,7 +10,7 @@
 \alias{print.TwoStageDesignSummary}
 \title{Two-stage designs}
 \usage{
-TwoStageDesign(...)
+TwoStageDesign(n1, ...)
 
 \S4method{TwoStageDesign}{numeric}(n1, c1f, c1e, n2_pivots, c2_pivots,
   order = NULL, ...)
@@ -22,9 +22,9 @@ TwoStageDesign(...)
 \method{print}{TwoStageDesignSummary}(x, ..., round = TRUE)
 }
 \arguments{
-\item{...}{further optional arguments}
-
 \item{n1}{stage-one sample size}
+
+\item{...}{further optional arguments}
 
 \item{c1f}{early futility stopping boundary}
 
@@ -103,7 +103,7 @@ for accessing sample sizes and critical values safely, see methods in
 see \code{\link{make_tunable}}; to convert between S4 class represenation and
 numeric vector, see \code{\link{tunable_parameters}}; for simulating from a given
 design, see \code{\link[=simulate,TwoStageDesign,numeric-method]{simulate}};
-for plotting see \code{\link[=plot,TwoStageDesign-method]{plot}}.
+for plotting see \code{\link{plot,TwoStageDesign-method}}.
 Both \link[=GroupSequentialDesign-class]{group-sequential} and
 \link[=OneStageDesign]{one-stage designs} (!) are implemented as subclasses of
 \code{TwoStageDesign}.
