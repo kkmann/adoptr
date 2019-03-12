@@ -90,13 +90,17 @@ setMethod("TwoStageDesign", signature("OneStageDesign"),
 
          rule <- adoptr:::GaussLegendreRule(order)
 
+         c2 <- numeric(order)
+         c2[1 : floor(order / 2)] <- rep(3, floor(order / 2))
+         c2[(ceiling(order / 2) + 1) : order] <- rep(-3, floor(order / 2))
+
          return(
              TwoStageDesign(
                  n1             = n1@n1,
                  c1f            = n1@c1f - eps, # needs to be done for interpolation
                  c1e            = n1@c1f + eps, # needs to be done for interpolation
-                 n2_pivots      = rep(0, nrow(rule)),
-                 c2_pivots      = 5 - 5*rule$nodes # 10 to 0 linearly interpolated
+                 n2_pivots      = rep(0, order),
+                 c2_pivots      = c2 # acceptance left/rejection right from c
             )
          )
 

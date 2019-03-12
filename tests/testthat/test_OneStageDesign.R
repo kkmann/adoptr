@@ -148,7 +148,7 @@ test_that("OneStageDesign can be converted to TwoStageDesign", {
     expect_equal(
         evaluate(pow, design1),
         evaluate(pow, design2),
-        tolerance = .005
+        tolerance = .001
     )
 
     expect_equal(
