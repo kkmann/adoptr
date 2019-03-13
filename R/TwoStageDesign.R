@@ -395,13 +395,23 @@ setMethod("plot", signature(x = "TwoStageDesign"),
                              ylab = "", xlab = expression("x"[1]))
               if (length(scores) > 0) {
                   for (i in 1:length(scores)) {
-                      graphics::plot(x1, evaluate(scores[[i]], x, x1), 'l',
-                                     main = names(scores[i]), ylab = "", xlab = expression("x"[1]),
-                                     ylim = c(0,
-                                              1.05 * max(sapply(x1,
-                                                                function(z) evaluate(scores[[i]], x, z)))))
-                      graphics::lines(x2, evaluate(scores[[i]], x, x2))
-                      graphics::lines(x3, evaluate(scores[[i]], x, x3))
+                      y <- list(
+                          left =   evaluate(scores[[i]], x, x2),
+                          middle = evaluate(scores[[i]], x, x1),
+                          right =  evaluate(scores[[i]], x, x3)
+                      )
+                      expand <- .05*(max(do.call(c, y)) - min(do.call(c, y)))
+                      graphics::plot(
+                          x1, y$middle,
+                          'l',
+                          xlim = c(min(x4), max(x4)),
+                          ylim = c(min(do.call(c, y)) - expand, max(do.call(c, y)) + expand),
+                          main = names(scores[i]),
+                          ylab = "",
+                          xlab = expression("x"[1]),
+                      )
+                      graphics::lines(x2, y$left)
+                      graphics::lines(x3, y$right)
                   }
               }
               graphics::par(opts)
