@@ -42,7 +42,7 @@
 a two-stage design, i.e. as sub-class of TwoStageDesign.
 This is possible by defining n2 = 0, c:=c1f=c1e, c2(x1) = ifelse(x1 &amp;lt; c, Inf, -Inf).
 No integration pivots etc are required (set to NaN).
-Note that the default plot method
+Note that the default plot,TwoStageDesign-method method
 is not supported for OneStageDesign objects." />
 
 <meta property="og:image" content="https://kkmann.github.io/adoptr/logo.png" />
@@ -138,7 +138,7 @@ is not supported for OneStageDesign objects." />
 a two-stage design, i.e. as sub-class of <code><a href='TwoStageDesign-class.html'>TwoStageDesign</a></code>.
 This is possible by defining n2 = 0, c:=c1f=c1e, c2(x1) = ifelse(x1 &lt; c, Inf, -Inf).
 No integration pivots etc are required (set to NaN).
-Note that the default <code>plot</code> method
+Note that the default <code><a href='plot-TwoStageDesign-method.html'>plot,TwoStageDesign-method</a></code> method
 is not supported for <code>OneStageDesign</code> objects.</p>
     
     </div>
@@ -181,6 +181,10 @@ split in a continuation interval [c1f, c1e]; this is given by c +/- eps.</p></td
     <tr>
       <th>...</th>
       <td><p>further optional arguments</p></td>
+    </tr>
+    <tr>
+      <th>x</th>
+      <td><p>not used</p></td>
     </tr>
     <tr>
       <th>y</th>
