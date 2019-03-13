@@ -4,7 +4,7 @@
 #' a two-stage design, i.e. as sub-class of \code{\link{TwoStageDesign}}.
 #' This is possible by defining n2 = 0, c:=c1f=c1e, c2(x1) = ifelse(x1 < c, Inf, -Inf).
 #' No integration pivots etc are required (set to NaN).
-#' Note that the default \code{\link[plot,TwoStageDesign-method]{plot}} method
+#' Note that the default \code{\link{plot,TwoStageDesign-method}} method
 #' is not supported for \code{OneStageDesign} objects.
 #'
 #' @seealso \code{\link{TwoStageDesign}}, \code{\link{GroupSequentialDesign}}
@@ -88,11 +88,9 @@ setMethod("c2", signature("OneStageDesign", "numeric"),
 setMethod("TwoStageDesign", signature("OneStageDesign"),
      function(n1, order = 5L, eps = .01, ...){
 
-         rule <- adoptr:::GaussLegendreRule(order)
-
          c2 <- numeric(order)
-         c2[1 : floor(order / 2)] <- rep(3, floor(order / 2))
-         c2[(ceiling(order / 2) + 1) : order] <- rep(-3, floor(order / 2))
+         c2[1:floor(order / 2)] <- rep(3, floor(order / 2))
+         c2[(ceiling(order / 2) + 1):order] <- rep(-3, floor(order / 2))
 
          return(
              TwoStageDesign(
@@ -110,6 +108,7 @@ setMethod("TwoStageDesign", signature("OneStageDesign"),
 
 #' plot() is not defined for one stage designs
 #'
+#' @param x not used
 #' @param y not used
 #'
 #' @rdname OneStageDesign-class

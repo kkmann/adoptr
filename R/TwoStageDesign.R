@@ -445,7 +445,7 @@ setMethod("summary", signature("TwoStageDesign"),
 #' @rdname TwoStageDesign-class
 #' @export
 print.TwoStageDesignSummary <- function(x, ..., round = TRUE) {
-    x1 <- seq(x$design@c1f, x$design@c1f, length.out = 1000)
+    x1 <- seq(x$design@c1f, x$design@c1e, length.out = 1000)
             cat(sprintf("%s with:\n\r", class(x$design)[1]))
     cat(sprintf("     n1: %6.2f\n\r", n1(x$design, round)))
     cat(sprintf("    c1f: %6.2f\n\r", x$design@c1f))
@@ -460,7 +460,7 @@ print.TwoStageDesignSummary <- function(x, ..., round = TRUE) {
     if (length(x$scores) > 0) {
         cat("Unconditional scores:\n\r")
         for (i in 1:length(x$scores)) {
-            cat(sprintf("    %s: %7.3f\n\r", names(x$scores)[i], x$scores[i]))
+            cat(sprintf("    %10s: %7.3f\n\r", names(x$scores)[i], x$scores[i]))
         }
         cat("\n\r")
     }

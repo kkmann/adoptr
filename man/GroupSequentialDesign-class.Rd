@@ -13,7 +13,8 @@ GroupSequentialDesign(n1, c1f, c1e, n2_pivots, c2_pivots, order = NULL,
 \S4method{TwoStageDesign}{GroupSequentialDesign}(n1, ...)
 }
 \arguments{
-\item{n1}{stage-one sample size}
+\item{n1}{stage one sample size or \code{GroupSequentialDesign} object to convert
+(overloaded from \code{\link{TwoStageDesign}})}
 
 \item{c1f}{early futility stopping boundary}
 
@@ -29,9 +30,6 @@ length(c2_pivots) if NULL, otherwise first value of c2_pivots is repeated
 'order'-times.}
 
 \item{...}{further optional arguments}
-
-\item{n1}{\code{GroupSequentialDesign} object to convert
-(overloaded from \code{\link{TwoStageDesign}})}
 }
 \description{
 Group-sequential designs are a sub-class of the \code{TwoStageDesign}

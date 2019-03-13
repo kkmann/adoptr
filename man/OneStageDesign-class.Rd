@@ -31,6 +31,8 @@ split in a continuation interval [c1f, c1e]; this is given by c +/- eps.}
 
 \item{...}{further optional arguments}
 
+\item{x}{not used}
+
 \item{y}{not used}
 }
 \description{
@@ -38,7 +40,7 @@ split in a continuation interval [c1f, c1e]; this is given by c +/- eps.}
 a two-stage design, i.e. as sub-class of \code{\link{TwoStageDesign}}.
 This is possible by defining n2 = 0, c:=c1f=c1e, c2(x1) = ifelse(x1 < c, Inf, -Inf).
 No integration pivots etc are required (set to NaN).
-Note that the default \code{\link[plot,TwoStageDesign-method]{plot}} method
+Note that the default \code{\link{plot,TwoStageDesign-method}} method
 is not supported for \code{OneStageDesign} objects.
 }
 \examples{
