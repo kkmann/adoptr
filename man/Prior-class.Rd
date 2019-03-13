@@ -14,6 +14,10 @@ distribution of the test statisic, X, and its parameter, theta.
 Currently, \pkg{adoptr} only allows simple models with a single parameter.
 Implementations for \link{PointMassPrior} and \link{ContinuousPrior} are available.
 }
+\details{
+For an example on working with priors, see
+   \href{here}{https://kkmann.github.io/adoptr/articles/working-with-priors.html}.
+}
 \seealso{
 For the available methods, see \code{\link{bounds}},
   \code{\link{expectation}}, \code{\link{condition}}, \code{\link{predictive_pdf}},

@@ -31,6 +31,8 @@ split in a continuation interval [c1f, c1e]; this is given by c +/- eps.}
 
 \item{...}{further optional arguments}
 
+\item{x}{design to plot}
+
 \item{y}{not used}
 }
 \description{
