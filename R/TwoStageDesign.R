@@ -2,8 +2,11 @@
 #'
 #' \code{TwoStageDesign} is the fundamental design class of the
 #' \pkg{\link{adoptr}} package.
-#' Formally, we represent a generic two-stage design as
-#' [TODO] [TODO link to vignettes as well!]
+#' Formally, we represent a generic two-stage design as a five-tuple
+#' \eqn{}
+#' [TODO]
+#' A brief description on the definition of two-stage designs can be read
+#' \href{here}{https://kkmann.github.io/adoptr/articles/adoptr.html}.
 #' For available methods, see the 'See Also' section at the end of this page.
 #'
 #' @slot n1 cf. parameter 'n1'
