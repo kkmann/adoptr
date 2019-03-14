@@ -403,13 +403,23 @@ setMethod("plot", signature(x = "TwoStageDesign"),
                              ylab = "", xlab = expression("x"[1]))
               if (length(scores) > 0) {
                   for (i in 1:length(scores)) {
-                      graphics::plot(x1, evaluate(scores[[i]], x, x1), 'l',
-                                     main = names(scores[i]), ylab = "", xlab = expression("x"[1]),
-                                     ylim = c(0,
-                                              1.05 * max(sapply(x1,
-                                                                function(z) evaluate(scores[[i]], x, z)))))
-                      graphics::lines(x2, evaluate(scores[[i]], x, x2))
-                      graphics::lines(x3, evaluate(scores[[i]], x, x3))
+                      y <- list(
+                          left =   evaluate(scores[[i]], x, x2),
+                          middle = evaluate(scores[[i]], x, x1),
+                          right =  evaluate(scores[[i]], x, x3)
+                      )
+                      expand <- .05*(max(do.call(c, y)) - min(do.call(c, y)))
+                      graphics::plot(
+                          x1, y$middle,
+                          'l',
+                          xlim = c(min(x4), max(x4)),
+                          ylim = c(min(do.call(c, y)) - expand, max(do.call(c, y)) + expand),
+                          main = names(scores[i]),
+                          ylab = "",
+                          xlab = expression("x"[1]),
+                      )
+                      graphics::lines(x2, y$left)
+                      graphics::lines(x3, y$right)
                   }
               }
               graphics::par(opts)
@@ -453,7 +463,7 @@ setMethod("summary", signature("TwoStageDesign"),
 #' @rdname TwoStageDesign-class
 #' @export
 print.TwoStageDesignSummary <- function(x, ..., round = TRUE) {
-    x1 <- seq(x$design@c1f, x$design@c1f, length.out = 1000)
+    x1 <- seq(x$design@c1f, x$design@c1e, length.out = 1000)
             cat(sprintf("%s with:\n\r", class(x$design)[1]))
     cat(sprintf("     n1: %6.2f\n\r", n1(x$design, round)))
     cat(sprintf("    c1f: %6.2f\n\r", x$design@c1f))
@@ -468,7 +478,7 @@ print.TwoStageDesignSummary <- function(x, ..., round = TRUE) {
     if (length(x$scores) > 0) {
         cat("Unconditional scores:\n\r")
         for (i in 1:length(x$scores)) {
-            cat(sprintf("    %s: %7.3f\n\r", names(x$scores)[i], x$scores[i]))
+            cat(sprintf("    %10s: %7.3f\n\r", names(x$scores)[i], x$scores[i]))
         }
         cat("\n\r")
     }

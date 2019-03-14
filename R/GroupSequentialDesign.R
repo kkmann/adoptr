@@ -11,7 +11,6 @@
 #' @exportClass GroupSequentialDesign
 setClass("GroupSequentialDesign",  contains = "TwoStageDesign")
 
-#' @template n1
 #' @template c1f
 #' @template c1e
 #' @param n2_pivots numeric of length one, stage-two sample size
@@ -61,7 +60,7 @@ setMethod("n2", signature("GroupSequentialDesign", "numeric"),
           }
 )
 
-#' @param n1 \code{GroupSequentialDesign} object to convert
+#' @param n1 stage one sample size or \code{GroupSequentialDesign} object to convert
 #'   (overloaded from \code{\link{TwoStageDesign}})
 #'
 #' @examples
