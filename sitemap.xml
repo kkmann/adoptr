@@ -52,9 +52,6 @@
     <loc>https://kkmann.github.io/adoptr/reference/Prior-class.html</loc>
   </url>
   <url>
-    <loc>https://kkmann.github.io/adoptr/reference/SmoothnessN2-class.html</loc>
-  </url>
-  <url>
     <loc>https://kkmann.github.io/adoptr/reference/TwoStageDesign-class.html</loc>
   </url>
   <url>
@@ -101,9 +98,6 @@
   </url>
   <url>
     <loc>https://kkmann.github.io/adoptr/reference/posterior.html</loc>
-  </url>
-  <url>
-    <loc>https://kkmann.github.io/adoptr/reference/postprocess.html</loc>
   </url>
   <url>
     <loc>https://kkmann.github.io/adoptr/reference/predictive_cdf.html</loc>

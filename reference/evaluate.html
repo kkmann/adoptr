@@ -168,16 +168,6 @@ which handle the actual computation of the score given a design and
 <span class='fu'>evaluate</span>(<span class='no'>s</span>, <span class='no'>design</span>,
   <span class='kw'>optimization</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>subdivisions</span> <span class='kw'>=</span> <span class='fl'>10000L</span>, <span class='no'>...</span>)
 
-<span class='co'># S4 method for SmoothnessN2,TwoStageDesign</span>
-<span class='fu'>evaluate</span>(<span class='no'>s</span>, <span class='no'>design</span>,
-  <span class='kw'>optimization</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>subdivisions</span> <span class='kw'>=</span> <span class='fl'>10000L</span>, <span class='no'>...</span>)
-
-<span class='co'># S4 method for SmoothnessN2,GroupSequentialDesign</span>
-<span class='fu'>evaluate</span>(<span class='no'>s</span>, <span class='no'>design</span>, <span class='no'>...</span>)
-
-<span class='co'># S4 method for SmoothnessN2,OneStageDesign</span>
-<span class='fu'>evaluate</span>(<span class='no'>s</span>, <span class='no'>design</span>, <span class='no'>...</span>)
-
 <span class='co'># S4 method for N1,TwoStageDesign</span>
 <span class='fu'>evaluate</span>(<span class='no'>s</span>, <span class='no'>design</span>, <span class='kw'>optimization</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='no'>...</span>)</pre>
@@ -274,14 +264,6 @@ number of subdivisions; default is <code>10000L</code>.</p></td>
    <span class='fu'><a href='AverageN2-class.html'>AverageN2</a></span>(),
    <span class='fu'><a href='TwoStageDesign-class.html'>TwoStageDesign</a></span>(<span class='fl'>100</span>, <span class='fl'>0.5</span>, <span class='fl'>1.5</span>, <span class='fl'>60.0</span>, <span class='fl'>1.96</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='fl'>5L</span>)
 ) <span class='co'># 60</span></div><div class='output co'>#&gt; [1] 60</div><div class='input'>
-<span class='fu'>evaluate</span>(
-   <span class='fu'><a href='SmoothnessN2-class.html'>SmoothnessN2</a></span>(),
-   <span class='fu'><a href='TwoStageDesign-class.html'>TwoStageDesign</a></span>(<span class='fl'>50</span>, <span class='fl'>0</span>, <span class='fl'>2</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/rep'>rep</a></span>(<span class='fl'>50</span>, <span class='fl'>7</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/rep'>rep</a></span>(<span class='fl'>2</span>, <span class='fl'>7</span>))
-) <span class='co'># 0</span></div><div class='output co'>#&gt; [1] 0</div><div class='input'>
-<span class='fu'>evaluate</span>(
-   <span class='fu'><a href='SmoothnessN2-class.html'>SmoothnessN2</a></span>(),
-   <span class='fu'><a href='GroupSequentialDesign-class.html'>GroupSequentialDesign</a></span>(<span class='fl'>50</span>, <span class='fl'>0</span>, <span class='fl'>2</span>, <span class='fl'>50</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/rep'>rep</a></span>(<span class='fl'>2</span>, <span class='fl'>7</span>))
-) <span class='co'># 0</span></div><div class='output co'>#&gt; [1] 0</div><div class='input'>
 <span class='fu'>evaluate</span>(
    <span class='fu'><a href='N1-class.html'>N1</a></span>(),
    <span class='fu'><a href='TwoStageDesign-class.html'>TwoStageDesign</a></span>(<span class='fl'>70</span>, <span class='fl'>0</span>, <span class='fl'>2</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/rep'>rep</a></span>(<span class='fl'>60</span>, <span class='fl'>6</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/rep'>rep</a></span>(<span class='fl'>1.7</span>, <span class='fl'>6</span>))
