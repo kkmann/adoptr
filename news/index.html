@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Condition a prior on an interval — condition • adoptr</title>
+<title>Changelog • adoptr</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -36,9 +36,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="Condition a prior on an interval — condition" />
-
-<meta property="og:description" content="Restrict an object of class Prior to a sub-interval." />
+<meta property="og:title" content="Changelog" />
 
 <meta property="og:image" content="https://kkmann.github.io/adoptr/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -58,7 +56,7 @@
   </head>
 
   <body>
-    <div class="container template-reference-topic">
+    <div class="container template-news">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -125,69 +123,28 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Condition a prior on an interval</h1>
-    <small class="dont-index">Source: <a href='https://github.com/kkmann/adoptr/blob/master/R/Prior.R'><code>R/Prior.R</code></a>, <a href='https://github.com/kkmann/adoptr/blob/master/R/PointMassPrior.R'><code>R/PointMassPrior.R</code></a>, <a href='https://github.com/kkmann/adoptr/blob/master/R/ContinuousPrior.R'><code>R/ContinuousPrior.R</code></a></small>
-    <div class="hidden name"><code>condition.Rd</code></div>
+      <h1>Changelog <small></small></h1>
+      <small>Source: <a href='https://github.com/kkmann/adoptr/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div class="ref-description">
-    
-    <p>Restrict an object of class <code><a href='Prior-class.html'>Prior</a></code> to a sub-interval.</p>
-    
-    </div>
-
-    <pre class="usage"><span class='fu'>condition</span>(<span class='no'>dist</span>, <span class='no'>interval</span>, <span class='no'>...</span>)
-
-<span class='co'># S4 method for PointMassPrior,numeric</span>
-<span class='fu'>condition</span>(<span class='no'>dist</span>, <span class='no'>interval</span>, <span class='no'>...</span>)
-
-<span class='co'># S4 method for ContinuousPrior,numeric</span>
-<span class='fu'>condition</span>(<span class='no'>dist</span>, <span class='no'>interval</span>, <span class='no'>...</span>)</pre>
-    
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>dist</th>
-      <td><p>a univariate distribution object</p></td>
-    </tr>
-    <tr>
-      <th>interval</th>
-      <td><p>length-two numeric vector giving the parameter interval to
-condition on</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>further optional arguments</p></td>
-    </tr>
-    </table>
-    
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>conditional <code><a href='Prior-class.html'>Prior</a></code> on given interval</p>
-    
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>tmp</span> <span class='kw'>&lt;-</span> <span class='fu'>condition</span>(<span class='fu'><a href='PointMassPrior-class.html'>PointMassPrior</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>.5</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>.3</span>, <span class='fl'>.7</span>)), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(-<span class='fl'>1</span>, <span class='fl'>.25</span>))
-<span class='fu'><a href='expectation.html'>expectation</a></span>(<span class='no'>tmp</span>, <span class='no'>identity</span>) <span class='co'># 0</span></div><div class='output co'>#&gt; [1] 0</div><div class='input'>
-<span class='no'>tmp</span> <span class='kw'>&lt;-</span> <span class='fu'>condition</span>(
-    <span class='fu'><a href='ContinuousPrior-class.html'>ContinuousPrior</a></span>(<span class='kw'>function</span>(<span class='no'>x</span>) <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Uniform'>dunif</a></span>(<span class='no'>x</span>, <span class='fl'>.2</span>, <span class='fl'>.4</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>.2</span>, <span class='fl'>.4</span>)),
-    <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>.3</span>, <span class='fl'>.5</span>)
-)
-<span class='fu'><a href='bounds.html'>bounds</a></span>(<span class='no'>tmp</span>) <span class='co'># c(.3, .4)</span></div><div class='output co'>#&gt; [1] 0.3 0.4</div><div class='input'>
-</div></pre>
+    <div id="adoptr-0-1-0" class="section level2">
+<h2 class="hasAnchor">
+<a href="#adoptr-0-1-0" class="anchor"></a>adoptr 0.1.0</h2>
+<ul>
+<li>initial release</li>
+</ul>
+</div>
   </div>
+
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+    <div id="tocnav">
+      <h2>Contents</h2>
+      <ul class="nav nav-pills nav-stacked">
+        <li><a href="#adoptr-0-1-0">0.1.0</a></li>
+      </ul>
+    </div>
   </div>
+
 </div>
 
       <footer>
