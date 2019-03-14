@@ -1,16 +1,16 @@
 library(hexSticker)
-library(otsd)
+library(adoptr)
 library(tidyverse)
 library(cowplot)
 
-order <- 9L
+order <- 7L
 
-design <- gq_design(
+design <- TwoStageDesign(
     n1 = 25,
     c1f = 0,
     c1e = 2,
-    n2 = rep(40.0, order),
-    c2 = rep( 1.96, order),
+    n2 = 40,
+    c2 = 2,
     order = order
 )
 
@@ -18,10 +18,10 @@ null        <- PointMassPrior(.0, 1)
 alternative <- PointMassPrior(.4, 1)
 datadist    <- Normal(two_armed = FALSE)
 
-ess  <- integrate(ConditionalSampleSize(datadist, alternative))
+ess  <- expected(ConditionalSampleSize(datadist, alternative))
 cp   <- ConditionalPower(datadist, alternative)
-pow  <- integrate(cp)
-toer <- integrate(ConditionalPower(datadist, null))
+pow  <- expected(cp)
+toer <- expected(ConditionalPower(datadist, null))
 
 optimal_design <- minimize(
     ess,
@@ -30,8 +30,6 @@ optimal_design <- minimize(
         toer <= .05
     ),
     initial_design        = design,
-    lower_boundary_design = update(design, c(10, -1, 1, numeric(order) + 2, numeric(order) - 5)),
-    upper_boundary_design = update(design, c(50, 1, 4, numeric(order) + 50, numeric(order) + 5)),
     opts = list(
         algorithm   = "NLOPT_LN_COBYLA",
         xtol_rel    = 1e-5,
@@ -53,12 +51,12 @@ with(dat, plot(x,y, type = "l"))
 
 df <- tibble(
     x1 = seq(-1, 3, by = .01),
-    n  = otsd::n(optimal_design, x1),
-    c2 = c2(optimal_design, x1)
+    n  = adoptr::n(optimal_design$design, x1),
+    c2 = c2(optimal_design$design, x1)
 ) %>%
     mutate(
-        tmp1 = abs(x1 - optimal_design@c1f),
-        tmp2 = abs(x1 - optimal_design@c1e),
+        tmp1 = abs(x1 - optimal_design$design@c1f),
+        tmp2 = abs(x1 - optimal_design$design@c1e),
         n = ifelse(tmp1 == min(tmp1) | tmp2 == min(tmp2), NA, n)
     ) %>%
     gather(variable, value, n, c2) %>%
