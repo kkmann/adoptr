@@ -60,40 +60,6 @@ test_that("Specific implementation of AverageN2 yields similar results", {
 
 
 
-test_that("SmoothnessN2 is defined sensitive", {
-    order = 7L
-    design <- TwoStageDesign(25, 0, 2, 40.0, 2.0, order)
-    smth   <- SmoothnessN2()
-
-    expect_equal(
-        evaluate(smth, design),
-        0.0
-    )
-
-    expect_equal(
-        evaluate(smth, design, optimization = TRUE),
-        0.0
-    )
-
-
-    design1 <- TwoStageDesign(25, 0, 2, seq(60.0, 10.0, length.out = order), rep(2, order))
-    design2 <- design1
-    design2@n2_pivots[1] <- 70.0
-
-    expect_gt(
-        evaluate(smth, design2),
-        evaluate(smth, design1)
-    )
-
-    expect_gt(
-        evaluate(smth, design2, optimization = TRUE),
-        evaluate(smth, design1, optimization = TRUE)
-    )
-
-}) # end 'SmoothnessN2 is defined sensitive'
-
-
-
 test_that("N1 works", {
     order   <- 7L
     design1 <- TwoStageDesign(25.75, 0, 2, 40.0, 2.0, order)

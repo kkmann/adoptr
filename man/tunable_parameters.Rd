@@ -44,5 +44,5 @@ tunable_parameters(design2)
 
 }
 \seealso{
-\code{\link{TwoStageDesign}}, \code{\link{postprocess}}
+\code{\link{TwoStageDesign}}
 }

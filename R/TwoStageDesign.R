@@ -109,7 +109,7 @@ function(n1, c1f, c1e, n2_pivots, c2_pivots, order = NULL, ...) {
 #' design2 <-update(design, tunable_parameters(design) + 1)
 #' tunable_parameters(design2)
 #'
-#' @seealso \code{\link{TwoStageDesign}}, \code{\link{postprocess}}
+#' @seealso \code{\link{TwoStageDesign}}
 #'
 #' @export
 setGeneric("tunable_parameters", function(object, ...) standardGeneric("tunable_parameters"))

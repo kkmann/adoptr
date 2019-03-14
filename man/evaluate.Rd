@@ -12,9 +12,6 @@
 \alias{evaluate,ConditionalPower,TwoStageDesign-method}
 \alias{evaluate,ConditionalSampleSize,TwoStageDesign-method}
 \alias{evaluate,AverageN2,TwoStageDesign-method}
-\alias{evaluate,SmoothnessN2,TwoStageDesign-method}
-\alias{evaluate,SmoothnessN2,GroupSequentialDesign-method}
-\alias{evaluate,SmoothnessN2,OneStageDesign-method}
 \alias{evaluate,N1,TwoStageDesign-method}
 \title{Evaluation of a score}
 \usage{
@@ -39,13 +36,6 @@ evaluate(s, design, ...)
 
 \S4method{evaluate}{AverageN2,TwoStageDesign}(s, design,
   optimization = FALSE, subdivisions = 10000L, ...)
-
-\S4method{evaluate}{SmoothnessN2,TwoStageDesign}(s, design,
-  optimization = FALSE, subdivisions = 10000L, ...)
-
-\S4method{evaluate}{SmoothnessN2,GroupSequentialDesign}(s, design, ...)
-
-\S4method{evaluate}{SmoothnessN2,OneStageDesign}(s, design, ...)
 
 \S4method{evaluate}{N1,TwoStageDesign}(s, design, optimization = FALSE,
   ...)
@@ -129,16 +119,6 @@ evaluate(
    AverageN2(),
    TwoStageDesign(100, 0.5, 1.5, 60.0, 1.96, order = 5L)
 ) # 60
-
-evaluate(
-   SmoothnessN2(),
-   TwoStageDesign(50, 0, 2, rep(50, 7), rep(2, 7))
-) # 0
-
-evaluate(
-   SmoothnessN2(),
-   GroupSequentialDesign(50, 0, 2, 50, rep(2, 7))
-) # 0
 
 evaluate(
    N1(),
