@@ -2,8 +2,17 @@
 #'
 #' \code{TwoStageDesign} is the fundamental design class of the
 #' \pkg{\link{adoptr}} package.
-#' Formally, we represent a generic two-stage design as
-#' [TODO] [TODO link to vignettes as well!]
+#' Formally, we represent a generic two-stage design as a five-tuple
+#' \eqn{\big(n_1, c_1^f, c_1^e, n_2(\cdot), c_2(\cdot)\big).}
+#' Here, \eqn{n_1} is the first-stage sample size (per group),
+#' \eqn{c_1^f} and \eqn{c_1^e} are boundaries for early stopping for futility
+#' and efficacy, respectively.
+#' Since the trial design is a two-stage design, the elements \eqn{n_2(\cdot)}
+#' (stage-two sample size) and \eqn{c_2(\cdot)} (stage-two critical value)
+#' are functions of the first-stage outcome \eqn{X_1=x_1}.
+#' \eqn{X_1} denotes the first-stage test statistic.
+#' A brief description on this definition of two-stage designs can be read
+#' \href{here}{https://kkmann.github.io/adoptr/articles/adoptr.html}.
 #' For available methods, see the 'See Also' section at the end of this page.
 #'
 #' @slot n1 cf. parameter 'n1'
@@ -360,8 +369,7 @@ setMethod("show", signature(object = "TwoStageDesign"),
 #' functions of a \code{\link{TwoStageDesign}} and
 #' user-defined elements of the class \code{\link{ConditionalScore}}.
 #'
-#' @param x design to plot
-#' @param y not used
+#' @template plot
 #' @param rounded should n-values be rounded?
 #' @param k number of points to use for plotting
 #' @param ... further named \code{ConditinonalScores} to plot for the design

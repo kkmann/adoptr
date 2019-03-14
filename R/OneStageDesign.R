@@ -108,8 +108,7 @@ setMethod("TwoStageDesign", signature("OneStageDesign"),
 
 #' plot() is not defined for one stage designs
 #'
-#' @param x not used
-#' @param y not used
+#' @template plot
 #'
 #' @rdname OneStageDesign-class
 #' @export

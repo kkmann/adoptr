@@ -31,8 +31,8 @@ minimize(objective, subject_to, initial_design,
         \item{call_args}{ The arguments given to the optimization call}
 }
 \description{
-\code{minimize} takes an unconditioonal score
-and a constraint set (or single constraint) of conditional and/or unconditional
+\code{minimize} takes an unconditional score and
+a constraint set (or single constraint) of conditional and/or unconditional
 scores and solves the corresponding constraint minimization problem
 using \code{nloptr} (using COBYLA by default).
 An initial design has to be defined. It is also possible to defined

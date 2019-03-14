@@ -12,6 +12,9 @@
 #'   \code{\link{expectation}}, \code{\link{condition}}, \code{\link{predictive_pdf}},
 #'   \code{\link{predictive_cdf}}, \code{\link{posterior}}
 #'
+#' @details For an example on working with priors, see
+#'    \href{here}{https://kkmann.github.io/adoptr/articles/working-with-priors.html}.
+#'
 #' @aliases Prior
 #' @exportClass Prior
 setClass("Prior")

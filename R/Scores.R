@@ -10,6 +10,8 @@
 #'
 #' @details The method \code{evaluate} is preimplemented for all preimplemented
 #'    scores in \pkg{adoptr}.
+#'    An example on working with scores is presented
+#'    \href{here}{https://kkmann.github.io/adoptr/articles/score-and-constraints-arithmetic.html}
 #'
 #' @param s score
 #' @param design \code{TwoStageDesign} object
