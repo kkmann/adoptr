@@ -12,6 +12,8 @@ navbar:
     href: articles/working-with-priors.html
   - text: Scores and constraints
     href: articles/score-and-constraints-arithmetic.html
+  - text: Changelog
+    href: news/index.html
   - text: Reference
     href: reference/index.html
   right:
@@ -45,7 +47,6 @@ reference:
   desc: >
     Abstract interface for defining conditional and unconditional scores.
   contents:
-  - '`working-with-scores`'
   - '`UnconditionalScore-class`'
   - '`ConditionalScore-class`'
   - '`IntegralScore-class`'
@@ -55,7 +56,6 @@ reference:
     A collection of commonly used pre-implemented scores.
   contents:
   - '`N1-class`'
-  - '`SmoothnessN2-class`'
   - '`AverageN2-class`'
   - '`ConditionalPower-class`'
   - '`ConditionalSampleSize-class`'
@@ -71,7 +71,6 @@ reference:
   - '`summary,TwoStageDesign-method`'
   - '`print.TwoStageDesignSummary`'
   - '`minimize`'
-  - '`postprocess`'
 - title: Optimization constraints
   desc: >
     Formulation of optimization constraints based on scores.
