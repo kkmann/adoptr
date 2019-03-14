@@ -38,7 +38,6 @@ test_that("Optimal one-stage design with point prior is computable", {
     cp   <- ConditionalPower(dist, alternative)
     pow  <- expected(cp)
     toer <- expected(ConditionalPower(dist, null))
-    smth <- SmoothnessN2()
 
 
 
@@ -55,11 +54,6 @@ test_that("Optimal one-stage design with point prior is computable", {
     expect_equal(
         round(evaluate(toer, design), 3),
         0.023
-    )
-
-    expect_equal(
-        evaluate(smth, design),
-        0.0
     )
 
     #compute optimal design
