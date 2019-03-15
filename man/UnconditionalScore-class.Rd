@@ -7,6 +7,8 @@
 \title{Class for unconditional scoring function}
 \description{
 \code{UnconditionalScore} is an abstract class for unconditional scores.
+}
+\details{
 When defining a new \code{UnconditionalScore}, a corresponding
 method \code{evaluate} needs to be defined, too.
 }

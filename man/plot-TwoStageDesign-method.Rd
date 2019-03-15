@@ -21,7 +21,10 @@
 }
 \description{
 This method allows to plot the stage-two sample size and decision boundary
-functions of a \code{\link{TwoStageDesign}} and
+functions of a
+}
+\details{
+\code{\link{TwoStageDesign}} and
 user-defined elements of the class \code{\link{ConditionalScore}}.
 }
 \examples{

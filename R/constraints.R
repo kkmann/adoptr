@@ -5,8 +5,6 @@
 #' Currently,  constraints of the form 'score <=/>= x',
 #' 'x <=/>= score' and 'score <=/>= score' are admissable.
 #'
-#' [TODO: conditional constraints are only evaluated at the continuation area]
-#'
 #' @param e1 first comparator
 #' @param e2 second comparator
 #' @template dotdotdot

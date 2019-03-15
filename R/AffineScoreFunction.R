@@ -14,6 +14,7 @@
 #'
 #' \code{AffineScore} allows to add scores of arbitrary class and shift
 #' them by the \code{intercept}.
+#'
 #' \code{AffineUnconditionalScore} allows the same for scores of class
 #' \code{\link{UnconditionalScore}} and \code{AffineConditionalScore} for
 #' scores of class \code{\link{ConditionalScore}}.
