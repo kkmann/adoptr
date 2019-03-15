@@ -27,7 +27,7 @@ predictive_cdf(dist, prior, x1, n1, ...)
 
 \item{...}{further optional arguments}
 
-\item{k}{number of pivots for crude integral approximation [TODO: this needs to be done properly!, cant use integrate since we wnat this vectorized!]}
+\item{k}{number of pivots for crude integral approximation}
 }
 \value{
 \code{numeric}, value of the predictive CDF
