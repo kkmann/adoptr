@@ -127,6 +127,7 @@ setMethod("*", signature("numeric", "ConditionalScore"),
 #' Class for unconditional scoring function
 #'
 #' \code{UnconditionalScore} is an abstract class for unconditional scores.
+#'
 #' When defining a new \code{UnconditionalScore}, a corresponding
 #' method \code{evaluate} needs to be defined, too.
 #'
