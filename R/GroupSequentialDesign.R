@@ -1,49 +1,34 @@
-#' Group-sequential design
+#' Group-sequential two-stage designs
 #'
-#' The class \code{GroupSequentialDesign} allows the implementation
-#' and usage of group-sequential designs. These are two-stage designs
-#' with a constant stage-two sample size function.
-#' Therefore, the length of \code{n2_pivots} is required to be 1 in this
-#' class.
-#' \code{GroupSequentialDesign} is a subclass of \link{TwoStageDesign}.
+#' Group-sequential designs are a sub-class of the \code{TwoStageDesign}
+#' class with constant stage-two sample size.
+#' See \code{\link{TwoStageDesign}} for slot details.
+#' Any group-sequential design can be converted to a fully flexible
+#' \code{TwoStageDesign} (see examples section).
 #'
-#' @slot n1 stage-one sample size
-#' @slot c1f early stopping for futility boundary
-#' @slot c1e early stopping for efficacy boundary
-#' @slot n2_pivots stage-two sample size upon continuation
-#' @slot c2_pivots vector of length order giving the values of c2 at the
-#'     pivot points of the numeric integration rule [TODO: these are not available during construction]
-#' @slot x1_norm_pivots normalized pivots for integration rule (in [-1, 1])
-#' @slot weights weights of conditional score values at x1_norm_pivots for
-#'     approximating the integral over x1.
-#' @slot tunable named logical vector indicating whether corresponding slot is considered a tunable parameter
+#' @seealso \code{\link{TwoStageDesign}} for superclass and inherited methods
 #'
 #' @exportClass GroupSequentialDesign
 setClass("GroupSequentialDesign",  contains = "TwoStageDesign")
 
-
-
-
-
-#' Create an object of class \code{GroupSequentialDesign}
+#' @template c1f
+#' @template c1e
+#' @param n2_pivots numeric of length one, stage-two sample size
+#' @param c2_pivots numeric vector, stage-two critical values on the integration
+#' pivot points
+#' @param order of the Gaussian uadrature rule to use for integration, set to
+#' length(c2_pivots) if NULL, otherwise first value of c2_pivots is repeated
+#' 'order'-times.
+#' @template dotdotdot
 #'
-#' If \code{order} is not defined, the length of the parameter \code{c2_pivots}
-#' defines the order of the Gaussian quadrature integration rule.
-#'
-#' @param n1 cf. slot
-#' @param c1f cf. slot
-#' @param c1e cf. slot
-#' @param n2_pivots stage-two sample size
-#' @param c2_pivots stage-two rejection boundary
-#' @param order order of Gaussian quadrature
-#' @param ... further optional arguments
-#'
-#' @return an object of class \code{GroupSequentialDesign}
+#' @examples
+#' design <- GroupSequentialDesign(25, 0, 2, 25, c(1, 1.5, 2.5))
+#' summary(design)
 #'
 #' @rdname GroupSequentialDesign-class
 #' @export
 GroupSequentialDesign <- function(n1, c1f, c1e, n2_pivots, c2_pivots, order = NULL, ...) {
-    if(is.null(order)) {
+    if (is.null(order)) {
         order <- length(c2_pivots)
         } else{
             c2_pivots <- rep(c2_pivots[1], order)
@@ -64,12 +49,7 @@ GroupSequentialDesign <- function(n1, c1f, c1e, n2_pivots, c2_pivots, order = NU
 
 
 
-#' @param x1 stage-one outcome
-#' @param d object of class \code{GSDesign}
-#' @param round logical, should integer sample size or real sample size be
-#'    returned?
-#'
-#' @rdname GroupSequentialDesign-class
+#' @rdname n
 #' @export
 setMethod("n2", signature("GroupSequentialDesign", "numeric"),
           function(d, x1, round = TRUE, ...) {
@@ -80,36 +60,22 @@ setMethod("n2", signature("GroupSequentialDesign", "numeric"),
           }
 )
 
-
-
-#' Convert a group-sequential design to a two-stage design
+#' @param n1 stage one sample size or \code{GroupSequentialDesign} object to convert
+#'   (overloaded from \code{\link{TwoStageDesign}})
 #'
-#' @param tunable c.f. slot
+#' @examples
+#' TwoStageDesign(design)
 #'
 #' @rdname GroupSequentialDesign-class
 #' @export
 setMethod("TwoStageDesign", signature("GroupSequentialDesign"),
-     function(d, tunable, ...){
+     function(n1, ...){
          tunable <- logical(8) # initialize to all false
          tunable[1:5] <- TRUE
          names(tunable) <- c("n1", "c1f", "c1e", "n2_pivots", "c2_pivots", "x1_norm_pivots", "weights", "tunable")
-         new("TwoStageDesign", n1 = d@n1, c1f = d@c1f, c1e = d@c1e,
-                        n2_pivots = rep(d@n2_pivots, length(d@weights)),
-                        c2_pivots = d@c2_pivots,
-                        x1_norm_pivots = d@x1_norm_pivots, weights = d@weights,
+         new("TwoStageDesign", n1 = n1@n1, c1f = n1@c1f, c1e = n1@c1e,
+                        n2_pivots = rep(n1@n2_pivots, length(n1@weights)),
+                        c2_pivots = n1@c2_pivots,
+                        x1_norm_pivots = n1@x1_norm_pivots, weights = n1@weights,
                         tunable = tunable)
 })
-
-
-
-
-#' Show method for GroupSequentialDesign objects
-#'
-#' Only states the class itself.
-#'
-#' @param object design to show
-#'
-#' @rdname GroupSequentialDesign-class
-#' @export
-setMethod("show", signature(object = "GroupSequentialDesign"),
-          function(object) cat(class(object)[1]))

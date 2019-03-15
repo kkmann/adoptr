@@ -24,14 +24,26 @@ setClass("DataDistribution", representation(
 )
 
 
-
-#' @rdname DataDistribution-class
+#' Probability density function
+#'
+#' \code{probability_density_function} evaluates the probability density
+#' function of a specific distribution \code{dist} at a point \code{x}.
+#'
+#' @template dist
+#' @template DataDistributionTemplate
+#'
 #' @export
 setGeneric("probability_density_function", function(dist, x, n, theta, ...) standardGeneric("probability_density_function"))
 
 
-
-#' @rdname DataDistribution-class
+#' Cumulative distribution function
+#'
+#' \code{cumulative_distribution_function} evaluates the cumulative distribution
+#' function of a specific distribution \code{dist} at a point \code{x}.
+#'
+#' @template dist
+#' @template DataDistributionTemplate
+#'
 #' @export
 setGeneric("cumulative_distribution_function", function(dist, x, n, theta, ...) standardGeneric("cumulative_distribution_function"))
 
@@ -55,17 +67,31 @@ setGeneric("cumulative_distribution_function", function(dist, x, n, theta, ...) 
 #' @exportClass Normal
 setClass("Normal", representation(
     two_armed = "logical"
-    ),
-    contains = "DataDistribution")
+),
+contains = "DataDistribution")
 
-#' @param two_armed s. slot
+
+#' @param two_armed logical indicating if a two-armed trial is regarded
+#'
+#' @examples
+#' datadist <- Normal(two_armed = TRUE)
+#'
+#' @seealso see \code{\link{probability_density_function}} and
+#'    \code{\link{cumulative_distribution_function}} to evaluate the pdf
+#'    and the cdf, respectively.
 #'
 #' @rdname NormalDataDistribution-class
 #' @export
 Normal <- function(two_armed = TRUE) new("Normal", two_armed = two_armed)
 
 
-#' @rdname NormalDataDistribution-class
+#' @examples
+#' probability_density_function(Normal(), 1, 50, .3)
+#'
+#' @details If the distribution is \code{\link{Normal}}, then
+#'   the mean is assumed to be \eqn{\sqrt{n} \theta}{n^(1/2)  theta}.
+#'
+#' @rdname probability_density_function
 #' @export
 setMethod("probability_density_function", signature("Normal", "numeric", "numeric", "numeric"),
           function(dist, x, n, theta, ...) {
@@ -76,8 +102,13 @@ setMethod("probability_density_function", signature("Normal", "numeric", "numeri
           })
 
 
-
-#' @rdname NormalDataDistribution-class
+#' @examples
+#' cumulative_distribution_function(Normal(), 1, 50, .3)
+#'
+#' @details If the distribution is \code{\link{Normal}}, then
+#'   the mean is assumed to be \eqn{\sqrt{n} \theta}{n^(1/2)  theta}.
+#'
+#' @rdname cumulative_distribution_function
 #' @export
 setMethod("cumulative_distribution_function", signature("Normal", "numeric", "numeric", "numeric"),
           function(dist, x, n, theta, ...) {

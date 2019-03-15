@@ -3,7 +3,7 @@
 \docType{class}
 \name{Constraint-class}
 \alias{Constraint-class}
-\alias{evaluate,Constraint,TwoStageDesign-method}
+\alias{Constraint}
 \alias{show,Constraint-method}
 \alias{ConditionalConstraint-class}
 \alias{<=,AbstractConditionalScore,numeric-method}
@@ -21,9 +21,6 @@
 \alias{>=,UnconditionalScore,UnconditionalScore-method}
 \title{Formulating constraints}
 \usage{
-\S4method{evaluate}{Constraint,TwoStageDesign}(s, design,
-  optimization = FALSE, ...)
-
 \S4method{show}{Constraint}(object)
 
 \S4method{<=}{AbstractConditionalScore,numeric}(e1, e2)
@@ -51,20 +48,13 @@
 \S4method{>=}{UnconditionalScore,UnconditionalScore}(e1, e2)
 }
 \arguments{
-\item{s}{constraint to evaluate}
-
-\item{design}{TwoStageDesign to evaluate}
-
-\item{optimization}{logical, if TRUE uses a relaxation to real parameters of
-the underlying design; used for smooth optimization.}
-
-\item{...}{further optional arguments}
-
 \item{object}{object of class \code{Constraint}}
 
 \item{e1}{first comparator}
 
 \item{e2}{second comparator}
+
+\item{...}{further optional arguments}
 }
 \description{
 Conceptually, constraints work very similar to scores (any score can be put in

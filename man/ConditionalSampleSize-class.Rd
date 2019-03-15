@@ -4,50 +4,24 @@
 \name{ConditionalSampleSize-class}
 \alias{ConditionalSampleSize-class}
 \alias{ConditionalSampleSize}
-\alias{evaluate,ConditionalSampleSize,TwoStageDesign-method}
 \title{Conditional sample size of a design given stage-one outcome}
 \usage{
 ConditionalSampleSize(dist, prior)
-
-\S4method{evaluate}{ConditionalSampleSize,TwoStageDesign}(s, design, x1,
-  optimization = FALSE, ...)
 }
 \arguments{
-\item{dist}{data distribution}
+\item{dist}{a univariate distribution object}
 
-\item{prior}{prior distribution}
-
-\item{s}{conditional score object to evaluate}
-
-\item{design}{a \code{Design}}
-
-\item{x1}{stage one outcome (note that n1 is available from \code{design})}
-
-\item{optimization}{logical, if TRUE uses a relaxation to real parameters of
-the underlying design; used for smooth optimization.}
-
-\item{...}{further optional parameters}
+\item{prior}{a \code{\link{Prior}} object}
 }
 \description{
 This score simply evaluates \code{n(d, x1)}.
 The data distribution and prior are only relevant when it is integrated.
 }
-\details{
-See documentation in \link{ConditionalScore-class}
-    for further details and inherited methods.
+\examples{
+css <- ConditionalSampleSize(dist = Normal(), prior = PointMassPrior(.4, 1))
+
 }
-\section{Functions}{
-\itemize{
-\item \code{ConditionalSampleSize}: constructor
-}}
-
-\section{Slots}{
-
-\describe{
-\item{\code{distribution}}{\code{DataDistribution} object specifying the data distribution
-given the parameter \eqn{\theta} of the model}
-
-\item{\code{prior}}{\code{Prior} object specifying the data distribution
-given the parameter \eqn{\theta} of the model}
-}}
-
+\seealso{
+The method \code{\link{evaluate}} provides evaluation of the
+   \code{ConditionalSampleSize}.
+}

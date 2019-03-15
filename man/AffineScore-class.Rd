@@ -4,15 +4,20 @@
 \name{AffineScore-class}
 \alias{AffineScore-class}
 \alias{AffineScore}
-\alias{evaluate,AffineScore,TwoStageDesign-method}
 \alias{show,AffineScore-method}
+\alias{AffineUnconditionalScore-class}
+\alias{AffineUnconditionalScore}
+\alias{AffineConditionalScore-class}
+\alias{AffineConditionalScore}
 \title{Affine functions of scores}
 \usage{
 AffineScore(scores, coefs, intercept)
 
-\S4method{evaluate}{AffineScore,TwoStageDesign}(s, design, ...)
-
 \S4method{show}{AffineScore}(object)
+
+AffineUnconditionalScore(scores, coefs, intercept = 0)
+
+AffineConditionalScore(scores, coefs, intercept = 0)
 }
 \arguments{
 \item{scores}{cf. corresponding slot}
@@ -21,13 +26,9 @@ AffineScore(scores, coefs, intercept)
 
 \item{intercept}{cf. corresponding slot}
 
-\item{s}{score}
-
-\item{design}{design}
+\item{object}{object of class \code{AffineScore}}
 
 \item{...}{further optional arguments}
-
-\item{object}{object of class \code{AffineScore}}
 }
 \description{
 These methods allow to add and multiplicate two or several
@@ -50,14 +51,22 @@ coefficients}
 \code{AffineScore} allows to add scores of arbitrary class and shift
 them by the \code{intercept}.
 \code{AffineUnconditionalScore} allows the same for scores of class
-\code{UnconditionalScore} and \code{AffineConditionalScore} for
-scores of class \code{ConditionalScore}.
+\code{\link{UnconditionalScore}} and \code{AffineConditionalScore} for
+scores of class \code{\link{ConditionalScore}}.
 By the methods \code{+} and \code{*} scores can be added and multiplicated,
 respectively.
 Note that it is not possible to use these methods for a mixture of
-\code{ConditionalScore} and \code{UnconditionalScore} as these
+\code{\link{ConditionalScore}} and \code{\link{UnconditionalScore}} as these
 require different evaluation techniques.
 However, for both score classes multiplication and addition with
 numerics is provided.}
 }}
 
+\examples{
+# shift score AverageN2() by 10 and multiply by factor 2
+affine_avn2 <- 2 * AverageN2() + 10
+
+# shift conditional sample size by 5 and divide by 2
+aff_css <- 0.5 * ConditionalSampleSize(Normal(), PointMassPrior(.25, 1)) + 5
+
+}

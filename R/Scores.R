@@ -1,24 +1,39 @@
-#' Working with scores
+#' Evaluation of a score
 #'
-#' Both \code{\link{ConditionalScore-class}} as well as
-#' \code{\link{UnconditionalScore-class}} implement \code{evaluate} methods
+#' Both \code{\link{ConditionalScore}} as well as
+#' \code{\link{UnconditionalScore}} implement \code{evaluate} methods
 #' which handle the actual computation of the score given a design and
 #' (for conditional scores) an interim result.
-#' Conditional scores additionally implement an \code{expected} method
-#' to obtain the corresponding unconditional \code{\link{IntegralScore-class}}.
 #'
-#' @name working-with-scores
-NULL
+#' @seealso Conditional scores additionally implement an \code{expected} method
+#'    to obtain the corresponding unconditional \code{\link{IntegralScore}}.
+#'
+#' @details The method \code{evaluate} is preimplemented for all preimplemented
+#'    scores in \pkg{adoptr}.
+#'    An example on working with scores is presented
+#'    \href{here}{https://kkmann.github.io/adoptr/articles/score-and-constraints-arithmetic.html}
+#'
 #' @param s score
 #' @param design \code{TwoStageDesign} object
-#' @template dotdotdotTemplate
 #'
-#' @rdname working-with-scores
 #' @export
 setGeneric("evaluate", function(s, design, ...) standardGeneric("evaluate"))
 
 
-#' @rdname working-with-scores
+#' Compute the expectation of a conditional score
+#'
+#' By the method \code{expected} any \code{\link{ConditionalScore}}
+#' can be integrated over the full \eqn{x_1}-range and returns an
+#' \code{\link{IntegralScore}}. I.e., for a conditional score
+#' \eqn{s(design, x_1)}{s(design, x1)} the integral
+#' \eqn{\int s(design, x_1) d x_1}{over s(design, x1)}
+#' is computed.
+#'
+#' @param s ConditionalScore
+#' @template dotdotdot
+#'
+#' @return an object of class \code{\link{IntegralScore}}
+#'
 #' @export
 setGeneric("expected", function(s, ...) standardGeneric("expected"))
 
@@ -35,11 +50,18 @@ setClass("AbstractConditionalScore")
 
 #' Class for conditional scoring function
 #'
-#' [ToDo]
+#' \code{ConditionalScore} is an abstract class for conditional scores.
+#' It requires the two slots \code{distribution} and \code{prior} that
+#' determine the data distribution and the prior distribution for the effect
+#' parameter. When defining a specific  \code{ConditionalScore}, a corresponding
+#' method \code{evaluate} needs to be defined, too.
+#' Any \code{ConditionalScore} can be transformed to an unconditional
+#' \code{\link{IntegralScore}} by means of the method \code{\link{expected}}.
 #'
-#' @param s conditional score object to evaluate
-#' @param ... optional arguments
+#' @seealso The common conditional scores \code{\link{ConditionalPower}}
+#'    and \code{\link{ConditionalSampleSize}} are preimplemented in \pkg{adoptr}.
 #'
+#' @aliases ConditionalScore
 #' @exportClass ConditionalScore
 setClass("ConditionalScore", representation(
         distribution = "DataDistribution",
@@ -48,16 +70,19 @@ setClass("ConditionalScore", representation(
     contains = "AbstractConditionalScore")
 
 
-
-#' @describeIn ConditionalScore integrate a \code{ConditionalScore} over the
-#'     stage-one outcome; return object of class \code{\link{IntegralScore-class}}.
+#' @examples
+#' # creates power under point mass prior
+#' expected(ConditionalPower(Normal(), PointMassPrior(.3, 1)))
+#'
+#' @rdname expected
+#' @export
 setMethod("expected", signature("ConditionalScore"),
           function(s, ...) new("IntegralScore", cs = s) )
 
 
-#' @describeIn ConditionalScore returns the class name itself
-#'
 #' @param object object of class \code{ConditionalScore}
+#'
+#' @rdname ConditionalScore-class
 #' @export
 setMethod("show", signature(object = "ConditionalScore"),
           function(object) cat(class(object)[1]))
@@ -99,16 +124,20 @@ setMethod("*", signature("numeric", "ConditionalScore"),
 
 
 
-
-#' Abstract class for unconditional scoring function
+#' Class for unconditional scoring function
 #'
-#' [ToDo]
+#' \code{UnconditionalScore} is an abstract class for unconditional scores.
+#' When defining a new \code{UnconditionalScore}, a corresponding
+#' method \code{evaluate} needs to be defined, too.
 #'
+#' @seealso There are regularization scores \code{\link{N1}} and
+#'    \code{\link{AverageN2}} for sample sizes.
+#'    The class \code{\link{IntegralScore}} is a specific subclass that defines
+#'    uncondtional scores which are expected conditional scores.
 #'
+#' @aliases UnconditionalScore
 #' @exportClass UnconditionalScore
 setClass("UnconditionalScore")
-
-
 
 
 
@@ -137,42 +166,50 @@ setMethod("*", signature("numeric", "UnconditionalScore"),
 
 
 
-#' Unconditional score class obtained by integration of a \code{ConditionalScore}
+#' Unconditional score class obtained by integration of a
+#' \code{\link{ConditionalScore}}
 #'
-#' @param s an \code{IntegralScore}
-#' @param design a \code{TwoStageDesign}
+#' @slot cs the underlying \code{\link{ConditionalScore}}
 #'
-#' @slot cs the underlying \code{ConditionalScore}
+#' @seealso The method \code{\link{expected}} creates a \code{IntegralScore}
+#'    from a \code{\link{ConditionalScore}}.
 #'
+#' @aliases IntegralScore
 #' @exportClass IntegralScore
 setClass("IntegralScore", representation(
-        cs = "ConditionalScore"
-    ),
-    contains = "UnconditionalScore")
+    cs = "ConditionalScore"
+),
+contains = "UnconditionalScore")
 
 
-#' @describeIn IntegralScore returns the class name itself
-#'
 #' @param object object of class \code{IntegralScore}
+#'
+#' @rdname IntegralScore-class
 #' @export
 setMethod("show", signature(object = "IntegralScore"),
           function(object) cat(class(object)[1]))
 
 
-
-#' @param optimization logical, if TRUE uses a relaxation to real parameters of
-#'    the underlying design; used for smooth optimization.
-#' @param subdivisions integer, [TODO]
-#' @param ... further optimal arguments
+#' @examples
+#' # create a dummy design
+#' design <- TwoStageDesign(50, .0, 2.0, 50, 2.0, order = 5L)
 #'
-#' @describeIn IntegralScore generic implementation of evaluating an integral
-#'     score. Uses adaptive Gaussian quadrature for integration and might be
-#'     more efficiently implemented by specific \code{TwoStageDesign}-classes.
+#' # define type one error als IntegralScore
+#' toer <- expected(ConditionalPower(Normal(), PointMassPrior(.0, 1)))
+#'
+#' # evaluate
+#' evaluate(toer, design)
+#'
+#' @template optimization
+#' @param subdivisions integer, number of subdivisions that is used for integration
+#'    on the continuation region; results become more precise with increased
+#'    number of subdivisions; default is \code{10000L}.
+#' @template dotdotdot
+#'
+#' @rdname evaluate
+#' @export
 setMethod("evaluate", signature("IntegralScore", "TwoStageDesign"),
           function(s, design, optimization = FALSE, subdivisions = 10000L, ...) {
-              # TODO: currently ignores the possibility of early stopping/uncontinuus
-              # conditional scores - might get better when checking for early stopping
-              # and integrating separately!
               if (optimization) { # use design-specific implementation
                   return(.evaluate(s, design, ...))
               } else {
@@ -218,7 +255,7 @@ setMethod(".evaluate", signature("IntegralScore", "TwoStageDesign"),
               # integrand: conditional score times predictive PDF
               integrand <- function(x1) {
                   evaluate(s@cs, design, x1, optimization = TRUE, ...) *
-                  predictive_pdf(s@cs@distribution, s@cs@prior, x1, n1(design, round = FALSE), ...)
+                      predictive_pdf(s@cs@distribution, s@cs@prior, x1, n1(design, round = FALSE), ...)
               }
               mid_section <- integrate_rule(
                   integrand,
@@ -233,13 +270,13 @@ setMethod(".evaluate", signature("IntegralScore", "TwoStageDesign"),
                   optimization = TRUE,
                   ...
               ) +
-              mid_section +
-              poee * evaluate(
-                  s@cs, design,
-                  design@c1e + sqrt(.Machine$double.eps),
-                  optimization = TRUE,
-                  ...
-              )
+                  mid_section +
+                  poee * evaluate(
+                      s@cs, design,
+                      design@c1e + sqrt(.Machine$double.eps),
+                      optimization = TRUE,
+                      ...
+                  )
               return(res)
           })
 
@@ -256,11 +293,11 @@ setMethod(".evaluate", signature("IntegralScore", "OneStageDesign"),
               poee <- 1 - predictive_cdf(
                   s@cs@distribution, s@cs@prior, design@c1e, n1(design, round = FALSE))
               res  <- poef * evaluate( # score is constant on early stopping region
-                      s@cs, design,
-                      design@c1f - sqrt(.Machine$double.eps), # slightly smaller than stopping for futility
-                      optimization = TRUE,
-                      ...
-                  ) +
+                  s@cs, design,
+                  design@c1f - sqrt(.Machine$double.eps), # slightly smaller than stopping for futility
+                  optimization = TRUE,
+                  ...
+              ) +
                   poee * evaluate(
                       s@cs, design,
                       design@c1e + sqrt(.Machine$double.eps),
@@ -269,3 +306,6 @@ setMethod(".evaluate", signature("IntegralScore", "OneStageDesign"),
                   )
               return(res)
           })
+
+
+

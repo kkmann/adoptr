@@ -4,22 +4,12 @@
 \name{Normal-class}
 \alias{Normal-class}
 \alias{Normal}
-\alias{probability_density_function,Normal,numeric,numeric,numeric-method}
-\alias{cumulative_distribution_function,Normal,numeric,numeric,numeric-method}
 \alias{quantile,Normal-method}
 \alias{simulate,Normal,numeric-method}
 \alias{show,Normal-method}
 \title{Normal data distribution}
 \usage{
 Normal(two_armed = TRUE)
-
-
-  \S4method{probability_density_function}{Normal,numeric,numeric,numeric}(dist,
-  x, n, theta, ...)
-
-
-  \S4method{cumulative_distribution_function}{Normal,numeric,numeric,numeric}(dist,
-  x, n, theta, ...)
 
 \S4method{quantile}{Normal}(x, probs, n, theta, ...)
 
@@ -29,19 +19,17 @@ Normal(two_armed = TRUE)
 \S4method{show}{Normal}(object)
 }
 \arguments{
-\item{two_armed}{s. slot}
-
-\item{dist}{data distribution object}
+\item{two_armed}{logical indicating if a two-armed trial is regarded}
 
 \item{x}{outcome}
+
+\item{probs}{vector of probabilities}
 
 \item{n}{sample size}
 
 \item{theta}{distribution parameter}
 
 \item{...}{further optional arguments}
-
-\item{probs}{vector of probabilities}
 
 \item{object}{object of class \code{Normal}}
 
@@ -57,4 +45,13 @@ Standard deviation is 1 and mean \eqn{\theta\sqrt n} where
 The option \code{two_armed} can be set to decide whether a one-arm or a
 two-arm design should be computed.
 See \code{\link{DataDistribution-class}} for more details.
+}
+\examples{
+datadist <- Normal(two_armed = TRUE)
+
+}
+\seealso{
+see \code{\link{probability_density_function}} and
+   \code{\link{cumulative_distribution_function}} to evaluate the pdf
+   and the cdf, respectively.
 }

@@ -3,7 +3,16 @@
 \docType{class}
 \name{UnconditionalScore-class}
 \alias{UnconditionalScore-class}
-\title{Abstract class for unconditional scoring function}
+\alias{UnconditionalScore}
+\title{Class for unconditional scoring function}
 \description{
-[ToDo]
+\code{UnconditionalScore} is an abstract class for unconditional scores.
+When defining a new \code{UnconditionalScore}, a corresponding
+method \code{evaluate} needs to be defined, too.
+}
+\seealso{
+There are regularization scores \code{\link{N1}} and
+   \code{\link{AverageN2}} for sample sizes.
+   The class \code{\link{IntegralScore}} is a specific subclass that defines
+   uncondtional scores which are expected conditional scores.
 }

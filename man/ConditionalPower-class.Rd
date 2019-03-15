@@ -4,51 +4,25 @@
 \name{ConditionalPower-class}
 \alias{ConditionalPower-class}
 \alias{ConditionalPower}
-\alias{evaluate,ConditionalPower,TwoStageDesign-method}
 \title{Conditional power of a design given stage-one outcome}
 \usage{
 ConditionalPower(dist, prior)
-
-\S4method{evaluate}{ConditionalPower,TwoStageDesign}(s, design, x1,
-  optimization = FALSE, ...)
 }
 \arguments{
-\item{dist}{data distribution}
+\item{dist}{a univariate distribution object}
 
-\item{prior}{prior distribution}
-
-\item{s}{conditional score object to evaluate}
-
-\item{design}{a \code{Design}}
-
-\item{x1}{stage one outcome (note that n1 is available from \code{design})}
-
-\item{optimization}{logical, if TRUE uses a relaxation to real parameters of
-the underlying design; used for smooth optimization.}
-
-\item{...}{further optional parameters}
+\item{prior}{a \code{\link{Prior}} object}
 }
 \description{
-This score evaluates to \eqn{P[X_2 > c2(design, X_1)|X_1 = x_1]}.
+This score evaluates to \eqn{\boldsymbol{P}[X_2 > c2(design, X_1)|X_1 = x_1]}.
 Note that the distribution of \eqn{X_2} is the posterior predictive after
 observing \eqn{X_1=x_1}.
 }
-\details{
-See documentation in \link{ConditionalScore-class}
-    for further details and inherited methods.
+\examples{
+cp <- ConditionalPower(dist = Normal(), prior = PointMassPrior(.4, 1))
+
 }
-\section{Functions}{
-\itemize{
-\item \code{ConditionalPower}: constructor
-}}
-
-\section{Slots}{
-
-\describe{
-\item{\code{distribution}}{\code{DataDistribution} object specifying the data distribution
-given the parameter \eqn{\theta} of the model}
-
-\item{\code{prior}}{\code{Prior} object specifying the data distribution
-given the parameter \eqn{\theta} of the model}
-}}
-
+\seealso{
+The method \code{\link{evaluate}} provides evaluation of the
+   \code{ConditionalPower}.
+}

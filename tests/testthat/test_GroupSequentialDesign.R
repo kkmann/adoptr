@@ -32,8 +32,6 @@ test_that("Group-sequential design constructor works", {
     cp   <- ConditionalPower(dist, alternative)
     pow  <- expected(cp)
     toer <- expected(ConditionalPower(dist, null))
-    smth <- SmoothnessN2()
-
 
 
     expect_equal(
@@ -49,11 +47,6 @@ test_that("Group-sequential design constructor works", {
     expect_equal(
         round(evaluate(toer, design), 3),
         0.035
-    )
-
-    expect_equal(
-        evaluate(smth, design),
-        0.0
     )
 
 })  # end 'group-sequential design constructor works'

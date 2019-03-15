@@ -3,44 +3,27 @@
 \docType{class}
 \name{IntegralScore-class}
 \alias{IntegralScore-class}
+\alias{IntegralScore}
 \alias{show,IntegralScore-method}
-\alias{evaluate,IntegralScore,TwoStageDesign-method}
-\title{Unconditional score class obtained by integration of a \code{ConditionalScore}}
+\title{Unconditional score class obtained by integration of a
+\code{\link{ConditionalScore}}}
 \usage{
 \S4method{show}{IntegralScore}(object)
-
-\S4method{evaluate}{IntegralScore,TwoStageDesign}(s, design,
-  optimization = FALSE, subdivisions = 10000L, ...)
 }
 \arguments{
 \item{object}{object of class \code{IntegralScore}}
-
-\item{s}{an \code{IntegralScore}}
-
-\item{design}{a \code{TwoStageDesign}}
-
-\item{optimization}{logical, if TRUE uses a relaxation to real parameters of
-the underlying design; used for smooth optimization.}
-
-\item{subdivisions}{integer, [TODO]}
-
-\item{...}{further optimal arguments}
 }
 \description{
-Unconditional score class obtained by integration of a \code{ConditionalScore}
+Unconditional score class obtained by integration of a
+\code{\link{ConditionalScore}}
 }
-\section{Methods (by generic)}{
-\itemize{
-\item \code{show}: returns the class name itself
-
-\item \code{evaluate}: generic implementation of evaluating an integral
-score. Uses adaptive Gaussian quadrature for integration and might be
-more efficiently implemented by specific \code{TwoStageDesign}-classes.
-}}
-
 \section{Slots}{
 
 \describe{
-\item{\code{cs}}{the underlying \code{ConditionalScore}}
+\item{\code{cs}}{the underlying \code{\link{ConditionalScore}}}
 }}
 
+\seealso{
+The method \code{\link{expected}} creates a \code{IntegralScore}
+   from a \code{\link{ConditionalScore}}.
+}
