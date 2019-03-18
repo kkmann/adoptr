@@ -62,9 +62,6 @@ a constraint).
 Currently,  constraints of the form 'score <=/>= x',
 'x <=/>= score' and 'score <=/>= score' are admissable.
 }
-\details{
-[TODO: conditional constraints are only evaluated at the continuation area]
-}
 \examples{
 cp          <- ConditionalPower(Normal(), PointMassPrior(0.4, 1))
 pow         <- expected(cp)

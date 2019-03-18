@@ -32,7 +32,7 @@ posterior(dist, prior, x1, n1, ...)
 \item{check_normalization}{???}
 }
 \value{
-Object of class \code{\link{Prior}}; ToDO: rethink naming ;)
+Object of class \code{\link{Prior}}
 }
 \description{
 Return posterior distribution given observing stage-one outcome.

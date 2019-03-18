@@ -136,7 +136,7 @@ setMethod("condition", signature("ContinuousPrior", "numeric"),
 #' tmp <- ContinuousPrior(function(x) dunif(x, .2, .4), c(.2, .4))
 #' predictive_pdf(Normal(), tmp, 2, 20)
 #'
-#' @param  k number of pivots for crude integral approximation [TODO: this needs to be done properly!, cant use integrate since we wnat this vectorized!]
+#' @param  k number of pivots for crude integral approximation
 #'
 #' @rdname predictive_pdf
 #' @export
@@ -157,7 +157,7 @@ setMethod("predictive_pdf", signature("DataDistribution", "ContinuousPrior", "nu
 #' tmp <- ContinuousPrior(function(x) dunif(x, .2, .4), c(.2, .4))
 #' predictive_cdf(Normal(), tmp, 2, 20)
 #'
-#' @param  k number of pivots for crude integral approximation [TODO: this needs to be done properly!, cant use integrate since we wnat this vectorized!]
+#' @param  k number of pivots for crude integral approximation
 #'
 #' @rdname predictive_cdf
 #' @export

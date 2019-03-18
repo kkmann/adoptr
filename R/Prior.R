@@ -110,7 +110,7 @@ setGeneric("predictive_cdf", function(dist, prior, x1, n1, ...) standardGeneric(
 #' @template n1
 #' @template dotdotdot
 #'
-#' @return Object of class \code{\link{Prior}}; ToDO: rethink naming ;)
+#' @return Object of class \code{\link{Prior}}
 #'
 #' @export
 setGeneric("posterior", function(dist, prior, x1, n1, ...) standardGeneric("posterior"))

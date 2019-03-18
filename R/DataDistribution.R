@@ -59,6 +59,7 @@ setGeneric("cumulative_distribution_function", function(dist, x, n, theta, ...) 
 #' \eqn{\theta} is the standardized effect size.
 #' The option \code{two_armed} can be set to decide whether a one-arm or a
 #' two-arm design should be computed.
+#'
 #' See \code{\link{DataDistribution-class}} for more details.
 #'
 #' @template DataDistributionTemplate
