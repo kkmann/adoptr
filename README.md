@@ -1,11 +1,10 @@
-[![Travis build status](https://travis-ci.org/kkmann/adoptr.svg?branch=master)](https://travis-ci.org/kkmann/adoptr)
-[![Codecov test coverage](https://codecov.io/gh/kkmann/adoptr/branch/master/graph/badge.svg)](https://codecov.io/gh/kkmann/adoptr?branch=master)
 
 
 
 
 
-# adoptr <a href='https://github.com/kkmann/adoptr'><img src='man/figures/logo.png' align="right" height="139" /></a>
+
+# adoptr [![Travis build status](https://travis-ci.org/kkmann/adoptr.svg?branch=master)](https://travis-ci.org/kkmann/adoptr)[![Codecov test coverage](https://codecov.io/gh/kkmann/adoptr/branch/master/graph/badge.svg)](https://codecov.io/gh/kkmann/adoptr?branch=master)<a href='https://github.com/kkmann/adoptr'><img src='man/figures/logo.png' align="right" height="139" /></a>
 
 
 Adaptive optimal two-stage designs for clinical trials with one or two arms.
@@ -29,7 +28,7 @@ The documentation is hosted at https://kkmann.github.io/adoptr.
 
 
 
-## Validation
+## Validation [![Travis build status](https://travis-ci.org/kkmann/adoptrValidation.svg?branch=master)](https://travis-ci.org/kkmann/adoptrValidation)
 
 We provide an extensive validation suite for **adoptr** in the separate 
 package [**adoptrValidation**](https://github.com/kkmann/adoptrValidation).
