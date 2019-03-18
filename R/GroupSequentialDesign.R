@@ -30,7 +30,7 @@ setClass("GroupSequentialDesign",  contains = "TwoStageDesign")
 GroupSequentialDesign <- function(n1, c1f, c1e, n2_pivots, c2_pivots, order = NULL, ...) {
     if (is.null(order)) {
         order <- length(c2_pivots)
-        } else{
+        } else if (length(c2_pivots) != order) {
             c2_pivots <- rep(c2_pivots[1], order)
         }
 
