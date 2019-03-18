@@ -76,7 +76,7 @@ function(n1, c1f, c1e, n2_pivots, c2_pivots, order = NULL, ...) {
         if (length(n2_pivots) != length(c2_pivots))
             stop("n2_pivots and c2_pivots must be of same length!")
         order <- length(n2_pivots)
-    } else {
+    } else if (length(n2_pivots) != order) {
         n2_pivots <- rep(n2_pivots[1], order)
         c2_pivots <- rep(c2_pivots[1], order)
     }

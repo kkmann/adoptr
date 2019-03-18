@@ -102,3 +102,21 @@ test_that("show method returns design name", {
         show(design)
     )
 }) # end 'show method returns design name'
+
+
+test_that("defining order does not destroy pivots", {
+    n2 <- seq(100, 40, length.out = number_knots)
+    c2 <- seq(2.0, 0.0, length.out = number_knots)
+    d  <- TwoStageDesign(n1, c1f, c1e, n2, c2, number_knots)
+
+    expect_equal(
+        d@n2_pivots,
+        n2
+    )
+
+    expect_equal(
+        d@c2_pivots,
+        c2
+    )
+
+}) # end 'defining order does not destroy pivots'
