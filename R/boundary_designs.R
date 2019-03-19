@@ -77,7 +77,7 @@ setMethod("get_lower_boundary_design", signature("TwoStageDesign"),
                   n1,
                   initial_design@c1f - c1_buffer,
                   initial_design@c1e - c1_buffer,
-                  n2_pivots,
+                  rep(n2_pivots, length(initial_design@c2_pivots)),
                   initial_design@c2_pivots - c2_buffer,
                   order = length(initial_design@c2_pivots)
               )

@@ -120,3 +120,29 @@ test_that("defining order does not destroy pivots", {
     )
 
 }) # end 'defining order does not destroy pivots'
+
+
+
+test_that("boundary designs keep monotonicity", {
+    n2   <- seq(100, 40, length.out = number_knots)
+    c2   <- seq(2.0, 0.0, length.out = number_knots)
+    d    <- TwoStageDesign(n1, c1f, c1e, n2, c2, number_knots)
+    d_lb <- get_lower_boundary_design(d)
+    d_ub <- get_upper_boundary_design(d)
+
+    expect_equal(
+        sign(diff(d_lb@c2_pivots)),
+        sign(diff(d@c2_pivots))
+    )
+
+    expect_equal(
+        sign(diff(d_ub@n2_pivots)),
+        sign(diff(d@n2_pivots))
+    )
+
+    expect_equal(
+        sign(diff(d_ub@c2_pivots)),
+        sign(diff(d@c2_pivots))
+    )
+
+}) # end 'boundary designs keep monotonicity'
