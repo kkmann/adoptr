@@ -131,8 +131,8 @@ test_that("boundary designs keep monotonicity", {
     d_ub <- get_upper_boundary_design(d)
 
     expect_equal(
-        sign(diff(d_lb@n2_pivots)),
-        sign(diff(d@n2_pivots))
+        sign(diff(d_lb@c2_pivots)),
+        sign(diff(d@c2_pivots))
     )
 
     expect_equal(
