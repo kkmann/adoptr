@@ -35,7 +35,10 @@ setGeneric("get_upper_boundary_design",
 #' @export
 setMethod("get_lower_boundary_design", signature("OneStageDesign"),
           function(initial_design, n1 = 1, c1_buffer = 2, ...) {
-              OneStageDesign(n1, min(0, initial_design@c1f - c1_buffer))
+              lb_design <- OneStageDesign(n1, min(0, initial_design@c1f - c1_buffer))
+              lb_design@tunable <- initial_design@tunable
+              return(lb_design)
+
 })
 
 
@@ -50,7 +53,7 @@ setMethod("get_lower_boundary_design", signature("GroupSequentialDesign"),
               c2_buffer = 2,
               ...
           ) {
-              GroupSequentialDesign(
+              lb_design <- GroupSequentialDesign(
                   n1,
                   initial_design@c1f - c1_buffer,
                   initial_design@c1e - c1_buffer,
@@ -58,6 +61,9 @@ setMethod("get_lower_boundary_design", signature("GroupSequentialDesign"),
                   initial_design@c2_pivots - c2_buffer,
                   order = length(initial_design@c2_pivots)
               )
+              lb_design@tunable <- initial_design@tunable
+              return(lb_design)
+
 })
 
 
@@ -73,14 +79,17 @@ setMethod("get_lower_boundary_design", signature("TwoStageDesign"),
               c2_buffer = 2,
               ...
           ) {
-              TwoStageDesign(
+              lb_design <- TwoStageDesign(
                   n1,
                   initial_design@c1f - c1_buffer,
                   initial_design@c1e - c1_buffer,
                   rep(n2_pivots, length(initial_design@c2_pivots)),
                   initial_design@c2_pivots - c2_buffer,
                   order = length(initial_design@c2_pivots)
-              )
+                  )
+              lb_design@tunable <- initial_design@tunable
+              return(lb_design)
+
 })
 
 
@@ -91,7 +100,9 @@ setMethod("get_lower_boundary_design", signature("TwoStageDesign"),
 #' @export
 setMethod("get_upper_boundary_design", signature("OneStageDesign"),
           function(initial_design, n1 = 5 * initial_design@n1, c1_buffer = 2, ...) {
-              return(OneStageDesign(n1, initial_design@c1f + c1_buffer))
+              ub_design <- OneStageDesign(n1, initial_design@c1f + c1_buffer)
+              ub_design@tunable <- initial_design@tunable
+              return(ub_design)
 })
 
 
@@ -107,7 +118,7 @@ setMethod("get_upper_boundary_design", signature("GroupSequentialDesign"),
               c2_buffer = 2,
               ...
           ) {
-              GroupSequentialDesign(
+              ub_design <- GroupSequentialDesign(
                   n1,
                   initial_design@c1f + c1_buffer,
                   initial_design@c1e + c1_buffer,
@@ -115,6 +126,8 @@ setMethod("get_upper_boundary_design", signature("GroupSequentialDesign"),
                   initial_design@c2_pivots + c2_buffer,
                   order = length(initial_design@c2_pivots)
             )
+            ub_design@tunable <- initial_design@tunable
+            return(ub_design)
 })
 
 
@@ -129,12 +142,15 @@ setMethod("get_upper_boundary_design", signature("TwoStageDesign"),
               c2_buffer = 2,
               ...
           ) {
-              TwoStageDesign(
+              ub_design <- TwoStageDesign(
                   n1,
                   initial_design@c1f + c1_buffer,
                   initial_design@c1e + c1_buffer,
                   n2_pivots,
                   initial_design@c2_pivots + c2_buffer,
                   order = length(initial_design@c2_pivots)
-              )
+            )
+              ub_design@tunable <- initial_design@tunable
+              return(ub_design)
+
 })

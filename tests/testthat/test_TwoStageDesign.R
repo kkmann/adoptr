@@ -146,3 +146,25 @@ test_that("boundary designs keep monotonicity", {
     )
 
 }) # end 'boundary designs keep monotonicity'
+
+
+
+test_that("boundary designs respect tunable", {
+    n2   <- seq(100, 40, length.out = number_knots)
+    c2   <- seq(2.0, 0.0, length.out = number_knots)
+    d    <- TwoStageDesign(n1, c1f, c1e, n2, c2, number_knots)
+    d    <- make_fixed(d, n1)
+    d_lb <- get_lower_boundary_design(d)
+    d_ub <- get_upper_boundary_design(d)
+
+    expect_equal(
+        d@tunable,
+        d_lb@tunable
+    )
+
+    expect_equal(
+        d@tunable,
+        d_ub@tunable
+    )
+
+}) # end 'boundary designs respect tunable'
