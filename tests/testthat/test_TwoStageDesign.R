@@ -149,7 +149,7 @@ test_that("boundary designs keep monotonicity", {
 
 
 
-test_that("boundary designs respect tunable") {
+test_that("boundary designs respect tunable", {
     n2   <- seq(100, 40, length.out = number_knots)
     c2   <- seq(2.0, 0.0, length.out = number_knots)
     d    <- TwoStageDesign(n1, c1f, c1e, n2, c2, number_knots)
@@ -167,4 +167,4 @@ test_that("boundary designs respect tunable") {
         d_ub@tunable
     )
 
-} # end 'boundary designs respect tunable'
+}) # end 'boundary designs respect tunable'
