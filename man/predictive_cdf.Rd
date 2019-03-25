@@ -17,7 +17,7 @@ predictive_cdf(dist, prior, x1, n1, ...)
   prior, x1, n1, k = 33, ...)
 }
 \arguments{
-\item{dist}{a univariate distribution object}
+\item{dist}{a univariate \code{\link[=DataDistribution-class]{distribution}} object}
 
 \item{prior}{a \code{\link{Prior}} object}
 

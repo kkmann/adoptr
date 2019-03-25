@@ -16,7 +16,7 @@ expectation(dist, f, ...)
   rel.tol = 0.001, ...)
 }
 \arguments{
-\item{dist}{a univariate distribution object}
+\item{dist}{a univariate \code{\link[=DataDistribution-class]{distribution}} object}
 
 \item{f}{a univariate function, must be vectorized}
 
@@ -34,11 +34,13 @@ with respect to a distribution \code{dist}.
 I.e., \eqn{\boldsymbol{E}\big[f(X)\big]}{E[f(X)]}.
 }
 \examples{
-expectation(PointMassPrior(c(0, .5), c(.3, .7)), identity) # .35
+expectation(PointMassPrior(c(0, .5), c(.3, .7)), identity)
+# > .35
 
 expectation(
     ContinuousPrior(function(x) dunif(x, .2, .4), c(.2, .4)),
     identity
-) # .3
+)
+# > 0.3
 
 }

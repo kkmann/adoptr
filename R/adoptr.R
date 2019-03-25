@@ -1,6 +1,6 @@
 #' Adaptive Optimal Two-Stage Designs
 #'
-#' The \pkg{adoptr} package provides functionality to explore custim optimal
+#' The \pkg{adoptr} package provides functionality to explore custom optimal
 #' two-stage designs for one or two-arm superiority tests.
 #' Currently, only (asymptotically) normal test statistics are supported.
 #'

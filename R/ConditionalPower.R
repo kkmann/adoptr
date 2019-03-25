@@ -1,6 +1,6 @@
 #' Conditional power of a design given stage-one outcome
 #'
-#' This score evaluates to \eqn{\boldsymbol{P}[X_2 > c2(design, X_1)|X_1 = x_1]}.
+#' This score evaluates to \eqn{\strong{P}[X_2 > c2(design, X_1)|X_1 = x_1]}.
 #' Note that the distribution of \eqn{X_2} is the posterior predictive after
 #' observing \eqn{X_1=x_1}.
 #'

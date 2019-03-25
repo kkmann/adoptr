@@ -15,7 +15,7 @@ bounds(dist, ...)
 \S4method{bounds}{ContinuousPrior}(dist, ...)
 }
 \arguments{
-\item{dist}{a univariate distribution object}
+\item{dist}{a univariate \code{\link[=DataDistribution-class]{distribution}} object}
 
 \item{...}{further optional arguments}
 }
@@ -27,7 +27,9 @@ bounds(dist, ...)
 }
 \examples{
 bounds(PointMassPrior(c(0, .5), c(.3, .7)))
+# > 0.3 0.7
 
-bounds(ContinuousPrior(function(x) dunif(x, .2, .4), c(.2, .4))) # c(.2, .4)
+bounds(ContinuousPrior(function(x) dunif(x, .2, .4), c(.2, .4)))
+# > 0.2 0.4
 
 }
