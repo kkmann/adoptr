@@ -13,8 +13,13 @@ an object of class \code{\link{N1}}
 }
 \description{
 \code{N1} is a class that computes the \code{n1} value of a design.
+This can be used as a score in \code{\link{minimize}}.
 }
 \examples{
 n1_score <- N1()
 
+}
+\seealso{
+See \code{\link{AverageN2}} for a regularization of
+ the second-stage sample size.
 }

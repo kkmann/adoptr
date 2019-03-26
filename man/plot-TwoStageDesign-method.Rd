@@ -21,7 +21,7 @@
 }
 \description{
 This method allows to plot the stage-two sample size and decision boundary
-functions of a
+functions of a chosen design.
 }
 \details{
 \code{\link{TwoStageDesign}} and

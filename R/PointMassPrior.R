@@ -7,7 +7,7 @@
 #' @slot theta cf. parameter 'theta'
 #' @slot mass cf. parameter 'mass'
 #'
-#' @seealso To represent continuous prior distributions use \code{{ContinuousPrior}}   #Link functioniert nicht
+#' @seealso To represent continuous prior distributions use \code{\link{ContinuousPrior}}.
 #'
 #' @aliases PointMassPrior
 #' @exportClass PointMassPrior
