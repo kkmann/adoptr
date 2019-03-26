@@ -37,7 +37,7 @@ setGeneric("bounds", function(dist, ...) standardGeneric("bounds"))
 #'
 #' Computes the expected value of a vectorized, univariate function \code{f}
 #' with respect to a distribution \code{dist}.
-#' I.e., \eqn{\boldsymbol{E}\big[f(X)\big]}{E[f(X)]}.
+#' I.e., \ifelse{html}{\out{E[f(X)]}}{\eqn{\boldsymbol{E}\big[f(X)\big]}{E[f(X)]}}.
 #'
 #' @param    f     a univariate function, must be vectorized
 #' @template dist

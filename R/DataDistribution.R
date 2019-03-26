@@ -4,7 +4,7 @@
 #' of a sufficient statistic \code{x} given a sample size \code{n} and a
 #' single parameter value \code{theta}.
 #'
-#' This abstraction layer allows representation of t-distributions
+#' This abstraction layer allows the representation of t-distributions
 #' (unknown variance), normal distribution (known variance), and normal
 #' approximation of a binary endpoint.
 #' Currently, only the normal case is implemented with \code{\link{Normal-class}}.
@@ -13,7 +13,10 @@
 #' a two-arm (the default) design should be computed. In the case of a two-arm
 #' design all sample sizes are per group.
 #'
-#' @slot two_armed Should a two-armed design be used?
+#' @slot two_armed Logical that indicates if a two-arm design is assumed.
+#'
+#' @examples
+#' datadist <- Normal(two_armed = FALSE)
 #'
 #' @template DataDistributionTemplate
 #'
@@ -90,7 +93,8 @@ Normal <- function(two_armed = TRUE) new("Normal", two_armed = two_armed)
 #' probability_density_function(Normal(), 1, 50, .3)
 #'
 #' @details If the distribution is \code{\link{Normal}}, then
-#'   the mean is assumed to be \eqn{\sqrt{n} \theta}{n^(1/2)  theta}.
+#'   the mean is assumed to be
+#'   \ifelse{html}{\out{&radic; n  theta}}{\eqn{\sqrt{n} theta}}.
 #'
 #' @rdname probability_density_function
 #' @export
@@ -107,7 +111,8 @@ setMethod("probability_density_function", signature("Normal", "numeric", "numeri
 #' cumulative_distribution_function(Normal(), 1, 50, .3)
 #'
 #' @details If the distribution is \code{\link{Normal}}, then
-#'   the mean is assumed to be \eqn{\sqrt{n} \theta}{n^(1/2)  theta}.
+#'   the mean is assumed to be
+#'   \ifelse{html}{\out{&radic; n  theta}}{\eqn{\sqrt{n} theta}}.
 #'
 #' @rdname cumulative_distribution_function
 #' @export

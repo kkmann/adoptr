@@ -51,6 +51,23 @@ The optional argument \code{round} allows to switch between the internal
 real representation and a rounded version (rounding to the next positive
 integer).
 }
+\examples{
+initial_design <- TwoStageDesign(
+   n1    = 25,
+   c1f   = 0,
+   c1e   = 2.5,
+   n2    = 50,
+   c2    = 1.96,
+   order = 7L
+)
+
+n1(initial_design)
+
+x1 <- 2.2
+n(initial_design, x1)
+
+
+}
 \seealso{
 \code{\link{TwoStageDesign}}, see \code{\link{c2}} for accessing
 the critical values

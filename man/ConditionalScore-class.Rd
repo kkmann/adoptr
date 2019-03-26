@@ -23,11 +23,8 @@ Any \code{ConditionalScore} can be transformed to an unconditional
 }
 \examples{
 cp <- ConditionalPower(Normal(), PointMassPrior(0, 1))
-
 ep <- expected(cp)
-
 design <- TwoStageDesign(50, 0, 2, 50, 2, 5)
-
 evaluate(ep, design)
 
 }

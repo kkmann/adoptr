@@ -60,5 +60,17 @@ This is handled analogously with \code{c2_pivots} and \code{c2_buffer}.}
 }
 \description{
 Compute boundary designs. These can be used for optimization and are
-implemented by default in \link{minimize}.
+implemented by default in \code{\link{minimize}}.
+}
+\examples{
+initial_design <- TwoStageDesign(
+  n1    = 25,
+  c1f   = 0,
+  c1e   = 2.5,
+  n2    = 50,
+  c2    = 1.96,
+  order = 7L
+  )
+get_lower_boundary_design(initial_design)
+
 }

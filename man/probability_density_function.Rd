@@ -29,7 +29,8 @@ function of a specific distribution \code{dist} at a point \code{x}.
 }
 \details{
 If the distribution is \code{\link{Normal}}, then
-  the mean is assumed to be \eqn{\sqrt{n} \theta}{n^(1/2)  theta}.
+  the mean is assumed to be
+  \ifelse{html}{\out{&radic; n  theta}}{\eqn{\sqrt{n} theta}}.
 }
 \examples{
 probability_density_function(Normal(), 1, 50, .3)

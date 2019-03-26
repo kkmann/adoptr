@@ -14,9 +14,9 @@ ConditionalPower(dist, prior)
 \item{prior}{a \code{\link{Prior}} object}
 }
 \description{
-This score evaluates to \eqn{\strong{P}[X_2 > c2(design, X_1)|X_1 = x_1]}.
-Note that the distribution of \eqn{X_2} is the posterior predictive after
-observing \eqn{X_1=x_1}.
+This score evaluates \ifelse{html}{\out{P[X<sub>2</sub> > c2(design, X<sub>1</sub>) | X<sub>1</sub> = x<sub>1</sub>]}}{\eqn{\boldsymbol{P}[X_2 > c2(design, X_1)|X_1 = x_1]}}.
+Note that the distribution of \ifelse{html}{\out{X<sub>2</sub>}}{\eqn{X_2}} is the posterior predictive after
+observing \ifelse{html}{\out{X<sub>1</sub> = x<sub>1</sub>}}{\eqn{X_1 = x_1}}.
 }
 \examples{
 cp <- ConditionalPower(dist = Normal(), prior = PointMassPrior(.4, 1))
