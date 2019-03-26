@@ -166,6 +166,15 @@ Any <code>ConditionalScore</code> can be transformed to an unconditional
    and <code><a href='ConditionalSampleSize-class.html'>ConditionalSampleSize</a></code> are preimplemented in <span class="pkg">adoptr</span>.</p></div>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>cp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ConditionalPower-class.html'>ConditionalPower</a></span>(<span class='fu'><a href='NormalDataDistribution-class.html'>Normal</a></span>(), <span class='fu'><a href='PointMassPrior-class.html'>PointMassPrior</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>))
+
+<span class='no'>ep</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='expected.html'>expected</a></span>(<span class='no'>cp</span>)
+
+<span class='no'>design</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='TwoStageDesign-class.html'>TwoStageDesign</a></span>(<span class='fl'>50</span>, <span class='fl'>0</span>, <span class='fl'>2</span>, <span class='fl'>50</span>, <span class='fl'>2</span>, <span class='fl'>5</span>)
+
+<span class='fu'><a href='evaluate.html'>evaluate</a></span>(<span class='no'>ep</span>, <span class='no'>design</span>)</div><div class='output co'>#&gt; [1] 0.03360763</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -173,7 +182,9 @@ Any <code>ConditionalScore</code> can be transformed to an unconditional
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#see-also">See also</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

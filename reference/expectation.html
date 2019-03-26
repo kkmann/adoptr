@@ -154,7 +154,7 @@ I.e., \(\boldsymbol{E}\big[f(X)\big]\).</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>dist</th>
-      <td><p>a univariate distribution object</p></td>
+      <td><p>a univariate <code><a href='DataDistribution-class.html'>distribution</a></code> object</p></td>
     </tr>
     <tr>
       <th>f</th>
@@ -177,11 +177,13 @@ quadrature to evaluate the integral</p></td>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>expectation</span>(<span class='fu'><a href='PointMassPrior-class.html'>PointMassPrior</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>.5</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>.3</span>, <span class='fl'>.7</span>)), <span class='no'>identity</span>) <span class='co'># .35</span></div><div class='output co'>#&gt; [1] 0.35</div><div class='input'>
+    <pre class="examples"><div class='input'><span class='fu'>expectation</span>(<span class='fu'><a href='PointMassPrior-class.html'>PointMassPrior</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>.5</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>.3</span>, <span class='fl'>.7</span>)), <span class='no'>identity</span>)</div><div class='output co'>#&gt; [1] 0.35</div><div class='input'><span class='co'># &gt; .35</span>
+
 <span class='fu'>expectation</span>(
     <span class='fu'><a href='ContinuousPrior-class.html'>ContinuousPrior</a></span>(<span class='kw'>function</span>(<span class='no'>x</span>) <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Uniform'>dunif</a></span>(<span class='no'>x</span>, <span class='fl'>.2</span>, <span class='fl'>.4</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>.2</span>, <span class='fl'>.4</span>)),
     <span class='no'>identity</span>
-) <span class='co'># .3</span></div><div class='output co'>#&gt; [1] 0.3</div><div class='input'>
+)</div><div class='output co'>#&gt; [1] 0.3</div><div class='input'># > 0.3
+
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

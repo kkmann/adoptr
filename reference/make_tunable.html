@@ -183,14 +183,14 @@ and <code><a href='minimize.html'>minimize</a></code> for the actual minimzation
 #&gt;           TRUE           TRUE           TRUE           TRUE           TRUE 
 #&gt; x1_norm_pivots        weights        tunable 
 #&gt;          FALSE          FALSE          FALSE </div><div class='input'>
-<span class='co'># make n1 fixed (not changed during optimization)</span>
-<span class='no'>design</span> <span class='kw'>&lt;-</span> <span class='fu'>make_fixed</span>(<span class='no'>design</span>, <span class='no'>n1</span>)
+<span class='co'># make n1 and the pivots of n2 fixed (not changed during optimization)</span>
+<span class='no'>design</span> <span class='kw'>&lt;-</span> <span class='fu'>make_fixed</span>(<span class='no'>design</span>, <span class='no'>n1</span>, <span class='no'>n2_pivots</span>)
 <span class='no'>design</span>@<span class='kw'>tunable</span></div><div class='output co'>#&gt;             n1            c1f            c1e      n2_pivots      c2_pivots 
-#&gt;          FALSE           TRUE           TRUE           TRUE           TRUE 
+#&gt;          FALSE           TRUE           TRUE          FALSE           TRUE 
 #&gt; x1_norm_pivots        weights        tunable 
 #&gt;          FALSE          FALSE          FALSE </div><div class='input'>
-<span class='co'># make n1 tunable again</span>
-<span class='no'>design</span> <span class='kw'>&lt;-</span> <span class='fu'>make_tunable</span>(<span class='no'>design</span>, <span class='no'>n1</span>)
+<span class='co'># make them tunable again</span>
+<span class='no'>design</span> <span class='kw'>&lt;-</span> <span class='fu'>make_tunable</span>(<span class='no'>design</span>, <span class='no'>n1</span>, <span class='no'>n2_pivots</span>)
 <span class='no'>design</span>@<span class='kw'>tunable</span></div><div class='output co'>#&gt;             n1            c1f            c1e      n2_pivots      c2_pivots 
 #&gt;           TRUE           TRUE           TRUE           TRUE           TRUE 
 #&gt; x1_norm_pivots        weights        tunable 
