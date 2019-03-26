@@ -3,7 +3,7 @@
 #' \code{TwoStageDesign} is the fundamental design class of the
 #' \pkg{\link{adoptr}} package.
 #' Formally, we represent a generic two-stage design as a five-tuple
-#' \eqn{\big(n_1, c_1^f, c_1^e, n_2(\cdot), c_2(\cdot)\big).}
+#' \eqn{\big(n_1, c_1^f, c_1^e, n_2(\cdot), c_2(\cdot)\big).}   # Hier wird der Code nicht richtig angezeigt, trotz eqn
 #' Here, \eqn{n_1} is the first-stage sample size (per group),
 #' \eqn{c_1^f} and \eqn{c_1^e} are boundaries for early stopping for futility
 #' and efficacy, respectively.
@@ -31,7 +31,7 @@
 #'     considered a tunable parameter (i.e. whether it can be changed during
 #'     optimization via \code{\link{minimize}} or not; cf. \code{\link{make_fixed}})
 #'
-#' @seealso for accessing sample sizes and critical values safely, see methods in
+#' @seealso For accessing sample sizes and critical values safely, see methods in
 #' \code{\link{n}} and \code{\link{c2}}; for modifying behaviour during optimizaton
 #' see \code{\link{make_tunable}}; to convert between S4 class represenation and
 #' numeric vector, see \code{\link{tunable_parameters}}; for simulating from a given
@@ -110,7 +110,7 @@ function(n1, c1f, c1e, n2_pivots, c2_pivots, order = NULL, ...) {
 #' the set of design parameters which are considered fixed (not changed during
 #' optimization) or tunable (changed during optimization).
 #' For details on how to fix certain parameters or how to make them tunable
-#' again, see ???.
+#' again, see \code{\link{make_fixed}} and \code{\link{make_tunable}}.
 #'
 #' @examples
 #' design  <- TwoStageDesign(25, 0, 2, 25, 2, order = 5)
@@ -174,12 +174,12 @@ setMethod("update", signature("TwoStageDesign"),
 #' # weights and tunability status itself)
 #' design@tunable
 #'
-#' # make n1 fixed (not changed during optimization)
-#' design <- make_fixed(design, n1)
+#' # make n1 and the pivots of n2 fixed (not changed during optimization)
+#' design <- make_fixed(design, n1, n2_pivots)
 #' design@tunable
 #'
-#' # make n1 tunable again
-#' design <- make_tunable(design, n1)
+#' # make them tunable again
+#' design <- make_tunable(design, n1, n2_pivots)
 #' design@tunable
 #'
 #' @seealso \code{\link{TwoStageDesign}}, \code{\link{tunable_parameters}} for

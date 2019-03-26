@@ -67,7 +67,8 @@ ContinuousPrior <- function(pdf,
 
 
 #' @examples
-#' bounds(ContinuousPrior(function(x) dunif(x, .2, .4), c(.2, .4))) # c(.2, .4)
+#' bounds(ContinuousPrior(function(x) dunif(x, .2, .4), c(.2, .4)))
+#' # > 0.2 0.4
 #'
 #' @rdname bounds
 #' @export
@@ -79,7 +80,8 @@ setMethod("bounds", signature("ContinuousPrior"),
 #' expectation(
 #'     ContinuousPrior(function(x) dunif(x, .2, .4), c(.2, .4)),
 #'     identity
-#' ) # .3
+#' )
+#' # > 0.3
 #'
 #' @param rel.tol \code{numeric}, relative tolerance used in adaptive gaussian
 #'     quadrature to evaluate the integral

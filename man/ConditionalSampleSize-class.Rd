@@ -9,12 +9,13 @@
 ConditionalSampleSize(dist, prior)
 }
 \arguments{
-\item{dist}{a univariate distribution object}
+\item{dist}{a univariate \code{\link[=DataDistribution-class]{distribution}} object}
 
 \item{prior}{a \code{\link{Prior}} object}
 }
 \description{
-This score simply evaluates \code{n(d, x1)}.
+This score simply evaluates \code{n(d, x1)} for a design \code{d} and the
+first-stage outcome \code{x1}.
 The data distribution and prior are only relevant when it is integrated.
 }
 \examples{

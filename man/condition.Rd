@@ -15,7 +15,7 @@ condition(dist, interval, ...)
 \S4method{condition}{ContinuousPrior,numeric}(dist, interval, ...)
 }
 \arguments{
-\item{dist}{a univariate distribution object}
+\item{dist}{a univariate \code{\link[=DataDistribution-class]{distribution}} object}
 
 \item{interval}{length-two numeric vector giving the parameter interval to
 condition on}

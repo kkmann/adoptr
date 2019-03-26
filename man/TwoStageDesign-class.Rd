@@ -54,7 +54,7 @@ pivots specified by \code{order}}
 \code{TwoStageDesign} is the fundamental design class of the
 \pkg{\link{adoptr}} package.
 Formally, we represent a generic two-stage design as a five-tuple
-\eqn{\big(n_1, c_1^f, c_1^e, n_2(\cdot), c_2(\cdot)\big).}
+\eqn{\big(n_1, c_1^f, c_1^e, n_2(\cdot), c_2(\cdot)\big).}   # Hier wird der Code nicht richtig angezeigt, trotz eqn
 Here, \eqn{n_1} is the first-stage sample size (per group),
 \eqn{c_1^f} and \eqn{c_1^e} are boundaries for early stopping for futility
 and efficacy, respectively.
@@ -107,7 +107,7 @@ summary(design, "Power" = pow)
 
 }
 \seealso{
-for accessing sample sizes and critical values safely, see methods in
+For accessing sample sizes and critical values safely, see methods in
 \code{\link{n}} and \code{\link{c2}}; for modifying behaviour during optimizaton
 see \code{\link{make_tunable}}; to convert between S4 class represenation and
 numeric vector, see \code{\link{tunable_parameters}}; for simulating from a given

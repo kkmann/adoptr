@@ -61,6 +61,15 @@ setClass("AbstractConditionalScore")
 #' @seealso The common conditional scores \code{\link{ConditionalPower}}
 #'    and \code{\link{ConditionalSampleSize}} are preimplemented in \pkg{adoptr}.
 #'
+#' @examples
+#' cp <- ConditionalPower(Normal(), PointMassPrior(0, 1))
+#'
+#' ep <- expected(cp)
+#'
+#' design <- TwoStageDesign(50, 0, 2, 50, 2, 5)
+#'
+#' evaluate(ep, design)
+#'
 #' @aliases ConditionalScore
 #' @exportClass ConditionalScore
 setClass("ConditionalScore", representation(
@@ -87,7 +96,10 @@ setMethod("expected", signature("ConditionalScore"),
 setMethod("show", signature(object = "ConditionalScore"),
           function(object) cat(class(object)[1]))
 
-
+# Ich würde hier noch ein Beispiel mit minimize() angeben, z.B.
+# initial_design <- ...
+# opt_res <- minimize(ess, subject_to(power >= 0.8, toer  <= .025), initial_design)
+# evaluate(ess, opt_res$design)
 
 #' Score arithmetic
 #'

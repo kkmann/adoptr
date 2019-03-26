@@ -34,7 +34,7 @@ The \code{tunable} slot of a \code{\link{TwoStageDesign}} stores information abo
 the set of design parameters which are considered fixed (not changed during
 optimization) or tunable (changed during optimization).
 For details on how to fix certain parameters or how to make them tunable
-again, see ???.
+again, see \code{\link{make_fixed}} and \code{\link{make_tunable}}.
 }
 \examples{
 design  <- TwoStageDesign(25, 0, 2, 25, 2, order = 5)

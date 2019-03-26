@@ -17,7 +17,7 @@ posterior(dist, prior, x1, n1, ...)
   x1, n1, tighten_support = FALSE, check_normalization = FALSE, ...)
 }
 \arguments{
-\item{dist}{a univariate distribution object}
+\item{dist}{a univariate \code{\link[=DataDistribution-class]{distribution}} object}
 
 \item{prior}{a \code{\link{Prior}} object}
 

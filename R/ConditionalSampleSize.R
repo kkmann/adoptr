@@ -1,6 +1,7 @@
 #' Conditional sample size of a design given stage-one outcome
 #'
-#' This score simply evaluates \code{n(d, x1)}.
+#' This score simply evaluates \code{n(d, x1)} for a design \code{d} and the
+#' first-stage outcome \code{x1}.
 #' The data distribution and prior are only relevant when it is integrated.
 #'
 #' @template dist

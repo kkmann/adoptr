@@ -21,6 +21,16 @@ method \code{evaluate} needs to be defined, too.
 Any \code{ConditionalScore} can be transformed to an unconditional
 \code{\link{IntegralScore}} by means of the method \code{\link{expected}}.
 }
+\examples{
+cp <- ConditionalPower(Normal(), PointMassPrior(0, 1))
+
+ep <- expected(cp)
+
+design <- TwoStageDesign(50, 0, 2, 50, 2, 5)
+
+evaluate(ep, design)
+
+}
 \seealso{
 The common conditional scores \code{\link{ConditionalPower}}
    and \code{\link{ConditionalSampleSize}} are preimplemented in \pkg{adoptr}.

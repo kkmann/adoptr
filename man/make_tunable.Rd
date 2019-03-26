@@ -35,12 +35,12 @@ design <- TwoStageDesign(25, 0, 2, 25, 2, order = 5)
 # weights and tunability status itself)
 design@tunable
 
-# make n1 fixed (not changed during optimization)
-design <- make_fixed(design, n1)
+# make n1 and the pivots of n2 fixed (not changed during optimization)
+design <- make_fixed(design, n1, n2_pivots)
 design@tunable
 
-# make n1 tunable again
-design <- make_tunable(design, n1)
+# make them tunable again
+design <- make_tunable(design, n1, n2_pivots)
 design@tunable
 
 }

@@ -13,7 +13,7 @@ cumulative_distribution_function(dist, x, n, theta, ...)
   x, n, theta, ...)
 }
 \arguments{
-\item{dist}{a univariate distribution object}
+\item{dist}{a univariate \code{\link[=DataDistribution-class]{distribution}} object}
 
 \item{x}{outcome}
 

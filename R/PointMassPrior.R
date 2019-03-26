@@ -7,7 +7,7 @@
 #' @slot theta cf. parameter 'theta'
 #' @slot mass cf. parameter 'mass'
 #'
-#' @seealso To represent continuous prior distributions use \code{{ContinuousPrior}}
+#' @seealso To represent continuous prior distributions use \code{{ContinuousPrior}}   #Link functioniert nicht
 #'
 #' @aliases PointMassPrior
 #' @exportClass PointMassPrior
@@ -39,6 +39,7 @@ PointMassPrior <- function(theta, mass) {
 
 #' @examples
 #' bounds(PointMassPrior(c(0, .5), c(.3, .7)))
+#' # > 0.3 0.7
 #'
 #' @rdname bounds
 #' @export
@@ -47,7 +48,8 @@ setMethod("bounds", signature("PointMassPrior"),
 
 
 #' @examples
-#' expectation(PointMassPrior(c(0, .5), c(.3, .7)), identity) # .35
+#' expectation(PointMassPrior(c(0, .5), c(.3, .7)), identity)
+#' # > .35
 #'
 #' @rdname expectation
 #' @export
