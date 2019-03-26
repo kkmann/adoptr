@@ -62,13 +62,12 @@ setClass("AbstractConditionalScore")
 #'    and \code{\link{ConditionalSampleSize}} are preimplemented in \pkg{adoptr}.
 #'
 #' @examples
-#' # Define the score
 #' cp <- ConditionalPower(Normal(), PointMassPrior(0, 1))
 #'
-#' # Build expectation
 #' ep <- expected(cp)
 #'
-#' # Evaluate it
+#' design <- TwoStageDesign(50, 0, 2, 50, 2, 5)
+#'
 #' evaluate(ep, design)
 #'
 #' @aliases ConditionalScore
