@@ -77,6 +77,10 @@ setMethod(".evaluate", signature("AverageN2", "TwoStageDesign"),
 #' Regularize n1
 #'
 #' \code{N1} is a class that computes the \code{n1} value of a design.
+#' This can be used as a score in \code{\link{minimize}}.
+#'
+#' @seealso See \code{\link{AverageN2}} for a regularization of
+#'  the second-stage sample size.
 #'
 #' @aliases N1
 #' @exportClass N1

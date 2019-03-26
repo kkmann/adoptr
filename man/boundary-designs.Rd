@@ -59,8 +59,13 @@ This is handled analogously with \code{c2_pivots} and \code{c2_buffer}.}
 \item{c2_buffer}{shift of the final decision boundary from the initial one}
 }
 \description{
-Compute boundary designs. These can be used for optimization and are
-implemented by default in \code{\link{minimize}}.
+The optimization method \code{\link{minimize}} is based on the package
+\code{nloptr}. This requires upper and lower boundaries for optimization.
+Such boundaries can be computed via \code{lower_boundary_design}
+respectively \code{upper_boundary_design}.
+They are implemented by default in \code{\link{minimize}}.
+Note that \code{\link{minimize}} allows the user to define its own
+boundary designs, too.
 }
 \examples{
 initial_design <- TwoStageDesign(
