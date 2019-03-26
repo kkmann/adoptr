@@ -46,6 +46,6 @@ design@tunable
 }
 \seealso{
 \code{\link{TwoStageDesign}}, \code{\link{tunable_parameters}} for
-convering tunable parameters of a design object to a numeric vector (and back),
+converting tunable parameters of a design object to a numeric vector (and back),
 and \code{\link{minimize}} for the actual minimzation procedure
 }

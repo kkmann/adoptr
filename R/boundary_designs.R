@@ -1,7 +1,7 @@
 #' Boundary designs
 #'
 #' Compute boundary designs. These can be used for optimization and are
-#' implemented by default in \link{minimize}.
+#' implemented by default in \code{\link{minimize}}.
 #'
 #' @param initial_design The initial design
 #' @param n1 bound for the first-stage sample size n1
@@ -16,6 +16,17 @@
 #' \code{c1f + c1_buffer} and \code{c1e + c1_buffer} in
 #' \code{get_upper_boundary_design}.
 #' This is handled analogously with \code{c2_pivots} and \code{c2_buffer}.
+#'
+#' @examples
+#' initial_design <- TwoStageDesign(
+#'   n1    = 25,
+#'   c1f   = 0,
+#'   c1e   = 2.5,
+#'   n2    = 50,
+#'   c2    = 1.96,
+#'   order = 7L
+#'   )
+#' get_lower_boundary_design(initial_design)
 #'
 #' @rdname boundary-designs
 #' @export

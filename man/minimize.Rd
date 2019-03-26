@@ -34,8 +34,32 @@ minimize(objective, subject_to, initial_design,
 \code{minimize} takes an unconditional score and
 a constraint set (or single constraint) of conditional and/or unconditional
 scores and solves the corresponding constraint minimization problem
-using \code{nloptr} (using COBYLA by default).
-An initial design has to be defined. It is also possible to defined
+using \href{https://cran.r-project.org/web/packages/nloptr/index.html}{\code{nloptr}} (using COBYLA by default).
+An initial design has to be defined. It is also possible to define
 lower- and upper-boundary designs. If this is not done, these
 are computed automatically.
+}
+\examples{
+# Define Type one error rate
+toer <- expected(ConditionalPower(Normal(), PointMassPrior(0.0, 1)))
+
+# Define Power at delta = 0.4
+pow <- expected(ConditionalPower(Normal(), PointMassPrior(0.4, 1)))
+
+# Define expected sample size at delta = 0.4
+ess <- expected(ConditionalSampleSize(Normal(), PointMassPrior(0.4, 1)))
+
+# Compute design minimizing ess subject to power and toer constraints
+\dontrun{
+minimize(
+   ess,
+   subject_to(
+      toer <= 0.025,
+      pow  >= 0.9
+   ),
+   initial_design = TwoStageDesign(50, .0, 2.0, 60.0, 2.0, 5L)
+)
+}
+
+
 }

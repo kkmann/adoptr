@@ -25,6 +25,32 @@ conditional constraints. In order to evaluate these correctly, they
 have to be defined in two different slots.}
 }}
 
+\examples{
+# Define Type one error rate
+toer <- expected(ConditionalPower(Normal(), PointMassPrior(0.0, 1)))
+
+# Define Power at delta = 0.4
+pow <- expected(ConditionalPower(Normal(), PointMassPrior(0.4, 1)))
+
+# Define expected sample size at delta = 0.4
+ess <- expected(ConditionalSampleSize(Normal(), PointMassPrior(0.4, 1)))
+
+# Compute design minimizing ess subject to power and toer constraints
+\dontrun{
+minimize(
+   ess,
+   subject_to(
+      toer <= 0.025,
+      pow  >= 0.9
+   ),
+   initial_design = TwoStageDesign(50, .0, 2.0, 60.0, 2.0, 5L)
+)
+}
+
+
+
+
+}
 \seealso{
 A \code{ConstraintsCollection} can be created by \code{\link{subject_to}}.
 }

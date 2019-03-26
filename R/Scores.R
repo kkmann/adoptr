@@ -181,6 +181,9 @@ setMethod("*", signature("numeric", "UnconditionalScore"),
 #'
 #' @slot cs the underlying \code{\link{ConditionalScore}}
 #'
+#' @examples
+#' expected(ConditionalPower(Normal(), PointMassPrior(.4, 1.0)))
+#'
 #' @seealso The method \code{\link{expected}} creates a \code{IntegralScore}
 #'    from a \code{\link{ConditionalScore}}.
 #'
