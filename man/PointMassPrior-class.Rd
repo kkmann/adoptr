@@ -40,5 +40,5 @@ PointMassPrior(c(0, .5), c(.3, .7))
 
 }
 \seealso{
-To represent continuous prior distributions use \code{{ContinuousPrior}}   #Link functioniert nicht
+To represent continuous prior distributions use \code{\link{ContinuousPrior}}.
 }
