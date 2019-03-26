@@ -26,5 +26,5 @@ have to be defined in two different slots.}
 }}
 
 \seealso{
-A \code{ConstraintsCollection} can be created by \code{subject_to()}.
+A \code{ConstraintsCollection} can be created by \code{\link{subject_to}}.
 }

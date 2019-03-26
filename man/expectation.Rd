@@ -31,7 +31,7 @@ quadrature to evaluate the integral}
 \description{
 Computes the expected value of a vectorized, univariate function \code{f}
 with respect to a distribution \code{dist}.
-I.e., \eqn{\boldsymbol{E}\big[f(X)\big]}{E[f(X)]}.
+I.e., \ifelse{html}{\out{E[f(X)]}}{\eqn{\boldsymbol{E}\big[f(X)\big]}{E[f(X)]}}.
 }
 \examples{
 expectation(PointMassPrior(c(0, .5), c(.3, .7)), identity)

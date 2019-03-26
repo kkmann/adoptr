@@ -66,7 +66,7 @@ which handle the actual computation of the score given a design and
 The method \code{evaluate} is preimplemented for all preimplemented
    scores in \pkg{adoptr}.
    An example on working with scores is presented
-   \href{here}{https://kkmann.github.io/adoptr/articles/score-and-constraints-arithmetic.html}
+   \href{https://kkmann.github.io/adoptr/articles/score-and-constraints-arithmetic.html}{here}.
 }
 \examples{
 # create a dummy design
