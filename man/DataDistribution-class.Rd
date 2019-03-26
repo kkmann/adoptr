@@ -32,7 +32,7 @@ design all sample sizes are per group.
 \section{Slots}{
 
 \describe{
-\item{\code{two_armed}}{Should a two-armed design be used?}
+\item{\code{two_armed}}{Logical that indicates if a two-arm design is assumed.}
 }}
 
 \examples{
