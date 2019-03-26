@@ -163,9 +163,33 @@ have to be defined in two different slots.</p></dd>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>A <code>ConstraintsCollection</code> can be created by <code><a href='subject_to.html'>subject_to()</a></code>.</p></div>
+    <div class='dont-index'><p>A <code>ConstraintsCollection</code> can be created by <code><a href='subject_to.html'>subject_to</a></code>.</p></div>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='co'># Define Type one error rate</span>
+<span class='no'>toer</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='expected.html'>expected</a></span>(<span class='fu'><a href='ConditionalPower-class.html'>ConditionalPower</a></span>(<span class='fu'><a href='NormalDataDistribution-class.html'>Normal</a></span>(), <span class='fu'><a href='PointMassPrior-class.html'>PointMassPrior</a></span>(<span class='fl'>0.0</span>, <span class='fl'>1</span>)))
+
+<span class='co'># Define Power at delta = 0.4</span>
+<span class='no'>pow</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='expected.html'>expected</a></span>(<span class='fu'><a href='ConditionalPower-class.html'>ConditionalPower</a></span>(<span class='fu'><a href='NormalDataDistribution-class.html'>Normal</a></span>(), <span class='fu'><a href='PointMassPrior-class.html'>PointMassPrior</a></span>(<span class='fl'>0.4</span>, <span class='fl'>1</span>)))
+
+<span class='co'># Define expected sample size at delta = 0.4</span>
+<span class='no'>ess</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='expected.html'>expected</a></span>(<span class='fu'><a href='ConditionalSampleSize-class.html'>ConditionalSampleSize</a></span>(<span class='fu'><a href='NormalDataDistribution-class.html'>Normal</a></span>(), <span class='fu'><a href='PointMassPrior-class.html'>PointMassPrior</a></span>(<span class='fl'>0.4</span>, <span class='fl'>1</span>)))
+
+<span class='co'># Compute design minimizing ess subject to power and toer constraints</span></div><span class='co'># NOT RUN {</span>
+<span class='fu'><a href='minimize.html'>minimize</a></span>(
+   <span class='no'>ess</span>,
+   <span class='fu'><a href='subject_to.html'>subject_to</a></span>(
+      <span class='no'>toer</span> <span class='kw'>&lt;=</span> <span class='fl'>0.025</span>,
+      <span class='no'>pow</span>  <span class='kw'>&gt;=</span> <span class='fl'>0.9</span>
+   ),
+   <span class='kw'>initial_design</span> <span class='kw'>=</span> <span class='fu'><a href='TwoStageDesign-class.html'>TwoStageDesign</a></span>(<span class='fl'>50</span>, <span class='fl'>.0</span>, <span class='fl'>2.0</span>, <span class='fl'>60.0</span>, <span class='fl'>2.0</span>, <span class='fl'>5L</span>)
+)
+<span class='co'># }</span><div class='input'>
+
+
+
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -175,7 +199,9 @@ have to be defined in two different slots.</p></dd>
       <li><a href="#slots">Slots</a></li>
 
       <li><a href="#see-also">See also</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>
