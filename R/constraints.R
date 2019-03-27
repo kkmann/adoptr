@@ -200,7 +200,7 @@ setMethod("evaluate", signature("ConstraintsCollection", "TwoStageDesign"),
 #' Create a collection of constraints
 #'
 #' \code{subject_to(...)} can be used to generate an object of class
-#' \code{ConstrintsCollection} from an arbitrary number of (un)conditional
+#' \code{\link{ConstraintsCollection}} from an arbitrary number of (un)conditional
 #' constraints.
 #'
 #' @param ... arbitrary number of (un)conditional constraints

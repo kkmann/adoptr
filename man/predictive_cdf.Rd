@@ -35,7 +35,7 @@ predictive_cdf(dist, prior, x1, n1, ...)
 \description{
 \code{predictive_cdf()} evaluates the predictive CDF of the model specified
 by a \code{\link{DataDistribution}} \code{dist} and
-\code{prior} at the given stage-one outcome.
+\code{\link{Prior}} at the given stage-one outcome.
 }
 \examples{
 predictive_cdf(Normal(), PointMassPrior(.0, 1), 0, 20) # .5

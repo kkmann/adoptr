@@ -54,23 +54,26 @@ pivots specified by \code{order}}
 \code{TwoStageDesign} is the fundamental design class of the
 \pkg{\link{adoptr}} package.
 Formally, we represent a generic two-stage design as a five-tuple
-\eqn{\big(n_1, c_1^f, c_1^e, n_2(\cdot), c_2(\cdot)\big).}   # Hier wird der Code nicht richtig angezeigt, trotz eqn
-Here, \eqn{n_1} is the first-stage sample size (per group),
-\eqn{c_1^f} and \eqn{c_1^e} are boundaries for early stopping for futility
-and efficacy, respectively.
-Since the trial design is a two-stage design, the elements \eqn{n_2(\cdot)}
-(stage-two sample size) and \eqn{c_2(\cdot)} (stage-two critical value)
-are functions of the first-stage outcome \eqn{X_1=x_1}.
-\eqn{X_1} denotes the first-stage test statistic.
-A brief description on this definition of two-stage designs can be read
-\href{here}{https://kkmann.github.io/adoptr/articles/adoptr.html}.
+\ifelse{html}{\out{(n<sub>1</sub>, c<sub>1</sub><sup>f</sup>, c<sub>1</sub><sup>e</sup>, n<sub>2</sub>(&middot;), c<sub>2</sub>(&middot;))}}{\eqn{\big(n_1, c_1^f, c_1^e, n_2(\cdot), c_2(\cdot)\big)}}.
+Here, \ifelse{html}{\out{n<sub>1</sub>}}{\eqn{n_1}} is the first-stage sample
+size (per group), \ifelse{html}{\out{c<sub>1</sub><sup>f</sup>}}{\eqn{c_1^f}}
+and \ifelse{html}{\out{c<sub>1</sub><sup>e</sup>}}{\eqn{c_1^e}} are
+boundaries for early stopping for futility and efficacy, respectively.
+Since the trial design is a two-stage design, the elements
+\ifelse{html}{\out{n<sub>2</sub>(&middot;)}}{\eqn{n_2(\cdot)}} (stage-two sample
+size) and \ifelse{html}{\out{c<sub>2</sub>(&middot;)}}{\eqn{c_2(\cdot)}}
+(stage-two critical value) are functions of the first-stage outcome
+\ifelse{html}{\out{X<sub>1</sub>=x<sub>1</sub>}}{\eqn{X_1=x_1}}.
+\ifelse{html}{\out{X<sub>1</sub>}}{\eqn{X_1}} denotes the first-stage test
+statistic. A brief description on this definition of two-stage designs can be
+read \href{https://kkmann.github.io/adoptr/articles/adoptr.html}{here}.
 For available methods, see the 'See Also' section at the end of this page.
 }
 \details{
 \code{summary} can be used to quickly compute and display basic facts about
 a TwoStageDesign.
 An arbitrary number of names \code{\link{UnconditionalScore}} objects can be
-provided via \code{...} and are included in the summary displayed using
+provided via the optional arguments \code{...} and are included in the summary displayed using
 \code{\link{print}}.
 }
 \section{Slots}{

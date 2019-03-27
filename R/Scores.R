@@ -101,11 +101,25 @@ setMethod("show", signature(object = "ConditionalScore"),
 #' Score arithmetic
 #'
 #' To facilitate working with simple weighted sums of scores,
-#' \code{adoptr} supports some basic arithmetic operations on score object
+#' \code{\link{adoptr}} supports some basic arithmetic operations on score objects
 #' (both conditional and unconditional ones).
 #' Scores can be scalar-multiplied by a constant and added to produce new
 #' scores.
 #' Conditional and unconditional scores cannot be mixed.
+#'
+#' @examples
+#' design <- TwoStageDesign(
+#'   n1    = 25,
+#'   c1f   = 0,
+#'   c1e   = 2.5,
+#'   n2    = 50,
+#'   c2    = 1.96,
+#'   order = 7L
+#' )
+#' ess <- expected(ConditionalSampleSize(Normal(), PointMassPrior(.4, 1.0)))
+#' power <- expected(ConditionalPower(Normal(), PointMassPrior(.4, 1.0)))
+#' evaluate(ess + 50*power, design)
+#'
 #'
 #' @param e1 first summand / factor
 #' @param e2 second summand / factor
@@ -138,7 +152,24 @@ setMethod("*", signature("numeric", "ConditionalScore"),
 #' \code{UnconditionalScore} is an abstract class for unconditional scores.
 #'
 #' When defining a new \code{UnconditionalScore}, a corresponding
-#' method \code{evaluate} needs to be defined, too.
+#' method \code{\link{evaluate}} needs to be defined, too.
+#'
+#' @examples
+#' design <- TwoStageDesign(
+#'   n1    = 25,
+#'   c1f   = 0,
+#'   c1e   = 2.5,
+#'   n2    = 50,
+#'   c2    = 1.96,
+#'   order = 7L
+#' )
+#'
+#' cp <- ConditionalPower(Normal(), PointMassPrior(.1, 1.0))
+#' ep <- expected(cp)
+#'
+#' evaluate(ep, design) # .06081054
+#'
+#'
 #'
 #' @seealso There are regularization scores \code{\link{N1}} and
 #'    \code{\link{AverageN2}} for sample sizes.
