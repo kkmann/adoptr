@@ -84,9 +84,24 @@
 }
 \description{
 To facilitate working with simple weighted sums of scores,
-\code{adoptr} supports some basic arithmetic operations on score object
+\code{\link{adoptr}} supports some basic arithmetic operations on score objects
 (both conditional and unconditional ones).
 Scores can be scalar-multiplied by a constant and added to produce new
 scores.
 Conditional and unconditional scores cannot be mixed.
+}
+\examples{
+design <- TwoStageDesign(
+  n1    = 25,
+  c1f   = 0,
+  c1e   = 2.5,
+  n2    = 50,
+  c2    = 1.96,
+  order = 7L
+)
+ess <- expected(ConditionalSampleSize(Normal(), PointMassPrior(.4, 1.0)))
+power <- expected(ConditionalPower(Normal(), PointMassPrior(.4, 1.0)))
+evaluate(ess + 50*power, design)
+
+
 }

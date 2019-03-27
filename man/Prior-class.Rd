@@ -16,7 +16,17 @@ Implementations for \link{PointMassPrior} and \link{ContinuousPrior} are availab
 }
 \details{
 For an example on working with priors, see
-   \href{here}{https://kkmann.github.io/adoptr/articles/working-with-priors.html}.
+   \href{https://kkmann.github.io/adoptr/articles/working-with-priors.html}{here}.
+}
+\examples{
+disc_prior <- PointMassPrior(c(0.1, 0.25), c(0.4, 0.6))
+
+cont_prior <- ContinuousPrior(
+  pdf     = function(x) dnorm(x, mean = 0.3, sd = 0.2),
+  support = c(-2, 3)
+)
+
+
 }
 \seealso{
 For the available methods, see \code{\link{bounds}},

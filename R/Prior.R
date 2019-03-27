@@ -8,12 +8,21 @@
 #' Currently, \pkg{adoptr} only allows simple models with a single parameter.
 #' Implementations for \link{PointMassPrior} and \link{ContinuousPrior} are available.
 #'
+#' @examples
+#' disc_prior <- PointMassPrior(c(0.1, 0.25), c(0.4, 0.6))
+#'
+#' cont_prior <- ContinuousPrior(
+#'   pdf     = function(x) dnorm(x, mean = 0.3, sd = 0.2),
+#'   support = c(-2, 3)
+#' )
+#'
+#'
 #' @seealso For the available methods, see \code{\link{bounds}},
 #'   \code{\link{expectation}}, \code{\link{condition}}, \code{\link{predictive_pdf}},
 #'   \code{\link{predictive_cdf}}, \code{\link{posterior}}
 #'
 #' @details For an example on working with priors, see
-#'    \href{here}{https://kkmann.github.io/adoptr/articles/working-with-priors.html}.
+#'    \href{https://kkmann.github.io/adoptr/articles/working-with-priors.html}{here}.
 #'
 #' @aliases Prior
 #' @exportClass Prior
@@ -68,7 +77,7 @@ setGeneric("condition", function(dist, interval, ...) standardGeneric("condition
 #'
 #' \code{predictive_pdf()} evaluates the predictive PDF of the model specified
 #' by a \code{\link{DataDistribution}} \code{dist} and
-#' \code{prior} at the given stage-one outcome.
+#' \code{\link{Prior}} at the given stage-one outcome.
 #'
 #' @template dist
 #' @template prior
@@ -86,7 +95,7 @@ setGeneric("predictive_pdf", function(dist, prior, x1, n1, ...) standardGeneric(
 #'
 #' \code{predictive_cdf()} evaluates the predictive CDF of the model specified
 #' by a \code{\link{DataDistribution}} \code{dist} and
-#' \code{prior} at the given stage-one outcome.
+#' \code{\link{Prior}} at the given stage-one outcome.
 #'
 #' @template dist
 #' @template prior

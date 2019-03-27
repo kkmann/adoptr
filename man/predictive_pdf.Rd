@@ -35,7 +35,7 @@ predictive_pdf(dist, prior, x1, n1, ...)
 \description{
 \code{predictive_pdf()} evaluates the predictive PDF of the model specified
 by a \code{\link{DataDistribution}} \code{dist} and
-\code{prior} at the given stage-one outcome.
+\code{\link{Prior}} at the given stage-one outcome.
 }
 \examples{
 predictive_pdf(Normal(), PointMassPrior(.3, 1), 1.5, 20) # ~.343

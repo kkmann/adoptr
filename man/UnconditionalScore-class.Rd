@@ -10,7 +10,25 @@
 }
 \details{
 When defining a new \code{UnconditionalScore}, a corresponding
-method \code{evaluate} needs to be defined, too.
+method \code{\link{evaluate}} needs to be defined, too.
+}
+\examples{
+design <- TwoStageDesign(
+  n1    = 25,
+  c1f   = 0,
+  c1e   = 2.5,
+  n2    = 50,
+  c2    = 1.96,
+  order = 7L
+)
+
+cp <- ConditionalPower(Normal(), PointMassPrior(.1, 1.0))
+ep <- expected(cp)
+
+evaluate(ep, design) # .06081054
+
+
+
 }
 \seealso{
 There are regularization scores \code{\link{N1}} and

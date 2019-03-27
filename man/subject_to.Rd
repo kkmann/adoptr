@@ -14,7 +14,7 @@ an object of class \code{\link{ConstraintsCollection}}
 }
 \description{
 \code{subject_to(...)} can be used to generate an object of class
-\code{ConstrintsCollection} from an arbitrary number of (un)conditional
+\code{\link{ConstraintsCollection}} from an arbitrary number of (un)conditional
 constraints.
 }
 \examples{
