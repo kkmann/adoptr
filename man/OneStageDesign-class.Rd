@@ -40,7 +40,7 @@ split in a continuation interval [c1f, c1e]; this is given by c +/- eps.}
 a two-stage design, i.e. as sub-class of \code{\link{TwoStageDesign}}.
 This is possible by defining \ifelse{html}{\out{n<sub>2</sub> = 0}}{\eqn{n_2=0}},
 \ifelse{html}{\out{c = c<sub>1</sub><sup>f</sup> = c<sub>1</sub><sup>e</sup>}}{\eqn{c = c_1^f = c_1^e}},
-\ifelse{html}{\out{c<sub>2</sub>(x<sub>1</sub>) = ifelse(x<sub>1</sub> < c, Inf, -Inf)}}{\eqn{c_2(x_1) = \text{ifelse}(x_1 < c, \infty, -\infty)}}.
+\ifelse{html}{\out{c<sub>2</sub>(x<sub>1</sub>) = ifelse(x<sub>1</sub> < c, Inf, -Inf)}}{\eqn{c_2(x_1) = ifelse(x_1 < c, Inf, -Inf)}}.
 No integration pivots etc are required (set to \code{NaN}).
 }
 \details{
