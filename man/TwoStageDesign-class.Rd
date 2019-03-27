@@ -73,7 +73,7 @@ For available methods, see the 'See Also' section at the end of this page.
 \code{summary} can be used to quickly compute and display basic facts about
 a TwoStageDesign.
 An arbitrary number of names \code{\link{UnconditionalScore}} objects can be
-provided via \code{...} and are included in the summary displayed using
+provided via the optional arguments \code{...} and are included in the summary displayed using
 \code{\link{print}}.
 }
 \section{Slots}{
