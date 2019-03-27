@@ -39,7 +39,7 @@
 <meta property="og:title" content="Score arithmetic — score-arithmetic" />
 
 <meta property="og:description" content="To facilitate working with simple weighted sums of scores,
-adoptr supports some basic arithmetic operations on score object
+adoptr supports some basic arithmetic operations on score objects
 (both conditional and unconditional ones).
 Scores can be scalar-multiplied by a constant and added to produce new
 scores.
@@ -138,7 +138,7 @@ Conditional and unconditional scores cannot be mixed." />
     <div class="ref-description">
     
     <p>To facilitate working with simple weighted sums of scores,
-<code>adoptr</code> supports some basic arithmetic operations on score object
+<code><a href='adoptr.html'>adoptr</a></code> supports some basic arithmetic operations on score objects
 (both conditional and unconditional ones).
 Scores can be scalar-multiplied by a constant and added to produce new
 scores.
@@ -232,12 +232,28 @@ Conditional and unconditional scores cannot be mixed.</p>
     </table>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>design</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='TwoStageDesign-class.html'>TwoStageDesign</a></span>(
+  <span class='kw'>n1</span>    <span class='kw'>=</span> <span class='fl'>25</span>,
+  <span class='kw'>c1f</span>   <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>c1e</span>   <span class='kw'>=</span> <span class='fl'>2.5</span>,
+  <span class='kw'>n2</span>    <span class='kw'>=</span> <span class='fl'>50</span>,
+  <span class='kw'>c2</span>    <span class='kw'>=</span> <span class='fl'>1.96</span>,
+  <span class='kw'>order</span> <span class='kw'>=</span> <span class='fl'>7L</span>
+)
+<span class='no'>ess</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='expected.html'>expected</a></span>(<span class='fu'><a href='ConditionalSampleSize-class.html'>ConditionalSampleSize</a></span>(<span class='fu'><a href='NormalDataDistribution-class.html'>Normal</a></span>(), <span class='fu'><a href='PointMassPrior-class.html'>PointMassPrior</a></span>(<span class='fl'>.4</span>, <span class='fl'>1.0</span>)))
+<span class='no'>power</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='expected.html'>expected</a></span>(<span class='fu'><a href='ConditionalPower-class.html'>ConditionalPower</a></span>(<span class='fu'><a href='NormalDataDistribution-class.html'>Normal</a></span>(), <span class='fu'><a href='PointMassPrior-class.html'>PointMassPrior</a></span>(<span class='fl'>.4</span>, <span class='fl'>1.0</span>)))
+<span class='fu'><a href='evaluate.html'>evaluate</a></span>(<span class='no'>ess</span> + <span class='fl'>50</span>*<span class='no'>power</span>, <span class='no'>design</span>)</div><div class='output co'>#&gt; [1] 91.25584</div><div class='input'>
+
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+            
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

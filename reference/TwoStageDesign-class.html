@@ -41,16 +41,19 @@
 <meta property="og:description" content="TwoStageDesign is the fundamental design class of the
 adoptr package.
 Formally, we represent a generic two-stage design as a five-tuple
-\(\big(n_1, c_1^f, c_1^e, n_2(\cdot), c_2(\cdot)\big).\)   # Hier wird der Code nicht richtig angezeigt, trotz eqn
-Here, \(n_1\) is the first-stage sample size (per group),
-\(c_1^f\) and \(c_1^e\) are boundaries for early stopping for futility
-and efficacy, respectively.
-Since the trial design is a two-stage design, the elements \(n_2(\cdot)\)
-(stage-two sample size) and \(c_2(\cdot)\) (stage-two critical value)
-are functions of the first-stage outcome \(X_1=x_1\).
-\(X_1\) denotes the first-stage test statistic.
-A brief description on this definition of two-stage designs can be read
-https://kkmann.github.io/adoptr/articles/adoptr.html.
+(n1, c1f, c1e, n2(&amp;middot;), c2(&amp;middot;)).
+Here, n1 is the first-stage sample
+size (per group), c1f
+and c1e are
+boundaries for early stopping for futility and efficacy, respectively.
+Since the trial design is a two-stage design, the elements
+n2(&amp;middot;) (stage-two sample
+size) and c2(&amp;middot;)
+(stage-two critical value) are functions of the first-stage outcome
+X1=x1.
+X1 denotes the first-stage test
+statistic. A brief description on this definition of two-stage designs can be
+read here.
 For available methods, see the 'See Also' section at the end of this page." />
 
 <meta property="og:image" content="https://kkmann.github.io/adoptr/logo.png" />
@@ -148,16 +151,19 @@ For available methods, see the 'See Also' section at the end of this page." />
     <p><code>TwoStageDesign</code> is the fundamental design class of the
 <span class="pkg"><a href='adoptr.html'>adoptr</a></span> package.
 Formally, we represent a generic two-stage design as a five-tuple
-\(\big(n_1, c_1^f, c_1^e, n_2(\cdot), c_2(\cdot)\big).\)   # Hier wird der Code nicht richtig angezeigt, trotz eqn
-Here, \(n_1\) is the first-stage sample size (per group),
-\(c_1^f\) and \(c_1^e\) are boundaries for early stopping for futility
-and efficacy, respectively.
-Since the trial design is a two-stage design, the elements \(n_2(\cdot)\)
-(stage-two sample size) and \(c_2(\cdot)\) (stage-two critical value)
-are functions of the first-stage outcome \(X_1=x_1\).
-\(X_1\) denotes the first-stage test statistic.
-A brief description on this definition of two-stage designs can be read
-<a href='here'>https://kkmann.github.io/adoptr/articles/adoptr.html</a>.
+(n<sub>1</sub>, c<sub>1</sub><sup>f</sup>, c<sub>1</sub><sup>e</sup>, n<sub>2</sub>(&middot;), c<sub>2</sub>(&middot;)).
+Here, n<sub>1</sub> is the first-stage sample
+size (per group), c<sub>1</sub><sup>f</sup>
+and c<sub>1</sub><sup>e</sup> are
+boundaries for early stopping for futility and efficacy, respectively.
+Since the trial design is a two-stage design, the elements
+n<sub>2</sub>(&middot;) (stage-two sample
+size) and c<sub>2</sub>(&middot;)
+(stage-two critical value) are functions of the first-stage outcome
+X<sub>1</sub>=x<sub>1</sub>.
+X<sub>1</sub> denotes the first-stage test
+statistic. A brief description on this definition of two-stage designs can be
+read <a href='https://kkmann.github.io/adoptr/articles/adoptr.html'>here</a>.
 For available methods, see the 'See Also' section at the end of this page.</p>
     
     </div>
@@ -237,7 +243,7 @@ pivots specified by <code>order</code></p></td>
     <p><code>summary</code> can be used to quickly compute and display basic facts about
 a TwoStageDesign.
 An arbitrary number of names <code><a href='UnconditionalScore-class.html'>UnconditionalScore</a></code> objects can be
-provided via <code>...</code> and are included in the summary displayed using
+provided via the optional arguments <code>...</code> and are included in the summary displayed using
 <code><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></code>.</p>
     
     <h2 class="hasAnchor" id="slots"><a class="anchor" href="#slots"></a>Slots</h2>
