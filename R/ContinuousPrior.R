@@ -21,10 +21,8 @@ setClass("ContinuousPrior", representation(
 #' @param pdf                 vectorized univariate PDF function
 #' @param support             numeric vector of length two with the bounds of
 #'     the compact interval on which the pdf is positive.
-#' @param tighten_support     logical indicating if the support should be
-#'     tightened
-#' @param check_normalization logical indicating if it should be checked
-#'     that \code{pdf} defines a density.
+#' @template tighten_support
+#' @template check_normalization
 #'
 #' @examples
 #' ContinuousPrior(function(x) 2*x, c(0, 1))
@@ -180,8 +178,8 @@ setMethod("predictive_cdf", signature("DataDistribution", "ContinuousPrior", "nu
 #' tmp <- ContinuousPrior(function(x) dunif(x, .2, .4), c(.2, .4))
 #' posterior(Normal(), tmp, 2, 20)
 #'
-#' @param tighten_support ???
-#' @param check_normalization ???
+#' @template tighten_support
+#' @template check_normalization
 #'
 #' @rdname posterior
 #' @export
