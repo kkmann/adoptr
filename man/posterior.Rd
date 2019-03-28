@@ -27,9 +27,10 @@ posterior(dist, prior, x1, n1, ...)
 
 \item{...}{further optional arguments}
 
-\item{tighten_support}{???}
+\item{tighten_support}{logical indicating if the support should be tightened}
 
-\item{check_normalization}{???}
+\item{check_normalization}{logical indicating if it should be checked
+that \code{pdf} defines a density.}
 }
 \value{
 Object of class \code{\link{Prior}}

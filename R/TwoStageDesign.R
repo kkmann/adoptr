@@ -437,7 +437,7 @@ setMethod("plot", signature(x = "TwoStageDesign"),
                           ylim = c(min(do.call(c, y)) - expand, max(do.call(c, y)) + expand),
                           main = names(scores[i]),
                           ylab = "",
-                          xlab = expression("x"[1]),
+                          xlab = expression("x"[1])
                       )
                       graphics::lines(x2, y$left)
                       graphics::lines(x3, y$right)
