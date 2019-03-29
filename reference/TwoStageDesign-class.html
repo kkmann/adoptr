@@ -215,8 +215,8 @@ pivot points</p></td>
     <tr>
       <th>order</th>
       <td><p><code>integer</code>, integration order of the employed Gaussian quadrature
-integration rule to evaluate scores. Automatically set to <code><a href='https://www.rdocumentation.org/packages/base/topics/length'>length(n2_pivots)</a></code>
-if <code>length(n2_pivots) == length(c2_pivots) &gt; 1</code>, otherwise c2 and n2
+integration rule to evaluate scores. Automatically set to <code><a href='https://www.rdocumentation.org/packages/base/topics/length'>length(n2_pivots)</a></code> if <br />
+<code>length(n2_pivots) == length(c2_pivots) &gt; 1</code>, otherwise c2 and n2
 are taken to be constant in stage-two and replicated to match the number of
 pivots specified by <code>order</code></p></td>
     </tr>
@@ -259,12 +259,14 @@ pivot points of the numeric integration rule</p></dd>
 pivot points of the numeric integration rule</p></dd>
     <dt><code>x1_norm_pivots</code></dt><dd><p>normalized pivots for integration rule (in [-1, 1])
 the actual pivots are scaled to the interval [c1f, c1e] and can be
-obtained by the internal method <code>adoptr:::scaled_integration_pivots(design)</code></p></dd>
+obtained by the internal method <br />
+<code>adoptr:::scaled_integration_pivots(design)</code></p></dd>
     <dt><code>weights</code></dt><dd><p>weights of of integration rule at <code>x1_norm_pivots</code> for
 approximating integrals over <code>x1</code></p></dd>
     <dt><code>tunable</code></dt><dd><p>named logical vector indicating whether corresponding slot is
 considered a tunable parameter (i.e. whether it can be changed during
-optimization via <code><a href='minimize.html'>minimize</a></code> or not; cf. <code><a href='make_tunable.html'>make_fixed</a></code>)</p></dd>
+optimization via <code><a href='minimize.html'>minimize</a></code> or not; cf. <br />
+<code><a href='make_tunable.html'>make_fixed</a></code>)</p></dd>
 </dl>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>

@@ -40,7 +40,7 @@
 
 <meta property="og:description" content="Methods to access the stage-two critical values of a
 TwoStageDesign.
-c2 returns the stage-two sample size conditional on the stage-one test
+c2 returns the stage-two critical value conditional on the stage-one test
 statistic." />
 
 <meta property="og:image" content="https://kkmann.github.io/adoptr/logo.png" />
@@ -137,7 +137,7 @@ statistic." />
     
     <p>Methods to access the stage-two critical values of a
 <code><a href='TwoStageDesign-class.html'>TwoStageDesign</a></code>.
-<code>c2</code> returns the stage-two sample size conditional on the stage-one test
+<code>c2</code> returns the stage-two critical value conditional on the stage-one test
 statistic.</p>
     
     </div>
@@ -173,6 +173,18 @@ statistic.</p>
 the sample size of a design</p></div>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>initial_design</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='TwoStageDesign-class.html'>TwoStageDesign</a></span>(
+  <span class='kw'>n1</span>    <span class='kw'>=</span> <span class='fl'>25</span>,
+  <span class='kw'>c1f</span>   <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>c1e</span>   <span class='kw'>=</span> <span class='fl'>2.5</span>,
+  <span class='kw'>n2</span>    <span class='kw'>=</span> <span class='fl'>50</span>,
+  <span class='kw'>c2</span>    <span class='kw'>=</span> <span class='fl'>1.96</span>,
+  <span class='kw'>order</span> <span class='kw'>=</span> <span class='fl'>7L</span>
+)
+
+<span class='fu'>c2</span>(<span class='no'>initial_design</span>, <span class='fl'>2.2</span>) <span class='co'># 1.96</span></div><div class='output co'>#&gt; [1] 1.96</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -180,7 +192,9 @@ the sample size of a design</p></div>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#see-also">See also</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>
