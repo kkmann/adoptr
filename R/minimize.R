@@ -3,7 +3,7 @@
 #' \code{minimize} takes an unconditional score and
 #' a constraint set (or single constraint) of conditional and/or unconditional
 #' scores and solves the corresponding constraint minimization problem
-#' using \href{https://cran.r-project.org/web/packages/nloptr/index.html}{\code{nloptr}} (using COBYLA by default).
+#' using \href{https://cran.r-project.org/package=nloptr}{\code{nloptr}} (using COBYLA by default).
 #' An initial design has to be defined. It is also possible to define
 #' lower- and upper-boundary designs. If this is not done, these
 #' are computed automatically.
