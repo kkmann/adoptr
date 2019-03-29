@@ -22,7 +22,8 @@ tunable_parameters(object, ...)
 \item{...}{further optional arguments}
 
 \item{params}{vector of design parameters, must be in same order as returned
-by \code{tunable_parameters}}
+by \cr
+\code{tunable_parameters}}
 }
 \description{
 Get tunable parameters of a design as numeric vector via

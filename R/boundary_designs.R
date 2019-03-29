@@ -17,7 +17,7 @@
 #'
 #' The values \code{c1f} and \code{c1e} from the initial design are shifted
 #' to \code{c1f - c1_buffer} and \code{c1e - c1_buffer} in
-#' \code{get_lower_boundary_design}, respectively, to
+#' \code{get_lower_boundary_design}, respectively, to \cr
 #' \code{c1f + c1_buffer} and \code{c1e + c1_buffer} in
 #' \code{get_upper_boundary_design}.
 #' This is handled analogously with \code{c2_pivots} and \code{c2_buffer}.

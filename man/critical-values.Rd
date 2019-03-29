@@ -23,10 +23,23 @@ c2(d, x1, ...)
 \description{
 Methods to access the stage-two critical values of a
 \code{\link{TwoStageDesign}}.
-\code{c2} returns the stage-two sample size conditional on the stage-one test
+\code{c2} returns the stage-two critical value conditional on the stage-one test
 statistic.
 }
 \examples{
+initial_design <- TwoStageDesign(
+  n1    = 25,
+  c1f   = 0,
+  c1e   = 2.5,
+  n2    = 50,
+  c2    = 1.96,
+  order = 7L
+)
+
+c2(initial_design, 2.2) # 1.96
+c2(initial_design, 3.0) # -Inf
+c2(initial_design, -1.0) # Inf
+
 design <- TwoStageDesign(
    n1    = 25,
    c1f   = 0,
