@@ -141,7 +141,8 @@ setMethod("tunable_parameters", signature("TwoStageDesign"),
           })
 
 #' @param params vector of design parameters, must be in same order as returned
-#'   by \code{tunable_parameters}
+#'   by \cr
+#'   \code{tunable_parameters}
 #'
 #' @rdname tunable_parameters
 #' @export
