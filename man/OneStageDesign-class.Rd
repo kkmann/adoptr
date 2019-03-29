@@ -18,7 +18,7 @@ OneStageDesign(n, c)
 \arguments{
 \item{n}{sample size (stage-one sample size)}
 
-\item{c}{rejection boundary (c = c1f = c1e)}
+\item{c}{rejection boundary (\ifelse{html}{\out{c = c<sub>1</sub><sup>f</sup> = c<sub>1</sub><sup>e</sup>}}{\eqn{c = c_1^f = c_1^e}})}
 
 \item{n1}{\code{OneStageDesign} object to convert, overloaded from
 \code{\link{TwoStageDesign}}}

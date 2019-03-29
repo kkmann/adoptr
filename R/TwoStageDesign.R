@@ -27,12 +27,14 @@
 #'     pivot points of the numeric integration rule
 #' @slot x1_norm_pivots normalized pivots for integration rule (in [-1, 1])
 #'     the actual pivots are scaled to the interval [c1f, c1e] and can be
-#'     obtained by the internal method \code{adoptr:::scaled_integration_pivots(design)}
+#'     obtained by the internal method \cr
+#'     \code{adoptr:::scaled_integration_pivots(design)}
 #' @slot weights weights of of integration rule at \code{x1_norm_pivots} for
 #'     approximating integrals over \code{x1}
 #' @slot tunable named logical vector indicating whether corresponding slot is
 #'     considered a tunable parameter (i.e. whether it can be changed during
-#'     optimization via \code{\link{minimize}} or not; cf. \code{\link{make_fixed}})
+#'     optimization via \code{\link{minimize}} or not; cf. \cr
+#'     \code{\link{make_fixed}})
 #'
 #' @seealso For accessing sample sizes and critical values safely, see methods in
 #' \code{\link{n}} and \code{\link{c2}}; for modifying behaviour during optimizaton
@@ -139,7 +141,8 @@ setMethod("tunable_parameters", signature("TwoStageDesign"),
           })
 
 #' @param params vector of design parameters, must be in same order as returned
-#'   by \code{tunable_parameters}
+#'   by \cr
+#'   \code{tunable_parameters}
 #'
 #' @rdname tunable_parameters
 #' @export
@@ -327,8 +330,20 @@ setMethod("n", signature("TwoStageDesign", "numeric"),
 #'
 #' Methods to access the stage-two critical values of a
 #' \code{\link{TwoStageDesign}}.
-#' \code{c2} returns the stage-two sample size conditional on the stage-one test
+#' \code{c2} returns the stage-two critical value conditional on the stage-one test
 #' statistic.
+#'
+#' @examples
+#' initial_design <- TwoStageDesign(
+#'   n1    = 25,
+#'   c1f   = 0,
+#'   c1e   = 2.5,
+#'   n2    = 50,
+#'   c2    = 1.96,
+#'   order = 7L
+#' )
+#'
+#' c2(initial_design, 2.2) # 1.96
 #'
 #' @template d
 #' @template x1

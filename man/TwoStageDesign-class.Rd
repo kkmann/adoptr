@@ -37,8 +37,8 @@ pivot points}
 pivot points}
 
 \item{order}{\code{integer}, integration order of the employed Gaussian quadrature
-integration rule to evaluate scores. Automatically set to \code{length(n2_pivots)}
-if \code{length(n2_pivots) == length(c2_pivots) > 1}, otherwise c2 and n2
+integration rule to evaluate scores. Automatically set to \code{length(n2_pivots)} if \cr
+\code{length(n2_pivots) == length(c2_pivots) > 1}, otherwise c2 and n2
 are taken to be constant in stage-two and replicated to match the number of
 pivots specified by \code{order}}
 
@@ -93,14 +93,16 @@ pivot points of the numeric integration rule}
 
 \item{\code{x1_norm_pivots}}{normalized pivots for integration rule (in [-1, 1])
 the actual pivots are scaled to the interval [c1f, c1e] and can be
-obtained by the internal method \code{adoptr:::scaled_integration_pivots(design)}}
+obtained by the internal method \cr
+\code{adoptr:::scaled_integration_pivots(design)}}
 
 \item{\code{weights}}{weights of of integration rule at \code{x1_norm_pivots} for
 approximating integrals over \code{x1}}
 
 \item{\code{tunable}}{named logical vector indicating whether corresponding slot is
 considered a tunable parameter (i.e. whether it can be changed during
-optimization via \code{\link{minimize}} or not; cf. \code{\link{make_fixed}})}
+optimization via \code{\link{minimize}} or not; cf. \cr
+\code{\link{make_fixed}})}
 }}
 
 \examples{

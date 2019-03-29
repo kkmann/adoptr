@@ -16,7 +16,7 @@
 setClass("OneStageDesign",  contains = "TwoStageDesign")
 
 #' @param n sample size (stage-one sample size)
-#' @param c rejection boundary (c = c1f = c1e)
+#' @param c rejection boundary (\ifelse{html}{\out{c = c<sub>1</sub><sup>f</sup> = c<sub>1</sub><sup>e</sup>}}{\eqn{c = c_1^f = c_1^e}})
 #'
 #' @examples
 #' design <- OneStageDesign(30, 1.96)

@@ -14,12 +14,11 @@ Currently, only (asymptotically) normal test statistics are supported.
 
 
 For a sample workflow and a quick demo of the capabilities, see
-
-\href{here}{https://kkmann.github.io/adoptr/articles/adoptr.html}.
+\href{https://kkmann.github.io/adoptr/articles/adoptr.html}{here}.
 
 A variety of examples is presented in the validation package
 \pkg{adoptrValidation} and can be seen
-\href{here}{https://kkmann.github.io/adoptrValidation/}.
+\href{https://kkmann.github.io/adoptrValidation/}{here}.
 }
 
 \section{Designs}{
@@ -39,11 +38,9 @@ Currently, the only implemented data distribution is \code{\link{Normal}}.
 
 
 Both \code{\link{ContinuousPrior}} and \code{\link{PointMassPrior}} are
-supported for
-
-the single parameter of a \code{\link{DataDistribution}}.
+supported for the single parameter of a \code{\link{DataDistribution}}.
 An example on working with priors is provided
-\href{here}{https://kkmann.github.io/adoptr/articles/working-with-priors.html}.
+\href{https://kkmann.github.io/adoptr/articles/working-with-priors.html}{here}.
 }
 
 \section{Scores}{
@@ -55,8 +52,6 @@ An example on working with priors is provided
 already implemented. Unconditional scores that are expectations of
 conditional scores can be created via \code{\link{expected}} and are
 represented by the class \code{\link{IntegralScore}}.
-For an example how to work with scores, see
-
-\href{here}{https://kkmann.github.io/adoptr/articles/score-and-constraints-arithmetic.html}.
+For an example how to work with scores, see \href{https://kkmann.github.io/adoptr/articles/score-and-constraints-arithmetic.html}{here}.
 }
 
