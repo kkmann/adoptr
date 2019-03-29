@@ -42,4 +42,4 @@ The entire validation report is made accessible at
 The website is re-build on a weekly basis to ensure that the presented
 validation report is up-to-date with the master branch of **adoptr**.
 To validate a specific version of **adoptr**, just download and install
-the validation package an build the contained vignettes locally.
+the validation package before building the contained vignettes locally.
