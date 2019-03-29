@@ -1,12 +1,13 @@
 #' Find optimal two-stage design by constraint minimization
 #'
 #' \code{minimize} takes an unconditional score and
-#' a constraint set (or single constraint) of conditional and/or unconditional
-#' scores and solves the corresponding constraint minimization problem
-#' using \href{https://cran.r-project.org/package=nloptr}{\code{nloptr}} (using COBYLA by default).
+#' a constraint set (or no constraint) and solves the corresponding
+#' minimization problem using
+#' \href{https://cran.r-project.org/package=nloptr}{\code{nloptr}}
+#' (using COBYLA by default).
 #' An initial design has to be defined. It is also possible to define
-#' lower- and upper-boundary designs. If this is not done, these
-#' are computed automatically.
+#' lower- and upper-boundary designs. If this is not done, the boundaries are
+#' determined automatically heuristically.
 #'
 #' @param objective objective function
 #' @param subject_to constraint collection

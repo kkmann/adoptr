@@ -26,7 +26,8 @@ condition on}
 conditional \code{\link{Prior}} on given interval
 }
 \description{
-Restrict an object of class \code{\link{Prior}} to a sub-interval.
+Restrict an object of class \code{\link{Prior}} to a sub-interval and
+re-normalize the PDF.
 }
 \examples{
 tmp <- condition(PointMassPrior(c(0, .5), c(.3, .7)), c(-1, .25))

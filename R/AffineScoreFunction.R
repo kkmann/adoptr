@@ -1,11 +1,8 @@
 #' Affine functions of scores
 #'
-#' These methods allow to add and multiplicate two or several
-#' conditional resp. unconditional scores.
-#' They can also be weighted by numeric coefficients and shifted
-#' by a numeric intercept.
-#' This yields to new scores as sum of scores and is therefore a useful
-#' tool to combine scores.
+#' The \code{AffineScore} class implements simple affince functions of both
+#' \code{\link{ConditionalScore}} and \code{\link{UnconditionalScore}} objects
+#' respectively.
 #'
 #' @slot scores the list of scores
 #' @slot coefs numeric vector of the same length as \code{scores}, holding the

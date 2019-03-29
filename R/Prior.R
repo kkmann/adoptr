@@ -60,7 +60,8 @@ setGeneric("expectation", function(dist, f, ...) standardGeneric("expectation"))
 
 #' Condition a prior on an interval
 #'
-#' Restrict an object of class \code{\link{Prior}} to a sub-interval.
+#' Restrict an object of class \code{\link{Prior}} to a sub-interval and
+#' re-normalize the PDF.
 #'
 #' @template dist
 #' @param interval length-two numeric vector giving the parameter interval to
