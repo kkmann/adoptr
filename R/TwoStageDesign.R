@@ -337,6 +337,20 @@ setMethod("n", signature("TwoStageDesign", "numeric"),
 #' @seealso \code{\link{TwoStageDesign}}, see \code{\link{n}} for accessing
 #' the sample size of a design
 #'
+#' @examples
+#' design <- TwoStageDesign(
+#'    n1    = 25,
+#'    c1f   = 0,
+#'    c1e   = 2.5,
+#'    n2    = 50,
+#'    c2    = 1.96,
+#'    order = 7L
+#' )
+#'
+#' c2(design, 2.2) # 1.96
+#' c2(design, 3.0) # -Inf
+#' c2(design, -1.0) # Inf
+#'
 #' @rdname critical-values
 #' @export
 setGeneric("c2", function(d, x1, ...) standardGeneric("c2"))

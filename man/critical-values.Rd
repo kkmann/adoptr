@@ -26,6 +26,21 @@ Methods to access the stage-two critical values of a
 \code{c2} returns the stage-two sample size conditional on the stage-one test
 statistic.
 }
+\examples{
+design <- TwoStageDesign(
+   n1    = 25,
+   c1f   = 0,
+   c1e   = 2.5,
+   n2    = 50,
+   c2    = 1.96,
+   order = 7L
+)
+
+c2(design, 2.2) # 1.96
+c2(design, 3.0) # -Inf
+c2(design, -1.0) # Inf
+
+}
 \seealso{
 \code{\link{TwoStageDesign}}, see \code{\link{n}} for accessing
 the sample size of a design
