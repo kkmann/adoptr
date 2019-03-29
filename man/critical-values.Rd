@@ -27,7 +27,7 @@ Methods to access the stage-two critical values of a
 statistic.
 }
 \examples{
-initial_design <- TwoStageDesign(
+design <- TwoStageDesign(
   n1    = 25,
   c1f   = 0,
   c1e   = 2.5,
@@ -36,9 +36,9 @@ initial_design <- TwoStageDesign(
   order = 7L
 )
 
-c2(initial_design, 2.2) # 1.96
-c2(initial_design, 3.0) # -Inf
-c2(initial_design, -1.0) # Inf
+c2(design, 2.2) # 1.96
+c2(design, 3.0) # -Inf
+c2(design, -1.0) # Inf
 
 design <- TwoStageDesign(
    n1    = 25,

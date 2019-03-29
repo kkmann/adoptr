@@ -290,7 +290,7 @@ setMethod("n2", signature("TwoStageDesign", "numeric"),
 #' integer).
 #'
 #' @examples
-#' initial_design <- TwoStageDesign(
+#' design <- TwoStageDesign(
 #'    n1    = 25,
 #'    c1f   = 0,
 #'    c1e   = 2.5,
@@ -299,10 +299,10 @@ setMethod("n2", signature("TwoStageDesign", "numeric"),
 #'    order = 7L
 #' )
 #'
-#' n1(initial_design)
+#' n1(design) # 25
+#' design@n1 # 25
 #'
-#' x1 <- 2.2
-#' n(initial_design, x1)
+#' n(design, x1 = 2.2) # 75
 #'
 #'
 #' @template d
@@ -334,7 +334,7 @@ setMethod("n", signature("TwoStageDesign", "numeric"),
 #' statistic.
 #'
 #' @examples
-#' initial_design <- TwoStageDesign(
+#' design <- TwoStageDesign(
 #'   n1    = 25,
 #'   c1f   = 0,
 #'   c1e   = 2.5,
@@ -343,9 +343,9 @@ setMethod("n", signature("TwoStageDesign", "numeric"),
 #'   order = 7L
 #' )
 #'
-#' c2(initial_design, 2.2) # 1.96
-#' c2(initial_design, 3.0) # -Inf
-#' c2(initial_design, -1.0) # Inf
+#' c2(design, 2.2) # 1.96
+#' c2(design, 3.0) # -Inf
+#' c2(design, -1.0) # Inf
 #'
 #' @template d
 #' @template x1
