@@ -52,7 +52,7 @@ real representation and a rounded version (rounding to the next positive
 integer).
 }
 \examples{
-initial_design <- TwoStageDesign(
+design <- TwoStageDesign(
    n1    = 25,
    c1f   = 0,
    c1e   = 2.5,
@@ -61,10 +61,10 @@ initial_design <- TwoStageDesign(
    order = 7L
 )
 
-n1(initial_design)
+n1(design) # 25
+design@n1 # 25
 
-x1 <- 2.2
-n(initial_design, x1)
+n(design, x1 = 2.2) # 75
 
 
 }

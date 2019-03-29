@@ -3,6 +3,9 @@
 #' The \pkg{adoptr} package provides functionality to explore custom optimal
 #' two-stage designs for one or two-arm superiority tests.
 #' Currently, only (asymptotically) normal test statistics are supported.
+#' \pkg{adoptr} is programmed in an object-oriented way.
+#' A description on object-oriented usage of \code{R} can be found
+#' \href{http://adv-r.had.co.nz/OO-essentials.html}{here}.
 #'
 #'
 #' @section Quickstart:
