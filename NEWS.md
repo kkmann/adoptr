@@ -1,6 +1,8 @@
 ## adoptr 0.1.1
 
-* extended Description field in DESCRIPTION
+* extended Description field in DESCRIPTION to full paragraph
+* provided examples for all user facing functions
+* revision of docs
 
 
 
