@@ -13,10 +13,15 @@ Adaptive optimal two-stage designs for clinical trials with one or two arms.
 
 ## Installation
 
-install the development version directly from [GitHub](https://github.com/) with:
+Install the latest CRAN release via
 
 ```r
-# install.packages("devtools")
+install.packages("adoptr")
+```
+
+and the development version directly from [GitHub](https://github.com/) with:
+
+```r
 devtools::install_github("kkmann/adoptr")
 ```
 
