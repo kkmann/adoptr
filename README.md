@@ -4,7 +4,7 @@
 
 
 
-# adoptr [![Travis build status](https://travis-ci.org/kkmann/adoptr.svg?branch=master)](https://travis-ci.org/kkmann/adoptr)[![Codecov test coverage](https://codecov.io/gh/kkmann/adoptr/branch/master/graph/badge.svg)](https://codecov.io/gh/kkmann/adoptr?branch=master)<a href='https://github.com/kkmann/adoptr'><img src='man/figures/logo.png' align="right" height="139" /></a>
+# adoptr [![Travis build status](https://travis-ci.org/kkmann/adoptr.svg?branch=master)](https://travis-ci.org/kkmann/adoptr)[![Codecov test coverage](https://codecov.io/gh/kkmann/adoptr/branch/master/graph/badge.svg)](https://codecov.io/gh/kkmann/adoptr?branch=master)[![CRAN status](https://www.r-pkg.org/badges/version/adoptr)](https://cran.r-project.org/package=adoptr)<a href='https://github.com/kkmann/adoptr'><img src='man/figures/logo.png' align="right" height="139" /></a>
 
 
 Adaptive optimal two-stage designs for clinical trials with one or two arms.
