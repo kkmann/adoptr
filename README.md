@@ -37,5 +37,5 @@ The documentation is hosted at https://kkmann.github.io/adoptr.
 
 We provide an extensive validation report for **adoptr** which is implemented 
 using the **bookdown** package.
-The sources are available at [https://github.com/kkmann/adoptr-validation-report] and
-the last build version is hosted at [https://kkmann.github.io/adoptr-validation-report/].
+The sources are available at https://github.com/kkmann/adoptr-validation-report and
+the last build version is hosted at https://kkmann.github.io/adoptr-validation-report.
