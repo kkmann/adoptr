@@ -33,7 +33,7 @@ The documentation is hosted at https://kkmann.github.io/adoptr.
 
 
 
-## Validation Report [![Travis build status](https://travis-ci.com/kkmann/adoptr-validation-report.svg?branch=master)](https://travis-ci.org/kkmann/adoptr-validation-report)
+## Validation Report [![Travis build status](https://travis-ci.com/kkmann/adoptr-validation-report.svg?branch=master)](https://travis-ci.com/kkmann/adoptr-validation-report)
 
 We provide an extensive validation report for **adoptr** which is implemented 
 using the **bookdown** package.
