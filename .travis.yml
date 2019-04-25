@@ -4,6 +4,9 @@ language: R
 sudo: false
 warnings_are_errors: true
 cache: packages
+notifications:
+  email: 
+    on_failure: on_failure
 
 r_packages:
   - covr
