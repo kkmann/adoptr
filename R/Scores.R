@@ -1,3 +1,6 @@
+# internal use only
+setClass("Score")
+
 #' Evaluation of a score
 #'
 #' Both \code{\link{ConditionalScore}} as well as
@@ -44,7 +47,7 @@ setGeneric(".evaluate", function(s, design, ...) standardGeneric(".evaluate"))
 
 
 # internal use only
-setClass("AbstractConditionalScore")
+setClass("AbstractConditionalScore", contains = "Score")
 
 
 
@@ -178,7 +181,7 @@ setMethod("*", signature("numeric", "ConditionalScore"),
 #'
 #' @aliases UnconditionalScore
 #' @exportClass UnconditionalScore
-setClass("UnconditionalScore")
+setClass("UnconditionalScore", contains="Score")
 
 
 
