@@ -19,11 +19,11 @@ compose <- function(expr) {
     vars <- mget(
         x          = all.vars(substitute(expr)),
         envir      = parent.frame(n = 1),
-        inherits   = FALSE,
+        inherits   = TRUE, # make sure to look in entire stack
         ifnotfound = list(NA)
     )
     # extract 'Score' variables
-    scores <- vars[sapply(vars, function(x) is(x, "Score"))]
+    scores <- vars[as.logical(sapply(vars, function(x) is(x, "Score")))]
 
     if (length(scores) == 0) {
         stop("no scores in expression")

@@ -1,6 +1,9 @@
 # internal use only
 setClass("Score")
 
+setMethod("show", signature(object = "Score"),
+          function(object) cat(class(object)[1]))
+
 #' Evaluation of a score
 #'
 #' Both \code{\link{ConditionalScore}} as well as
@@ -89,17 +92,6 @@ setMethod("expected", signature("ConditionalScore"),
           function(s, ...) new("IntegralScore", cs = s) )
 
 
-#' @param object object of class \code{ConditionalScore}
-#'
-#' @rdname ConditionalScore-class
-#' @export
-setMethod("show", signature(object = "ConditionalScore"),
-          function(object) cat(class(object)[1]))
-
-# Ich würde hier noch ein Beispiel mit minimize() angeben, z.B.
-# initial_design <- ...
-# opt_res <- minimize(ess, subject_to(power >= 0.8, toer  <= .025), initial_design)
-# evaluate(ess, opt_res$design)
 
 #' Score arithmetic
 #'
@@ -228,13 +220,6 @@ setClass("IntegralScore", representation(
 ),
 contains = "UnconditionalScore")
 
-
-#' @param object object of class \code{IntegralScore}
-#'
-#' @rdname IntegralScore-class
-#' @export
-setMethod("show", signature(object = "IntegralScore"),
-          function(object) cat(class(object)[1]))
 
 
 #' @examples
