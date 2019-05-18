@@ -1,9 +1,16 @@
-#' @export
-setClass("CompositeScore", list(
-    expr = "{",
-    vars = "list"
-),
-contains = "Score"
+setClass("CompositeScore", representation(
+        expr   = "{",
+        scores = "list"
+    ),
+    contains = "Score"
+)
+
+setClass("CompositeUnconditionalScore",
+     contains = "CompositeScore"
+)
+
+setClass("CompositeConditionalScore",
+     contains = c("ConditionalScore", "CompositeScore")
 )
 
 #' @export
@@ -15,21 +22,34 @@ compose <- function(expr) {
         inherits   = FALSE,
         ifnotfound = list(NA)
     )
+    # extract 'Score' variables
+    scores <- vars[sapply(vars, function(x) is(x, "Score"))]
 
-    # check if ConditionalScores are in vars (do we still need AbstractConditionalScores?)
-    # if yes:
-    #   all scores must be ConditionalScores with same prior / data distribution
-    #   return CompositeConditionalScore (subclass of ConditionalScore
-    #   -> that's why we need unique prior/data distribution)
-    # if no:
-    #   only unconditional scores, ok return CompositeScore (subsclass of Score?)
-
-    res <- new("CompositeScore",
-               expr  = substitute(expr),
-               vars  = vars
-    )
-
-    return(res)
+    if (length(scores) == 0) {
+        stop("no scores in expression")
+    } else {
+        if (any(sapply(scores, function(x) is(x, "ConditionalScore")))) {
+            # if we have any conditional score, all must be!
+            if (any(sapply(scores, function(x) !is(x, "ConditionalScore")))) {
+                stop("either all or none of the scores must be conditional!")
+            }
+            # check if all priors and data distributions are the same
+            dist  <- scores[[1]]@distribution
+            prior <- scores[[1]]@prior
+            if (!all(sapply(scores, function(x) identical(dist, x@distribution) & identical(prior, x@prior)))) {
+                stop("priors and distributions must be the same for all conditional scores!")
+            }
+            return(new("CompositeConditionalScore",
+                       expr         = substitute(expr),
+                       scores       = scores,
+                       distribution = dist,
+                       prior        = prior
+            ))
+        } else {
+            # only unconditional scores
+            return(new("CompositeUnconditionalScore", expr = substitute(expr), scores = scores))
+        }
+    }
 
 }
 
@@ -37,16 +57,7 @@ compose <- function(expr) {
 #' @export
 setMethod("evaluate", signature("CompositeScore", "TwoStageDesign"),
           function(s, design, ...) {
+             values <- lapply(s@scores, function(s) evaluate(s, design, ...))
+             return(eval(s@expr, values))
 
-              values = list()
-              if (length(s@vars) > 0) {
-                  values   <- lapply(
-                      s@vars[sapply(s@vars, function(x) is(x, "Score"))],
-                      function(s) evaluate(s, design, ...)
-                  )
-              }
-
-              return(eval(s@expr, values))
-
-          }
-)
+          })
