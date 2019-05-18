@@ -7,7 +7,7 @@ contains = "Score"
 )
 
 #' @export
-CompositeScore <- function(expr) {
+compose <- function(expr) {
 
     vars <- mget(
         x          = all.vars(substitute(expr)),
@@ -15,6 +15,14 @@ CompositeScore <- function(expr) {
         inherits   = FALSE,
         ifnotfound = list(NA)
     )
+
+    # check if ConditionalScores are in vars (do we still need AbstractConditionalScores?)
+    # if yes:
+    #   all scores must be ConditionalScores with same prior / data distribution
+    #   return CompositeConditionalScore (subclass of ConditionalScore
+    #   -> that's why we need unique prior/data distribution)
+    # if no:
+    #   only unconditional scores, ok return CompositeScore (subsclass of Score?)
 
     res <- new("CompositeScore",
                expr  = substitute(expr),
