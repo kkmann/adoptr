@@ -6,12 +6,12 @@
 \alias{Constraint}
 \alias{show,Constraint-method}
 \alias{ConditionalConstraint-class}
-\alias{<=,AbstractConditionalScore,numeric-method}
-\alias{>=,AbstractConditionalScore,numeric-method}
-\alias{<=,numeric,AbstractConditionalScore-method}
-\alias{>=,numeric,AbstractConditionalScore-method}
-\alias{<=,AbstractConditionalScore,AbstractConditionalScore-method}
-\alias{>=,AbstractConditionalScore,AbstractConditionalScore-method}
+\alias{<=,ConditionalScore,numeric-method}
+\alias{>=,ConditionalScore,numeric-method}
+\alias{<=,numeric,ConditionalScore-method}
+\alias{>=,numeric,ConditionalScore-method}
+\alias{<=,ConditionalScore,ConditionalScore-method}
+\alias{>=,ConditionalScore,ConditionalScore-method}
 \alias{UnconditionalConstraint-class}
 \alias{<=,UnconditionalScore,numeric-method}
 \alias{>=,UnconditionalScore,numeric-method}
@@ -23,17 +23,17 @@
 \usage{
 \S4method{show}{Constraint}(object)
 
-\S4method{<=}{AbstractConditionalScore,numeric}(e1, e2)
+\S4method{<=}{ConditionalScore,numeric}(e1, e2)
 
-\S4method{>=}{AbstractConditionalScore,numeric}(e1, e2)
+\S4method{>=}{ConditionalScore,numeric}(e1, e2)
 
-\S4method{<=}{numeric,AbstractConditionalScore}(e1, e2)
+\S4method{<=}{numeric,ConditionalScore}(e1, e2)
 
-\S4method{>=}{numeric,AbstractConditionalScore}(e1, e2)
+\S4method{>=}{numeric,ConditionalScore}(e1, e2)
 
-\S4method{<=}{AbstractConditionalScore,AbstractConditionalScore}(e1, e2)
+\S4method{<=}{ConditionalScore,ConditionalScore}(e1, e2)
 
-\S4method{>=}{AbstractConditionalScore,AbstractConditionalScore}(e1, e2)
+\S4method{>=}{ConditionalScore,ConditionalScore}(e1, e2)
 
 \S4method{<=}{UnconditionalScore,numeric}(e1, e2)
 

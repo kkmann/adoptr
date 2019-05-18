@@ -21,43 +21,6 @@ test_that("conditional sample size maps to actual sample size", {
 
 
 
-
-test_that("conditional score arithmetic works", {
-
-    null        <- PointMassPrior(.0, 1)
-    alternative <- PointMassPrior(.6, 1)
-
-    css0 <- ConditionalSampleSize(dist, null)
-    css1 <- ConditionalSampleSize(dist, alternative)
-
-    expect_equal(
-        evaluate(2*css0 + css1, design, z1),
-        2*evaluate(css0, design, z1) + evaluate(css1, design, z1))
-
-    cp   <- ConditionalPower(dist, alternative)
-
-    expect_equal(
-        evaluate(css1 + cp, design, z1),
-        evaluate(css1, design, z1) + evaluate(cp, design, z1)
-    )
-
-
-    expect_equal(
-        evaluate(css0 + 5, design, z1),
-        evaluate(css0, design, z1) + 5
-    )
-
-
-    expect_equal(
-        evaluate(7.1 + cp, design, z1),
-        7.1 + evaluate(cp, design, z1)
-    )
-
-})
-
-
-
-
 context("Test Conditional Power")
 
 test_that("Conditional Power is monotonous", {

@@ -19,10 +19,6 @@ test_that("Errors are defined correctly", {
     )
 
     expect_error(
-        compose({cp + ce})
-    )
-
-    expect_error(
         compose({1})
     )
 
@@ -73,6 +69,20 @@ test_that("Composition of conditional scores", {
 
 
 test_that("Integrals of compositions", {
+
+    expect_equal(
+        evaluate(expected(compose({2*css + css + 1})), design),
+        3*evaluate(ess, design) + 1
+    )
+
+}) # end 'show method returns class name'
+
+
+
+
+test_that("Nested compositions", {
+
+    s <- compose({2*css + css + 1})
 
     expect_equal(
         evaluate(expected(compose({2*css + css + 1})), design),

@@ -34,7 +34,6 @@ Collate:
     GroupSequentialDesign.R
     OneStageDesign.R
     Scores.R
-    AffineScoreFunction.R
     constraints.R
     minimize.R
     ConditionalPower.R

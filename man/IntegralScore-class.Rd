@@ -4,15 +4,8 @@
 \name{IntegralScore-class}
 \alias{IntegralScore-class}
 \alias{IntegralScore}
-\alias{show,IntegralScore-method}
 \title{Unconditional score class obtained by integration of a
 \code{\link{ConditionalScore}}}
-\usage{
-\S4method{show}{IntegralScore}(object)
-}
-\arguments{
-\item{object}{object of class \code{IntegralScore}}
-}
 \description{
 Unconditional score class obtained by integration of a
 \code{\link{ConditionalScore}}

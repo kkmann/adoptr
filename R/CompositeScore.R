@@ -6,7 +6,7 @@ setClass("CompositeScore", representation(
 )
 
 setClass("CompositeUnconditionalScore",
-     contains = "CompositeScore"
+     contains = c("UnconditionalScore", "CompositeScore")
 )
 
 setClass("CompositeConditionalScore",
@@ -35,9 +35,9 @@ compose <- function(expr) {
             }
             # check if all priors and data distributions are the same
             dist  <- scores[[1]]@distribution
-            prior <- scores[[1]]@prior
-            if (!all(sapply(scores, function(x) identical(dist, x@distribution) & identical(prior, x@prior)))) {
-                stop("priors and distributions must be the same for all conditional scores!")
+            prior <- scores[[1]]@prior # TODO: this is not correct at the moment
+            if (!all(sapply(scores, function(x) identical(dist, x@distribution)))) {
+                stop("data distributions must be the same for all conditional scores!")
             }
             return(new("CompositeConditionalScore",
                        expr         = substitute(expr),
@@ -52,6 +52,7 @@ compose <- function(expr) {
     }
 
 }
+
 
 
 #' @export

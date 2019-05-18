@@ -49,9 +49,6 @@ setGeneric(".evaluate", function(s, design, ...) standardGeneric(".evaluate"))
 
 
 
-# internal use only
-setClass("AbstractConditionalScore", contains = "Score")
-
 
 
 #' Class for conditional scoring function
@@ -79,7 +76,7 @@ setClass("ConditionalScore", representation(
         distribution = "DataDistribution",
         prior = "Prior"
     ),
-    contains = "AbstractConditionalScore")
+    contains = "Score")
 
 
 #' @examples
@@ -93,51 +90,7 @@ setMethod("expected", signature("ConditionalScore"),
 
 
 
-#' Score arithmetic
-#'
-#' To facilitate working with simple weighted sums of scores,
-#' \code{\link{adoptr}} supports some basic arithmetic operations on score objects
-#' (both conditional and unconditional ones).
-#' Scores can be scalar-multiplied by a constant and added to produce new
-#' scores.
-#' Conditional and unconditional scores cannot be mixed.
-#'
-#' @examples
-#' design <- TwoStageDesign(
-#'   n1    = 25,
-#'   c1f   = 0,
-#'   c1e   = 2.5,
-#'   n2    = 50,
-#'   c2    = 1.96,
-#'   order = 7L
-#' )
-#' ess <- expected(ConditionalSampleSize(Normal(), PointMassPrior(.4, 1.0)))
-#' power <- expected(ConditionalPower(Normal(), PointMassPrior(.4, 1.0)))
-#' evaluate(ess + 50*power, design)
-#'
-#'
-#' @param e1 first summand / factor
-#' @param e2 second summand / factor
-#' @name score-arithmetic
-NULL
-#' @rdname score-arithmetic
-setMethod("+", signature("ConditionalScore", "numeric"),
-          function(e1, e2) AffineConditionalScore(list(e1), 1, e2) )
-#' @rdname score-arithmetic
-setMethod("+", signature("numeric", "ConditionalScore"),
-          function(e1, e2) e2 + e1 )
-## TODO: check for duplicate scores and combine!
-#' @rdname score-arithmetic
-setMethod("+", signature("ConditionalScore", "ConditionalScore"),
-          function(e1, e2) AffineConditionalScore(list(e1, e2), c(1, 1), 0) )
 
-
-#' @rdname score-arithmetic
-setMethod("*", signature("ConditionalScore", "numeric"),
-          function(e1, e2) AffineConditionalScore(list(e1), e2, 0) )
-#' @rdname score-arithmetic
-setMethod("*", signature("numeric", "ConditionalScore"),
-          function(e1, e2) e2 * e1 )
 
 
 
@@ -173,32 +126,7 @@ setMethod("*", signature("numeric", "ConditionalScore"),
 #'
 #' @aliases UnconditionalScore
 #' @exportClass UnconditionalScore
-setClass("UnconditionalScore", contains="Score")
-
-
-
-#' @rdname score-arithmetic
-setMethod("+", signature("UnconditionalScore", "numeric"),
-          function(e1, e2) AffineUnconditionalScore(list(e1), 1, e2) )
-
-#' @rdname score-arithmetic
-setMethod("+", signature("numeric", "UnconditionalScore"),
-          function(e1, e2) e2 + e1 )
-## TODO: check for duplicate scores and combine!
-
-#' @rdname score-arithmetic
-setMethod("+", signature("UnconditionalScore", "UnconditionalScore"),
-          function(e1, e2) AffineUnconditionalScore(list(e1, e2), c(1, 1), 0) )
-
-
-#' @rdname score-arithmetic
-setMethod("*", signature("UnconditionalScore", "numeric"),
-          function(e1, e2) AffineUnconditionalScore(list(e1), e2, 0) )
-
-#' @rdname score-arithmetic
-setMethod("*", signature("numeric", "UnconditionalScore"),
-          function(e1, e2) e2 * e1 )
-
+setClass("UnconditionalScore", contains = "Score")
 
 
 
@@ -216,9 +144,9 @@ setMethod("*", signature("numeric", "UnconditionalScore"),
 #' @aliases IntegralScore
 #' @exportClass IntegralScore
 setClass("IntegralScore", representation(
-    cs = "ConditionalScore"
-),
-contains = "UnconditionalScore")
+        cs = "ConditionalScore"
+    ),
+    contains = "UnconditionalScore")
 
 
 
@@ -338,6 +266,4 @@ setMethod(".evaluate", signature("IntegralScore", "OneStageDesign"),
                   )
               return(res)
           })
-
-
 

@@ -4,14 +4,7 @@
 \name{ConditionalScore-class}
 \alias{ConditionalScore-class}
 \alias{ConditionalScore}
-\alias{show,ConditionalScore-method}
 \title{Class for conditional scoring function}
-\usage{
-\S4method{show}{ConditionalScore}(object)
-}
-\arguments{
-\item{object}{object of class \code{ConditionalScore}}
-}
 \description{
 \code{ConditionalScore} is an abstract class for conditional scores.
 It requires the two slots \code{distribution} and \code{prior} that
