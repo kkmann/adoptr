@@ -1,11 +1,11 @@
 context("Score composition")
 
 # Define conditional and unconditional scores
-css    <- ConditionalSampleSize(Normal(), PointMassPrior(.3, 1))
+css    <- ConditionalSampleSize()
 cp     <- ConditionalPower(Normal(), PointMassPrior(.3, 1))
 ce     <- ConditionalPower(Normal(), PointMassPrior(.0, 1))
-ess    <- expected(css)
-pow    <- expected(cp)
+ess    <- expected(css, Normal(), PointMassPrior(.3, 1))
+pow    <- expected(cp, Normal(), PointMassPrior(.3, 1))
 
 order  <- 5L
 design <- TwoStageDesign(30, -.5, 2.5, rep(50.0, order), rep(2.0, order))
@@ -71,7 +71,10 @@ test_that("Composition of conditional scores", {
 test_that("Integrals of compositions", {
 
     expect_equal(
-        evaluate(expected(compose({2*css + css + 1})), design),
+        evaluate(
+            expected(compose({2*css + css + 1}), Normal(), PointMassPrior(.3, 1)),
+            design
+        ),
         3*evaluate(ess, design) + 1
     )
 
@@ -85,7 +88,10 @@ test_that("Nested compositions", {
     s <- compose({2*css + css + 1})
 
     expect_equal(
-        evaluate(expected(compose({2*css + css + 1})), design),
+        evaluate(
+            expected(compose({2*css + css + 1}), Normal(), PointMassPrior(.3, 1)),
+            design
+        ),
         3*evaluate(ess, design) + 1
     )
 

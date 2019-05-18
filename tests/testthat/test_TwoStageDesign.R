@@ -55,8 +55,7 @@ test_that("errors are returned correctly", {
     ) # pivots length must fit
 
 
-    cp  <- ConditionalPower(Normal(), PointMassPrior(.4, 1))
-    pow <- expected(cp)
+    pow <- Power(Normal(), PointMassPrior(.4, 1))
     order  = 5L
     design  <- TwoStageDesign(50.1, 0, 2, rep(50, order), rep(2, order))
     design2 <- TwoStageDesign(50, 0, 2, rep(50.1, order), rep(2, order))
@@ -74,7 +73,7 @@ test_that("errors are returned correctly", {
 
 
 test_that("print methods", {
-    pow <- expected(ConditionalPower(Normal(), PointMassPrior(.4, 1)))
+    pow <- Power(Normal(), PointMassPrior(.4, 1))
     vdiffr::expect_doppelganger(
         "Design print",
         print.TwoStageDesignSummary(summary(design, "Power" = pow))

@@ -1,4 +1,3 @@
-# internal use only
 setClass("Score")
 
 setMethod("show", signature(object = "Score"),
@@ -41,7 +40,7 @@ setGeneric("evaluate", function(s, design, ...) standardGeneric("evaluate"))
 #' @return an object of class \code{\link{IntegralScore}}
 #'
 #' @export
-setGeneric("expected", function(s, ...) standardGeneric("expected"))
+setGeneric("expected", function(s, data_distribution, prior, ...) standardGeneric("expected"))
 
 
 # not user facing
@@ -51,32 +50,7 @@ setGeneric(".evaluate", function(s, design, ...) standardGeneric(".evaluate"))
 
 
 
-#' Class for conditional scoring function
-#'
-#' \code{ConditionalScore} is an abstract class for conditional scores.
-#' It requires the two slots \code{distribution} and \code{prior} that
-#' determine the data distribution and the prior distribution for the effect
-#' parameter. When defining a specific  \code{ConditionalScore}, a corresponding
-#' method \code{evaluate} needs to be defined, too.
-#' Any \code{ConditionalScore} can be transformed to an unconditional
-#' \code{\link{IntegralScore}} by means of the method \code{\link{expected}}.
-#'
-#' @seealso The common conditional scores \code{\link{ConditionalPower}}
-#'    and \code{\link{ConditionalSampleSize}} are preimplemented in \pkg{adoptr}.
-#'
-#' @examples
-#' cp <- ConditionalPower(Normal(), PointMassPrior(0, 1))
-#' ep <- expected(cp)
-#' design <- TwoStageDesign(50, 0, 2, 50, 2, 5)
-#' evaluate(ep, design)
-#'
-#' @aliases ConditionalScore
-#' @exportClass ConditionalScore
-setClass("ConditionalScore", representation(
-        distribution = "DataDistribution",
-        prior = "Prior"
-    ),
-    contains = "Score")
+setClass("ConditionalScore", contains = "Score")
 
 
 #' @examples
@@ -86,10 +60,9 @@ setClass("ConditionalScore", representation(
 #' @rdname expected
 #' @export
 setMethod("expected", signature("ConditionalScore"),
-          function(s, ...) new("IntegralScore", cs = s) )
-
-
-
+          function(s, data_distribution, prior, ...) {
+              new("IntegralScore", cs = s, data_distribution = data_distribution, prior = prior)
+          })
 
 
 
@@ -144,7 +117,9 @@ setClass("UnconditionalScore", contains = "Score")
 #' @aliases IntegralScore
 #' @exportClass IntegralScore
 setClass("IntegralScore", representation(
-        cs = "ConditionalScore"
+        cs                = "ConditionalScore",
+        data_distribution = "DataDistribution",
+        prior             = "Prior"
     ),
     contains = "UnconditionalScore")
 
@@ -176,11 +151,11 @@ setMethod("evaluate", signature("IntegralScore", "TwoStageDesign"),
                   # use generic approach
                   # integrand is the conditional score as function of z1 times the
                   # predictive pdf given the scores prior
-                  poef <- predictive_cdf(s@cs@distribution, s@cs@prior, design@c1f, design@n1)
-                  poee <- 1 - predictive_cdf(s@cs@distribution, s@cs@prior, design@c1e, design@n1)
+                  poef <- predictive_cdf(s@data_distribution, s@prior, design@c1f, design@n1)
+                  poee <- 1 - predictive_cdf(s@data_distribution, s@prior, design@c1e, design@n1)
                   # continuation region
                   integrand   <- function(x1) evaluate(s@cs, design, x1, ...) *
-                      predictive_pdf(s@cs@distribution, s@cs@prior, x1, design@n1, ...)
+                      predictive_pdf(s@data_distribution, s@prior, x1, design@n1, ...)
                   # use adaptive quadrature to integrate - only relies on generic interface
                   # provided by 'TwoStageDesign', no special optimization for particular
                   # design implementation
@@ -208,14 +183,14 @@ setMethod(".evaluate", signature("IntegralScore", "TwoStageDesign"),
           function(s, design, ...) {
               # probability of early futility
               poef <- predictive_cdf(
-                  s@cs@distribution, s@cs@prior, design@c1f, n1(design, round = FALSE))
+                  s@data_distribution, s@prior, design@c1f, n1(design, round = FALSE))
               # probability of early efficacy
               poee <- 1 - predictive_cdf(
-                  s@cs@distribution, s@cs@prior, design@c1e, n1(design, round = FALSE))
+                  s@data_distribution, s@prior, design@c1e, n1(design, round = FALSE))
               # integrand: conditional score times predictive PDF
               integrand <- function(x1) {
                   evaluate(s@cs, design, x1, optimization = TRUE, ...) *
-                      predictive_pdf(s@cs@distribution, s@cs@prior, x1, n1(design, round = FALSE), ...)
+                      predictive_pdf(s@data_distribution, s@prior, x1, n1(design, round = FALSE), ...)
               }
               mid_section <- integrate_rule(
                   integrand,
@@ -242,16 +217,15 @@ setMethod(".evaluate", signature("IntegralScore", "TwoStageDesign"),
 
 
 
-
 # not user facing!
 setMethod(".evaluate", signature("IntegralScore", "OneStageDesign"),
           function(s, design, ...) {
               # use design specific implementation tailored to this particular
               # implementation (Gauss Quadrature N points here)
               poef <- predictive_cdf(
-                  s@cs@distribution, s@cs@prior, design@c1f, n1(design, round = FALSE))
+                  s@data_distribution, s@prior, design@c1f, n1(design, round = FALSE))
               poee <- 1 - predictive_cdf(
-                  s@cs@distribution, s@cs@prior, design@c1e, n1(design, round = FALSE))
+                  s@data_distribution, s@prior, design@c1e, n1(design, round = FALSE))
               res  <- poef * evaluate( # score is constant on early stopping region
                   s@cs, design,
                   design@c1f - sqrt(.Machine$double.eps), # slightly smaller than stopping for futility
@@ -266,4 +240,3 @@ setMethod(".evaluate", signature("IntegralScore", "OneStageDesign"),
                   )
               return(res)
           })
-

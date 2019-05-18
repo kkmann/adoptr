@@ -13,14 +13,24 @@
 #'
 #' @aliases ConditionalPower
 #' @exportClass ConditionalPower
-setClass("ConditionalPower", contains = "ConditionalScore")
+setClass("ConditionalPower", representation(
+        distribution = "DataDistribution",
+        prior        = "Prior"
+    ),
+    contains = "ConditionalScore")
 
 #' @examples
 #' cp <- ConditionalPower(dist = Normal(), prior = PointMassPrior(.4, 1))
 #'
 #' @rdname ConditionalPower-class
 #' @export
-ConditionalPower <- function(dist, prior) new("ConditionalPower", distribution = dist, prior = prior)
+ConditionalPower <- function(dist, prior) {
+    new("ConditionalPower", distribution = dist, prior = prior)
+}
+
+#' @export
+Power <- function(dist, prior) expected(ConditionalPower(dist, prior), dist, prior)
+
 
 #' @examples
 #' # evaluate conditional power

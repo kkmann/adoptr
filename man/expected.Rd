@@ -6,9 +6,9 @@
 \alias{expected,ConditionalScore-method}
 \title{Compute the expectation of a conditional score}
 \usage{
-expected(s, ...)
+expected(s, data_distribution, prior, ...)
 
-\S4method{expected}{ConditionalScore}(s, ...)
+\S4method{expected}{ConditionalScore}(s, data_distribution, prior, ...)
 }
 \arguments{
 \item{s}{ConditionalScore}

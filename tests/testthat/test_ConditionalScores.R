@@ -9,7 +9,7 @@ test_that("conditional sample size maps to actual sample size", {
 
     prior  <- ContinuousPrior(function(x) rep(1/10, length(x)), c(-4, 6))
 
-    css    <- ConditionalSampleSize(dist, prior)
+    css    <- ConditionalSampleSize()
 
     expect_equal(
         evaluate(css, design, z1),
@@ -24,6 +24,7 @@ test_that("conditional sample size maps to actual sample size", {
 context("Test Conditional Power")
 
 test_that("Conditional Power is monotonous", {
+
     # Define two simple designs
     design1 <- TwoStageDesign(25, 0, 2, rep(40.0, 5), seq(2.0, 0.0, length.out = 5))
     design2 <- TwoStageDesign(25, 0, 2, rep(60.0, 5), seq(2.0, 0.0, length.out = 5))
@@ -69,7 +70,8 @@ test_that("Conditional power has correct values outside continuation region",{
 context("Test class ConditionalScore")
 
 test_that("Conditional scores are vectorized in z1", {
-    css    <- ConditionalSampleSize(Normal(), PointMassPrior(.4, 1))
+
+    css    <- ConditionalSampleSize()
     cp     <- ConditionalPower(Normal(), PointMassPrior(.4, 1))
 
     expect_length(
@@ -83,16 +85,3 @@ test_that("Conditional scores are vectorized in z1", {
     )
 
 }) # end 'Conditional scores are vectorized in z1'
-
-
-
-test_that("show method returns class name", {
-    cp   <- ConditionalPower(Normal(), PointMassPrior(.4, 1))
-    css  <- ConditionalSampleSize(Normal(), PointMassPrior(.4, 1))
-
-    expect_equal(
-        show(cp),
-        show(css)
-    ) # should both be of class ConditionalScore
-
-}) # end 'show method returns class name'

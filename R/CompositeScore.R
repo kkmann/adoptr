@@ -33,17 +33,9 @@ compose <- function(expr) {
             if (any(sapply(scores, function(x) !is(x, "ConditionalScore")))) {
                 stop("either all or none of the scores must be conditional!")
             }
-            # check if all priors and data distributions are the same
-            dist  <- scores[[1]]@distribution
-            prior <- scores[[1]]@prior # TODO: this is not correct at the moment
-            if (!all(sapply(scores, function(x) identical(dist, x@distribution)))) {
-                stop("data distributions must be the same for all conditional scores!")
-            }
             return(new("CompositeConditionalScore",
                        expr         = substitute(expr),
-                       scores       = scores,
-                       distribution = dist,
-                       prior        = prior
+                       scores       = scores
             ))
         } else {
             # only unconditional scores

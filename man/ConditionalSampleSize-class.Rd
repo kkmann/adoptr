@@ -6,7 +6,7 @@
 \alias{ConditionalSampleSize}
 \title{Conditional sample size of a design given stage-one outcome}
 \usage{
-ConditionalSampleSize(dist, prior)
+ConditionalSampleSize()
 }
 \arguments{
 \item{dist}{a univariate \code{\link[=DataDistribution-class]{distribution}} object}
