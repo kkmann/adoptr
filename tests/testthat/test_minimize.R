@@ -13,11 +13,11 @@ null        <- PointMassPrior(.0, 1)
 alternative <- PointMassPrior(.4, 1)
 datadist    <- Normal(two_armed = FALSE)
 
-ess   <- expected(ConditionalSampleSize(datadist, alternative))
-ess_0 <- expected(ConditionalSampleSize(datadist, null))
+ess   <- SampleSize(datadist, alternative)
+ess_0 <- SampleSize(datadist, null)
 cp    <- ConditionalPower(datadist, alternative)
-pow   <- expected(cp)
-toer  <- expected(ConditionalPower(datadist, null))
+pow   <- expected(cp, datadist, alternative)
+toer  <- Power(datadist, null)
 
 alpha <- 0.05
 beta  <- 0.2
@@ -76,6 +76,7 @@ test_that("nloptr invalid initial values error works", {
 
 
 test_that("Optimal one-stage design can be computed", {
+
     opt_os <<- minimize(
         ess,
         subject_to(

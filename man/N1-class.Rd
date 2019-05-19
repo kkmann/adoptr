@@ -4,9 +4,23 @@
 \name{N1-class}
 \alias{N1-class}
 \alias{N1}
+\alias{evaluate,N1,TwoStageDesign-method}
 \title{Regularize n1}
 \usage{
 N1()
+
+\S4method{evaluate}{N1,TwoStageDesign}(s, design, optimization = FALSE,
+  ...)
+}
+\arguments{
+\item{s}{\code{\link[=Scores]{Score}} object}
+
+\item{design}{\code{\link[=Designs]{Design}} object}
+
+\item{optimization}{logical, if \code{TRUE} uses a relaxation to real
+parameters of the underlying design; used for smooth optimization.}
+
+\item{...}{further optional arguments}
 }
 \value{
 an object of class \code{\link{N1}}
@@ -17,6 +31,11 @@ This can be used as a score in \code{\link{minimize}}.
 }
 \examples{
 n1_score <- N1()
+
+evaluate(
+   N1(),
+   TwoStageDesign(70, 0, 2, rep(60, 6), rep(1.7, 6))
+) # 70
 
 }
 \seealso{

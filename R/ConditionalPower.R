@@ -1,38 +1,56 @@
-#' Conditional power of a design given stage-one outcome
+#' (Conditional) Power of a Design
 #'
 #' This score evaluates \ifelse{html}{\out{P[X<sub>2</sub> > c2(design, X<sub>1</sub>) | X<sub>1</sub> = x<sub>1</sub>]}}{\eqn{\boldsymbol{P}[X_2 > c_2(design, X_1)|X_1 = x_1]}}.
 #' Note that the distribution of \ifelse{html}{\out{X<sub>2</sub>}}{\eqn{X_2}} is the posterior predictive after
 #' observing \ifelse{html}{\out{X<sub>1</sub> = x<sub>1</sub>}}{\eqn{X_1 = x_1}}.
 #'
-#'
 #' @template dist
 #' @template prior
+#' @template design
+#' @template s
+#' @template x1
+#' @template optimization
+#' @template dotdotdot
 #'
-#' @seealso The method \code{\link{evaluate}} provides evaluation of the
-#'    \code{ConditionalPower}.
+#' @seealso \code{\link{Scores}}
 #'
-#' @aliases ConditionalPower
-#' @exportClass ConditionalPower
-setClass("ConditionalPower", contains = "ConditionalScore")
-
 #' @examples
-#' cp <- ConditionalPower(dist = Normal(), prior = PointMassPrior(.4, 1))
-#'
-#' @rdname ConditionalPower-class
-#' @export
-ConditionalPower <- function(dist, prior) new("ConditionalPower", distribution = dist, prior = prior)
-
-#' @examples
-#' # evaluate conditional power
+#' prior <- PointMassPrior(.4, 1)
+#' cp <- ConditionalPower(Normal(), prior)
 #' evaluate(
-#'    ConditionalPower(Normal(), PointMassPrior(.3, 1)),
+#'    cp,
 #'    TwoStageDesign(50, .0, 2.0, 50, 2.0, order = 5L),
 #'    x1 = 1
 #' )
+#' # these two are equivalent:
+#' expected(cp, Normal(), prior)
+#' Power(Normal(), prior)
 #'
-#' @template x1
-#'
-#' @rdname evaluate
+#' @aliases ConditionalPower
+#' @exportClass ConditionalPower
+setClass("ConditionalPower", representation(
+        distribution = "DataDistribution",
+        prior        = "Prior"
+    ),
+    contains = "ConditionalScore")
+
+
+
+#' @rdname ConditionalPower-class
+#' @export
+ConditionalPower <- function(dist, prior) {
+    new("ConditionalPower", distribution = dist, prior = prior)
+}
+
+
+
+#' @rdname ConditionalPower-class
+#' @export
+Power <- function(dist, prior) expected(ConditionalPower(dist, prior), dist, prior)
+
+
+
+#' @rdname ConditionalPower-class
 #' @export
 setMethod("evaluate", signature("ConditionalPower", "TwoStageDesign"),
           function(s, design, x1, optimization = FALSE, ...) {

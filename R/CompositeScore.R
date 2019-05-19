@@ -6,13 +6,54 @@ setClass("CompositeScore", representation(
 )
 
 setClass("CompositeUnconditionalScore",
-     contains = "CompositeScore"
+     contains = c("UnconditionalScore", "CompositeScore")
 )
 
 setClass("CompositeConditionalScore",
      contains = c("ConditionalScore", "CompositeScore")
 )
 
+
+
+#' Score Composition
+#'
+#' \code{compose} defines new composite scores by point-wise evaluation of
+#' scores in any valid numerical expression.
+#'
+#' @param expr Expression (in curly brackets); must contain at least one score
+#'   variable; if multiple scores are used, they must either all be conditional
+#'   or unconditional. Currently, no non-score variables are supported
+#' @param s object of class \code{CompositeScore}
+#' @template design
+#' @template dotdotdot
+#'
+#' @return an object of class \code{CompositeConditionalScore} or
+#'   \code{CompositeUnconditionalScore} depending of the class of the scores used
+#'   in \code{expr}
+#'
+#' @seealso \link{Scores}
+#'
+#' @examples
+#' ess   <- SampleSize(Normal(), PointMassPrior(.4, 1))
+#' power <- Power(Normal(), PointMassPrior(.4, 1))
+#'
+#' # linear combination:
+#' compose({ess - 50*power})
+#'
+#' # control flow
+#' compose({
+#'   res <- 0
+#'   for (i in 1:3) {
+#'      res <- res + ess
+#'   }
+#'   res
+#' })
+#'
+#' # functional composition
+#' compose({log(ess)})
+#' cp <- ConditionalPower(Normal(), PointMassPrior(.4, 1))
+#' compose({3*cp})
+#'
 #' @export
 compose <- function(expr) {
 
@@ -33,17 +74,9 @@ compose <- function(expr) {
             if (any(sapply(scores, function(x) !is(x, "ConditionalScore")))) {
                 stop("either all or none of the scores must be conditional!")
             }
-            # check if all priors and data distributions are the same
-            dist  <- scores[[1]]@distribution
-            prior <- scores[[1]]@prior
-            if (!all(sapply(scores, function(x) identical(dist, x@distribution) & identical(prior, x@prior)))) {
-                stop("priors and distributions must be the same for all conditional scores!")
-            }
             return(new("CompositeConditionalScore",
                        expr         = substitute(expr),
-                       scores       = scores,
-                       distribution = dist,
-                       prior        = prior
+                       scores       = scores
             ))
         } else {
             # only unconditional scores
@@ -54,6 +87,7 @@ compose <- function(expr) {
 }
 
 
+#' @rdname compose
 #' @export
 setMethod("evaluate", signature("CompositeScore", "TwoStageDesign"),
           function(s, design, ...) {

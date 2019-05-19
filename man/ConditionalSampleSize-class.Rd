@@ -4,25 +4,56 @@
 \name{ConditionalSampleSize-class}
 \alias{ConditionalSampleSize-class}
 \alias{ConditionalSampleSize}
-\title{Conditional sample size of a design given stage-one outcome}
+\alias{SampleSize}
+\alias{ExpectedSampleSize}
+\alias{evaluate,ConditionalSampleSize,TwoStageDesign-method}
+\title{(Conditional) Sample Size of a Design}
 \usage{
-ConditionalSampleSize(dist, prior)
+ConditionalSampleSize()
+
+SampleSize(dist, prior)
+
+ExpectedSampleSize(dist, prior)
+
+\S4method{evaluate}{ConditionalSampleSize,TwoStageDesign}(s, design, x1,
+  optimization = FALSE, ...)
 }
 \arguments{
 \item{dist}{a univariate \code{\link[=DataDistribution-class]{distribution}} object}
 
 \item{prior}{a \code{\link{Prior}} object}
+
+\item{s}{\code{\link[=Scores]{Score}} object}
+
+\item{design}{\code{\link[=Designs]{Design}} object}
+
+\item{x1}{stage-one test statistic}
+
+\item{optimization}{logical, if \code{TRUE} uses a relaxation to real
+parameters of the underlying design; used for smooth optimization.}
+
+\item{...}{further optional arguments}
 }
 \description{
 This score simply evaluates \code{n(d, x1)} for a design \code{d} and the
 first-stage outcome \code{x1}.
 The data distribution and prior are only relevant when it is integrated.
+TODO: depricated SampleSize in favor of ExpectedSampleSize
 }
 \examples{
-css <- ConditionalSampleSize(dist = Normal(), prior = PointMassPrior(.4, 1))
+design <- TwoStageDesign(50, .0, 2.0, 50, 2.0, order = 5L)
+prior  <- PointMassPrior(.4, 1)
+
+css   <- ConditionalSampleSize()
+evaluate(css, design, c(0, .5, 3))
+
+ess   <- ExpectedSampleSize(Normal(), prior)
+
+# those two are equivalent
+evaluate(ess, design)
+evaluate(expected(css, Normal(), prior), design)
 
 }
 \seealso{
-The method \code{\link{evaluate}} provides evaluation of the
-   \code{ConditionalSampleSize}.
+\link{Scores}
 }

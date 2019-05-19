@@ -42,25 +42,28 @@ determined automatically heuristically.
 }
 \examples{
 # Define Type one error rate
-toer <- expected(ConditionalPower(Normal(), PointMassPrior(0.0, 1)))
+toer <- Power(Normal(), PointMassPrior(0.0, 1))
 
 # Define Power at delta = 0.4
-pow <- expected(ConditionalPower(Normal(), PointMassPrior(0.4, 1)))
+pow <- Power(Normal(), PointMassPrior(0.4, 1))
 
 # Define expected sample size at delta = 0.4
-ess <- expected(ConditionalSampleSize(Normal(), PointMassPrior(0.4, 1)))
+ess <- ExpectedSampleSize(Normal(), PointMassPrior(0.4, 1))
 
 # Compute design minimizing ess subject to power and toer constraints
 \dontrun{
 minimize(
+
    ess,
+
    subject_to(
       toer <= 0.025,
       pow  >= 0.9
    ),
+
    initial_design = TwoStageDesign(50, .0, 2.0, 60.0, 2.0, 5L)
+
 )
 }
-
 
 }

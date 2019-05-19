@@ -1,3 +1,12 @@
+#' Designs
+#'
+#' TODO generic information on design objects and classes!
+#'
+#' @name Designs
+NULL
+
+
+
 #' Two-stage designs
 #'
 #' \code{TwoStageDesign} is the fundamental design class of the
@@ -76,27 +85,27 @@ setGeneric("TwoStageDesign", function(n1, ...) standardGeneric("TwoStageDesign")
 #' @rdname TwoStageDesign-class
 #' @export
 setMethod("TwoStageDesign", signature = "numeric",
-function(n1, c1f, c1e, n2_pivots, c2_pivots, order = NULL, ...) {
-    if (length(n2_pivots) != length(c2_pivots))
-        stop("n2_pivots and c2_pivots must be of same length!")
-    if (is.null(order)) {
-        order <- length(n2_pivots)
-    } else if (length(n2_pivots) != order) {
-        n2_pivots <- rep(n2_pivots[1], order)
-        c2_pivots <- rep(c2_pivots[1], order)
-    }
+    function(n1, c1f, c1e, n2_pivots, c2_pivots, order = NULL, ...) {
 
-    rule <- GaussLegendreRule(as.integer(order))
+        if (length(n2_pivots) != length(c2_pivots))
+            stop("n2_pivots and c2_pivots must be of same length!")
+        if (is.null(order)) {
+            order <- length(n2_pivots)
+        } else if (length(n2_pivots) != order) {
+            n2_pivots <- rep(n2_pivots[1], order)
+            c2_pivots <- rep(c2_pivots[1], order)
+        }
 
-    tunable <- logical(8) # initialize to all false
-    tunable[1:5] <- TRUE
-    names(tunable) <- c("n1", "c1f", "c1e", "n2_pivots", "c2_pivots", "x1_norm_pivots", "weights", "tunable")
+        rule           <- GaussLegendreRule(as.integer(order))
+        tunable        <- logical(8) # initialize to all false
+        tunable[1:5]   <- TRUE
+        names(tunable) <- c("n1", "c1f", "c1e", "n2_pivots", "c2_pivots", "x1_norm_pivots", "weights", "tunable")
 
-    new("TwoStageDesign", n1 = n1, c1f = c1f, c1e = c1e, n2_pivots = n2_pivots,
-        c2_pivots = c2_pivots, x1_norm_pivots = rule$nodes, weights = rule$weights,
-        tunable = tunable)
+        new("TwoStageDesign", n1 = n1, c1f = c1f, c1e = c1e, n2_pivots = n2_pivots,
+            c2_pivots = c2_pivots, x1_norm_pivots = rule$nodes, weights = rule$weights,
+            tunable = tunable)
 
-})
+    })
 
 
 
@@ -419,7 +428,7 @@ setMethod("show", signature(object = "TwoStageDesign"),
 #' functions of a chosen design.
 #'
 #' \code{\link{TwoStageDesign}} and
-#' user-defined elements of the class \code{\link{ConditionalScore}}.
+#' user-defined elements of the class \code{\link[=Scores]{ConditionalScore}}.
 #'
 #' @template plot
 #' @param rounded should n-values be rounded?
@@ -482,7 +491,7 @@ setMethod("plot", signature(x = "TwoStageDesign"),
 #' @details
 #' \code{summary} can be used to quickly compute and display basic facts about
 #' a TwoStageDesign.
-#' An arbitrary number of names \code{\link{UnconditionalScore}} objects can be
+#' An arbitrary number of names \code{\link[=Scores]{UnconditionalScore}} objects can be
 #' provided via the optional arguments \code{...} and are included in the summary displayed using
 #' \code{\link{print}}.
 #'
@@ -490,7 +499,7 @@ setMethod("plot", signature(x = "TwoStageDesign"),
 #'
 #' @examples
 #' design <- TwoStageDesign(50, 0, 2, 50.0, 2.0, 5)
-#' pow    <- expected(ConditionalPower(dist = Normal(), prior = PointMassPrior(.4, 1)))
+#' pow    <- Power(Normal(), PointMassPrior(.4, 1))
 #' summary(design, "Power" = pow)
 #'
 #' @rdname TwoStageDesign-class

@@ -72,7 +72,7 @@ For available methods, see the 'See Also' section at the end of this page.
 \details{
 \code{summary} can be used to quickly compute and display basic facts about
 a TwoStageDesign.
-An arbitrary number of names \code{\link{UnconditionalScore}} objects can be
+An arbitrary number of names \code{\link[=Scores]{UnconditionalScore}} objects can be
 provided via the optional arguments \code{...} and are included in the summary displayed using
 \code{\link{print}}.
 }
@@ -107,7 +107,7 @@ optimization via \code{\link{minimize}} or not; cf. \cr
 
 \examples{
 design <- TwoStageDesign(50, 0, 2, 50.0, 2.0, 5)
-pow    <- expected(ConditionalPower(dist = Normal(), prior = PointMassPrior(.4, 1)))
+pow    <- Power(Normal(), PointMassPrior(.4, 1))
 summary(design, "Power" = pow)
 
 }

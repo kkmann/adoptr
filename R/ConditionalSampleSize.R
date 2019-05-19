@@ -1,36 +1,56 @@
-#' Conditional sample size of a design given stage-one outcome
+#' (Conditional) Sample Size of a Design
 #'
 #' This score simply evaluates \code{n(d, x1)} for a design \code{d} and the
 #' first-stage outcome \code{x1}.
 #' The data distribution and prior are only relevant when it is integrated.
+#' TODO: depricated SampleSize in favor of ExpectedSampleSize
 #'
 #' @template dist
 #' @template prior
+#' @template design
+#' @template s
+#' @template x1
+#' @template optimization
+#' @template dotdotdot
 #'
-#' @seealso The method \code{\link{evaluate}} provides evaluation of the
-#'    \code{ConditionalSampleSize}.
+#' @seealso \link{Scores}
+#'
+#' @examples
+#' design <- TwoStageDesign(50, .0, 2.0, 50, 2.0, order = 5L)
+#' prior  <- PointMassPrior(.4, 1)
+#'
+#' css   <- ConditionalSampleSize()
+#' evaluate(css, design, c(0, .5, 3))
+#'
+#' ess   <- ExpectedSampleSize(Normal(), prior)
+#'
+#' # those two are equivalent
+#' evaluate(ess, design)
+#' evaluate(expected(css, Normal(), prior), design)
 #'
 #' @aliases ConditionalSampleSize
 #' @exportClass ConditionalSampleSize
 setClass("ConditionalSampleSize", contains = "ConditionalScore")
 
-#' @examples
-#' css <- ConditionalSampleSize(dist = Normal(), prior = PointMassPrior(.4, 1))
-#'
+
+
 #' @rdname ConditionalSampleSize-class
 #' @export
-ConditionalSampleSize <- function(dist, prior) new("ConditionalSampleSize", distribution = dist, prior = prior)
+ConditionalSampleSize <- function() new("ConditionalSampleSize")
 
 
-#' @examples
-#' # evaluate conditional sample size
-#' evaluate(
-#'    ConditionalSampleSize(Normal(), PointMassPrior(.3, 1)),
-#'    TwoStageDesign(50, .0, 2.0, 50, 2.0, order = 5L),
-#'    x1 = 3
-#' ) # 50
-#'
-#' @rdname evaluate
+
+#' @rdname ConditionalSampleSize-class
+#' @export
+SampleSize <- function(dist, prior) expected(ConditionalSampleSize(), dist, prior)
+
+#' @rdname ConditionalSampleSize-class
+#' @export
+ExpectedSampleSize <- function(dist, prior) expected(ConditionalSampleSize(), dist, prior)
+
+
+
+#' @rdname ConditionalSampleSize-class
 #' @export
 setMethod("evaluate", signature("ConditionalSampleSize", "TwoStageDesign"),
           function(s, design, x1, optimization = FALSE, ...) {
