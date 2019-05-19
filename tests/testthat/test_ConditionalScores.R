@@ -2,18 +2,24 @@ context("test sample size")
 
 design <- TwoStageDesign(25, 0, 2, rep(40.0, 5), rep( 2, 5), 5L)
 dist   <- Normal()
+prior  <- ContinuousPrior(function(x) rep(1/10, length(x)), c(-4, 6))
 z1     <- seq(-1, 3, .1)
 
 
 test_that("conditional sample size maps to actual sample size", {
 
-    prior  <- ContinuousPrior(function(x) rep(1/10, length(x)), c(-4, 6))
-
-    css    <- ConditionalSampleSize()
+    css  <- ConditionalSampleSize()
+    ess1 <- ExpectedSampleSize(Normal(), prior)
+    ess2 <- expected(css, Normal(), prior)
 
     expect_equal(
         evaluate(css, design, z1),
         n(design, z1)
+    )
+
+    expect_equal(
+        evaluate(ess1, design),
+        evaluate(ess2, design)
     )
 
 
@@ -52,6 +58,7 @@ test_that("Conditional Power is monotonous", {
 
 
 test_that("Conditional power has correct values outside continuation region",{
+
     design1 <- TwoStageDesign(25, 0, 2, rep(40.0, 5), seq(2.0, 0.0, length.out = 5))
     cp      <- ConditionalPower(Normal(), PointMassPrior(.4, 1))
 
@@ -65,6 +72,20 @@ test_that("Conditional power has correct values outside continuation region",{
         1.0
     )
 }) # end 'Conditional power has correct values outside continuation region'
+
+
+test_that("Power works",{
+
+    cp     <- ConditionalPower(Normal(), prior)
+    pow1   <- Power(Normal(), prior)
+    pow2   <- expected(cp, Normal(), prior)
+
+    expect_equal(
+        evaluate(pow1, design),
+        evaluate(pow2, design)
+    )
+
+}) # end 'Power works'
 
 
 context("Test class ConditionalScore")
