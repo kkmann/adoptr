@@ -1,6 +1,11 @@
-# adoptr 0.1.2
+# adoptr 0.2.0
 
-* ...
+* new feature: composite scores allows more generic expressions than just 
+    affine score combinations
+* more consistent class system: conditional scores no longer need a specification
+    of distributions by default (no need for conditional sampel size e.g.).
+    Instead, expected() now requires explicit specification of the data and
+    prior distribution to integrate with.
 
 
 

@@ -2,7 +2,7 @@
 title: "Conditional Scores and Constraints"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Score and constraints arithmetic}
+  %\VignetteIndexEntry{Conditional Scores and Constraints}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

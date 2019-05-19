@@ -2,7 +2,7 @@
 title: "Composite Scores"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Score and constraints arithmetic}
+  %\VignetteIndexEntry{Composite Scores}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
