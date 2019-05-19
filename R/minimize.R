@@ -83,7 +83,7 @@ minimize <- function(
     }
 
     if (any(g_cnstr(tunable_parameters(initial_design)) > 0))
-        warning("initial design is infeasible!")
+        message("initial design is infeasible!")
 
     res <- nloptr::nloptr(
         x0 = tunable_parameters(initial_design),
