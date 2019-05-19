@@ -1,0 +1,105 @@
+---
+title: "Composite Scores"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Score and constraints arithmetic}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse   = TRUE,
+  comment    = "#>",
+  fig.width  = 7,
+  fig.height = 5
+)
+```
+
+```{r setup}
+library(adoptr)
+```
+
+
+
+While adopt also allows implementation of custom scores via subclassing,
+for most applications a simple point-wise arithmetic on scores is
+sufficient.
+For instance, consider the case of a utility maximizing approach to
+planning where not a hard constraint on power but rather a trade-off betweem 
+power and expected sample size is required.
+The simplest utility function would just be a weightes sum of both
+power (negative weight since we minimize costs!) and expected
+sample size.
+
+Consider the following situation
+```{r}
+H_0      <- PointMassPrior(.0, 1)
+H_1      <- PointMassPrior(.2, 1)
+datadist <- Normal(two_armed = FALSE)
+
+ess   <- SampleSize(datadist, H_1)
+power <- Power(datadist, H_1)
+toer  <- Power(datadist, H_0)
+```
+
+Adoptr supports such `CompositeScores` via the `compose` function:
+```{r sum}
+objective <- compose({ess - 50*power})
+```
+
+The new unconditional score can be evaluated as usual, e.g.
+```{r}
+design <- TwoStageDesign(
+    n1  = 100,
+    c1f = .0,
+    c1e = 2.0,
+    n2_pivots = rep(150, 5),
+    c2_pivots = sapply(1 + adoptr:::GaussLegendreRule(5)$nodes, function(x) -x + 2)
+)
+
+evaluate(objective, design)
+```
+
+Note that conditional and unconditional scores cannot be mixed in an 
+expression passed to `compose`. 
+Composite conditional score, however, are possible as well.
+```{r}
+cp  <- ConditionalPower(datadist, H_1)
+css <- ConditionalSampleSize()
+
+cs  <- compose({css - 50*cp})
+```
+
+```{r}
+evaluate(cs, design, c(0, .5, 1))
+```
+
+Of course, composite conditional scores can also be integrated
+```{r}
+evaluate(expected(cs, datadist, H_1), design)
+```
+and (due to linearity) the result is exactly the same as before.
+
+
+
+## Functional Composition
+
+Composite scores are not restricted to linear operations but support
+any valid numerical expression:
+```{r}
+cs <- compose({log(css) - 50*sin(cp)})
+evaluate(cs, design, c(0, .5, 1))
+```
+Even control flow is supported:
+```{r}
+cs <- compose({
+  res <- 0
+  for (i in 1:3) {
+    res <- res + css
+  }
+  res
+})
+evaluate(cs, design, c(0, .5, 1))
+```
+The only real constrain is that the expression must be vectorized.
