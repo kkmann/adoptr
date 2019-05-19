@@ -3,7 +3,6 @@
 #' This score simply evaluates \code{n(d, x1)} for a design \code{d} and the
 #' first-stage outcome \code{x1}.
 #' The data distribution and prior are only relevant when it is integrated.
-#' TODO: depricated SampleSize in favor of ExpectedSampleSize
 #'
 #' @template dist
 #' @template prior
@@ -39,10 +38,6 @@ setClass("ConditionalSampleSize", contains = "ConditionalScore")
 ConditionalSampleSize <- function() new("ConditionalSampleSize")
 
 
-
-#' @rdname ConditionalSampleSize-class
-#' @export
-SampleSize <- function(dist, prior) expected(ConditionalSampleSize(), dist, prior)
 
 #' @rdname ConditionalSampleSize-class
 #' @export
