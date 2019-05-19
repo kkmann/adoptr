@@ -78,18 +78,12 @@ Consider, e.g., the case of power.
 Typically, a power constraint is imposed on a single point in the alternative,
 e.g. using the constraint
 ```{r}
-expected(ConditionalPower(
-  Normal(), 
-  PointMassPrior(.4, 1)
-)) >= 0.8
+Power(Normal(), PointMassPrior(.4, 1)) >= 0.8
 ```
 If uncertainty about the true response rate should be incorporated in the design,
 it makes sense to assume a continuous prior on $\theta$.
 In this case, the prior should be conditioned for the power constraint to
 avoid integrating over the null hypothesis:
 ```{r}
-expected(ConditionalPower(
-  Normal(), 
-  condition(cont_prior, c(0, 3))
-)) >= 0.8
+Power(Normal(), condition(cont_prior, c(0, 3))) >= 0.8
 ```
