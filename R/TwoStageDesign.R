@@ -1,3 +1,12 @@
+#' Designs
+#'
+#' TODO generic information on design objects and classes!
+#'
+#' @name Designs
+NULL
+
+
+
 #' Two-stage designs
 #'
 #' \code{TwoStageDesign} is the fundamental design class of the
@@ -419,7 +428,7 @@ setMethod("show", signature(object = "TwoStageDesign"),
 #' functions of a chosen design.
 #'
 #' \code{\link{TwoStageDesign}} and
-#' user-defined elements of the class \code{\link{ConditionalScore}}.
+#' user-defined elements of the class \code{\link[=Scores]{ConditionalScore}}.
 #'
 #' @template plot
 #' @param rounded should n-values be rounded?
@@ -482,7 +491,7 @@ setMethod("plot", signature(x = "TwoStageDesign"),
 #' @details
 #' \code{summary} can be used to quickly compute and display basic facts about
 #' a TwoStageDesign.
-#' An arbitrary number of names \code{\link{UnconditionalScore}} objects can be
+#' An arbitrary number of names \code{\link[=Scores]{UnconditionalScore}} objects can be
 #' provided via the optional arguments \code{...} and are included in the summary displayed using
 #' \code{\link{print}}.
 #'
@@ -490,7 +499,7 @@ setMethod("plot", signature(x = "TwoStageDesign"),
 #'
 #' @examples
 #' design <- TwoStageDesign(50, 0, 2, 50.0, 2.0, 5)
-#' pow    <- expected(ConditionalPower(dist = Normal(), prior = PointMassPrior(.4, 1)))
+#' pow    <- Power(Normal(), PointMassPrior(.4, 1))
 #' summary(design, "Power" = pow)
 #'
 #' @rdname TwoStageDesign-class

@@ -4,14 +4,32 @@
 \name{ConditionalPower-class}
 \alias{ConditionalPower-class}
 \alias{ConditionalPower}
-\title{Conditional power of a design given stage-one outcome}
+\alias{Power}
+\alias{evaluate,ConditionalPower,TwoStageDesign-method}
+\title{(Conditional) Power of a Design}
 \usage{
 ConditionalPower(dist, prior)
+
+Power(dist, prior)
+
+\S4method{evaluate}{ConditionalPower,TwoStageDesign}(s, design, x1,
+  optimization = FALSE, ...)
 }
 \arguments{
 \item{dist}{a univariate \code{\link[=DataDistribution-class]{distribution}} object}
 
 \item{prior}{a \code{\link{Prior}} object}
+
+\item{s}{\code{\link[=Scores]{Score}} object}
+
+\item{design}{\code{\link[=Designs]{Design}} object}
+
+\item{x1}{stage-one test statistic}
+
+\item{optimization}{logical, if \code{TRUE} uses a relaxation to real
+parameters of the underlying design; used for smooth optimization.}
+
+\item{...}{further optional arguments}
 }
 \description{
 This score evaluates \ifelse{html}{\out{P[X<sub>2</sub> > c2(design, X<sub>1</sub>) | X<sub>1</sub> = x<sub>1</sub>]}}{\eqn{\boldsymbol{P}[X_2 > c_2(design, X_1)|X_1 = x_1]}}.
@@ -19,10 +37,18 @@ Note that the distribution of \ifelse{html}{\out{X<sub>2</sub>}}{\eqn{X_2}} is t
 observing \ifelse{html}{\out{X<sub>1</sub> = x<sub>1</sub>}}{\eqn{X_1 = x_1}}.
 }
 \examples{
-cp <- ConditionalPower(dist = Normal(), prior = PointMassPrior(.4, 1))
+prior <- PointMassPrior(.4, 1)
+cp <- ConditionalPower(Normal(), prior)
+evaluate(
+   cp,
+   TwoStageDesign(50, .0, 2.0, 50, 2.0, order = 5L),
+   x1 = 1
+)
+# these two are equivalent:
+expected(cp, Normal(), prior)
+Power(Normal(), prior)
 
 }
 \seealso{
-The method \code{\link{evaluate}} provides evaluation of the
-   \code{ConditionalPower}.
+\code{\link{Scores}}
 }

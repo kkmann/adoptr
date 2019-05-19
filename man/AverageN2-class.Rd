@@ -4,9 +4,26 @@
 \name{AverageN2-class}
 \alias{AverageN2-class}
 \alias{AverageN2}
+\alias{evaluate,AverageN2,TwoStageDesign-method}
 \title{Regularization via L1 norm}
 \usage{
 AverageN2()
+
+\S4method{evaluate}{AverageN2,TwoStageDesign}(s, design,
+  optimization = FALSE, subdivisions = 10000L, ...)
+}
+\arguments{
+\item{s}{\code{\link[=Scores]{Score}} object}
+
+\item{design}{\code{\link[=Designs]{Design}} object}
+
+\item{optimization}{logical, if \code{TRUE} uses a relaxation to real
+parameters of the underlying design; used for smooth optimization.}
+
+\item{subdivisions}{number of subdivisions to use for adaptive integration
+(only affects non-optimization code)}
+
+\item{...}{further optional arguments}
 }
 \value{
 an object of class \code{\link{AverageN2}}
@@ -20,6 +37,11 @@ the continuation region.
 }
 \examples{
 avn2 <- AverageN2()
+
+evaluate(
+   AverageN2(),
+   TwoStageDesign(100, 0.5, 1.5, 60.0, 1.96, order = 5L)
+) # 60
 
 }
 \seealso{

@@ -1,79 +1,31 @@
-setClass("Score")
-
-setMethod("show", signature(object = "Score"),
-          function(object) cat(class(object)[1]))
-
-#' Evaluation of a score
+#' Scores
 #'
-#' Both \code{\link{ConditionalScore}} as well as
-#' \code{\link{UnconditionalScore}} implement \code{evaluate} methods
-#' which handle the actual computation of the score given a design and
-#' (for conditional scores) an interim result.
+#' In \code{adoptr} scores are used to assess the performance of a design.
+#' This can be done either conditionally on the observed stage-one outcome
+#' or unconditionally.
+#' Consequently, score objects are either of class \code{ConditionalScore} or
+#' \code{UnconditionalScore}.
 #'
-#' @seealso Conditional scores additionally implement an \code{expected} method
-#'    to obtain the corresponding unconditional \code{\link{IntegralScore}}.
-#'
-#' @details The method \code{evaluate} is preimplemented for all preimplemented
-#'    scores in \pkg{adoptr}.
-#'    An example on working with scores is presented
-#'    \href{https://kkmann.github.io/adoptr/articles/score-and-constraints-arithmetic.html}{here}.
-#'
-#' @param s score
-#' @param design \code{TwoStageDesign} object
-#'
-#' @export
-setGeneric("evaluate", function(s, design, ...) standardGeneric("evaluate"))
-
-
-#' Compute the expectation of a conditional score
-#'
-#' By the method \code{expected} any \code{\link{ConditionalScore}}
-#' can be integrated over the full \ifelse{html}{\out{x<sub>1</sub>}}{\eqn{x_1}}-range and returns an
-#' \code{\link{IntegralScore}}. I.e., for a conditional score
-#' \ifelse{html}{\out{s(design, x<sub>1</sub>)}}{\eqn{s(design, x_1)}}
-#' the integral \ifelse{html}{\out{&int; s(design, x<sub>1</sub>) d x<sub>1</sub>}}{\eqn{\int s(design, x_1) d x_1}}
-#' is computed.
-#'
-#' @param s ConditionalScore
+#' @template s
+#' @template design
 #' @template dotdotdot
+#' @param data_distribution \code{\link{DataDistribution}} object
+#' @template prior
+#' @template object
+#' @template optimization
+#' @param subdivisions maximal number of subdivisions when evaluating an integral
+#'   score using adaptive quadrature (optimization = FALSE)
 #'
-#' @return an object of class \code{\link{IntegralScore}}
+#' @details
+#' All scores can be evaluated on a design using the \code{evaluate} method.
+#' Note that \code{evaluate} requires a third argument \code{x1} for
+#' conditional scores (observed stage-one outcome).
+#' Any \code{ConditionalScore} can be converted to a \code{UnconditionalScore}
+#' by forming its expected value using \code{expected}.
+#' The returned unconditional score is of class \code{IntegralScore}.
 #'
-#' @export
-setGeneric("expected", function(s, data_distribution, prior, ...) standardGeneric("expected"))
-
-
-# not user facing
-setGeneric(".evaluate", function(s, design, ...) standardGeneric(".evaluate"))
-
-
-
-
-
-setClass("ConditionalScore", contains = "Score")
-
-
-#' @examples
-#' # creates power under point mass prior
-#' expected(ConditionalPower(Normal(), PointMassPrior(.3, 1)))
-#'
-#' @rdname expected
-#' @export
-setMethod("expected", signature("ConditionalScore"),
-          function(s, data_distribution, prior, ...) {
-              new("IntegralScore", cs = s, data_distribution = data_distribution, prior = prior)
-          })
-
-
-
-
-
-#' Class for unconditional scoring function
-#'
-#' \code{UnconditionalScore} is an abstract class for unconditional scores.
-#'
-#' When defining a new \code{UnconditionalScore}, a corresponding
-#' method \code{\link{evaluate}} needs to be defined, too.
+#' @seealso \code{\link{ConditionalPower}}, \code{\link{ConditionalSampleSize}},
+#' \code{\link{compose}}
 #'
 #' @examples
 #' design <- TwoStageDesign(
@@ -84,38 +36,29 @@ setMethod("expected", signature("ConditionalScore"),
 #'   c2    = 1.96,
 #'   order = 7L
 #' )
+#' prior <- PointMassPrior(.3, 1)
 #'
-#' cp <- ConditionalPower(Normal(), PointMassPrior(.1, 1.0))
-#' ep <- expected(cp)
+#' # conditional
+#' cp <- ConditionalPower(Normal(), prior)
+#' expected(cp, Normal(), prior)
+#' evaluate(cp, design, x1 = .5)
 #'
-#' evaluate(ep, design) # .06081054
+#' # unconditional
+#' power <- Power(Normal(), prior)
+#' evaluate(power, design)
+#' evaluate(power, design, optimization = TRUE) # use non-adaptive quadrature
 #'
-#'
-#'
-#' @seealso There are regularization scores \code{\link{N1}} and
-#'    \code{\link{AverageN2}} for sample sizes.
-#'    The class \code{\link{IntegralScore}} is a specific subclass that defines
-#'    uncondtional scores which are expected conditional scores.
-#'
-#' @aliases UnconditionalScore
-#' @exportClass UnconditionalScore
+#' @name Scores
+NULL
+
+
+
+# abstract class structure for scores
+setClass("Score")
+setClass("ConditionalScore", contains = "Score")
 setClass("UnconditionalScore", contains = "Score")
 
-
-
-#' Unconditional score class obtained by integration of a
-#' \code{\link{ConditionalScore}}
-#'
-#' @slot cs the underlying \code{\link{ConditionalScore}}
-#'
-#' @examples
-#' expected(ConditionalPower(Normal(), PointMassPrior(.4, 1.0)))
-#'
-#' @seealso The method \code{\link{expected}} creates a \code{IntegralScore}
-#'    from a \code{\link{ConditionalScore}}.
-#'
-#' @aliases IntegralScore
-#' @exportClass IntegralScore
+# class for expected scores
 setClass("IntegralScore", representation(
         cs                = "ConditionalScore",
         data_distribution = "DataDistribution",
@@ -125,23 +68,40 @@ setClass("IntegralScore", representation(
 
 
 
-#' @examples
-#' # create a dummy design
-#' design <- TwoStageDesign(50, .0, 2.0, 50, 2.0, order = 5L)
-#'
-#' # define type one error als IntegralScore
-#' toer <- expected(ConditionalPower(Normal(), PointMassPrior(.0, 1)))
-#'
-#' # evaluate
-#' evaluate(toer, design)
-#'
-#' @template optimization
-#' @param subdivisions integer, number of subdivisions that is used for integration
-#'    on the continuation region; results become more precise with increased
-#'    number of subdivisions; default is \code{10000L}.
-#' @template dotdotdot
-#'
-#' @rdname evaluate
+#' @rdname Scores
+#' @export
+setMethod("show", signature(object = "Score"),
+          function(object) cat(class(object)[1]))
+
+
+
+
+
+#' @rdname Scores
+#' @export
+setGeneric("expected", function(s, data_distribution, prior, ...) standardGeneric("expected"))
+
+
+
+#' @rdname Scores
+#' @export
+setMethod("expected", signature("ConditionalScore"),
+          function(s, data_distribution, prior, ...) {
+              new("IntegralScore", cs = s, data_distribution = data_distribution, prior = prior)
+          })
+
+
+
+
+
+
+#' @rdname Scores
+#' @export
+setGeneric("evaluate", function(s, design, ...) standardGeneric("evaluate"))
+
+
+
+#' @rdname Scores
 #' @export
 setMethod("evaluate", signature("IntegralScore", "TwoStageDesign"),
           function(s, design, optimization = FALSE, subdivisions = 10000L, ...) {
@@ -175,6 +135,12 @@ setMethod("evaluate", signature("IntegralScore", "TwoStageDesign"),
               }
           })
 
+
+
+
+
+# not user facing
+setGeneric(".evaluate", function(s, design, ...) standardGeneric(".evaluate"))
 
 
 

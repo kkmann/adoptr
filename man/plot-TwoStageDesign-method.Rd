@@ -25,7 +25,7 @@ functions of a chosen design.
 }
 \details{
 \code{\link{TwoStageDesign}} and
-user-defined elements of the class \code{\link{ConditionalScore}}.
+user-defined elements of the class \code{\link[=Scores]{ConditionalScore}}.
 }
 \examples{
 design <- TwoStageDesign(50, 0, 2, 50, 2, 5)

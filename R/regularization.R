@@ -6,6 +6,13 @@
 #' This can be interpreted as integration over a unifrom prior on
 #' the continuation region.
 #'
+#' @template s
+#' @template design
+#' @template optimization
+#' @template dotdotdot
+#' @param subdivisions number of subdivisions to use for adaptive integration
+#'   (only affects non-optimization code)
+#'
 #' @seealso \code{\link{N1}} for penalizing n1 values
 #'
 #' @aliases AverageN2
@@ -32,7 +39,7 @@ AverageN2 <- function() new("AverageN2", dummy = FALSE)
 #'    TwoStageDesign(100, 0.5, 1.5, 60.0, 1.96, order = 5L)
 #' ) # 60
 #'
-#' @rdname evaluate
+#' @rdname AverageN2-class
 #' @export
 setMethod("evaluate", signature("AverageN2", "TwoStageDesign"),
           function(s, design, optimization = FALSE, subdivisions = 10000L, ...) {
@@ -77,6 +84,11 @@ setMethod(".evaluate", signature("AverageN2", "TwoStageDesign"),
 #' \code{N1} is a class that computes the \code{n1} value of a design.
 #' This can be used as a score in \code{\link{minimize}}.
 #'
+#' @template s
+#' @template design
+#' @template optimization
+#' @template dotdotdot
+#'
 #' @seealso See \code{\link{AverageN2}} for a regularization of
 #'  the second-stage sample size.
 #'
@@ -103,7 +115,7 @@ N1 <- function() new("N1", dummy = FALSE)
 #'    TwoStageDesign(70, 0, 2, rep(60, 6), rep(1.7, 6))
 #' ) # 70
 #'
-#' @rdname evaluate
+#' @rdname N1-class
 #' @export
 setMethod("evaluate", signature("N1", "TwoStageDesign"),
           function(s, design, optimization = FALSE, ...)

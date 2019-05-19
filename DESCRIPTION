@@ -39,7 +39,6 @@ Collate:
     ConditionalPower.R
     ConditionalSampleSize.R
     regularization.R
-    boundary_designs.R
     CompositeScore.R
 RoxygenNote: 6.1.1
 BugReports: https://github.com/kkmann/adoptr/issues
