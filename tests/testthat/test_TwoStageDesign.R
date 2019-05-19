@@ -55,11 +55,10 @@ test_that("errors are returned correctly", {
         TwoStageDesign(50, 0, 2, rep(50, 3), c(2, 2))
     ) # pivots length must fit
 
-
-    pow <- Power(Normal(), PointMassPrior(.4, 1))
-    order  = 5L
+    cp      <- ConditionalPower(Normal(), PointMassPrior(.4, 1))
+    pow     <- Power(Normal(), PointMassPrior(.4, 1))
+    order   <- 5L
     design  <- TwoStageDesign(50.1, 0, 2, rep(50, order), rep(2, order))
-    design2 <- TwoStageDesign(50, 0, 2, rep(50.1, order), rep(2, order))
 
     expect_error(
         plot(design, rounded = TRUE, "Power" = pow)
