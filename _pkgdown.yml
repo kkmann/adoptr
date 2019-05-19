@@ -10,10 +10,14 @@ navbar:
     href: articles/adoptr.html
   - text: Articles
     menu:
-    - text: Working with priors
+    - text: Working with Priors
       href: articles/working-with-priors.html
-    - text: Working with scores
-      href: articles/score-and-constraints-arithmetic
+    - text: Conditional Scores
+      href: articles/conditional-scores.html
+    - text: Composite Scores
+      href: articles/composite-scores.html
+    - text: Definining New Scores
+      href: articles/defining-new-scores.html
   - text: Changelog
     href: news/index.html
   - text: Reference

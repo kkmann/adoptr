@@ -50,6 +50,7 @@ test_that("simulate works (as last time)", {
 
 
 test_that("errors are returned correctly", {
+
     expect_error(
         TwoStageDesign(50, 0, 2, rep(50, 3), c(2, 2))
     ) # pivots length must fit

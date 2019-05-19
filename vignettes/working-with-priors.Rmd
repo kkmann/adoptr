@@ -18,8 +18,6 @@ knitr::opts_chunk$set(
 
 
 
-## Working with priors in **adoptr**
-
 Internally, **adoptr** is built around the joint distribution of a test 
 statistic and the unknown location parameter of interest given a sample size,
 i.e.
