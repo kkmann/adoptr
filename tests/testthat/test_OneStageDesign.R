@@ -34,7 +34,7 @@ test_that("Optimal one-stage design with point prior is computable", {
 
     dist <- Normal(two_armed = FALSE)
 
-    ess  <- SampleSize(dist, alternative)
+    ess  <- ExpectedSampleSize(dist, alternative)
     pow  <- Power(dist, alternative)
     toer <- Power(dist, null)
 

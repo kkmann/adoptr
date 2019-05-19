@@ -105,7 +105,7 @@ datadist <- Normal(two_armed = FALSE)
 We begin by defining the expected sample size under the alternative hypothesis:
 
 ```{r define-ess}
-ess <- SampleSize(datadist, H_1)
+ess <- ExpectedSampleSize(datadist, H_1)
 ```
 
 Similarly, we can define the power and the type-one-error rate by

@@ -4,14 +4,11 @@
 \name{ConditionalSampleSize-class}
 \alias{ConditionalSampleSize-class}
 \alias{ConditionalSampleSize}
-\alias{SampleSize}
 \alias{ExpectedSampleSize}
 \alias{evaluate,ConditionalSampleSize,TwoStageDesign-method}
 \title{(Conditional) Sample Size of a Design}
 \usage{
 ConditionalSampleSize()
-
-SampleSize(dist, prior)
 
 ExpectedSampleSize(dist, prior)
 
@@ -38,7 +35,6 @@ parameters of the underlying design; used for smooth optimization.}
 This score simply evaluates \code{n(d, x1)} for a design \code{d} and the
 first-stage outcome \code{x1}.
 The data distribution and prior are only relevant when it is integrated.
-TODO: depricated SampleSize in favor of ExpectedSampleSize
 }
 \examples{
 design <- TwoStageDesign(50, .0, 2.0, 50, 2.0, order = 5L)

@@ -14,7 +14,7 @@ dist        <- Normal(two_armed = FALSE)
 null        <- PointMassPrior(.0, 1)
 alternative <- PointMassPrior(.4, 1)
 
-ess  <- SampleSize(dist, alternative)
+ess  <- ExpectedSampleSize(dist, alternative)
 pow  <- Power(dist, alternative)
 toer <- Power(dist, null)
 
