@@ -4,9 +4,6 @@
     <loc>https://kkmann.github.io/adoptr/index.html</loc>
   </url>
   <url>
-    <loc>https://kkmann.github.io/adoptr/reference/AffineScore-class.html</loc>
-  </url>
-  <url>
     <loc>https://kkmann.github.io/adoptr/reference/AverageN2-class.html</loc>
   </url>
   <url>
@@ -16,13 +13,7 @@
     <loc>https://kkmann.github.io/adoptr/reference/ConditionalSampleSize-class.html</loc>
   </url>
   <url>
-    <loc>https://kkmann.github.io/adoptr/reference/ConditionalScore-class.html</loc>
-  </url>
-  <url>
-    <loc>https://kkmann.github.io/adoptr/reference/Constraint-class.html</loc>
-  </url>
-  <url>
-    <loc>https://kkmann.github.io/adoptr/reference/ConstraintsCollection-class.html</loc>
+    <loc>https://kkmann.github.io/adoptr/reference/Constraints.html</loc>
   </url>
   <url>
     <loc>https://kkmann.github.io/adoptr/reference/ContinuousPrior-class.html</loc>
@@ -31,10 +22,10 @@
     <loc>https://kkmann.github.io/adoptr/reference/DataDistribution-class.html</loc>
   </url>
   <url>
-    <loc>https://kkmann.github.io/adoptr/reference/GroupSequentialDesign-class.html</loc>
+    <loc>https://kkmann.github.io/adoptr/reference/Designs.html</loc>
   </url>
   <url>
-    <loc>https://kkmann.github.io/adoptr/reference/IntegralScore-class.html</loc>
+    <loc>https://kkmann.github.io/adoptr/reference/GroupSequentialDesign-class.html</loc>
   </url>
   <url>
     <loc>https://kkmann.github.io/adoptr/reference/N1-class.html</loc>
@@ -52,10 +43,10 @@
     <loc>https://kkmann.github.io/adoptr/reference/Prior-class.html</loc>
   </url>
   <url>
-    <loc>https://kkmann.github.io/adoptr/reference/TwoStageDesign-class.html</loc>
+    <loc>https://kkmann.github.io/adoptr/reference/Scores.html</loc>
   </url>
   <url>
-    <loc>https://kkmann.github.io/adoptr/reference/UnconditionalScore-class.html</loc>
+    <loc>https://kkmann.github.io/adoptr/reference/TwoStageDesign-class.html</loc>
   </url>
   <url>
     <loc>https://kkmann.github.io/adoptr/reference/adoptr.html</loc>
@@ -67,6 +58,9 @@
     <loc>https://kkmann.github.io/adoptr/reference/bounds.html</loc>
   </url>
   <url>
+    <loc>https://kkmann.github.io/adoptr/reference/compose.html</loc>
+  </url>
+  <url>
     <loc>https://kkmann.github.io/adoptr/reference/condition.html</loc>
   </url>
   <url>
@@ -76,13 +70,7 @@
     <loc>https://kkmann.github.io/adoptr/reference/cumulative_distribution_function.html</loc>
   </url>
   <url>
-    <loc>https://kkmann.github.io/adoptr/reference/evaluate.html</loc>
-  </url>
-  <url>
     <loc>https://kkmann.github.io/adoptr/reference/expectation.html</loc>
-  </url>
-  <url>
-    <loc>https://kkmann.github.io/adoptr/reference/expected.html</loc>
   </url>
   <url>
     <loc>https://kkmann.github.io/adoptr/reference/make_tunable.html</loc>
@@ -109,9 +97,6 @@
     <loc>https://kkmann.github.io/adoptr/reference/probability_density_function.html</loc>
   </url>
   <url>
-    <loc>https://kkmann.github.io/adoptr/reference/score-arithmetic.html</loc>
-  </url>
-  <url>
     <loc>https://kkmann.github.io/adoptr/reference/simulate-TwoStageDesign-numeric-method.html</loc>
   </url>
   <url>
@@ -124,7 +109,13 @@
     <loc>https://kkmann.github.io/adoptr/articles/adoptr.html</loc>
   </url>
   <url>
-    <loc>https://kkmann.github.io/adoptr/articles/score-and-constraints-arithmetic.html</loc>
+    <loc>https://kkmann.github.io/adoptr/articles/composite-scores.html</loc>
+  </url>
+  <url>
+    <loc>https://kkmann.github.io/adoptr/articles/conditional-scores.html</loc>
+  </url>
+  <url>
+    <loc>https://kkmann.github.io/adoptr/articles/defining-new-scores.html</loc>
   </url>
   <url>
     <loc>https://kkmann.github.io/adoptr/articles/working-with-priors.html</loc>

@@ -41,8 +41,8 @@
 <meta property="og:description" content="The adoptr package provides functionality to explore custom optimal
 two-stage designs for one or two-arm superiority tests.
 Currently, only (asymptotically) normal test statistics are supported.
-adoptr is programmed in an object-oriented way.
-A description on object-oriented usage of R can be found
+adoptr is makes heavy use of the S4 class system.
+A good place to start learning about it can be found
 here." />
 
 <meta property="og:image" content="https://kkmann.github.io/adoptr/logo.png" />
@@ -76,7 +76,7 @@ here." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">adoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0.9000</span>
       </span>
     </div>
 
@@ -99,10 +99,16 @@ here." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/working-with-priors.html">Working with priors</a>
+      <a href="../articles/working-with-priors.html">Working with Priors</a>
     </li>
     <li>
-      <a href="../articles/score-and-constraints-arithmetic">Working with scores</a>
+      <a href="../articles/conditional-scores.html">Conditional Scores</a>
+    </li>
+    <li>
+      <a href="../articles/composite-scores.html">Composite Scores</a>
+    </li>
+    <li>
+      <a href="../articles/defining-new-scores.html">Definining New Scores</a>
     </li>
   </ul>
 </li>
@@ -149,8 +155,8 @@ here." />
     <p>The <span class="pkg">adoptr</span> package provides functionality to explore custom optimal
 two-stage designs for one or two-arm superiority tests.
 Currently, only (asymptotically) normal test statistics are supported.
-<span class="pkg">adoptr</span> is programmed in an object-oriented way.
-A description on object-oriented usage of <code>R</code> can be found
+<span class="pkg">adoptr</span> is makes heavy use of the S4 class system.
+A good place to start learning about it can be found
 <a href='http://adv-r.had.co.nz/OO-essentials.html'>here</a>.</p>
     
     </div>
@@ -161,9 +167,8 @@ A description on object-oriented usage of <code>R</code> can be found
     
     <p>For a sample workflow and a quick demo of the capabilities, see
 <a href='https://kkmann.github.io/adoptr/articles/adoptr.html'>here</a>.</p>
-<p>A variety of examples is presented in the validation package
-<span class="pkg">adoptrValidation</span> and can be seen
-<a href='https://kkmann.github.io/adoptrValidation/'>here</a>.</p>
+<p>A variety of examples is presented in the validation report hosted
+<a href='https://kkmann.github.io/adoptr-validation-report/'>here</a>.</p>
     
     <h2 class="hasAnchor" id="designs"><a class="anchor" href="#designs"></a>Designs</h2>
 
@@ -174,26 +179,22 @@ A description on object-oriented usage of <code>R</code> can be found
     <h2 class="hasAnchor" id="data-distributions"><a class="anchor" href="#data-distributions"></a>Data distributions</h2>
 
     
-    <p>Currently, the only implemented data distribution is <code><a href='NormalDataDistribution-class.html'>Normal</a></code>.</p>
+    <p>Currently, the only implemented data distribution is <code><a href='NormalDataDistribution-class.html'>Normal</a></code>
+(one or two arms).</p>
     
     <h2 class="hasAnchor" id="priors"><a class="anchor" href="#priors"></a>Priors</h2>
 
     
     <p>Both <code><a href='ContinuousPrior-class.html'>ContinuousPrior</a></code> and <code><a href='PointMassPrior-class.html'>PointMassPrior</a></code> are
-supported for the single parameter of a <code><a href='DataDistribution-class.html'>DataDistribution</a></code>.
-An example on working with priors is provided
-<a href='https://kkmann.github.io/adoptr/articles/working-with-priors.html'>here</a>.</p>
+supported for the single parameter of a <code><a href='DataDistribution-class.html'>DataDistribution</a></code>.</p>
     
     <h2 class="hasAnchor" id="scores"><a class="anchor" href="#scores"></a>Scores</h2>
 
     
-    <p><span class="pkg">adoptr</span> provides the score types <code><a href='UnconditionalScore-class.html'>UnconditionalScore</a></code> and
-<code><a href='ConditionalScore-class.html'>ConditionalScore</a></code>. The conditional scores
-<code><a href='ConditionalPower-class.html'>ConditionalPower</a></code> and <code><a href='ConditionalScore-class.html'>ConditionalScore</a></code> are
-already implemented. Unconditional scores that are expectations of
-conditional scores can be created via <code><a href='expected.html'>expected</a></code> and are
-represented by the class <code><a href='IntegralScore-class.html'>IntegralScore</a></code>.
-For an example how to work with scores, see <a href='https://kkmann.github.io/adoptr/articles/score-and-constraints-arithmetic.html'>here</a>.</p>
+    <p>See <code><a href='Scores.html'>Scores</a></code> for information on the basic system of representing
+scores.
+Available scores are <code><a href='ConditionalPower-class.html'>ConditionalPower</a></code>,
+<code><a href='ConditionalSampleSize-class.html'>ConditionalSampleSize</a></code>, TODO list all others.</p>
     
 
   </div>

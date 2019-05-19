@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">adoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0.9000</span>
       </span>
     </div>
 
@@ -56,10 +56,16 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/working-with-priors.html">Working with priors</a>
+      <a href="../articles/working-with-priors.html">Working with Priors</a>
     </li>
     <li>
-      <a href="../articles/score-and-constraints-arithmetic">Working with scores</a>
+      <a href="../articles/conditional-scores.html">Conditional Scores</a>
+    </li>
+    <li>
+      <a href="../articles/composite-scores.html">Composite Scores</a>
+    </li>
+    <li>
+      <a href="../articles/defining-new-scores.html">Definining New Scores</a>
     </li>
   </ul>
 </li>
@@ -105,10 +111,6 @@
 
     
     
-<div id="working-with-priors-in-adoptr" class="section level2">
-<h2 class="hasAnchor">
-<a href="#working-with-priors-in-adoptr" class="anchor"></a>Working with priors in <strong>adoptr</strong>
-</h2>
 <p>Internally, <strong>adoptr</strong> is built around the joint distribution of a test statistic and the unknown location parameter of interest given a sample size, i.e. <span class="math display">\[
 \mathcal{L}\big[(X_i, \theta)\,|\,n_i\big]
 \]</span> where <span class="math inline">\(X_i\)</span> is the stage-<span class="math inline">\(i\)</span> test statistic and <span class="math inline">\(n_i\)</span> the corresponding sample size. The distribution class for <span class="math inline">\(X_i\)</span> is defined by specifying a <code>DataDistribution</code> object, e.g., a normal distribution</p>
@@ -137,29 +139,15 @@
 <h3 class="hasAnchor">
 <a href="#conditioning" class="anchor"></a>Conditioning</h3>
 <p>In practice, the most important operation will be conditioning. This is important to implement type one and type two error rate constraints. Consider, e.g., the case of power. Typically, a power constraint is imposed on a single point in the alternative, e.g. using the constraint</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="../reference/expected.html">expected</a></span>(<span class="kw"><a href="../reference/ConditionalPower-class.html">ConditionalPower</a></span>(</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2">  <span class="kw"><a href="../reference/NormalDataDistribution-class.html">Normal</a></span>(), </a>
-<a class="sourceLine" id="cb4-3" data-line-number="3">  <span class="kw"><a href="../reference/PointMassPrior-class.html">PointMassPrior</a></span>(.<span class="dv">4</span>, <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb4-4" data-line-number="4">)) <span class="op">&gt;=</span><span class="st"> </span><span class="fl">0.8</span></a>
-<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#&gt; UnconditionalConstraint</span></a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="../reference/ConditionalPower-class.html">Power</a></span>(<span class="kw"><a href="../reference/NormalDataDistribution-class.html">Normal</a></span>(), <span class="kw"><a href="../reference/PointMassPrior-class.html">PointMassPrior</a></span>(.<span class="dv">4</span>, <span class="dv">1</span>)) <span class="op">&gt;=</span><span class="st"> </span><span class="fl">0.8</span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co">#&gt; UnconditionalConstraint</span></a></code></pre></div>
 <p>If uncertainty about the true response rate should be incorporated in the design, it makes sense to assume a continuous prior on <span class="math inline">\(\theta\)</span>. In this case, the prior should be conditioned for the power constraint to avoid integrating over the null hypothesis:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="../reference/expected.html">expected</a></span>(<span class="kw"><a href="../reference/ConditionalPower-class.html">ConditionalPower</a></span>(</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2">  <span class="kw"><a href="../reference/NormalDataDistribution-class.html">Normal</a></span>(), </a>
-<a class="sourceLine" id="cb5-3" data-line-number="3">  <span class="kw"><a href="../reference/condition.html">condition</a></span>(cont_prior, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>, <span class="dv">3</span>))</a>
-<a class="sourceLine" id="cb5-4" data-line-number="4">)) <span class="op">&gt;=</span><span class="st"> </span><span class="fl">0.8</span></a>
-<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">#&gt; UnconditionalConstraint</span></a></code></pre></div>
-</div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="../reference/ConditionalPower-class.html">Power</a></span>(<span class="kw"><a href="../reference/NormalDataDistribution-class.html">Normal</a></span>(), <span class="kw"><a href="../reference/condition.html">condition</a></span>(cont_prior, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>, <span class="dv">3</span>))) <span class="op">&gt;=</span><span class="st"> </span><span class="fl">0.8</span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co">#&gt; UnconditionalConstraint</span></a></code></pre></div>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-        <div id="tocnav">
-      <h2 class="hasAnchor">
-<a href="#tocnav" class="anchor"></a>Contents</h2>
-      <ul class="nav nav-pills nav-stacked">
-<li><a href="#working-with-priors-in-adoptr">Working with priors in <strong>adoptr</strong></a></li>
-      </ul>
-</div>
       </div>
 
 </div>

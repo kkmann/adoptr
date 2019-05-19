@@ -69,7 +69,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">adoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0.9000</span>
       </span>
     </div>
 
@@ -92,10 +92,16 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/working-with-priors.html">Working with priors</a>
+      <a href="../articles/working-with-priors.html">Working with Priors</a>
     </li>
     <li>
-      <a href="../articles/score-and-constraints-arithmetic">Working with scores</a>
+      <a href="../articles/conditional-scores.html">Conditional Scores</a>
+    </li>
+    <li>
+      <a href="../articles/composite-scores.html">Composite Scores</a>
+    </li>
+    <li>
+      <a href="../articles/defining-new-scores.html">Definining New Scores</a>
     </li>
   </ul>
 </li>
@@ -153,45 +159,27 @@
       <tr>
         
         <td>
-          <p><code><a href="AffineScore-class.html">AffineScore()</a></code> <code><a href="AffineScore-class.html">show(<i>&lt;AffineScore&gt;</i>)</a></code> <code><a href="AffineScore-class.html">AffineUnconditionalScore()</a></code> <code><a href="AffineScore-class.html">AffineConditionalScore()</a></code> </p>
-        </td>
-        <td><p>Affine functions of scores</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="AverageN2-class.html">AverageN2()</a></code> </p>
+          <p><code><a href="AverageN2-class.html">AverageN2()</a></code> <code><a href="AverageN2-class.html">evaluate(<i>&lt;AverageN2&gt;</i>,<i>&lt;TwoStageDesign&gt;</i>)</a></code> </p>
         </td>
         <td><p>Regularization via L1 norm</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="ConditionalPower-class.html">ConditionalPower()</a></code> </p>
+          <p><code><a href="ConditionalPower-class.html">ConditionalPower()</a></code> <code><a href="ConditionalPower-class.html">Power()</a></code> <code><a href="ConditionalPower-class.html">evaluate(<i>&lt;ConditionalPower&gt;</i>,<i>&lt;TwoStageDesign&gt;</i>)</a></code> </p>
         </td>
-        <td><p>Conditional power of a design given stage-one outcome</p></td>
+        <td><p>(Conditional) Power of a Design</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="ConditionalSampleSize-class.html">ConditionalSampleSize()</a></code> </p>
+          <p><code><a href="ConditionalSampleSize-class.html">ConditionalSampleSize()</a></code> <code><a href="ConditionalSampleSize-class.html">SampleSize()</a></code> <code><a href="ConditionalSampleSize-class.html">ExpectedSampleSize()</a></code> <code><a href="ConditionalSampleSize-class.html">evaluate(<i>&lt;ConditionalSampleSize&gt;</i>,<i>&lt;TwoStageDesign&gt;</i>)</a></code> </p>
         </td>
-        <td><p>Conditional sample size of a design given stage-one outcome</p></td>
+        <td><p>(Conditional) Sample Size of a Design</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="ConditionalScore-class.html">show(<i>&lt;ConditionalScore&gt;</i>)</a></code> </p>
+          <p><code><a href="Constraints.html">evaluate(<i>&lt;Constraint&gt;</i>,<i>&lt;TwoStageDesign&gt;</i>)</a></code> <code><a href="Constraints.html">show(<i>&lt;Constraint&gt;</i>)</a></code> <code><a href="Constraints.html">`<=`(<i>&lt;ConditionalScore&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="Constraints.html">`>=`(<i>&lt;ConditionalScore&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="Constraints.html">`<=`(<i>&lt;numeric&gt;</i>,<i>&lt;ConditionalScore&gt;</i>)</a></code> <code><a href="Constraints.html">`>=`(<i>&lt;numeric&gt;</i>,<i>&lt;ConditionalScore&gt;</i>)</a></code> <code><a href="Constraints.html">`<=`(<i>&lt;ConditionalScore&gt;</i>,<i>&lt;ConditionalScore&gt;</i>)</a></code> <code><a href="Constraints.html">`>=`(<i>&lt;ConditionalScore&gt;</i>,<i>&lt;ConditionalScore&gt;</i>)</a></code> <code><a href="Constraints.html">`<=`(<i>&lt;UnconditionalScore&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="Constraints.html">`>=`(<i>&lt;UnconditionalScore&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="Constraints.html">`<=`(<i>&lt;numeric&gt;</i>,<i>&lt;UnconditionalScore&gt;</i>)</a></code> <code><a href="Constraints.html">`>=`(<i>&lt;numeric&gt;</i>,<i>&lt;UnconditionalScore&gt;</i>)</a></code> <code><a href="Constraints.html">`<=`(<i>&lt;UnconditionalScore&gt;</i>,<i>&lt;UnconditionalScore&gt;</i>)</a></code> <code><a href="Constraints.html">`>=`(<i>&lt;UnconditionalScore&gt;</i>,<i>&lt;UnconditionalScore&gt;</i>)</a></code> </p>
         </td>
-        <td><p>Class for conditional scoring function</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="Constraint-class.html">show(<i>&lt;Constraint&gt;</i>)</a></code> <code><a href="Constraint-class.html">`<=`(<i>&lt;AbstractConditionalScore&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="Constraint-class.html">`>=`(<i>&lt;AbstractConditionalScore&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="Constraint-class.html">`<=`(<i>&lt;numeric&gt;</i>,<i>&lt;AbstractConditionalScore&gt;</i>)</a></code> <code><a href="Constraint-class.html">`>=`(<i>&lt;numeric&gt;</i>,<i>&lt;AbstractConditionalScore&gt;</i>)</a></code> <code><a href="Constraint-class.html">`<=`(<i>&lt;AbstractConditionalScore&gt;</i>,<i>&lt;AbstractConditionalScore&gt;</i>)</a></code> <code><a href="Constraint-class.html">`>=`(<i>&lt;AbstractConditionalScore&gt;</i>,<i>&lt;AbstractConditionalScore&gt;</i>)</a></code> <code><a href="Constraint-class.html">`<=`(<i>&lt;UnconditionalScore&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="Constraint-class.html">`>=`(<i>&lt;UnconditionalScore&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="Constraint-class.html">`<=`(<i>&lt;numeric&gt;</i>,<i>&lt;UnconditionalScore&gt;</i>)</a></code> <code><a href="Constraint-class.html">`>=`(<i>&lt;numeric&gt;</i>,<i>&lt;UnconditionalScore&gt;</i>)</a></code> <code><a href="Constraint-class.html">`<=`(<i>&lt;UnconditionalScore&gt;</i>,<i>&lt;UnconditionalScore&gt;</i>)</a></code> <code><a href="Constraint-class.html">`>=`(<i>&lt;UnconditionalScore&gt;</i>,<i>&lt;UnconditionalScore&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Formulating constraints</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="ConstraintsCollection-class.html">ConstraintsCollection-class</a></code> </p>
-        </td>
-        <td><p>Collection of constraints</p></td>
+        <td><p>Formulating Constraints</p></td>
       </tr><tr>
         
         <td>
@@ -207,20 +195,19 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="Designs.html">Designs</a></code> </p>
+        </td>
+        <td><p>Designs</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="GroupSequentialDesign-class.html">GroupSequentialDesign()</a></code> <code><a href="GroupSequentialDesign-class.html">TwoStageDesign(<i>&lt;GroupSequentialDesign&gt;</i>)</a></code> </p>
         </td>
         <td><p>Group-sequential two-stage designs</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="IntegralScore-class.html">show(<i>&lt;IntegralScore&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Unconditional score class obtained by integration of a
-<code>ConditionalScore</code></p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="N1-class.html">N1()</a></code> </p>
+          <p><code><a href="N1-class.html">N1()</a></code> <code><a href="N1-class.html">evaluate(<i>&lt;N1&gt;</i>,<i>&lt;TwoStageDesign&gt;</i>)</a></code> </p>
         </td>
         <td><p>Regularize n1</p></td>
       </tr><tr>
@@ -250,15 +237,15 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="TwoStageDesign-class.html">TwoStageDesign()</a></code> <code><a href="TwoStageDesign-class.html">show(<i>&lt;TwoStageDesign&gt;</i>)</a></code> <code><a href="TwoStageDesign-class.html">summary(<i>&lt;TwoStageDesign&gt;</i>)</a></code> <code><a href="TwoStageDesign-class.html">print(<i>&lt;TwoStageDesignSummary&gt;</i>)</a></code> </p>
+          <p><code><a href="Scores.html">show(<i>&lt;Score&gt;</i>)</a></code> <code><a href="Scores.html">expected()</a></code> <code><a href="Scores.html">evaluate()</a></code> </p>
         </td>
-        <td><p>Two-stage designs</p></td>
+        <td><p>Scores</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="UnconditionalScore-class.html">UnconditionalScore-class</a></code> </p>
+          <p><code><a href="TwoStageDesign-class.html">TwoStageDesign()</a></code> <code><a href="TwoStageDesign-class.html">show(<i>&lt;TwoStageDesign&gt;</i>)</a></code> <code><a href="TwoStageDesign-class.html">summary(<i>&lt;TwoStageDesign&gt;</i>)</a></code> <code><a href="TwoStageDesign-class.html">print(<i>&lt;TwoStageDesignSummary&gt;</i>)</a></code> </p>
         </td>
-        <td><p>Class for unconditional scoring function</p></td>
+        <td><p>Two-stage designs</p></td>
       </tr><tr>
         
         <td>
@@ -280,6 +267,12 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="compose.html">compose()</a></code> <code><a href="compose.html">evaluate(<i>&lt;CompositeScore&gt;</i>,<i>&lt;TwoStageDesign&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Score Composition</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="condition.html">condition()</a></code> </p>
         </td>
         <td><p>Condition a prior on an interval</p></td>
@@ -298,21 +291,9 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="evaluate.html">evaluate()</a></code> </p>
-        </td>
-        <td><p>Evaluation of a score</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="expectation.html">expectation()</a></code> </p>
         </td>
         <td><p>Expected value of a function</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="expected.html">expected()</a></code> </p>
-        </td>
-        <td><p>Compute the expectation of a conditional score</p></td>
       </tr><tr>
         
         <td>
@@ -364,19 +345,13 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="score-arithmetic.html">`+`(<i>&lt;ConditionalScore&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="score-arithmetic.html">`+`(<i>&lt;numeric&gt;</i>,<i>&lt;ConditionalScore&gt;</i>)</a></code> <code><a href="score-arithmetic.html">`+`(<i>&lt;ConditionalScore&gt;</i>,<i>&lt;ConditionalScore&gt;</i>)</a></code> <code><a href="score-arithmetic.html">`*`(<i>&lt;ConditionalScore&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="score-arithmetic.html">`*`(<i>&lt;numeric&gt;</i>,<i>&lt;ConditionalScore&gt;</i>)</a></code> <code><a href="score-arithmetic.html">`+`(<i>&lt;UnconditionalScore&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="score-arithmetic.html">`+`(<i>&lt;numeric&gt;</i>,<i>&lt;UnconditionalScore&gt;</i>)</a></code> <code><a href="score-arithmetic.html">`+`(<i>&lt;UnconditionalScore&gt;</i>,<i>&lt;UnconditionalScore&gt;</i>)</a></code> <code><a href="score-arithmetic.html">`*`(<i>&lt;UnconditionalScore&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="score-arithmetic.html">`*`(<i>&lt;numeric&gt;</i>,<i>&lt;UnconditionalScore&gt;</i>)</a></code> <code><a href="score-arithmetic.html">`+`(<i>&lt;AffineUnconditionalScore&gt;</i>,<i>&lt;UnconditionalScore&gt;</i>)</a></code> <code><a href="score-arithmetic.html">`+`(<i>&lt;UnconditionalScore&gt;</i>,<i>&lt;AffineUnconditionalScore&gt;</i>)</a></code> <code><a href="score-arithmetic.html">`+`(<i>&lt;AffineUnconditionalScore&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="score-arithmetic.html">`+`(<i>&lt;numeric&gt;</i>,<i>&lt;AffineUnconditionalScore&gt;</i>)</a></code> <code><a href="score-arithmetic.html">`+`(<i>&lt;AffineUnconditionalScore&gt;</i>,<i>&lt;AffineUnconditionalScore&gt;</i>)</a></code> <code><a href="score-arithmetic.html">`*`(<i>&lt;AffineUnconditionalScore&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="score-arithmetic.html">`*`(<i>&lt;numeric&gt;</i>,<i>&lt;AffineUnconditionalScore&gt;</i>)</a></code> <code><a href="score-arithmetic.html">`+`(<i>&lt;AffineConditionalScore&gt;</i>,<i>&lt;ConditionalScore&gt;</i>)</a></code> <code><a href="score-arithmetic.html">`+`(<i>&lt;ConditionalScore&gt;</i>,<i>&lt;AffineConditionalScore&gt;</i>)</a></code> <code><a href="score-arithmetic.html">`+`(<i>&lt;AffineConditionalScore&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="score-arithmetic.html">`+`(<i>&lt;numeric&gt;</i>,<i>&lt;AffineConditionalScore&gt;</i>)</a></code> <code><a href="score-arithmetic.html">`+`(<i>&lt;AffineConditionalScore&gt;</i>,<i>&lt;AffineConditionalScore&gt;</i>)</a></code> <code><a href="score-arithmetic.html">`*`(<i>&lt;AffineConditionalScore&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> <code><a href="score-arithmetic.html">`*`(<i>&lt;numeric&gt;</i>,<i>&lt;AffineConditionalScore&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Score arithmetic</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="simulate-TwoStageDesign-numeric-method.html">simulate(<i>&lt;TwoStageDesign&gt;</i>,<i>&lt;numeric&gt;</i>)</a></code> </p>
         </td>
         <td><p>Draw samples from a two-stage design</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="subject_to.html">subject_to()</a></code> </p>
+          <p><code><a href="subject_to.html">subject_to()</a></code> <code><a href="subject_to.html">evaluate(<i>&lt;ConstraintsCollection&gt;</i>,<i>&lt;TwoStageDesign&gt;</i>)</a></code> </p>
         </td>
         <td><p>Create a collection of constraints</p></td>
       </tr><tr>

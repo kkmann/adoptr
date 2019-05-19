@@ -73,7 +73,7 @@ constraints." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">adoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0.9000</span>
       </span>
     </div>
 
@@ -96,10 +96,16 @@ constraints." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/working-with-priors.html">Working with priors</a>
+      <a href="../articles/working-with-priors.html">Working with Priors</a>
     </li>
     <li>
-      <a href="../articles/score-and-constraints-arithmetic">Working with scores</a>
+      <a href="../articles/conditional-scores.html">Conditional Scores</a>
+    </li>
+    <li>
+      <a href="../articles/composite-scores.html">Composite Scores</a>
+    </li>
+    <li>
+      <a href="../articles/defining-new-scores.html">Definining New Scores</a>
     </li>
   </ul>
 </li>
@@ -144,52 +150,69 @@ constraints." />
     <div class="ref-description">
     
     <p><code>subject_to(...)</code> can be used to generate an object of class
-<code><a href='ConstraintsCollection-class.html'>ConstraintsCollection</a></code> from an arbitrary number of (un)conditional
+<code>ConstraintsCollection</code> from an arbitrary number of (un)conditional
 constraints.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>subject_to</span>(<span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>subject_to</span>(<span class='no'>...</span>)
+
+<span class='co'># S4 method for ConstraintsCollection,TwoStageDesign</span>
+<span class='fu'><a href='Scores.html'>evaluate</a></span>(<span class='no'>s</span>, <span class='no'>design</span>,
+  <span class='kw'>optimization</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>...</th>
-      <td><p>arbitrary number of (un)conditional constraints</p></td>
+      <td><p>either constraint objects (for <code>subject_to</code> or optional arguments passed to <code>evaluate</code>)</p></td>
+    </tr>
+    <tr>
+      <th>s</th>
+      <td><p>object of class <code>ConstraintCollection</code></p></td>
+    </tr>
+    <tr>
+      <th>design</th>
+      <td><p><code><a href='Designs.html'>Design</a></code> object</p></td>
+    </tr>
+    <tr>
+      <th>optimization</th>
+      <td><p>logical, if <code>TRUE</code> uses a relaxation to real
+parameters of the underlying design; used for smooth optimization.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>an object of class <code><a href='ConstraintsCollection-class.html'>ConstraintsCollection</a></code></p>
+    <p>an object of class <code>ConstraintsCollection</code></p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code>subject_to</code> can be used for the constraints in
-   <code><a href='minimize.html'>minimize</a></code>.</p></div>
+    <div class='dont-index'><p><code>subject_to</code> is intended to be used for constraint
+  specification the constraints in <code><a href='minimize.html'>minimize</a></code>.</p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Define Type one error rate</span>
-<span class='no'>toer</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='expected.html'>expected</a></span>(<span class='fu'><a href='ConditionalPower-class.html'>ConditionalPower</a></span>(<span class='fu'><a href='NormalDataDistribution-class.html'>Normal</a></span>(), <span class='fu'><a href='PointMassPrior-class.html'>PointMassPrior</a></span>(<span class='fl'>0.0</span>, <span class='fl'>1</span>)))
+    <pre class="examples"><div class='input'><span class='co'># define type one error rate and power</span>
+<span class='no'>toer</span>  <span class='kw'>&lt;-</span> <span class='fu'><a href='ConditionalPower-class.html'>Power</a></span>(<span class='fu'><a href='NormalDataDistribution-class.html'>Normal</a></span>(), <span class='fu'><a href='PointMassPrior-class.html'>PointMassPrior</a></span>(<span class='fl'>0.0</span>, <span class='fl'>1</span>))
+<span class='no'>power</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ConditionalPower-class.html'>Power</a></span>(<span class='fu'><a href='NormalDataDistribution-class.html'>Normal</a></span>(), <span class='fu'><a href='PointMassPrior-class.html'>PointMassPrior</a></span>(<span class='fl'>0.4</span>, <span class='fl'>1</span>))
 
-<span class='co'># Define Power at delta = 0.4</span>
-<span class='no'>pow</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='expected.html'>expected</a></span>(<span class='fu'><a href='ConditionalPower-class.html'>ConditionalPower</a></span>(<span class='fu'><a href='NormalDataDistribution-class.html'>Normal</a></span>(), <span class='fu'><a href='PointMassPrior-class.html'>PointMassPrior</a></span>(<span class='fl'>0.4</span>, <span class='fl'>1</span>)))
-
-<span class='co'># Define expected sample size at delta = 0.4</span>
-<span class='no'>ess</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='expected.html'>expected</a></span>(<span class='fu'><a href='ConditionalSampleSize-class.html'>ConditionalSampleSize</a></span>(<span class='fu'><a href='NormalDataDistribution-class.html'>Normal</a></span>(), <span class='fu'><a href='PointMassPrior-class.html'>PointMassPrior</a></span>(<span class='fl'>0.4</span>, <span class='fl'>1</span>)))
-
-<span class='co'># Compute design minimizing ess subject to power and toer constraints</span></div><span class='co'># NOT RUN {</span>
-<span class='fu'><a href='minimize.html'>minimize</a></span>(
-   <span class='no'>ess</span>,
-   <span class='fu'>subject_to</span>(
-      <span class='no'>toer</span> <span class='kw'>&lt;=</span> <span class='fl'>0.025</span>,
-      <span class='no'>pow</span>  <span class='kw'>&gt;=</span> <span class='fl'>0.9</span>
-   ),
-   <span class='kw'>initial_design</span> <span class='kw'>=</span> <span class='fu'><a href='TwoStageDesign-class.html'>TwoStageDesign</a></span>(<span class='fl'>50</span>, <span class='fl'>.0</span>, <span class='fl'>2.0</span>, <span class='fl'>60.0</span>, <span class='fl'>2.0</span>, <span class='fl'>5L</span>)
-)
-<span class='co'># }</span></pre>
+<span class='co'># create constrain collection</span>
+<span class='fu'>subject_to</span>(
+  <span class='no'>toer</span>  <span class='kw'>&lt;=</span> <span class='fl'>0.025</span>,
+  <span class='no'>power</span> <span class='kw'>&gt;=</span> <span class='fl'>0.9</span>
+)</div><div class='output co'>#&gt; An object of class "ConstraintsCollection"
+#&gt; Slot "unconditional_constraints":
+#&gt; [[1]]
+#&gt; UnconditionalConstraint
+#&gt; [[2]]
+#&gt; UnconditionalConstraint
+#&gt; 
+#&gt; Slot "conditional_constraints":
+#&gt; list()
+#&gt; </div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

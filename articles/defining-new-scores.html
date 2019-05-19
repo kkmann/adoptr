@@ -5,13 +5,13 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Defining new scores • adoptr</title>
+<title>Defining New Scores • adoptr</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><!-- docsearch --><script src="../docsearch.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous">
 <link href="../docsearch.css" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="Defining new scores">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="Defining New Scores">
 <meta property="og:description" content="">
 <meta property="og:image" content="https://kkmann.github.io/adoptr/logo.png">
 <meta name="twitter:card" content="summary">
@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">adoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0.9000</span>
       </span>
     </div>
 
@@ -48,14 +48,29 @@
 <li>
   <a href="../articles/adoptr.html">Get started</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
 <li>
-  <a href="../articles/working-with-priors.html">Working with priors</a>
+      <a href="../articles/working-with-priors.html">Working with Priors</a>
+    </li>
+    <li>
+      <a href="../articles/conditional-scores.html">Conditional Scores</a>
+    </li>
+    <li>
+      <a href="../articles/composite-scores.html">Composite Scores</a>
+    </li>
+    <li>
+      <a href="../articles/defining-new-scores.html">Definining New Scores</a>
+    </li>
+  </ul>
 </li>
 <li>
-  <a href="../articles/score-and-constraints-arithmetic.html">Score arithmetic</a>
-</li>
-<li>
-  <a href="../articles/defining-new-scores.html">Defining custom scores</a>
+  <a href="../news/index.html">Changelog</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -86,7 +101,7 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>Defining new scores</h1>
+      <h1>Defining New Scores</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/kkmann/adoptr/blob/master/vignettes/defining-new-scores.Rmd"><code>vignettes/defining-new-scores.Rmd</code></a></small>
@@ -97,52 +112,39 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(adoptr)</a></code></pre></div>
-<p>In addition to the already existing ones, <code>adoptr</code> allows the user to define his own scores. This requires a basic knowledge on object oriented programming in R. While all unconditional scores are based on conditional scores via <code><a href="../reference/working-with-scores.html">expected()</a></code> (c.f. vignette on score arithmetic), conditional scores have to be defined by building three blocks.</p>
-<ul>
-<li><p>the class of the score as a subclass of <code>ConditionalScore</code></p></li>
-<li><p>a constructor method</p></li>
-<li><p>a method <code><a href="../reference/working-with-scores.html">evaluate()</a></code> to evaluate the score on a design</p></li>
-</ul>
-<p>In this example we illustrate how one can implement the probability of continuation. Under the null hypothesis <span class="math inline">\(\delta = 0\)</span> it is given via <span class="math display">\[
-P[\text{continue}] = P[c_f \leq X_1 \leq c_e] =\Phi(c_e) - \Phi(c_f),
-\]</span> where <span class="math inline">\(\Phi\)</span> denotes the cumulative distribution function of the standard normal distribution.</p>
-<p>Note that as all unconditional scores this score needs to be represented by a conditional score. One can express it via <span class="math display">\[
-\Phi(c_e) - \Phi(c_f) = \int_{c_f}^{c_e} \phi(x) dx =
-\int_{-\infty}^{\infty} 1_{x \in [c_f, c_e]} \phi(x) dx.
-\]</span></p>
-<p>Therefore, the conditional score <span class="math inline">\(f(x) = 1_{x \in [c_f, c_e]}\)</span> has to be defined. To do so, a new class and a corresponding method <code><a href="../reference/working-with-scores.html">evaluate()</a></code> have to be defined. Let us call the class <code>ConditionalContinuation</code>. Then it can be implemented as follows.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># Define the class</span></a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw">setClass</span>(<span class="st">"ConditionalContinuation"</span>, <span class="dt">contains =</span> <span class="st">"ConditionalScore"</span>)</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co"># Define constructor</span></a>
-<a class="sourceLine" id="cb2-5" data-line-number="5">ConditionalContinuation &lt;-<span class="st"> </span><span class="cf">function</span>(dist, prior) <span class="kw">new</span>(<span class="st">"ConditionalContinuation"</span>, </a>
-<a class="sourceLine" id="cb2-6" data-line-number="6">                                                     <span class="dt">distribution =</span> dist, <span class="dt">prior =</span> prior)</a>
-<a class="sourceLine" id="cb2-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="co"># Define corresponding evaluate method</span></a>
-<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="kw">setMethod</span>(<span class="st">"evaluate"</span>, <span class="kw">signature</span>(<span class="st">"ConditionalContinuation"</span>, <span class="st">"TwoStageDesign"</span>),</a>
-<a class="sourceLine" id="cb2-10" data-line-number="10">          <span class="cf">function</span>(s, design, x1, <span class="dt">optimization =</span> <span class="ot">FALSE</span>, ...) {</a>
-<a class="sourceLine" id="cb2-11" data-line-number="11">              res &lt;-<span class="st"> </span><span class="dv">0</span></a>
-<a class="sourceLine" id="cb2-12" data-line-number="12">              <span class="cf">if</span>(design<span class="op">@</span>c1f <span class="op">&lt;=</span><span class="st"> </span>x1 <span class="op">&amp;&amp;</span><span class="st"> </span>x1 <span class="op">&lt;=</span><span class="st"> </span>design<span class="op">@</span>c1e)</a>
-<a class="sourceLine" id="cb2-13" data-line-number="13">                  res &lt;-<span class="st"> </span><span class="dv">1</span></a>
-<a class="sourceLine" id="cb2-14" data-line-number="14">              <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(res)</a>
-<a class="sourceLine" id="cb2-15" data-line-number="15">})</a></code></pre></div>
-<p>Note that the option <code>optimization</code> has to be given in order to apply a faster Gaussian quadrature if the scores are used during optimization. It suffices to include it as above and can be ignored by the user.</p>
-<p>Now we can define the <code>IntegralScore</code> representing the probability to continue under the effect size <span class="math inline">\(\delta = 0\)</span>.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">p_cont &lt;-<span class="st"> </span><span class="kw"><a href="../reference/working-with-scores.html">expected</a></span>(<span class="kw">ConditionalContinuation</span>(<span class="kw"><a href="../reference/NormalDataDistribution-class.html">Normal</a></span>(), <span class="kw"><a href="../reference/PointMassPrior-class.html">PointMassPrior</a></span>(.<span class="dv">0</span>, <span class="dv">1</span>)))</a></code></pre></div>
-<p>Let us check if it can be evaluated. We need a dummy design to do so.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">design &lt;-<span class="st"> </span><span class="kw"><a href="../reference/TwoStageDesign-class.html">TwoStageDesign</a></span>(</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2">    <span class="dt">n1  =</span> <span class="dv">100</span>,</a>
-<a class="sourceLine" id="cb4-3" data-line-number="3">    <span class="dt">c1f =</span> <span class="fl">.0</span>,</a>
-<a class="sourceLine" id="cb4-4" data-line-number="4">    <span class="dt">c1e =</span> <span class="fl">2.0</span>,</a>
-<a class="sourceLine" id="cb4-5" data-line-number="5">    <span class="dt">n2_pivots =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="dv">150</span>, <span class="dv">5</span>),</a>
-<a class="sourceLine" id="cb4-6" data-line-number="6">    <span class="dt">c2_pivots =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq</a></span>(<span class="fl">2.0</span>, <span class="fl">0.0</span>, <span class="dt">length.out =</span> <span class="dv">5</span>)</a>
-<a class="sourceLine" id="cb4-7" data-line-number="7">)</a></code></pre></div>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="../reference/working-with-scores.html">evaluate</a></span>(p_cont, design)</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co">#&gt; [1] 0.4772499</span></a></code></pre></div>
-<p>Evaluating directly from the design yields.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">pnorm</a></span>(design<span class="op">@</span>c1e) <span class="op">-</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">pnorm</a></span>(design<span class="op">@</span>c1f)</a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="co">#&gt; [1] 0.4772499</span></a></code></pre></div>
-<p>The values are identical what shows that the definition of the new score was successful.</p>
+<p>In addition to the already existing ones, <code>adoptr</code> allows the user to implement custom scores. Usually, this will be done by defining a new sub-class of <code>ConditionalScore</code>. Assume that one would be interested in the probability of early stopping for futility. First we create a new class as subclass of <code>ConditionalScore</code></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">setClass</span>(<span class="st">"FutilityStopping"</span>, <span class="dt">contains =</span> <span class="st">"ConditionalScore"</span>)</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co"># constructor</span></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4">FutilityStopping &lt;-<span class="st"> </span><span class="cf">function</span>() <span class="kw">new</span>(<span class="st">"FutilityStopping"</span>)</a></code></pre></div>
+<p>We only need to implement a method <code><a href="../reference/Scores.html">evaluate()</a></code>, all other methods are inherited from the abstract class <code>ConditionalScore</code>.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">setMethod</span>(<span class="st">"evaluate"</span>, <span class="kw">signature</span>(<span class="st">"FutilityStopping"</span>, <span class="st">"TwoStageDesign"</span>),</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">          <span class="cf">function</span>(s, design, x1, <span class="dt">optimization =</span> <span class="ot">FALSE</span>, ...) </a>
+<a class="sourceLine" id="cb3-3" data-line-number="3">              <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ifelse">ifelse</a></span>(x1 <span class="op">&lt;</span><span class="st"> </span>design<span class="op">@</span>c1f, <span class="dv">1</span>, <span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb3-4" data-line-number="4">)</a></code></pre></div>
+<p>The <code>optimization</code> flag here allows to compute scores differently during the optimization procedure. This is, e.g., used for the evaluation of conditional power which uses adaptive Gaussian Quadrature for maximal precision by default but non adaptive Gaussian Quadrature with the pre-defined integration rule of the design object during optimization for speed.</p>
+<p>The score can now be integrated using the <code>expected</code> method for conditional scores</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">pr_early_futility &lt;-<span class="st"> </span><span class="kw"><a href="../reference/Scores.html">expected</a></span>(</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">  <span class="kw">FutilityStopping</span>(), </a>
+<a class="sourceLine" id="cb4-3" data-line-number="3">  <span class="kw"><a href="../reference/NormalDataDistribution-class.html">Normal</a></span>(), <span class="kw"><a href="../reference/PointMassPrior-class.html">PointMassPrior</a></span>(.<span class="dv">0</span>, <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb4-4" data-line-number="4">)</a></code></pre></div>
+<p>and the resulting integral score can be evaluated as usual. Consider again, the design</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">design &lt;-<span class="st"> </span><span class="kw"><a href="../reference/TwoStageDesign-class.html">TwoStageDesign</a></span>(</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">    <span class="dt">n1  =</span> <span class="dv">100</span>,</a>
+<a class="sourceLine" id="cb5-3" data-line-number="3">    <span class="dt">c1f =</span> <span class="fl">.0</span>,</a>
+<a class="sourceLine" id="cb5-4" data-line-number="4">    <span class="dt">c1e =</span> <span class="fl">2.0</span>,</a>
+<a class="sourceLine" id="cb5-5" data-line-number="5">    <span class="dt">n2_pivots =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="dv">150</span>, <span class="dv">5</span>),</a>
+<a class="sourceLine" id="cb5-6" data-line-number="6">    <span class="dt">c2_pivots =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/lapply">sapply</a></span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>adoptr<span class="op">:::</span><span class="kw">GaussLegendreRule</span>(<span class="dv">5</span>)<span class="op">$</span>nodes, <span class="cf">function</span>(x) <span class="op">-</span>x <span class="op">+</span><span class="st"> </span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb5-7" data-line-number="7">)</a>
+<a class="sourceLine" id="cb5-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(design)</a></code></pre></div>
+<p><img src="defining-new-scores_files/figure-html/define-design-1.png" width="672"></p>
+<p>Then the value of the expected score is given by</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="../reference/Scores.html">evaluate</a></span>(pr_early_futility, design)</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="co">#&gt; [1] 0.5</span></a></code></pre></div>
+<p>The value is correct since it needs to conform with</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">pnorm</a></span>(design<span class="op">@</span>c1f)</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co">#&gt; [1] 0.5</span></a></code></pre></div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

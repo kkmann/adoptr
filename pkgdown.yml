@@ -3,7 +3,9 @@ pkgdown: 1.3.0
 pkgdown_sha: ~
 articles:
   adoptr: adoptr.html
-  score-and-constraints-arithmetic: score-and-constraints-arithmetic.html
+  composite-scores: composite-scores.html
+  conditional-scores: conditional-scores.html
+  defining-new-scores: defining-new-scores.html
   working-with-priors: working-with-priors.html
 urls:
   reference: https://kkmann.github.io/adoptr/reference

@@ -87,7 +87,7 @@ For available methods, see the 'See Also' section at the end of this page." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">adoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0.9000</span>
       </span>
     </div>
 
@@ -110,10 +110,16 @@ For available methods, see the 'See Also' section at the end of this page." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/working-with-priors.html">Working with priors</a>
+      <a href="../articles/working-with-priors.html">Working with Priors</a>
     </li>
     <li>
-      <a href="../articles/score-and-constraints-arithmetic">Working with scores</a>
+      <a href="../articles/conditional-scores.html">Conditional Scores</a>
+    </li>
+    <li>
+      <a href="../articles/composite-scores.html">Composite Scores</a>
+    </li>
+    <li>
+      <a href="../articles/defining-new-scores.html">Definining New Scores</a>
     </li>
   </ul>
 </li>
@@ -251,7 +257,7 @@ pivots specified by <code>order</code></p></td>
 
     <p><code>summary</code> can be used to quickly compute and display basic facts about
 a TwoStageDesign.
-An arbitrary number of names <code><a href='UnconditionalScore-class.html'>UnconditionalScore</a></code> objects can be
+An arbitrary number of names <code><a href='Scores.html'>UnconditionalScore</a></code> objects can be
 provided via the optional arguments <code>...</code> and are included in the summary displayed using
 <code><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></code>.</p>
     
@@ -293,7 +299,7 @@ Both <a href='GroupSequentialDesign-class.html'>group-sequential</a> and
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>design</span> <span class='kw'>&lt;-</span> <span class='fu'>TwoStageDesign</span>(<span class='fl'>50</span>, <span class='fl'>0</span>, <span class='fl'>2</span>, <span class='fl'>50.0</span>, <span class='fl'>2.0</span>, <span class='fl'>5</span>)
-<span class='no'>pow</span>    <span class='kw'>&lt;-</span> <span class='fu'><a href='expected.html'>expected</a></span>(<span class='fu'><a href='ConditionalPower-class.html'>ConditionalPower</a></span>(<span class='kw'>dist</span> <span class='kw'>=</span> <span class='fu'><a href='NormalDataDistribution-class.html'>Normal</a></span>(), <span class='kw'>prior</span> <span class='kw'>=</span> <span class='fu'><a href='PointMassPrior-class.html'>PointMassPrior</a></span>(<span class='fl'>.4</span>, <span class='fl'>1</span>)))
+<span class='no'>pow</span>    <span class='kw'>&lt;-</span> <span class='fu'><a href='ConditionalPower-class.html'>Power</a></span>(<span class='fu'><a href='NormalDataDistribution-class.html'>Normal</a></span>(), <span class='fu'><a href='PointMassPrior-class.html'>PointMassPrior</a></span>(<span class='fl'>.4</span>, <span class='fl'>1</span>))
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/summary'>summary</a></span>(<span class='no'>design</span>, <span class='st'>"Power"</span> <span class='kw'>=</span> <span class='no'>pow</span>)</div><div class='output co'>#&gt; TwoStageDesign with:
 #&gt;      n1:  50.00
 #&gt;     c1f:   0.00

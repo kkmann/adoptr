@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Switch between numeric and S4 class representation of a design — tunable_parameters • adoptr</title>
+<title>Score Composition — compose • adoptr</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -36,11 +36,10 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="Switch between numeric and S4 class representation of a design — tunable_parameters" />
+<meta property="og:title" content="Score Composition — compose" />
 
-<meta property="og:description" content="Get tunable parameters of a design as numeric vector via
-tunable_parameters or update a design object with a suitable
-vector of values for its tunable parameters." />
+<meta property="og:description" content="compose defines new composite scores by point-wise evaluation of
+scores in any valid numerical expression." />
 
 <meta property="og:image" content="https://kkmann.github.io/adoptr/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -142,66 +141,74 @@ vector of values for its tunable parameters." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Switch between numeric and S4 class representation of a design</h1>
-    <small class="dont-index">Source: <a href='https://github.com/kkmann/adoptr/blob/master/R/TwoStageDesign.R'><code>R/TwoStageDesign.R</code></a>, <a href='https://github.com/kkmann/adoptr/blob/master/R/OneStageDesign.R'><code>R/OneStageDesign.R</code></a></small>
-    <div class="hidden name"><code>tunable_parameters.Rd</code></div>
+    <h1>Score Composition</h1>
+    <small class="dont-index">Source: <a href='https://github.com/kkmann/adoptr/blob/master/R/CompositeScore.R'><code>R/CompositeScore.R</code></a></small>
+    <div class="hidden name"><code>compose.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Get tunable parameters of a design as numeric vector via
-<code>tunable_parameters</code> or <code>update</code> a design object with a suitable
-vector of values for its tunable parameters.</p>
+    <p><code>compose</code> defines new composite scores by point-wise evaluation of
+scores in any valid numerical expression.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>tunable_parameters</span>(<span class='no'>object</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>compose</span>(<span class='no'>expr</span>)
 
-<span class='co'># S4 method for TwoStageDesign</span>
-<span class='fu'>tunable_parameters</span>(<span class='no'>object</span>, <span class='no'>...</span>)
-
-<span class='co'># S4 method for TwoStageDesign</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/update'>update</a></span>(<span class='no'>object</span>, <span class='no'>params</span>, <span class='no'>...</span>)
-
-<span class='co'># S4 method for OneStageDesign</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/update'>update</a></span>(<span class='no'>object</span>, <span class='no'>params</span>, <span class='no'>...</span>)</pre>
+<span class='co'># S4 method for CompositeScore,TwoStageDesign</span>
+<span class='fu'><a href='Scores.html'>evaluate</a></span>(<span class='no'>s</span>, <span class='no'>design</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>object</th>
-      <td><p><code>TwoStageDesign</code> object to update</p></td>
+      <th>expr</th>
+      <td><p>Expression (in curly brackets); must contain at least one score
+variable; if multiple scores are used, they must either all be conditional
+or unconditional. Currently, no non-score variables are supported</p></td>
+    </tr>
+    <tr>
+      <th>s</th>
+      <td><p>object of class <code>CompositeScore</code></p></td>
+    </tr>
+    <tr>
+      <th>design</th>
+      <td><p><code><a href='Designs.html'>Design</a></code> object</p></td>
     </tr>
     <tr>
       <th>...</th>
       <td><p>further optional arguments</p></td>
     </tr>
-    <tr>
-      <th>params</th>
-      <td><p>vector of design parameters, must be in same order as returned
-by <br />
-<code>tunable_parameters</code></p></td>
-    </tr>
     </table>
     
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The <code>tunable</code> slot of a <code><a href='TwoStageDesign-class.html'>TwoStageDesign</a></code> stores information about
-the set of design parameters which are considered fixed (not changed during
-optimization) or tunable (changed during optimization).
-For details on how to fix certain parameters or how to make them tunable
-again, see <code><a href='make_tunable.html'>make_fixed</a></code> and <code><a href='make_tunable.html'>make_tunable</a></code>.</p>
+    <p>an object of class <code>CompositeConditionalScore</code> or
+  <code>CompositeUnconditionalScore</code> depending of the class of the scores used
+  in <code>expr</code></p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='TwoStageDesign-class.html'>TwoStageDesign</a></code></p></div>
+    <div class='dont-index'><p><a href='Scores.html'>Scores</a></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>design</span>  <span class='kw'>&lt;-</span> <span class='fu'><a href='TwoStageDesign-class.html'>TwoStageDesign</a></span>(<span class='fl'>25</span>, <span class='fl'>0</span>, <span class='fl'>2</span>, <span class='fl'>25</span>, <span class='fl'>2</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='fl'>5</span>)
-<span class='fu'>tunable_parameters</span>(<span class='no'>design</span>)</div><div class='output co'>#&gt;  [1] 25  0  2 25 25 25 25 25  2  2  2  2  2</div><div class='input'><span class='no'>design2</span> <span class='kw'>&lt;-</span><span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/update'>update</a></span>(<span class='no'>design</span>, <span class='fu'>tunable_parameters</span>(<span class='no'>design</span>) + <span class='fl'>1</span>)
-<span class='fu'>tunable_parameters</span>(<span class='no'>design2</span>)</div><div class='output co'>#&gt;  [1] 26  1  3 26 26 26 26 26  3  3  3  3  3</div><div class='input'>
+    <pre class="examples"><div class='input'><span class='no'>ess</span>   <span class='kw'>&lt;-</span> <span class='fu'><a href='ConditionalSampleSize-class.html'>SampleSize</a></span>(<span class='fu'><a href='NormalDataDistribution-class.html'>Normal</a></span>(), <span class='fu'><a href='PointMassPrior-class.html'>PointMassPrior</a></span>(<span class='fl'>.4</span>, <span class='fl'>1</span>))
+<span class='no'>power</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ConditionalPower-class.html'>Power</a></span>(<span class='fu'><a href='NormalDataDistribution-class.html'>Normal</a></span>(), <span class='fu'><a href='PointMassPrior-class.html'>PointMassPrior</a></span>(<span class='fl'>.4</span>, <span class='fl'>1</span>))
+
+<span class='co'># linear combination:</span>
+<span class='fu'>compose</span>({<span class='no'>ess</span> - <span class='fl'>50</span>*<span class='no'>power</span>})</div><div class='output co'>#&gt; CompositeUnconditionalScore</div><div class='input'>
+<span class='co'># control flow</span>
+<span class='fu'>compose</span>({
+  <span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fl'>0</span>
+  <span class='kw'>for</span> (<span class='no'>i</span> <span class='kw'>in</span> <span class='fl'>1</span>:<span class='fl'>3</span>) {
+     <span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='no'>res</span> + <span class='no'>ess</span>
+  }
+  <span class='no'>res</span>
+})</div><div class='output co'>#&gt; CompositeUnconditionalScore</div><div class='input'>
+<span class='co'># functional composition</span>
+<span class='fu'>compose</span>({<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Log'>log</a></span>(<span class='no'>ess</span>)})</div><div class='output co'>#&gt; CompositeUnconditionalScore</div><div class='input'><span class='no'>cp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ConditionalPower-class.html'>ConditionalPower</a></span>(<span class='fu'><a href='NormalDataDistribution-class.html'>Normal</a></span>(), <span class='fu'><a href='PointMassPrior-class.html'>PointMassPrior</a></span>(<span class='fl'>.4</span>, <span class='fl'>1</span>))
+<span class='fu'>compose</span>({<span class='fl'>3</span>*<span class='no'>cp</span>})</div><div class='output co'>#&gt; CompositeConditionalScore</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -209,7 +216,7 @@ again, see <code><a href='make_tunable.html'>make_fixed</a></code> and <code><a 
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#details">Details</a></li>
+      <li><a href="#value">Value</a></li>
 
       <li><a href="#see-also">See also</a></li>
       

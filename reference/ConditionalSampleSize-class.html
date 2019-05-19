@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Conditional sample size of a design given stage-one outcome — ConditionalSampleSize-class • adoptr</title>
+<title>(Conditional) Sample Size of a Design — ConditionalSampleSize-class • adoptr</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -36,11 +36,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="Conditional sample size of a design given stage-one outcome — ConditionalSampleSize-class" />
+<meta property="og:title" content="(Conditional) Sample Size of a Design — ConditionalSampleSize-class" />
 
 <meta property="og:description" content="This score simply evaluates n(d, x1) for a design d and the
 first-stage outcome x1.
-The data distribution and prior are only relevant when it is integrated." />
+The data distribution and prior are only relevant when it is integrated.
+TODO: depricated SampleSize in favor of ExpectedSampleSize" />
 
 <meta property="og:image" content="https://kkmann.github.io/adoptr/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -73,7 +74,7 @@ The data distribution and prior are only relevant when it is integrated." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">adoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0.9000</span>
       </span>
     </div>
 
@@ -96,10 +97,16 @@ The data distribution and prior are only relevant when it is integrated." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/working-with-priors.html">Working with priors</a>
+      <a href="../articles/working-with-priors.html">Working with Priors</a>
     </li>
     <li>
-      <a href="../articles/score-and-constraints-arithmetic">Working with scores</a>
+      <a href="../articles/conditional-scores.html">Conditional Scores</a>
+    </li>
+    <li>
+      <a href="../articles/composite-scores.html">Composite Scores</a>
+    </li>
+    <li>
+      <a href="../articles/defining-new-scores.html">Definining New Scores</a>
     </li>
   </ul>
 </li>
@@ -136,7 +143,7 @@ The data distribution and prior are only relevant when it is integrated." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Conditional sample size of a design given stage-one outcome</h1>
+    <h1>(Conditional) Sample Size of a Design</h1>
     <small class="dont-index">Source: <a href='https://github.com/kkmann/adoptr/blob/master/R/ConditionalSampleSize.R'><code>R/ConditionalSampleSize.R</code></a></small>
     <div class="hidden name"><code>ConditionalSampleSize-class.Rd</code></div>
     </div>
@@ -145,11 +152,20 @@ The data distribution and prior are only relevant when it is integrated." />
     
     <p>This score simply evaluates <code><a href='n.html'>n(d, x1)</a></code> for a design <code>d</code> and the
 first-stage outcome <code>x1</code>.
-The data distribution and prior are only relevant when it is integrated.</p>
+The data distribution and prior are only relevant when it is integrated.
+TODO: depricated SampleSize in favor of ExpectedSampleSize</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>ConditionalSampleSize</span>(<span class='no'>dist</span>, <span class='no'>prior</span>)</pre>
+    <pre class="usage"><span class='fu'>ConditionalSampleSize</span>()
+
+<span class='fu'>SampleSize</span>(<span class='no'>dist</span>, <span class='no'>prior</span>)
+
+<span class='fu'>ExpectedSampleSize</span>(<span class='no'>dist</span>, <span class='no'>prior</span>)
+
+<span class='co'># S4 method for ConditionalSampleSize,TwoStageDesign</span>
+<span class='fu'><a href='Scores.html'>evaluate</a></span>(<span class='no'>s</span>, <span class='no'>design</span>, <span class='no'>x1</span>,
+  <span class='kw'>optimization</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -162,16 +178,45 @@ The data distribution and prior are only relevant when it is integrated.</p>
       <th>prior</th>
       <td><p>a <code><a href='Prior-class.html'>Prior</a></code> object</p></td>
     </tr>
+    <tr>
+      <th>s</th>
+      <td><p><code><a href='Scores.html'>Score</a></code> object</p></td>
+    </tr>
+    <tr>
+      <th>design</th>
+      <td><p><code><a href='Designs.html'>Design</a></code> object</p></td>
+    </tr>
+    <tr>
+      <th>x1</th>
+      <td><p>stage-one test statistic</p></td>
+    </tr>
+    <tr>
+      <th>optimization</th>
+      <td><p>logical, if <code>TRUE</code> uses a relaxation to real
+parameters of the underlying design; used for smooth optimization.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>further optional arguments</p></td>
+    </tr>
     </table>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>The method <code><a href='evaluate.html'>evaluate</a></code> provides evaluation of the
-   <code>ConditionalSampleSize</code>.</p></div>
+    <div class='dont-index'><p><a href='Scores.html'>Scores</a></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>css</span> <span class='kw'>&lt;-</span> <span class='fu'>ConditionalSampleSize</span>(<span class='kw'>dist</span> <span class='kw'>=</span> <span class='fu'><a href='NormalDataDistribution-class.html'>Normal</a></span>(), <span class='kw'>prior</span> <span class='kw'>=</span> <span class='fu'><a href='PointMassPrior-class.html'>PointMassPrior</a></span>(<span class='fl'>.4</span>, <span class='fl'>1</span>))</div></pre>
+    <pre class="examples"><div class='input'><span class='no'>design</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='TwoStageDesign-class.html'>TwoStageDesign</a></span>(<span class='fl'>50</span>, <span class='fl'>.0</span>, <span class='fl'>2.0</span>, <span class='fl'>50</span>, <span class='fl'>2.0</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='fl'>5L</span>)
+<span class='no'>prior</span>  <span class='kw'>&lt;-</span> <span class='fu'><a href='PointMassPrior-class.html'>PointMassPrior</a></span>(<span class='fl'>.4</span>, <span class='fl'>1</span>)
+
+<span class='no'>css</span>   <span class='kw'>&lt;-</span> <span class='fu'>ConditionalSampleSize</span>()
+<span class='fu'><a href='Scores.html'>evaluate</a></span>(<span class='no'>css</span>, <span class='no'>design</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>.5</span>, <span class='fl'>3</span>))</div><div class='output co'>#&gt; [1] 100 100  50</div><div class='input'>
+<span class='no'>ess</span>   <span class='kw'>&lt;-</span> <span class='fu'>ExpectedSampleSize</span>(<span class='fu'><a href='NormalDataDistribution-class.html'>Normal</a></span>(), <span class='no'>prior</span>)
+
+<span class='co'># those two are equivalent</span>
+<span class='fu'><a href='Scores.html'>evaluate</a></span>(<span class='no'>ess</span>, <span class='no'>design</span>)</div><div class='output co'>#&gt; [1] 73.86249</div><div class='input'><span class='fu'><a href='Scores.html'>evaluate</a></span>(<span class='fu'><a href='Scores.html'>expected</a></span>(<span class='no'>css</span>, <span class='fu'><a href='NormalDataDistribution-class.html'>Normal</a></span>(), <span class='no'>prior</span>), <span class='no'>design</span>)</div><div class='output co'>#&gt; [1] 73.86249</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

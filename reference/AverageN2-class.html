@@ -75,7 +75,7 @@ the continuation region." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">adoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0.9000</span>
       </span>
     </div>
 
@@ -98,10 +98,16 @@ the continuation region." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/working-with-priors.html">Working with priors</a>
+      <a href="../articles/working-with-priors.html">Working with Priors</a>
     </li>
     <li>
-      <a href="../articles/score-and-constraints-arithmetic">Working with scores</a>
+      <a href="../articles/conditional-scores.html">Conditional Scores</a>
+    </li>
+    <li>
+      <a href="../articles/composite-scores.html">Composite Scores</a>
+    </li>
+    <li>
+      <a href="../articles/defining-new-scores.html">Definining New Scores</a>
     </li>
   </ul>
 </li>
@@ -153,8 +159,39 @@ the continuation region.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>AverageN2</span>()</pre>
-        
+    <pre class="usage"><span class='fu'>AverageN2</span>()
+
+<span class='co'># S4 method for AverageN2,TwoStageDesign</span>
+<span class='fu'><a href='Scores.html'>evaluate</a></span>(<span class='no'>s</span>, <span class='no'>design</span>,
+  <span class='kw'>optimization</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>subdivisions</span> <span class='kw'>=</span> <span class='fl'>10000L</span>, <span class='no'>...</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>s</th>
+      <td><p><code><a href='Scores.html'>Score</a></code> object</p></td>
+    </tr>
+    <tr>
+      <th>design</th>
+      <td><p><code><a href='Designs.html'>Design</a></code> object</p></td>
+    </tr>
+    <tr>
+      <th>optimization</th>
+      <td><p>logical, if <code>TRUE</code> uses a relaxation to real
+parameters of the underlying design; used for smooth optimization.</p></td>
+    </tr>
+    <tr>
+      <th>subdivisions</th>
+      <td><p>number of subdivisions to use for adaptive integration
+(only affects non-optimization code)</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>further optional arguments</p></td>
+    </tr>
+    </table>
+    
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>an object of class <code>AverageN2</code></p>
@@ -165,11 +202,18 @@ the continuation region.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>avn2</span> <span class='kw'>&lt;-</span> <span class='fu'>AverageN2</span>()</div></pre>
+    <pre class="examples"><div class='input'><span class='no'>avn2</span> <span class='kw'>&lt;-</span> <span class='fu'>AverageN2</span>()
+
+<span class='fu'><a href='Scores.html'>evaluate</a></span>(
+   <span class='fu'>AverageN2</span>(),
+   <span class='fu'><a href='TwoStageDesign-class.html'>TwoStageDesign</a></span>(<span class='fl'>100</span>, <span class='fl'>0.5</span>, <span class='fl'>1.5</span>, <span class='fl'>60.0</span>, <span class='fl'>1.96</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='fl'>5L</span>)
+) <span class='co'># 60</span></div><div class='output co'>#&gt; [1] 60</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
 
