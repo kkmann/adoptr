@@ -158,9 +158,9 @@
 <a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co">#&gt; [1] 0.9967857</span></a>
 <a class="sourceLine" id="cb6-9" data-line-number="9"><span class="kw"><a href="../reference/Scores.html">evaluate</a></span>(power2, design)</a>
 <a class="sourceLine" id="cb6-10" data-line-number="10"><span class="co">#&gt; [1] 0.9967857</span></a></code></pre></div>
-<p>Similarly, <code>SampleSize</code> is a shorthand constructor for expected conditional sample size, i.e., the overall expected sample size:</p>
+<p>Similarly, <code>ExpectedSampleSize</code> is a shorthand constructor for expected conditional sample size, i.e., the overall expected sample size:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">ess1 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/Scores.html">expected</a></span>(<span class="kw"><a href="../reference/ConditionalSampleSize-class.html">ConditionalSampleSize</a></span>(), <span class="kw"><a href="../reference/NormalDataDistribution-class.html">Normal</a></span>(), uniform_prior)</a>
-<a class="sourceLine" id="cb7-2" data-line-number="2">ess2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ConditionalSampleSize-class.html">SampleSize</a></span>(<span class="kw"><a href="../reference/NormalDataDistribution-class.html">Normal</a></span>(), uniform_prior)</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">ess2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ConditionalSampleSize-class.html">ExpectedSampleSize</a></span>(<span class="kw"><a href="../reference/NormalDataDistribution-class.html">Normal</a></span>(), uniform_prior)</a>
 <a class="sourceLine" id="cb7-3" data-line-number="3"></a>
 <a class="sourceLine" id="cb7-4" data-line-number="4"><span class="kw"><a href="../reference/Scores.html">evaluate</a></span>(ess1, design)</a>
 <a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt; [1] 132.8275</span></a>

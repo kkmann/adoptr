@@ -118,7 +118,7 @@
 <a class="sourceLine" id="cb2-2" data-line-number="2">H_<span class="dv">1</span>      &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PointMassPrior-class.html">PointMassPrior</a></span>(.<span class="dv">2</span>, <span class="dv">1</span>)</a>
 <a class="sourceLine" id="cb2-3" data-line-number="3">datadist &lt;-<span class="st"> </span><span class="kw"><a href="../reference/NormalDataDistribution-class.html">Normal</a></span>(<span class="dt">two_armed =</span> <span class="ot">FALSE</span>)</a>
 <a class="sourceLine" id="cb2-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb2-5" data-line-number="5">ess   &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ConditionalSampleSize-class.html">SampleSize</a></span>(datadist, H_<span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">ess   &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ConditionalSampleSize-class.html">ExpectedSampleSize</a></span>(datadist, H_<span class="dv">1</span>)</a>
 <a class="sourceLine" id="cb2-6" data-line-number="6">power &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ConditionalPower-class.html">Power</a></span>(datadist, H_<span class="dv">1</span>)</a>
 <a class="sourceLine" id="cb2-7" data-line-number="7">toer  &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ConditionalPower-class.html">Power</a></span>(datadist, H_<span class="dv">0</span>)</a></code></pre></div>
 <p>Adoptr supports such <code>CompositeScores</code> via the <code>compose</code> function:</p>

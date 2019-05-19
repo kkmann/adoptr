@@ -139,7 +139,7 @@
 <h2 class="hasAnchor">
 <a href="#specify-optimization-problem" class="anchor"></a>Specify optimization problem</h2>
 <p>We begin by defining the expected sample size under the alternative hypothesis:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">ess &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ConditionalSampleSize-class.html">SampleSize</a></span>(datadist, H_<span class="dv">1</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">ess &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ConditionalSampleSize-class.html">ExpectedSampleSize</a></span>(datadist, H_<span class="dv">1</span>)</a></code></pre></div>
 <p>Similarly, we can define the power and the type-one-error rate by integrating conditional power with respect to the alternative or null hypothesis respectively:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">power &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ConditionalPower-class.html">Power</a></span>(datadist, H_<span class="dv">1</span>)</a>
 <a class="sourceLine" id="cb5-2" data-line-number="2">toer  &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ConditionalPower-class.html">Power</a></span>(datadist, H_<span class="dv">0</span>)</a></code></pre></div>
