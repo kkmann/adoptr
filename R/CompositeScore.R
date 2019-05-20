@@ -35,7 +35,7 @@ setClass("CompositeConditionalScore",
 #' @seealso \link{Scores}
 #'
 #' @examples
-#' ess   <- SampleSize(Normal(), PointMassPrior(.4, 1))
+#' ess   <- ExpectedSampleSize(Normal(), PointMassPrior(.4, 1))
 #' power <- Power(Normal(), PointMassPrior(.4, 1))
 #'
 #' # linear combination:

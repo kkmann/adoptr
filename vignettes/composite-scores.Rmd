@@ -38,7 +38,7 @@ H_0      <- PointMassPrior(.0, 1)
 H_1      <- PointMassPrior(.2, 1)
 datadist <- Normal(two_armed = FALSE)
 
-ess   <- SampleSize(datadist, H_1)
+ess   <- ExpectedSampleSize(datadist, H_1)
 power <- Power(datadist, H_1)
 toer  <- Power(datadist, H_0)
 ```

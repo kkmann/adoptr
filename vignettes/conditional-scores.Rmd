@@ -103,11 +103,11 @@ evaluate(power1, design)
 evaluate(power2, design)
 ```
 
-Similarly, `SampleSize` is a shorthand constructor for expected
+Similarly, `ExpectedSampleSize` is a shorthand constructor for expected
 conditional sample size, i.e., the overall expected sample size:
 ```{r}
 ess1 <- expected(ConditionalSampleSize(), Normal(), uniform_prior)
-ess2 <- SampleSize(Normal(), uniform_prior)
+ess2 <- ExpectedSampleSize(Normal(), uniform_prior)
 
 evaluate(ess1, design)
 evaluate(ess2, design)

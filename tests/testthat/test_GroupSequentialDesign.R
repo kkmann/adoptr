@@ -28,7 +28,7 @@ test_that("Group-sequential design constructor works", {
 
     dist <- Normal(two_armed = FALSE)
 
-    ess  <- SampleSize(dist, alternative)
+    ess  <- ExpectedSampleSize(dist, alternative)
     pow  <- Power(dist, alternative)
     toer <- Power(dist, null)
 
@@ -67,7 +67,7 @@ test_that("GSDesign can be converted to TwoStageDesign", {
     ) # power remains equal
 
 
-    ess <- SampleSize(Normal(), PointMassPrior(.3, 1))
+    ess <- ExpectedSampleSize(Normal(), PointMassPrior(.3, 1))
 
     expect_equal(
         evaluate(ess, design1),
