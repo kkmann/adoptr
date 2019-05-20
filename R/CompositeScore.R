@@ -1,6 +1,7 @@
 setClass("CompositeScore", representation(
-        expr   = "{",
-        scores = "list"
+        expr       = "{",
+        scores     = "list",
+        non_scores = "list"
     ),
     contains = "Score"
 )
@@ -64,7 +65,9 @@ compose <- function(expr) {
         ifnotfound = list(NA)
     )
     # extract 'Score' variables
-    scores <- vars[as.logical(sapply(vars, function(x) is(x, "Score")))]
+    idx_scores <- as.logical(sapply(vars, function(x) is(x, "Score")))
+    scores     <- vars[idx_scores]
+    non_scores <- vars[!idx_scores]
 
     if (length(scores) == 0) {
         stop("no scores in expression")
@@ -75,8 +78,9 @@ compose <- function(expr) {
                 stop("either all or none of the scores must be conditional!")
             }
             return(new("CompositeConditionalScore",
-                       expr         = substitute(expr),
-                       scores       = scores
+                       expr       = substitute(expr),
+                       scores     = scores,
+                       non_scores = non_scores
             ))
         } else {
             # only unconditional scores
@@ -92,6 +96,6 @@ compose <- function(expr) {
 setMethod("evaluate", signature("CompositeScore", "TwoStageDesign"),
           function(s, design, ...) {
              values <- lapply(s@scores, function(s) evaluate(s, design, ...))
-             return(eval(s@expr, values))
+             return(eval(s@expr, c(values, s@non_scores)))
 
           })

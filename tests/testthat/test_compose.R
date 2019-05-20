@@ -85,7 +85,8 @@ test_that("Integrals of compositions", {
 
 test_that("Nested compositions", {
 
-    s <- compose({2*css + css + 1})
+    a <- 2
+    s <- compose({a*css + css + 1})
 
     expect_equal(
         evaluate(
