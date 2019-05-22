@@ -15,11 +15,11 @@ z1     <- seq(-1, 3, .1)
 
 test_that("Errors are defined correctly", {
     expect_error(
-        compose({ess + cp})
+        composite({ess + cp})
     )
 
     expect_error(
-        compose({1})
+        composite({1})
     )
 
 }) # end 'errors are defined correctly'
@@ -29,17 +29,17 @@ test_that("Errors are defined correctly", {
 test_that("Composition of unconditional scores", {
 
     expect_equal(
-        evaluate(compose({2*ess + ess + 1}), design),
+        evaluate(composite({2*ess + ess + 1}), design),
         3*evaluate(ess, design) + 1
     )
 
     expect_equal(
-        evaluate(compose({ess + 10*pow}), design),
+        evaluate(composite({ess + 10*pow}), design),
         evaluate(ess, design) + 10*evaluate(pow, design)
     )
 
     expect_equal(
-        evaluate(compose({sin(ess)}), design),
+        evaluate(composite({sin(ess)}), design),
         sin(evaluate(ess, design))
     ) # functional composition
 
@@ -50,17 +50,17 @@ test_that("Composition of unconditional scores", {
 test_that("Composition of conditional scores", {
 
     expect_equal(
-        evaluate(compose({2*css + css + 1}), design, z1),
+        evaluate(composite({2*css + css + 1}), design, z1),
         3*evaluate(css, design, z1) + 1
     )
 
     expect_equal(
-        evaluate(compose({css + 10*cp}), design, z1),
+        evaluate(composite({css + 10*cp}), design, z1),
         evaluate(css, design, z1) + 10*evaluate(cp, design, z1)
     )
 
     expect_equal(
-        evaluate(compose({sin(css)}), design, z1),
+        evaluate(composite({sin(css)}), design, z1),
         sin(evaluate(css, design, z1))
     ) # functional composition
 
@@ -72,7 +72,7 @@ test_that("Integrals of compositions", {
 
     expect_equal(
         evaluate(
-            expected(compose({2*css + css + 1}), Normal(), PointMassPrior(.3, 1)),
+            expected(composite({2*css + css + 1}), Normal(), PointMassPrior(.3, 1)),
             design
         ),
         3*evaluate(ess, design) + 1
@@ -86,11 +86,11 @@ test_that("Integrals of compositions", {
 test_that("Nested compositions", {
 
     a <- 2
-    s <- compose({a*css + css + 1})
+    s <- composite({a*css + css + 1})
 
     expect_equal(
         evaluate(
-            expected(compose({2*css + css + 1}), Normal(), PointMassPrior(.3, 1)),
+            expected(composite({2*css + css + 1}), Normal(), PointMassPrior(.3, 1)),
             design
         ),
         3*evaluate(ess, design) + 1
@@ -103,12 +103,12 @@ test_that("Nested compositions", {
 test_that("show method returns class name", {
 
     expect_equal(
-        capture.output(show(compose({2*ess}))),
+        capture.output(show(composite({2*ess}))),
         "CompositeUnconditionalScore"
     )
 
     expect_equal(
-        capture.output(show(compose({2*css}))),
+        capture.output(show(composite({2*css}))),
         "CompositeConditionalScore"
     )
 

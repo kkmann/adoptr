@@ -79,5 +79,5 @@ evaluate(power, design, optimization = TRUE) # use non-adaptive quadrature
 }
 \seealso{
 \code{\link{ConditionalPower}}, \code{\link{ConditionalSampleSize}},
-\code{\link{compose}}
+\code{\link{composite}}
 }

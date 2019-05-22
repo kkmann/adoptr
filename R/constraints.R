@@ -76,12 +76,12 @@ setMethod("<=", signature("ConditionalScore", "numeric"),
 #' @rdname Constraints
 #' @export
 setMethod(">=", signature("ConditionalScore", "numeric"),
-          function(e1, e2) new("ConditionalConstraint", score = compose({-1*e1}), rhs = -e2))
+          function(e1, e2) new("ConditionalConstraint", score = composite({-1*e1}), rhs = -e2))
 
 #' @rdname Constraints
 #' @export
 setMethod("<=", signature("numeric", "ConditionalScore"),
-          function(e1, e2) new("ConditionalConstraint", score = compose({-1*e2}), rhs = -e1))
+          function(e1, e2) new("ConditionalConstraint", score = composite({-1*e2}), rhs = -e1))
 
 #' @rdname Constraints
 #' @export
@@ -91,12 +91,12 @@ setMethod(">=", signature("numeric", "ConditionalScore"),
 #' @rdname Constraints
 #' @export
 setMethod("<=", signature("ConditionalScore", "ConditionalScore"),
-          function(e1, e2) new("ConditionalConstraint", score = compose({e1 - e2}), rhs = 0))
+          function(e1, e2) new("ConditionalConstraint", score = composite({e1 - e2}), rhs = 0))
 
 #' @rdname Constraints
 #' @export
 setMethod(">=", signature("ConditionalScore", "ConditionalScore"),
-          function(e1, e2) new("ConditionalConstraint", score = compose({e2 - e1}), rhs = 0))
+          function(e1, e2) new("ConditionalConstraint", score = composite({e2 - e1}), rhs = 0))
 
 
 
@@ -108,12 +108,12 @@ setMethod("<=", signature("UnconditionalScore", "numeric"),
 #' @rdname Constraints
 #' @export
 setMethod(">=", signature("UnconditionalScore", "numeric"),
-          function(e1, e2) new("UnconditionalConstraint", score = compose({-e1}), rhs = -e2))
+          function(e1, e2) new("UnconditionalConstraint", score = composite({-e1}), rhs = -e2))
 
 #' @rdname Constraints
 #' @export
 setMethod("<=", signature("numeric", "UnconditionalScore"),
-          function(e1, e2) new("UnconditionalConstraint", score = compose({-e2}), rhs = -e1))
+          function(e1, e2) new("UnconditionalConstraint", score = composite({-e2}), rhs = -e1))
 
 #' @rdname Constraints
 #' @export
@@ -123,12 +123,12 @@ setMethod(">=", signature("numeric", "UnconditionalScore"),
 #' @rdname Constraints
 #' @export
 setMethod("<=", signature("UnconditionalScore", "UnconditionalScore"),
-          function(e1, e2) new("UnconditionalConstraint", score = compose({e1 - e2}), rhs = 0))
+          function(e1, e2) new("UnconditionalConstraint", score = composite({e1 - e2}), rhs = 0))
 
 #' @rdname Constraints
 #' @export
 setMethod(">=", signature("UnconditionalScore", "UnconditionalScore"),
-          function(e1, e2) new("UnconditionalConstraint", score = compose({e2 - e1}), rhs = 0))
+          function(e1, e2) new("UnconditionalConstraint", score = composite({e2 - e1}), rhs = 0))
 
 
 

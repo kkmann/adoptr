@@ -25,7 +25,7 @@
 #' The returned unconditional score is of class \code{IntegralScore}.
 #'
 #' @seealso \code{\link{ConditionalPower}}, \code{\link{ConditionalSampleSize}},
-#' \code{\link{compose}}
+#' \code{\link{composite}}
 #'
 #' @examples
 #' design <- TwoStageDesign(
