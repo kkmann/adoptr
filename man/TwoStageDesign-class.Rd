@@ -5,211 +5,120 @@
 \alias{TwoStageDesign-class}
 \alias{TwoStageDesign}
 \alias{TwoStageDesign,numeric-method}
-\alias{tunable_parameters}
-\alias{tunable_parameters,TwoStageDesign-method}
-\alias{make_tunable}
-\alias{make_tunable,TwoStageDesign-method}
-\alias{make_fixed}
-\alias{make_fixed,TwoStageDesign-method}
-\alias{update,TwoStageDesign-method}
-\alias{n1}
-\alias{n1,TwoStageDesign-method}
-\alias{n2}
-\alias{n2,TwoStageDesign,numeric-method}
-\alias{n}
-\alias{n,TwoStageDesign,numeric-method}
-\alias{c2}
-\alias{c2,TwoStageDesign,numeric-method}
-\alias{scaled_integration_pivots}
-\alias{scaled_integration_pivots,TwoStageDesign-method}
-\alias{plot,TwoStageDesign-method}
-\alias{simulate,TwoStageDesign,numeric-method}
+\alias{show,TwoStageDesign-method}
+\alias{summary,TwoStageDesign-method}
+\alias{print.TwoStageDesignSummary}
 \title{Two-stage designs}
 \usage{
-TwoStageDesign(...)
+TwoStageDesign(n1, ...)
 
 \S4method{TwoStageDesign}{numeric}(n1, c1f, c1e, n2_pivots, c2_pivots,
   order = NULL, ...)
 
-tunable_parameters(x, ...)
+\S4method{show}{TwoStageDesign}(object)
 
-\S4method{tunable_parameters}{TwoStageDesign}(x, ...)
+\S4method{summary}{TwoStageDesign}(object, ..., rounded = TRUE)
 
-make_tunable(x, ...)
-
-\S4method{make_tunable}{TwoStageDesign}(x, ...)
-
-make_fixed(x, ...)
-
-\S4method{make_fixed}{TwoStageDesign}(x, ...)
-
-\S4method{update}{TwoStageDesign}(object, params, ...)
-
-n1(d, ...)
-
-\S4method{n1}{TwoStageDesign}(d, round = TRUE, ...)
-
-n2(d, x1, ...)
-
-\S4method{n2}{TwoStageDesign,numeric}(d, x1, round = TRUE, ...)
-
-n(d, x1, ...)
-
-\S4method{n}{TwoStageDesign,numeric}(d, x1, round = TRUE, ...)
-
-c2(d, x1, ...)
-
-\S4method{c2}{TwoStageDesign,numeric}(d, x1, ...)
-
-scaled_integration_pivots(d, ...)
-
-\S4method{scaled_integration_pivots}{TwoStageDesign}(d, ...)
-
-\S4method{plot}{TwoStageDesign}(x, y = NULL, rounded = TRUE, ...,
-  k = 100)
-
-\S4method{simulate}{TwoStageDesign,numeric}(object, nsim, dist, theta,
-  seed = NULL, ...)
+\method{print}{TwoStageDesignSummary}(x, ..., round = TRUE)
 }
 \arguments{
-\item{...}{optional arguments depending on implementation}
+\item{n1}{stage-one sample size}
 
-\item{n1}{cf. slot}
+\item{...}{further optional arguments}
 
-\item{c1f}{cf. slot}
+\item{c1f}{early futility stopping boundary}
 
-\item{c1e}{cf. slot}
+\item{c1e}{early efficacy stopping boundary}
 
-\item{n2_pivots}{cf. slot}
+\item{n2_pivots}{numeric vector, stage-two sample size on the integration
+pivot points}
 
-\item{c2_pivots}{cf. slot}
+\item{c2_pivots}{numeric vector, stage-two critical values on the integration
+pivot points}
 
-\item{order}{order (i.e. number of pivot points in the interior of [c1f, c1e])
-of the Gaussian quadrature rule to use for integration}
+\item{order}{\code{integer}, integration order of the employed Gaussian quadrature
+integration rule to evaluate scores. Automatically set to \code{length(n2_pivots)} if \cr
+\code{length(n2_pivots) == length(c2_pivots) > 1}, otherwise c2 and n2
+are taken to be constant in stage-two and replicated to match the number of
+pivots specified by \code{order}}
 
-\item{x}{design}
+\item{object}{design to show or summarize}
 
-\item{object}{object to update}
+\item{rounded}{should rounded n-values be used?}
 
-\item{params}{vector of design parameters (must be in same order as returned
-by \code{as.numeric(design)})}
+\item{x}{return value of call to \code{summary}}
 
-\item{d}{design object}
-
-\item{round}{logical, should integer sample size or real sample size be
-returned?}
-
-\item{x1}{stage-one outcome}
-
-\item{y}{not used}
-
-\item{rounded}{should n-values be rounded?}
-
-\item{k}{number of points to use for plotting}
-
-\item{nsim}{number of simulation runs}
-
-\item{dist}{data distribution}
-
-\item{theta}{location parameter of the data distribution}
-
-\item{seed}{random seed}
-}
-\value{
-\code{TwoStageDesign} returns an object of class \code{TwoStageDesign}.
-
-\code{simulate()} returns list with \code{nsim} rows and for each row
-(each simulation run) the following columns \itemize{
-\item{theta }{The effect size}
-\item{n1 }{First-stage sample size}
-\item{c1f }{Stopping for futility boundary}
-\item{c1e }{Stopping for efficacy boundary}
-\item{x1 }{First-stage outcome}
-\item{n2 }{Resulting second-stage sample size after observing x1}
-\item{c2 }{Resulting second-stage decision-boundary after observing x1}
-\item{x2 }{Second-stage outcome}
-\item{reject }{Decision whether the null hypothesis is rejected or not}
-}
+\item{round}{\code{logical} should sample sizes be rounded to next integer?}
 }
 \description{
-\code{TwoStageDesign} is the fundamental design class of this package.
-It consits of three first-stage parameters, two-stage two vectors
-and additional parameters for implementation.
-
-The argument \code{order} defines the order of the Gaussian quadrature rule.
-If it is missing, the length of \code{n2_pivots} is used.
-
-This function allows to plot the stage-two sample size and decision boundary
-functions of a \code{TwoStageDesign} and
-user-defined elements of the class \code{ConditionalScore}.
+\code{TwoStageDesign} is the fundamental design class of the
+\pkg{\link{adoptr}} package.
+Formally, we represent a generic two-stage design as a five-tuple
+\ifelse{html}{\out{(n<sub>1</sub>, c<sub>1</sub><sup>f</sup>, c<sub>1</sub><sup>e</sup>, n<sub>2</sub>(&middot;), c<sub>2</sub>(&middot;))}}{\eqn{\big(n_1, c_1^f, c_1^e, n_2(\cdot), c_2(\cdot)\big)}}.
+Here, \ifelse{html}{\out{n<sub>1</sub>}}{\eqn{n_1}} is the first-stage sample
+size (per group), \ifelse{html}{\out{c<sub>1</sub><sup>f</sup>}}{\eqn{c_1^f}}
+and \ifelse{html}{\out{c<sub>1</sub><sup>e</sup>}}{\eqn{c_1^e}} are
+boundaries for early stopping for futility and efficacy, respectively.
+Since the trial design is a two-stage design, the elements
+\ifelse{html}{\out{n<sub>2</sub>(&middot;)}}{\eqn{n_2(\cdot)}} (stage-two sample
+size) and \ifelse{html}{\out{c<sub>2</sub>(&middot;)}}{\eqn{c_2(\cdot)}}
+(stage-two critical value) are functions of the first-stage outcome
+\ifelse{html}{\out{X<sub>1</sub>=x<sub>1</sub>}}{\eqn{X_1=x_1}}.
+\ifelse{html}{\out{X<sub>1</sub>}}{\eqn{X_1}} denotes the first-stage test
+statistic. A brief description on this definition of two-stage designs can be
+read \href{https://kkmann.github.io/adoptr/articles/adoptr.html}{here}.
+For available methods, see the 'See Also' section at the end of this page.
 }
 \details{
-\code{n1} denotes the sample size of the first stage.
-\code{c1f} and \code{c1e} define decision boundary.
-If the first-stage test statistic \code{Z_1} is larger than \code{c1e},
-than the trial is stopped early for efficacy and the null hypothesis is
-rejected.
-If \code{Z_1} is smaller than \code{c1f}, than the null hypothesis is
-accpected and the trial is stopped early for futility.
-Otherwise, the trial enters in the second stage. In this case,
-the stage-two sample size function \code{n2(Z_1)} and the stage-two
-rejection boundary \code{c2(Z_1)} are computed.
-As these are functions, they are approximated by a vector of pivots
-denoted by \code{n2_pivots} and \code{c2_pivots}, respectively.
-The slots \code{x1_norm_pivots} and \code{weights} are defined
-for numerical implementation rules.
-The generic implementation of this package is a Gaussian quadrature and
-a corresponding design can be built by calling \code{TwoStageDesign()}.
-The user is free to implement own integration rules.
-He has to be aware that all elements of \code{x1_norm_pivots} have
-to be inside the interval [-1, 1] and have to be scaled by the
-applied integration rule.
-The parameter \code{tunable} is a logical one and indicates which
-design parameters should be tunable for use in optimization.
-Rounded sample size values can be applied by the logical parameter
-\code{rounded}.
-
-If \code{order} is specified, \code{n2_pivots} and \code{c2_pivots} should
-be one-dimensional. They are converted to vectors of length order
-automatically.
+\code{summary} can be used to quickly compute and display basic facts about
+a TwoStageDesign.
+An arbitrary number of names \code{\link[=Scores]{UnconditionalScore}} objects can be
+provided via the optional arguments \code{...} and are included in the summary displayed using
+\code{\link{print}}.
 }
-\section{Methods (by generic)}{
-\itemize{
-\item \code{n}: overall sample size given stage-one outcome
-
-\item \code{scaled_integration_pivots}: get the actual pivots points (knots) of the numerical integration routine
-rule.
-
-\item \code{simulate}: simulate from the given design under parameter theta.
-}}
-
 \section{Slots}{
 
 \describe{
-\item{\code{n1}}{stage-one sample size}
+\item{\code{n1}}{cf. parameter 'n1'}
 
-\item{\code{c1f}}{early stopping for futility boundary}
+\item{\code{c1f}}{cf. parameter 'c1f'}
 
-\item{\code{c1e}}{early stopping for efficacy boundary}
+\item{\code{c1e}}{cf. parameter 'c1e'}
 
-\item{\code{n2_pivots}}{vector of length order giving the values of n2 at the
-pivot points of the numeric integration rule [TODO: these are not available during construction]}
+\item{\code{n2_pivots}}{vector of length 'order' giving the values of n2 at the
+pivot points of the numeric integration rule}
 
 \item{\code{c2_pivots}}{vector of length order giving the values of c2 at the
-pivot points of the numeric integration rule [TODO: these are not available during construction]}
+pivot points of the numeric integration rule}
 
-\item{\code{x1_norm_pivots}}{normalized pivots for integration rule (in [-1, 1])}
+\item{\code{x1_norm_pivots}}{normalized pivots for integration rule (in [-1, 1])
+the actual pivots are scaled to the interval [c1f, c1e] and can be
+obtained by the internal method \cr
+\code{adoptr:::scaled_integration_pivots(design)}}
 
-\item{\code{weights}}{weights of conditional score values at x1_norm_pivots for
-approximating the integral over x1.}
+\item{\code{weights}}{weights of of integration rule at \code{x1_norm_pivots} for
+approximating integrals over \code{x1}}
 
-\item{\code{tunable}}{named logical vector indicating whether corresponding slot is considered a tunable parameter}
+\item{\code{tunable}}{named logical vector indicating whether corresponding slot is
+considered a tunable parameter (i.e. whether it can be changed during
+optimization via \code{\link{minimize}} or not; cf. \cr
+\code{\link{make_fixed}})}
 }}
 
 \examples{
-order  <- 5L
-design <- TwoStageDesign(50, 0, 2, rep(50.0, order), rep(2.0, order))
-cp     <- ConditionalPower(dist = Normal(), prior = PointMassPrior(.4, 1))
-plot(design, "Conditional Power" = cp)
+design <- TwoStageDesign(50, 0, 2, 50.0, 2.0, 5)
+pow    <- Power(Normal(), PointMassPrior(.4, 1))
+summary(design, "Power" = pow)
 
+}
+\seealso{
+For accessing sample sizes and critical values safely, see methods in
+\code{\link{n}} and \code{\link{c2}}; for modifying behaviour during optimizaton
+see \code{\link{make_tunable}}; to convert between S4 class represenation and
+numeric vector, see \code{\link{tunable_parameters}}; for simulating from a given
+design, see \code{\link[=simulate,TwoStageDesign,numeric-method]{simulate}};
+for plotting see \code{\link{plot,TwoStageDesign-method}}.
+Both \link[=GroupSequentialDesign-class]{group-sequential} and
+\link[=OneStageDesign]{one-stage designs} (!) are implemented as subclasses of
+\code{TwoStageDesign}.
 }

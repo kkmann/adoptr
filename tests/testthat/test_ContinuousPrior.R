@@ -8,6 +8,7 @@ test_that("Constructor works", {
         support,
         prior@support
     )
+
     expect_equal(
         stats::integrate(prior@pdf, support[1], support[2])$value,
         1
@@ -92,16 +93,53 @@ test_that("predictive expectation under prior is larger than 0", {
 
 
 
-test_that("conditioning on c(0, .5) leads to correct bounds", {
+test_that("conditioning works", {
 
     prior_cond <<- condition(prior, c(.0, .5))
     expect_equal(
-        c(0.001, .5),
+        c(.0, .5),
         bounds(prior_cond)
+    ) # conditioning on c(0, .5) leads to correct bounds
+
+    unif_prior <- ContinuousPrior(function(x) dunif(x, 0, 1), c(0, 1))
+    cond_unif  <- condition(unif_prior, c(-10, 10))
+    expect_equal(
+        bounds(unif_prior),
+        bounds(cond_unif)
+    ) # conditioning on inverval larger than the support does not change anything
+
+    expect_length(
+        cond_unif@pdf(c(.5, 2)),
+        2
+    ) # conditioned pdf is vectorized
+
+    expect_error(
+        condition(unif_prior, c(2, 3))
     )
 
-}) # end 'conditioning on c(0, .5) leads to correct bounds'
+    expect_equal(
+        cond_unif@pdf(c(-.5, 1.5)),
+        c(0, 0)
+    ) # pdf is 0 outside support after conditioning
 
+}) # end 'conditioning works'
+
+
+test_that("tightening can decrease support", {
+    support <- c(-5, 5)
+    prior_2 <- ContinuousPrior(function(x) dnorm(x, sd = .1), support, tighten_support = TRUE)
+
+    expect_gt(
+        prior_2@support[1],
+        support[1]
+    )
+
+    expect_lt(
+        prior_2@support[2],
+        support[2]
+    )
+
+}) # end 'tightening can decrease support'
 
 
 test_that("conditional predictive pdf integrates to 1", {

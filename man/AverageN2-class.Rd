@@ -13,17 +13,20 @@ AverageN2()
   optimization = FALSE, subdivisions = 10000L, ...)
 }
 \arguments{
-\item{s}{a score of class \code{AverageN2}}
+\item{s}{\code{\link[=Scores]{Score}} object}
 
-\item{design}{a \code{TwoStageDesign}}
+\item{design}{\code{\link[=Designs]{Design}} object}
 
-\item{optimization}{logical, if TRUE uses a relaxation to real parameters of
-the underlying design; used for smooth optimization.}
+\item{optimization}{logical, if \code{TRUE} uses a relaxation to real
+parameters of the underlying design; used for smooth optimization.}
 
-\item{subdivisions}{integer, maxima number of subdivisions used for daptive
-integration.}
+\item{subdivisions}{number of subdivisions to use for adaptive integration
+(only affects non-optimization code)}
 
-\item{...}{further optimal arguments}
+\item{...}{further optional arguments}
+}
+\value{
+an object of class \code{\link{AverageN2}}
 }
 \description{
 Implements the L1-norm of the design's stage-two sample size function.
@@ -31,13 +34,16 @@ The average of the stage-two sample size without weighting with
 the data distribution is computed.
 This can be interpreted as integration over a unifrom prior on
 the continuation region.
-Adding the L1-norm with a small regularization parameter can make
-the optimization more stable.
 }
-\section{Methods (by generic)}{
-\itemize{
-\item \code{evaluate}: generic implementation of evaluating a smoothness
-score. Uses adaptive Gaussian quadrature for integration and might be
-more efficiently implemented by specific \code{TwoStageDesign}-classes.
-}}
+\examples{
+avn2 <- AverageN2()
 
+evaluate(
+   AverageN2(),
+   TwoStageDesign(100, 0.5, 1.5, 60.0, 1.96, order = 5L)
+) # 60
+
+}
+\seealso{
+\code{\link{N1}} for penalizing n1 values
+}

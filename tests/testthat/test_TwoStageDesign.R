@@ -50,16 +50,15 @@ test_that("simulate works (as last time)", {
 
 
 test_that("errors are returned correctly", {
+
     expect_error(
         TwoStageDesign(50, 0, 2, rep(50, 3), c(2, 2))
     ) # pivots length must fit
 
-
-    cp  <- ConditionalPower(Normal(), PointMassPrior(.4, 1))
-    pow <- expected(cp)
-    order  = 5L
+    cp      <- ConditionalPower(Normal(), PointMassPrior(.4, 1))
+    pow     <- Power(Normal(), PointMassPrior(.4, 1))
+    order   <- 5L
     design  <- TwoStageDesign(50.1, 0, 2, rep(50, order), rep(2, order))
-    design2 <- TwoStageDesign(50, 0, 2, rep(50.1, order), rep(2, order))
 
     expect_error(
         plot(design, rounded = TRUE, "Power" = pow)
@@ -74,7 +73,7 @@ test_that("errors are returned correctly", {
 
 
 test_that("print methods", {
-    pow <- expected(ConditionalPower(Normal(), PointMassPrior(.4, 1)))
+    pow <- Power(Normal(), PointMassPrior(.4, 1))
     vdiffr::expect_doppelganger(
         "Design print",
         print.TwoStageDesignSummary(summary(design, "Power" = pow))
@@ -102,3 +101,69 @@ test_that("show method returns design name", {
         show(design)
     )
 }) # end 'show method returns design name'
+
+
+test_that("defining order does not destroy pivots", {
+    n2 <- seq(100, 40, length.out = number_knots)
+    c2 <- seq(2.0, 0.0, length.out = number_knots)
+    d  <- TwoStageDesign(n1, c1f, c1e, n2, c2, number_knots)
+
+    expect_equal(
+        d@n2_pivots,
+        n2
+    )
+
+    expect_equal(
+        d@c2_pivots,
+        c2
+    )
+
+}) # end 'defining order does not destroy pivots'
+
+
+
+test_that("boundary designs keep monotonicity", {
+    n2   <- seq(100, 40, length.out = number_knots)
+    c2   <- seq(2.0, 0.0, length.out = number_knots)
+    d    <- TwoStageDesign(n1, c1f, c1e, n2, c2, number_knots)
+    d_lb <- get_lower_boundary_design(d)
+    d_ub <- get_upper_boundary_design(d)
+
+    expect_equal(
+        sign(diff(d_lb@c2_pivots)),
+        sign(diff(d@c2_pivots))
+    )
+
+    expect_equal(
+        sign(diff(d_ub@n2_pivots)),
+        sign(diff(d@n2_pivots))
+    )
+
+    expect_equal(
+        sign(diff(d_ub@c2_pivots)),
+        sign(diff(d@c2_pivots))
+    )
+
+}) # end 'boundary designs keep monotonicity'
+
+
+
+test_that("boundary designs respect tunable", {
+    n2   <- seq(100, 40, length.out = number_knots)
+    c2   <- seq(2.0, 0.0, length.out = number_knots)
+    d    <- TwoStageDesign(n1, c1f, c1e, n2, c2, number_knots)
+    d    <- make_fixed(d, n1)
+    d_lb <- get_lower_boundary_design(d)
+    d_ub <- get_upper_boundary_design(d)
+
+    expect_equal(
+        d@tunable,
+        d_lb@tunable
+    )
+
+    expect_equal(
+        d@tunable,
+        d_ub@tunable
+    )
+
+}) # end 'boundary designs respect tunable'

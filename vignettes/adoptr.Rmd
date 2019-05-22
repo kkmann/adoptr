@@ -105,7 +105,7 @@ datadist <- Normal(two_armed = FALSE)
 We begin by defining the expected sample size under the alternative hypothesis:
 
 ```{r define-ess}
-ess <- expected(ConditionalSampleSize(datadist, H_1))
+ess <- ExpectedSampleSize(datadist, H_1)
 ```
 
 Similarly, we can define the power and the type-one-error rate by
@@ -113,8 +113,8 @@ integrating conditional power with respect to the alternative or
 null hypothesis respectively:
 
 ```{r define-power-toer}
-power  <- expected(ConditionalPower(datadist, H_1))
-toer   <- expected(ConditionalPower(datadist, H_0))
+power <- Power(datadist, H_1)
+toer  <- Power(datadist, H_0)
 ```
 
 To complete the problem specification, we only need to provide an initial 
@@ -126,7 +126,7 @@ sample size of the t-test and we use a rule of order 7:
 
 ```{r create-design}
 initial_design <- TwoStageDesign(
-    n1    = 25, 
+    n1    = 25,
     c1f   = 0,
     c1e   = 2.5,
     n2    = 50, 
@@ -174,7 +174,7 @@ opt_res$nloptr_return$iterations
 
 iterations.
 
-We can plot the resulting optimized design may again be plotted together with 
+We can plot the resulting optimized design may again be plotted together with
 its conditional power.
 
 ```{r plot-optimal-design}
@@ -193,21 +193,26 @@ evaluate(ess, opt_res$design)
 which is way below the single-stage 51. 
 We can check this results against simulated values 
 ```{r}
-df_sim <- simulate(opt_res$design, nsim = 10^6, dist = datadist, theta = .4, seed = 42)
+df_sim <- simulate(
+  opt_res$design, 
+  nsim = 10^6, 
+  dist = datadist, 
+  theta = .4, 
+  seed = 42
+)
 
 n <- df_sim$n1 + df_sim$n2
 mean(n)
 sd(n) / sqrt(length(n))
 ```
 
-Obviously, the values from simulation and numerical integration are almost 
-identical.
-
-The constraints are also met almost perfectly:
+The values from simulation and numerical integration are almost identical 
+and the constraints are also met almost perfectly:
 ```{r}
 evaluate(toer, opt_res$design)
 evaluate(power, opt_res$design)
 ```
+
 
 
 ## Variations

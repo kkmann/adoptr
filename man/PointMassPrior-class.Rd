@@ -4,68 +4,41 @@
 \name{PointMassPrior-class}
 \alias{PointMassPrior-class}
 \alias{PointMassPrior}
-\alias{bounds,PointMassPrior-method}
-\alias{expectation,PointMassPrior,function-method}
-\alias{condition,PointMassPrior,numeric-method}
-\alias{predictive_pdf,DataDistribution,PointMassPrior,numeric-method}
-\alias{predictive_cdf,DataDistribution,PointMassPrior,numeric-method}
-\alias{posterior,DataDistribution,PointMassPrior,numeric-method}
 \alias{show,PointMassPrior-method}
-\title{Point-mass prior}
+\title{Univariate discrete point mass priors}
 \usage{
 PointMassPrior(theta, mass)
-
-\S4method{bounds}{PointMassPrior}(dist, ...)
-
-\S4method{expectation}{PointMassPrior,`function`}(dist, f, ...)
-
-\S4method{condition}{PointMassPrior,numeric}(dist, interval, ...)
-
-\S4method{predictive_pdf}{DataDistribution,PointMassPrior,numeric}(dist,
-  prior, x1, n1, ...)
-
-\S4method{predictive_cdf}{DataDistribution,PointMassPrior,numeric}(dist,
-  prior, x1, n1, ...)
-
-\S4method{posterior}{DataDistribution,PointMassPrior,numeric}(dist, prior,
-  x1, n1, ...)
 
 \S4method{show}{PointMassPrior}(object)
 }
 \arguments{
-\item{theta}{cf. slot 'theta'}
+\item{theta}{numeric vector of pivot points with positive prior mass}
 
-\item{mass}{cf. slot 'mass'}
-
-\item{dist}{data distribution or prior distribution (depending on context) [TODO: make this clearer by renaming arguments in generics!]}
-
-\item{...}{further optional arguments}
-
-\item{f}{univariate function of parameter to get expected value of}
-
-\item{interval}{numeric vector of length two specifying the interval to condition on.}
-
-\item{prior}{prior distribution}
-
-\item{x1}{stage one outcome (note that n1 is available from \code{design})}
-
-\item{n1}{stage-one sample size}
+\item{mass}{numeric vector of probability masses at the pivot points
+(must sum to 1)}
 
 \item{object}{object of class \code{PointMassPrior}}
 }
+\value{
+an object of class \code{PointMassPrior}
+}
 \description{
-\code{PointMassPrior} is a generic class for representing a univariate prior
-over a discrete set of points with positive probability mass.
-All methods for prior distributions [TODO link] are specialized to
-the discrete case.
+\code{PointMassPrior} is a sub-class of \code{\link[=Prior-class]{Prior}}
+representing a univariate prior over a discrete set of points with positive
+probability mass.
 }
 \section{Slots}{
 
 \describe{
-\item{\code{theta}}{numeric vector of pivot points (parameter values with positive
-prior mass)}
+\item{\code{theta}}{cf. parameter 'theta'}
 
-\item{\code{mass}}{numeric vector of the same length as theta - corresponding
-probability masses (must sum to one!)}
+\item{\code{mass}}{cf. parameter 'mass'}
 }}
 
+\examples{
+PointMassPrior(c(0, .5), c(.3, .7))
+
+}
+\seealso{
+To represent continuous prior distributions use \code{\link{ContinuousPrior}}.
+}

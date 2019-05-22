@@ -4,51 +4,51 @@
 \name{ConditionalPower-class}
 \alias{ConditionalPower-class}
 \alias{ConditionalPower}
+\alias{Power}
 \alias{evaluate,ConditionalPower,TwoStageDesign-method}
-\title{Conditional power of a design given stage-one outcome}
+\title{(Conditional) Power of a Design}
 \usage{
 ConditionalPower(dist, prior)
+
+Power(dist, prior)
 
 \S4method{evaluate}{ConditionalPower,TwoStageDesign}(s, design, x1,
   optimization = FALSE, ...)
 }
 \arguments{
-\item{dist}{data distribution}
+\item{dist}{a univariate \code{\link[=DataDistribution-class]{distribution}} object}
 
-\item{prior}{prior distribution}
+\item{prior}{a \code{\link{Prior}} object}
 
-\item{s}{conditional score object to evaluate}
+\item{s}{\code{\link[=Scores]{Score}} object}
 
-\item{design}{a \code{Design}}
+\item{design}{\code{\link[=Designs]{Design}} object}
 
-\item{x1}{stage one outcome (note that n1 is available from \code{design})}
+\item{x1}{stage-one test statistic}
 
-\item{optimization}{logical, if TRUE uses a relaxation to real parameters of
-the underlying design; used for smooth optimization.}
+\item{optimization}{logical, if \code{TRUE} uses a relaxation to real
+parameters of the underlying design; used for smooth optimization.}
 
-\item{...}{further optional parameters}
+\item{...}{further optional arguments}
 }
 \description{
-This score evaluates to \eqn{P[X_2 > c2(design, X_1)|X_1 = x_1]}.
-Note that the distribution of \eqn{X_2} is the posterior predictive after
-observing \eqn{X_1=x_1}.
+This score evaluates \ifelse{html}{\out{P[X<sub>2</sub> > c2(design, X<sub>1</sub>) | X<sub>1</sub> = x<sub>1</sub>]}}{\eqn{\boldsymbol{P}[X_2 > c_2(design, X_1)|X_1 = x_1]}}.
+Note that the distribution of \ifelse{html}{\out{X<sub>2</sub>}}{\eqn{X_2}} is the posterior predictive after
+observing \ifelse{html}{\out{X<sub>1</sub> = x<sub>1</sub>}}{\eqn{X_1 = x_1}}.
 }
-\details{
-See documentation in \link{ConditionalScore-class}
-    for further details and inherited methods.
+\examples{
+prior <- PointMassPrior(.4, 1)
+cp <- ConditionalPower(Normal(), prior)
+evaluate(
+   cp,
+   TwoStageDesign(50, .0, 2.0, 50, 2.0, order = 5L),
+   x1 = 1
+)
+# these two are equivalent:
+expected(cp, Normal(), prior)
+Power(Normal(), prior)
+
 }
-\section{Functions}{
-\itemize{
-\item \code{ConditionalPower}: constructor
-}}
-
-\section{Slots}{
-
-\describe{
-\item{\code{distribution}}{\code{DataDistribution} object specifying the data distribution
-given the parameter \eqn{\theta} of the model}
-
-\item{\code{prior}}{\code{Prior} object specifying the data distribution
-given the parameter \eqn{\theta} of the model}
-}}
-
+\seealso{
+\code{\link{Scores}}
+}

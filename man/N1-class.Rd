@@ -13,16 +13,32 @@ N1()
   ...)
 }
 \arguments{
-\item{s}{an object of class \code{N1}}
+\item{s}{\code{\link[=Scores]{Score}} object}
 
-\item{design}{the design to compute the smoothness term for}
+\item{design}{\code{\link[=Designs]{Design}} object}
 
-\item{optimization}{logical, if TRUE uses a relaxation to real parameters of
-the underlying design; used for smooth optimization.}
+\item{optimization}{logical, if \code{TRUE} uses a relaxation to real
+parameters of the underlying design; used for smooth optimization.}
 
 \item{...}{further optional arguments}
 }
+\value{
+an object of class \code{\link{N1}}
+}
 \description{
-\code{N1} is a class that penalizes the \code{n1} value of
-a design.
+\code{N1} is a class that computes the \code{n1} value of a design.
+This can be used as a score in \code{\link{minimize}}.
+}
+\examples{
+n1_score <- N1()
+
+evaluate(
+   N1(),
+   TwoStageDesign(70, 0, 2, rep(60, 6), rep(1.7, 6))
+) # 70
+
+}
+\seealso{
+See \code{\link{AverageN2}} for a regularization of
+ the second-stage sample size.
 }

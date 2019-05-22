@@ -1,25 +1,52 @@
-#' Conditional sample size of a design given stage-one outcome
+#' (Conditional) Sample Size of a Design
 #'
-#' This score simply evaluates \code{n(d, x1)}.
+#' This score simply evaluates \code{n(d, x1)} for a design \code{d} and the
+#' first-stage outcome \code{x1}.
 #' The data distribution and prior are only relevant when it is integrated.
 #'
-#' @details See documentation in \link{ConditionalScore-class}
-#'     for further details and inherited methods.
+#' @template dist
+#' @template prior
+#' @template design
+#' @template s
+#' @template x1
+#' @template optimization
+#' @template dotdotdot
 #'
-#' @template ConditionalScoreTemplate
-#' @param dist data distribution
-#' @param prior prior distribution
+#' @seealso \link{Scores}
 #'
+#' @examples
+#' design <- TwoStageDesign(50, .0, 2.0, 50, 2.0, order = 5L)
+#' prior  <- PointMassPrior(.4, 1)
+#'
+#' css   <- ConditionalSampleSize()
+#' evaluate(css, design, c(0, .5, 3))
+#'
+#' ess   <- ExpectedSampleSize(Normal(), prior)
+#'
+#' # those two are equivalent
+#' evaluate(ess, design)
+#' evaluate(expected(css, Normal(), prior), design)
+#'
+#' @aliases ConditionalSampleSize
 #' @exportClass ConditionalSampleSize
 setClass("ConditionalSampleSize", contains = "ConditionalScore")
 
-#' @describeIn ConditionalSampleSize-class constructor
-#' @export
-ConditionalSampleSize <- function(dist, prior) new("ConditionalSampleSize", distribution = dist, prior = prior)
 
-#' @param optimization logical, if TRUE uses a relaxation to real parameters of
-#'    the underlying design; used for smooth optimization.
+
 #' @rdname ConditionalSampleSize-class
+#' @export
+ConditionalSampleSize <- function() new("ConditionalSampleSize")
+
+
+
+#' @rdname ConditionalSampleSize-class
+#' @export
+ExpectedSampleSize <- function(dist, prior) expected(ConditionalSampleSize(), dist, prior)
+
+
+
+#' @rdname ConditionalSampleSize-class
+#' @export
 setMethod("evaluate", signature("ConditionalSampleSize", "TwoStageDesign"),
           function(s, design, x1, optimization = FALSE, ...) {
               n(design, x1, round = !optimization)

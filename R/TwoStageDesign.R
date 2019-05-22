@@ -1,46 +1,59 @@
+#' Designs
+#'
+#' TODO generic information on design objects and classes!
+#'
+#' @name Designs
+NULL
+
+
+
 #' Two-stage designs
 #'
-#' \code{TwoStageDesign} is the fundamental design class of this package.
-#' It consits of three first-stage parameters, two-stage two vectors
-#' and additional parameters for implementation.
+#' \code{TwoStageDesign} is the fundamental design class of the
+#' \pkg{\link{adoptr}} package.
+#' Formally, we represent a generic two-stage design as a five-tuple
+#' \ifelse{html}{\out{(n<sub>1</sub>, c<sub>1</sub><sup>f</sup>, c<sub>1</sub><sup>e</sup>, n<sub>2</sub>(&middot;), c<sub>2</sub>(&middot;))}}{\eqn{\big(n_1, c_1^f, c_1^e, n_2(\cdot), c_2(\cdot)\big)}}.
+#' Here, \ifelse{html}{\out{n<sub>1</sub>}}{\eqn{n_1}} is the first-stage sample
+#' size (per group), \ifelse{html}{\out{c<sub>1</sub><sup>f</sup>}}{\eqn{c_1^f}}
+#' and \ifelse{html}{\out{c<sub>1</sub><sup>e</sup>}}{\eqn{c_1^e}} are
+#' boundaries for early stopping for futility and efficacy, respectively.
+#' Since the trial design is a two-stage design, the elements
+#' \ifelse{html}{\out{n<sub>2</sub>(&middot;)}}{\eqn{n_2(\cdot)}} (stage-two sample
+#' size) and \ifelse{html}{\out{c<sub>2</sub>(&middot;)}}{\eqn{c_2(\cdot)}}
+#' (stage-two critical value) are functions of the first-stage outcome
+#' \ifelse{html}{\out{X<sub>1</sub>=x<sub>1</sub>}}{\eqn{X_1=x_1}}.
+#' \ifelse{html}{\out{X<sub>1</sub>}}{\eqn{X_1}} denotes the first-stage test
+#' statistic. A brief description on this definition of two-stage designs can be
+#' read \href{https://kkmann.github.io/adoptr/articles/adoptr.html}{here}.
+#' For available methods, see the 'See Also' section at the end of this page.
 #'
-#' \code{n1} denotes the sample size of the first stage.
-#' \code{c1f} and \code{c1e} define decision boundary.
-#' If the first-stage test statistic \code{Z_1} is larger than \code{c1e},
-#' than the trial is stopped early for efficacy and the null hypothesis is
-#' rejected.
-#' If \code{Z_1} is smaller than \code{c1f}, than the null hypothesis is
-#' accpected and the trial is stopped early for futility.
-#' Otherwise, the trial enters in the second stage. In this case,
-#' the stage-two sample size function \code{n2(Z_1)} and the stage-two
-#' rejection boundary \code{c2(Z_1)} are computed.
-#' As these are functions, they are approximated by a vector of pivots
-#' denoted by \code{n2_pivots} and \code{c2_pivots}, respectively.
-#' The slots \code{x1_norm_pivots} and \code{weights} are defined
-#' for numerical implementation rules.
-#' The generic implementation of this package is a Gaussian quadrature and
-#' a corresponding design can be built by calling \code{TwoStageDesign()}.
-#' The user is free to implement own integration rules.
-#' He has to be aware that all elements of \code{x1_norm_pivots} have
-#' to be inside the interval [-1, 1] and have to be scaled by the
-#' applied integration rule.
-#' The parameter \code{tunable} is a logical one and indicates which
-#' design parameters should be tunable for use in optimization.
-#' Rounded sample size values can be applied by the logical parameter
-#' \code{rounded}.
-#'
-#'
-#' @slot n1 stage-one sample size
-#' @slot c1f early stopping for futility boundary
-#' @slot c1e early stopping for efficacy boundary
-#' @slot n2_pivots vector of length order giving the values of n2 at the
-#'     pivot points of the numeric integration rule [TODO: these are not available during construction]
+#' @slot n1 cf. parameter 'n1'
+#' @slot c1f cf. parameter 'c1f'
+#' @slot c1e cf. parameter 'c1e'
+#' @slot n2_pivots vector of length 'order' giving the values of n2 at the
+#'     pivot points of the numeric integration rule
 #' @slot c2_pivots vector of length order giving the values of c2 at the
-#'     pivot points of the numeric integration rule [TODO: these are not available during construction]
+#'     pivot points of the numeric integration rule
 #' @slot x1_norm_pivots normalized pivots for integration rule (in [-1, 1])
-#' @slot weights weights of conditional score values at x1_norm_pivots for
-#'     approximating the integral over x1.
-#' @slot tunable named logical vector indicating whether corresponding slot is considered a tunable parameter
+#'     the actual pivots are scaled to the interval [c1f, c1e] and can be
+#'     obtained by the internal method \cr
+#'     \code{adoptr:::scaled_integration_pivots(design)}
+#' @slot weights weights of of integration rule at \code{x1_norm_pivots} for
+#'     approximating integrals over \code{x1}
+#' @slot tunable named logical vector indicating whether corresponding slot is
+#'     considered a tunable parameter (i.e. whether it can be changed during
+#'     optimization via \code{\link{minimize}} or not; cf. \cr
+#'     \code{\link{make_fixed}})
+#'
+#' @seealso For accessing sample sizes and critical values safely, see methods in
+#' \code{\link{n}} and \code{\link{c2}}; for modifying behaviour during optimizaton
+#' see \code{\link{make_tunable}}; to convert between S4 class represenation and
+#' numeric vector, see \code{\link{tunable_parameters}}; for simulating from a given
+#' design, see \code{\link[=simulate,TwoStageDesign,numeric-method]{simulate}};
+#' for plotting see \code{\link{plot,TwoStageDesign-method}}.
+#' Both \link[=GroupSequentialDesign-class]{group-sequential} and
+#' \link[=OneStageDesign]{one-stage designs} (!) are implemented as subclasses of
+#' \code{TwoStageDesign}.
 #'
 #' @exportClass TwoStageDesign
 setClass("TwoStageDesign", representation(
@@ -54,83 +67,144 @@ setClass("TwoStageDesign", representation(
         tunable   = "logical"
     ))
 
-
-
-#' @param ... optional arguments depending on implementation
+#' @param n1 stage-one sample size
 #'
 #' @rdname TwoStageDesign-class
 #' @export
-setGeneric("TwoStageDesign", function(...) standardGeneric("TwoStageDesign"))
+setGeneric("TwoStageDesign", function(n1, ...) standardGeneric("TwoStageDesign"))
 
-
-#' Create an object of class \code{TwoStageDesign}
-#'
-#' The argument \code{order} defines the order of the Gaussian quadrature rule.
-#' If it is missing, the length of \code{n2_pivots} is used.
-#'
-#' If \code{order} is specified, \code{n2_pivots} and \code{c2_pivots} should
-#' be one-dimensional. They are converted to vectors of length order
-#' automatically.
-#'
-#' @param n1 cf. slot
-#' @param c1f cf. slot
-#' @param c1e cf. slot
-#' @param n2_pivots cf. slot
-#' @param c2_pivots cf. slot
-#' @param order order (i.e. number of pivot points in the interior of [c1f, c1e])
-#'     of the Gaussian quadrature rule to use for integration
-#'
-#' @return \code{TwoStageDesign} returns an object of class \code{TwoStageDesign}.
+#' @template c1f
+#' @template c1e
+#' @param n2_pivots numeric vector, stage-two sample size on the integration
+#' pivot points
+#' @param c2_pivots numeric vector, stage-two critical values on the integration
+#' pivot points
+#' @template order
+#' @template dotdotdot
 #'
 #' @rdname TwoStageDesign-class
 #' @export
 setMethod("TwoStageDesign", signature = "numeric",
-function(n1, c1f, c1e, n2_pivots, c2_pivots, order = NULL, ...) {
-    if(is.null(order)) {
-        if(length(n2_pivots) != length(c2_pivots))
+    function(n1, c1f, c1e, n2_pivots, c2_pivots, order = NULL, ...) {
+
+        if (length(n2_pivots) != length(c2_pivots))
             stop("n2_pivots and c2_pivots must be of same length!")
-        order <- length(n2_pivots)
-    } else{
-        n2_pivots <- rep(n2_pivots[1], order)
-        c2_pivots <- rep(c2_pivots[1], order)
-    }
+        if (is.null(order)) {
+            order <- length(n2_pivots)
+        } else if (length(n2_pivots) != order) {
+            n2_pivots <- rep(n2_pivots[1], order)
+            c2_pivots <- rep(c2_pivots[1], order)
+        }
 
-    rule <- GaussLegendreRule(as.integer(order))
+        rule           <- GaussLegendreRule(as.integer(order))
+        tunable        <- logical(8) # initialize to all false
+        tunable[1:5]   <- TRUE
+        names(tunable) <- c("n1", "c1f", "c1e", "n2_pivots", "c2_pivots", "x1_norm_pivots", "weights", "tunable")
 
-    tunable <- logical(8) # initialize to all false
-    tunable[1:5] <- TRUE
-    names(tunable) <- c("n1", "c1f", "c1e", "n2_pivots", "c2_pivots", "x1_norm_pivots", "weights", "tunable")
+        new("TwoStageDesign", n1 = n1, c1f = c1f, c1e = c1e, n2_pivots = n2_pivots,
+            c2_pivots = c2_pivots, x1_norm_pivots = rule$nodes, weights = rule$weights,
+            tunable = tunable)
 
-    new("TwoStageDesign", n1 = n1, c1f = c1f, c1e = c1e, n2_pivots = n2_pivots,
-        c2_pivots = c2_pivots, x1_norm_pivots = rule$nodes, weights = rule$weights,
-        tunable = tunable)
-})
-
-
+    })
 
 
-#' @rdname TwoStageDesign-class
+
+
+#' Switch between numeric and S4 class representation of a design
+#'
+#' Get tunable parameters of a design as numeric vector via
+#' \code{tunable_parameters} or \code{update} a design object with a suitable
+#' vector of values for its tunable parameters.
+#'
+#' @param    object    \code{TwoStageDesign} object to update
+#' @template dotdotdot
+#'
+#' @details
+#' The \code{tunable} slot of a \code{\link{TwoStageDesign}} stores information about
+#' the set of design parameters which are considered fixed (not changed during
+#' optimization) or tunable (changed during optimization).
+#' For details on how to fix certain parameters or how to make them tunable
+#' again, see \code{\link{make_fixed}} and \code{\link{make_tunable}}.
+#'
+#' @examples
+#' design  <- TwoStageDesign(25, 0, 2, 25, 2, order = 5)
+#' tunable_parameters(design)
+#' design2 <-update(design, tunable_parameters(design) + 1)
+#' tunable_parameters(design2)
+#'
+#' @seealso \code{\link{TwoStageDesign}}
+#'
 #' @export
-setGeneric("tunable_parameters", function(x, ...) standardGeneric("tunable_parameters"))
+setGeneric("tunable_parameters", function(object, ...) standardGeneric("tunable_parameters"))
 
-#' @rdname TwoStageDesign-class
+#' @rdname tunable_parameters
 #' @export
 setMethod("tunable_parameters", signature("TwoStageDesign"),
-          function(x, ...) {
+          function(object, ...) {
               res <- numeric(0)
-              for (i in 1:length(x@tunable)) {
-                  if (x@tunable[i])
-                      res <- c(res, slot(x, names(x@tunable)[i]))
+              for (i in 1:length(object@tunable)) {
+                  if (object@tunable[i])
+                      res <- c(res, slot(object, names(object@tunable)[i]))
+              }
+              return(res)
+          })
+
+#' @param params vector of design parameters, must be in same order as returned
+#'   by \cr
+#'   \code{tunable_parameters}
+#'
+#' @rdname tunable_parameters
+#' @export
+setMethod("update", signature("TwoStageDesign"),
+          function(object, params, ...) {
+              tunable_names <- names(object@tunable)[object@tunable]
+              res <- object
+              idx <- 1
+              for (i in 1:length(tunable_names)) {
+                  slotname <- tunable_names[i]
+                  k <- length(slot(object, name = slotname))
+                  slot(res, name = slotname) <- params[idx:(idx + k - 1)]
+                  idx <- idx + k
               }
               return(res)
           })
 
 
-#' @rdname TwoStageDesign-class
+
+#' Fix parameters during optimization
+#'
+#' The methods \code{make_fixed} and \code{make_tunable} can be used to modify
+#' the 'tunability' status of parameters in a \code{\link{TwoStageDesign}}
+#' object.
+#' Tunable parameters are optimized over, non-tunable ('fixed') parameters are
+#' considered given and not altered during optimization.
+#'
+#' @param x \code{TwoStageDesign} object
+#' @param ... unquoted names of slots for which the tunability status should be
+#' changed.
+#'
+#' @examples
+#' design <- TwoStageDesign(25, 0, 2, 25, 2, order = 5)
+#' # default: all parameters are tunable (except integration pivots,
+#' # weights and tunability status itself)
+#' design@tunable
+#'
+#' # make n1 and the pivots of n2 fixed (not changed during optimization)
+#' design <- make_fixed(design, n1, n2_pivots)
+#' design@tunable
+#'
+#' # make them tunable again
+#' design <- make_tunable(design, n1, n2_pivots)
+#' design@tunable
+#'
+#' @seealso \code{\link{TwoStageDesign}}, \code{\link{tunable_parameters}} for
+#' converting tunable parameters of a design object to a numeric vector (and back),
+#' and \code{\link{minimize}} for the actual minimzation procedure
+#'
 #' @export
 setGeneric("make_tunable", function(x, ...) standardGeneric("make_tunable"))
 
-#' @rdname TwoStageDesign-class
+#' @rdname make_tunable
 #' @export
 setMethod("make_tunable", signature("TwoStageDesign"),
           function(x, ...) {
@@ -144,13 +218,12 @@ setMethod("make_tunable", signature("TwoStageDesign"),
           })
 
 
-#' @param x design
-#'
-#' @rdname TwoStageDesign-class
+
+#' @rdname make_tunable
 #' @export
 setGeneric("make_fixed", function(x, ...) standardGeneric("make_fixed"))
 
-#' @rdname TwoStageDesign-class
+#' @rdname make_tunable
 #' @export
 setMethod("make_fixed", signature("TwoStageDesign"),
           function(x, ...) {
@@ -166,38 +239,16 @@ setMethod("make_fixed", signature("TwoStageDesign"),
 
 
 
-#' @param params vector of design parameters (must be in same order as returned
-#'     by \code{as.numeric(design)})
-#' @param object object to update
-#'
-#' @rdname TwoStageDesign-class
-#' @export
-setMethod("update", signature("TwoStageDesign"),
-    function(object, params, ...) {
-        tunable_names <- names(object@tunable)[object@tunable]
-        res <- object
-        idx <- 1
-        for (i in 1:length(tunable_names)) {
-            slotname <- tunable_names[i]
-            k <- length(slot(object, name = slotname))
-            slot(res, name = slotname) <- params[idx:(idx + k - 1)]
-            idx <- idx + k
-        }
-        return(res)
-    })
 
 
 
-#' @param d design object
-#'
-#' @rdname TwoStageDesign-class
+
+
+#' @rdname n
 #' @export
 setGeneric("n1", function(d, ...) standardGeneric("n1"))
 
-#' @param round logical, should integer sample size or real sample size be
-#'    returned?
-#'
-#' @rdname TwoStageDesign-class
+#' @rdname n
 #' @export
 setMethod("n1", signature("TwoStageDesign"),
           function(d, round = TRUE, ...) {
@@ -209,13 +260,11 @@ setMethod("n1", signature("TwoStageDesign"),
 
 
 
-#' @param x1 stage-one outcome
-#'
-#' @rdname TwoStageDesign-class
+#' @rdname n
 #' @export
 setGeneric("n2", function(d, x1, ...) standardGeneric("n2"))
 
-#' @rdname TwoStageDesign-class
+#' @rdname n
 #' @export
 setMethod("n2", signature("TwoStageDesign", "numeric"),
           function(d, x1, round = TRUE, ...) {
@@ -235,22 +284,104 @@ setMethod("n2", signature("TwoStageDesign", "numeric"),
 
 
 
-#' @rdname TwoStageDesign-class
+#' Query sample size of a design
+#'
+#' Methods to access the stage-one, stage-two, or overall sample size of a
+#' \code{\link{TwoStageDesign}}.
+#' \code{n1} returns the first-stage sample size of a design,
+#' \code{n2} the stage-two sample size conditional on the stage-one test
+#' statistic and \code{n} the overall sample size \code{n1 + n2}.
+#' Internally, objects of the class \code{TwoStageDesign} allow non-natural,
+#' real sample sizes to allow smooth optimization (cf. \code{\link{minimize}} for
+#' details).
+#' The optional argument \code{round} allows to switch between the internal
+#' real representation and a rounded version (rounding to the next positive
+#' integer).
+#'
+#' @examples
+#' design <- TwoStageDesign(
+#'    n1    = 25,
+#'    c1f   = 0,
+#'    c1e   = 2.5,
+#'    n2    = 50,
+#'    c2    = 1.96,
+#'    order = 7L
+#' )
+#'
+#' n1(design) # 25
+#' design@n1 # 25
+#'
+#' n(design, x1 = 2.2) # 75
+#'
+#'
+#' @template d
+#' @template x1
+#' @template round
+#' @template dotdotdot
+#'
+#' @seealso \code{\link{TwoStageDesign}}, see \code{\link{c2}} for accessing
+#' the critical values
+#'
+#' @rdname n
 #' @export
 setGeneric("n", function(d, x1, ...) standardGeneric("n"))
 
-#' @describeIn TwoStageDesign overall sample size given stage-one outcome
+#' @rdname n
 #' @export
 setMethod("n", signature("TwoStageDesign", "numeric"),
           function(d, x1, round = TRUE, ...) n2(d, x1, round, ...) + n1(d, round, ...))
 
 
 
-#' @rdname TwoStageDesign-class
+
+
+#' Query critical values of a design
+#'
+#' Methods to access the stage-two critical values of a
+#' \code{\link{TwoStageDesign}}.
+#' \code{c2} returns the stage-two critical value conditional on the stage-one test
+#' statistic.
+#'
+#' @examples
+#' design <- TwoStageDesign(
+#'   n1    = 25,
+#'   c1f   = 0,
+#'   c1e   = 2.5,
+#'   n2    = 50,
+#'   c2    = 1.96,
+#'   order = 7L
+#' )
+#'
+#' c2(design, 2.2) # 1.96
+#' c2(design, 3.0) # -Inf
+#' c2(design, -1.0) # Inf
+#'
+#' @template d
+#' @template x1
+#' @template dotdotdot
+#'
+#' @seealso \code{\link{TwoStageDesign}}, see \code{\link{n}} for accessing
+#' the sample size of a design
+#'
+#' @examples
+#' design <- TwoStageDesign(
+#'    n1    = 25,
+#'    c1f   = 0,
+#'    c1e   = 2.5,
+#'    n2    = 50,
+#'    c2    = 1.96,
+#'    order = 7L
+#' )
+#'
+#' c2(design, 2.2) # 1.96
+#' c2(design, 3.0) # -Inf
+#' c2(design, -1.0) # Inf
+#'
+#' @rdname critical-values
 #' @export
 setGeneric("c2", function(d, x1, ...) standardGeneric("c2"))
 
-#' @rdname TwoStageDesign-class
+#' @rdname critical-values
 #' @export
 setMethod("c2", signature("TwoStageDesign", "numeric"),
           function(d, x1, ...) ifelse(x1 < d@c1f, Inf,
@@ -265,12 +396,12 @@ setMethod("c2", signature("TwoStageDesign", "numeric"),
 )
 
 
-#' @rdname TwoStageDesign-class
-#' @export
+
+
+
+# internal, get integration pivots scales to [c1f, c1e]
 setGeneric("scaled_integration_pivots", function(d, ...) standardGeneric("scaled_integration_pivots"))
 
-#' @describeIn TwoStageDesign get the actual pivots points (knots) of the numerical integration routine
-#'     rule.
 setMethod("scaled_integration_pivots", signature("TwoStageDesign"),
           function(d, ...){
               h <- (d@c1e - d@c1f) / 2
@@ -280,38 +411,37 @@ setMethod("scaled_integration_pivots", signature("TwoStageDesign"),
 
 
 
-#' Show method for TwoStageDesign objects
+
+#' @param object design to show or summarize
 #'
-#' Only states the class itself. More information is given by the respective
-#' \code{summary} method, cf. \link{TwoStageDesign-class}.
-#'
-#' @param object design to show
-#'
+#' @rdname TwoStageDesign-class
 #' @export
 setMethod("show", signature(object = "TwoStageDesign"),
-          function(object) cat("TwoStageDesign"))
+          function(object) cat(class(object)[1]))
 
 
 
 
-#' Plot TwoStageDesign with optional set of conditional scores
+#' Plot \code{TwoStageDesign} with optional set of conditional scores
 #'
-#' This function allows to plot the stage-two sample size and decision boundary
-#' functions of a \code{TwoStageDesign} and
-#' user-defined elements of the class \code{ConditionalScore}.
+#' This method allows to plot the stage-two sample size and decision boundary
+#' functions of a chosen design.
 #'
+#' \code{\link{TwoStageDesign}} and
+#' user-defined elements of the class \code{\link[=Scores]{ConditionalScore}}.
 #'
-#' @param y not used
+#' @template plot
 #' @param rounded should n-values be rounded?
 #' @param k number of points to use for plotting
+#' @param ... further named \code{ConditinonalScores} to plot for the design
+#'
+#' @seealso \code{\link{TwoStageDesign}}
 #'
 #' @examples
-#' order  <- 5L
-#' design <- TwoStageDesign(50, 0, 2, rep(50.0, order), rep(2.0, order))
+#' design <- TwoStageDesign(50, 0, 2, 50, 2, 5)
 #' cp     <- ConditionalPower(dist = Normal(), prior = PointMassPrior(.4, 1))
 #' plot(design, "Conditional Power" = cp)
 #'
-#' @rdname TwoStageDesign-class
 #' @export
 setMethod("plot", signature(x = "TwoStageDesign"),
           function(x, y = NULL, rounded = TRUE, ..., k = 100) {
@@ -334,13 +464,23 @@ setMethod("plot", signature(x = "TwoStageDesign"),
                              ylab = "", xlab = expression("x"[1]))
               if (length(scores) > 0) {
                   for (i in 1:length(scores)) {
-                      graphics::plot(x1, evaluate(scores[[i]], x, x1), 'l',
-                                     main = names(scores[i]), ylab = "", xlab = expression("x"[1]),
-                                     ylim = c(0,
-                                              1.05 * max(sapply(x1,
-                                                                function(z) evaluate(scores[[i]], x, z)))))
-                      graphics::lines(x2, evaluate(scores[[i]], x, x2))
-                      graphics::lines(x3, evaluate(scores[[i]], x, x3))
+                      y <- list(
+                          left =   evaluate(scores[[i]], x, x2),
+                          middle = evaluate(scores[[i]], x, x1),
+                          right =  evaluate(scores[[i]], x, x3)
+                      )
+                      expand <- .05*(max(do.call(c, y)) - min(do.call(c, y)))
+                      graphics::plot(
+                          x1, y$middle,
+                          'l',
+                          xlim = c(min(x4), max(x4)),
+                          ylim = c(min(do.call(c, y)) - expand, max(do.call(c, y)) + expand),
+                          main = names(scores[i]),
+                          ylab = "",
+                          xlab = expression("x"[1])
+                      )
+                      graphics::lines(x2, y$left)
+                      graphics::lines(x3, y$right)
                   }
               }
               graphics::par(opts)
@@ -348,27 +488,21 @@ setMethod("plot", signature(x = "TwoStageDesign"),
 
 
 
-#' Summarize TwoStageDesign objects with optional set of scores
+#' @details
+#' \code{summary} can be used to quickly compute and display basic facts about
+#' a TwoStageDesign.
+#' An arbitrary number of names \code{\link[=Scores]{UnconditionalScore}} objects can be
+#' provided via the optional arguments \code{...} and are included in the summary displayed using
+#' \code{\link{print}}.
 #'
-#' \code{summary} summarizes the first-stage of a \code{TwoStageDesign}
-#' and objects of class \code{UnconditionalScore} that have to be
-#' defined by the user.
-#'
-#' The first stage sample size and the two continuation decsion boundaries
-#' are printed.
-#' Furthermore, the user can define unconditional scores and these will be
-#' evaluated and listed.
-#'
-#' @param object design object to summarize
 #' @param rounded should rounded n-values be used?
-#' @param ... optinal additional named UnconditionalScores
 #'
 #' @examples
-#' order  <- 5L
-#' design <- TwoStageDesign(50, 0, 2, 50.0, 2.0, order)
-#' pow    <- expected(ConditionalPower(dist = Normal(), prior = PointMassPrior(.4, 1)))
+#' design <- TwoStageDesign(50, 0, 2, 50.0, 2.0, 5)
+#' pow    <- Power(Normal(), PointMassPrior(.4, 1))
 #' summary(design, "Power" = pow)
 #'
+#' @rdname TwoStageDesign-class
 #' @export
 setMethod("summary", signature("TwoStageDesign"),
           function(object, ..., rounded = TRUE) {
@@ -384,23 +518,28 @@ setMethod("summary", signature("TwoStageDesign"),
               return(res)
           })
 
-
-#' Print object of class TwoStageDesignSummary
+#' @param  x return value of call to \code{summary}
+#' @template round
 #'
-#' @param x object to print
-#' @param rounded should rounded n-values be used?
-#' @param ... unused
-#'
+#' @rdname TwoStageDesign-class
 #' @export
-print.TwoStageDesignSummary <- function(x, ..., rounded = TRUE) {
-    cat("TwoStageDesign with:\n\r")
-    cat(sprintf("     n1: %6.1f\n\r", n1(x$design, round = rounded)))
-    cat(sprintf("    c1f: %6.1f\n\r", x$design@c1f))
-    cat(sprintf("    c1e: %6.1f\n\r", x$design@c1e))
+print.TwoStageDesignSummary <- function(x, ..., round = TRUE) {
+    x1 <- seq(x$design@c1f, x$design@c1e, length.out = 1000)
+            cat(sprintf("%s with:\n\r", class(x$design)[1]))
+    cat(sprintf("     n1: %6.2f\n\r", n1(x$design, round)))
+    cat(sprintf("    c1f: %6.2f\n\r", x$design@c1f))
+    cat(sprintf("    c1e: %6.2f\n\r", x$design@c1e))
+    cat(sprintf(" max n2: %6.2f\n\r", max(n2(x$design, x1, round))))
+    cat(sprintf(" min n2: %6.2f\n\r", min(n2(x$design, x1, round))))
+    cat(sprintf("%i integration pivots at: ", length(x$design@x1_norm_pivots)))
+    cat(paste0(sprintf("%.2f", scaled_integration_pivots(x$design)), collapse = ", "))
+    cat("\n\r    integration weights: ")
+    cat(paste0(sprintf("%.2f", x$design@weights), collapse = ", "))
+    cat("\n\r")
     if (length(x$scores) > 0) {
         cat("Unconditional scores:\n\r")
         for (i in 1:length(x$scores)) {
-            cat(sprintf("    %s: %7.3f\n\r", names(x$scores)[i], x$scores[i]))
+            cat(sprintf("    %10s: %7.3f\n\r", names(x$scores)[i], x$scores[i]))
         }
         cat("\n\r")
     }
@@ -408,15 +547,20 @@ print.TwoStageDesignSummary <- function(x, ..., rounded = TRUE) {
 
 
 
-#' @describeIn TwoStageDesign simulate from the given design under parameter theta.
+#' Draw samples from a two-stage design
 #'
+#' \code{simulate} allows to draw samples from a given
+#' \code{\link{TwoStageDesign}}.
+#'
+#' @param object \code{TwoStageDesign} to draw samples from
 #' @param nsim number of simulation runs
 #' @param seed random seed
 #' @param dist data distribution
 #' @param theta location parameter of the data distribution
+#' @template dotdotdot
 #'
-#' @return \code{simulate()} returns list with \code{nsim} rows and for each row
-#' (each simulation run) the following columns \itemize{
+#' @return \code{simulate()} returns a \code{data.frame} with \code{nsim}
+#' rows and for each row (each simulation run) the following columns \itemize{
 #' \item{theta }{The effect size}
 #' \item{n1 }{First-stage sample size}
 #' \item{c1f }{Stopping for futility boundary}
@@ -427,6 +571,13 @@ print.TwoStageDesignSummary <- function(x, ..., rounded = TRUE) {
 #' \item{x2 }{Second-stage outcome}
 #' \item{reject }{Decision whether the null hypothesis is rejected or not}
 #' }
+#'
+#' @examples
+#' design <- TwoStageDesign(25, 0, 2, 25, 2, order = 5)
+#' # draw samples assuming two-armed design
+#' simulate(design, 10, Normal(), .3, 42)
+#'
+#' @seealso \code{\link{TwoStageDesign}}
 #'
 #' @export
 setMethod("simulate", signature("TwoStageDesign", "numeric"),

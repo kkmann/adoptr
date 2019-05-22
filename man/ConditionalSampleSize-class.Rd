@@ -4,50 +4,52 @@
 \name{ConditionalSampleSize-class}
 \alias{ConditionalSampleSize-class}
 \alias{ConditionalSampleSize}
+\alias{ExpectedSampleSize}
 \alias{evaluate,ConditionalSampleSize,TwoStageDesign-method}
-\title{Conditional sample size of a design given stage-one outcome}
+\title{(Conditional) Sample Size of a Design}
 \usage{
-ConditionalSampleSize(dist, prior)
+ConditionalSampleSize()
+
+ExpectedSampleSize(dist, prior)
 
 \S4method{evaluate}{ConditionalSampleSize,TwoStageDesign}(s, design, x1,
   optimization = FALSE, ...)
 }
 \arguments{
-\item{dist}{data distribution}
+\item{dist}{a univariate \code{\link[=DataDistribution-class]{distribution}} object}
 
-\item{prior}{prior distribution}
+\item{prior}{a \code{\link{Prior}} object}
 
-\item{s}{conditional score object to evaluate}
+\item{s}{\code{\link[=Scores]{Score}} object}
 
-\item{design}{a \code{Design}}
+\item{design}{\code{\link[=Designs]{Design}} object}
 
-\item{x1}{stage one outcome (note that n1 is available from \code{design})}
+\item{x1}{stage-one test statistic}
 
-\item{optimization}{logical, if TRUE uses a relaxation to real parameters of
-the underlying design; used for smooth optimization.}
+\item{optimization}{logical, if \code{TRUE} uses a relaxation to real
+parameters of the underlying design; used for smooth optimization.}
 
-\item{...}{further optional parameters}
+\item{...}{further optional arguments}
 }
 \description{
-This score simply evaluates \code{n(d, x1)}.
+This score simply evaluates \code{n(d, x1)} for a design \code{d} and the
+first-stage outcome \code{x1}.
 The data distribution and prior are only relevant when it is integrated.
 }
-\details{
-See documentation in \link{ConditionalScore-class}
-    for further details and inherited methods.
+\examples{
+design <- TwoStageDesign(50, .0, 2.0, 50, 2.0, order = 5L)
+prior  <- PointMassPrior(.4, 1)
+
+css   <- ConditionalSampleSize()
+evaluate(css, design, c(0, .5, 3))
+
+ess   <- ExpectedSampleSize(Normal(), prior)
+
+# those two are equivalent
+evaluate(ess, design)
+evaluate(expected(css, Normal(), prior), design)
+
 }
-\section{Functions}{
-\itemize{
-\item \code{ConditionalSampleSize}: constructor
-}}
-
-\section{Slots}{
-
-\describe{
-\item{\code{distribution}}{\code{DataDistribution} object specifying the data distribution
-given the parameter \eqn{\theta} of the model}
-
-\item{\code{prior}}{\code{Prior} object specifying the data distribution
-given the parameter \eqn{\theta} of the model}
-}}
-
+\seealso{
+\link{Scores}
+}

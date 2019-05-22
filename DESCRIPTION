@@ -1,12 +1,14 @@
 Package: adoptr
 Type: Package
-Title: Adaptive Optimal Two-Stage Designs
-Version: 0.1.0
+Title: Adaptive Optimal Two-Stage Designs in R
+Version: 0.2.0.9000
 Authors@R: c(
-        person("Kevin", "Kunzmann", role = c("aut", "cre"), email = "kevin.kunzmann@mrc-bsu.cam.uk"),
+        person("Kevin", "Kunzmann", role = c("aut", "cre"), email = "kevin.kunzmann@mrc-bsu.cam.ac.uk"),
         person("Maximilian", "Pilz", role = c("aut"), email = "pilz@imbi.uni-heidelberg.de")
     )
-Description: Optimize two-stage designs for clinical trials. 
+Description: Optimize one or two-arm, two-stage designs for clinical trials with respect to several 
+    pre-implemented objective criteria or implement custom objectives.
+    Optimization under uncertainty and conditional (given stage-one outcome) constraints are supported.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
@@ -32,14 +34,12 @@ Collate:
     GroupSequentialDesign.R
     OneStageDesign.R
     Scores.R
-    AffineScoreFunction.R
     constraints.R
     minimize.R
     ConditionalPower.R
     ConditionalSampleSize.R
     regularization.R
-    postprocess.R
-    boundary_designs.R
+    CompositeScore.R
 RoxygenNote: 6.1.1
 BugReports: https://github.com/kkmann/adoptr/issues
 URL: https://github.com/kkmann/adoptr

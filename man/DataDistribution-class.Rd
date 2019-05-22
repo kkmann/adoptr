@@ -3,17 +3,9 @@
 \docType{class}
 \name{DataDistribution-class}
 \alias{DataDistribution-class}
-\alias{probability_density_function}
-\alias{cumulative_distribution_function}
+\alias{DataDistribution}
 \title{Data distributions}
-\usage{
-probability_density_function(dist, x, n, theta, ...)
-
-cumulative_distribution_function(dist, x, n, theta, ...)
-}
 \arguments{
-\item{dist}{data distribution object}
-
 \item{x}{outcome}
 
 \item{n}{sample size}
@@ -28,7 +20,7 @@ of a sufficient statistic \code{x} given a sample size \code{n} and a
 single parameter value \code{theta}.
 }
 \details{
-This abstraction layer allows representation of t-distributions
+This abstraction layer allows the representation of t-distributions
 (unknown variance), normal distribution (known variance), and normal
 approximation of a binary endpoint.
 Currently, only the normal case is implemented with \code{\link{Normal-class}}.
@@ -40,6 +32,10 @@ design all sample sizes are per group.
 \section{Slots}{
 
 \describe{
-\item{\code{two_armed}}{Should a two-armed design be used?}
+\item{\code{two_armed}}{Logical that indicates if a two-arm design is assumed.}
 }}
 
+\examples{
+datadist <- Normal(two_armed = FALSE)
+
+}

@@ -13,11 +13,11 @@ null        <- PointMassPrior(.0, 1)
 alternative <- PointMassPrior(.4, 1)
 datadist    <- Normal(two_armed = FALSE)
 
-ess   <- expected(ConditionalSampleSize(datadist, alternative))
-ess_0 <- expected(ConditionalSampleSize(datadist, null))
+ess   <- ExpectedSampleSize(datadist, alternative)
+ess_0 <- ExpectedSampleSize(datadist, null)
 cp    <- ConditionalPower(datadist, alternative)
-pow   <- expected(cp)
-toer  <- expected(ConditionalPower(datadist, null))
+pow   <- expected(cp, datadist, alternative)
+toer  <- Power(datadist, null)
 
 alpha <- 0.05
 beta  <- 0.2
@@ -76,6 +76,7 @@ test_that("nloptr invalid initial values error works", {
 
 
 test_that("Optimal one-stage design can be computed", {
+
     opt_os <<- minimize(
         ess,
         subject_to(
@@ -304,6 +305,12 @@ test_that("conditional constraints work", {
     expect_lte(
         evaluate(cp, opt_ts$design, opt_ts$design@c1e),
         .95 + tol
+    )
+
+    # test that c2 is monotonously increasing
+    expect_equal(
+        sign(diff(opt_ts$design@c2_pivots)),
+        rep(-1, (order - 1))
     )
 
 }) # end 'conditional constraints work'

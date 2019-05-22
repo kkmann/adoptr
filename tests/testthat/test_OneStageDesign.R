@@ -34,11 +34,9 @@ test_that("Optimal one-stage design with point prior is computable", {
 
     dist <- Normal(two_armed = FALSE)
 
-    ess  <- expected(ConditionalSampleSize(dist, alternative))
-    cp   <- ConditionalPower(dist, alternative)
-    pow  <- expected(cp)
-    toer <- expected(ConditionalPower(dist, null))
-    smth <- SmoothnessN2()
+    ess  <- ExpectedSampleSize(dist, alternative)
+    pow  <- Power(dist, alternative)
+    toer <- Power(dist, null)
 
 
 
@@ -55,11 +53,6 @@ test_that("Optimal one-stage design with point prior is computable", {
     expect_equal(
         round(evaluate(toer, design), 3),
         0.023
-    )
-
-    expect_equal(
-        evaluate(smth, design),
-        0.0
     )
 
     #compute optimal design
@@ -131,10 +124,19 @@ test_that("error definition works", {
 
 
 test_that("OneStageDesign can be converted to TwoStageDesign", {
-    design1 <- OneStageDesign(87.21, 1.96)
-    design2 <- TwoStageDesign(design1)
 
-    pow <- expected(ConditionalPower(Normal(two_armed = FALSE), PointMassPrior(.3, 1)))
+    design1 <- OneStageDesign(87.21, 1.96)
+    design2 <- TwoStageDesign(design1, order = 7)
+
+    pow <- Power(Normal(two_armed = FALSE), PointMassPrior(.3, 1))
+
+    expect_true(
+        length(design2@x1_norm_pivots) == 7
+    )
+
+    expect_true(
+        length(design2@n2_pivots) == 7
+    )
 
     expect_equal(
         evaluate(pow, design1),

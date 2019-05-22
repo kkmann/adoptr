@@ -1,54 +1,90 @@
-#' Continuous univariate prior distribution
+#' Continuous univariate prior distributions
 #'
-#' \code{ContinuousPrior} is a generic class for representing a univariate prior
-#' over a compact interval of the real numbers.
+#' \code{ContinuousPrior} is a sub-class of \code{\link{Prior}} implementing
+#' a generic representation of continuous prior distributions over a compact
+#' interval on the real line.
 #'
-#' For further details cf. \code{\link{Prior-class}}.
+#' @slot pdf     cf. parameter 'pdf'
+#' @slot support cf. parameter 'support'
 #'
-#' @slot pdf function the actual probability density function , only called
-#'     in the interior of support therefore need not be set to zero outside of
-#'     support. Must be vectorized! [TODO: expose via pdf(prior, theta)!]
-#' @slot support numeric vector of length two with the bounds of the compact
-#'     interval on which the pdf is positive.
-#'     The restriction to compact support simplifies numerical integration.
+#' @seealso Discrete priors are supported via \code{\link{PointMassPrior}}
 #'
-#' @template PriorTemplate
-#'
+#' @aliases ContinuousPrior
 #' @exportClass ContinuousPrior
 setClass("ContinuousPrior", representation(
-        pdf     = "function", # actual prior pdf
-        support = "numeric"   # the compact support of the prior
+        pdf     = "function",
+        support = "numeric"
         ),
     contains = "Prior")
 
 
-#' @param pdf cf. slot \code{pdf}
-#' @param support cf. slot \code{support}
+#' @param pdf                 vectorized univariate PDF function
+#' @param support             numeric vector of length two with the bounds of
+#'     the compact interval on which the pdf is positive.
+#' @template tighten_support
+#' @template check_normalization
 #'
-#' @describeIn ContinuousPrior-class constructor
+#' @examples
+#' ContinuousPrior(function(x) 2*x, c(0, 1))
+#'
+#' @rdname ContinuousPrior-class
 #' @export
-ContinuousPrior <- function(pdf, support) {
+ContinuousPrior <- function(pdf,
+                            support,
+                            tighten_support = FALSE,
+                            check_normalization = TRUE) {
     if (length(support) != 2)
         stop("support must be of length 2")
+
     if (any(!is.finite(support)))
         stop("support must be finite")
+
     if (diff(support) <= 0)
         stop("support[2] must be larger (not equal) to support[1]")
-    if (abs(stats::integrate(pdf, support[1], support[2], abs.tol = .00001)$value - 1) > .001)
-        stop("pdf must integrate to one!")
+
+    if (check_normalization) {
+        if (abs(stats::integrate(pdf, support[1], support[2], abs.tol = .00001)$value - 1) > .001)
+            stop("pdf must integrate to one!")
+    }
+
+    if (tighten_support) {
+        eps <- .001
+        while (pdf(support[1] + eps) < .Machine$double.eps^2) {
+            support[1] <- support[1] + eps
+        }
+        while (pdf(support[2] - eps) < .Machine$double.eps^2) {
+            support[2] <- support[2] - eps
+        }
+        norm    <- stats::integrate(pdf, support[1], support[2], abs.tol = .00001)$value
+        pdf_old <- pdf
+        pdf     <- function(theta) pdf_old(theta) / norm
+    }
+
     new("ContinuousPrior", pdf = pdf, support = support)
 }
 
 
-#' @rdname ContinuousPrior-class
+#' @examples
+#' bounds(ContinuousPrior(function(x) dunif(x, .2, .4), c(.2, .4)))
+#' # > 0.2 0.4
+#'
+#' @rdname bounds
 #' @export
 setMethod("bounds", signature("ContinuousPrior"),
     function(dist, ...) dist@support)
 
 
-#' @param rel.tol relative tolerance used in adaptive gaussian quadrature
-#'     to evaluate the integral
-#' @rdname ContinuousPrior-class
+#' @examples
+#' expectation(
+#'     ContinuousPrior(function(x) dunif(x, .2, .4), c(.2, .4)),
+#'     identity
+#' )
+#' # > 0.3
+#'
+#' @param rel.tol \code{numeric}, relative tolerance used in adaptive gaussian
+#'     quadrature to evaluate the integral
+#'
+#' @rdname expectation
 #' @export
 setMethod("expectation", signature("ContinuousPrior", "function"),
     function(dist, f, rel.tol = .001, ...) {
@@ -59,7 +95,14 @@ setMethod("expectation", signature("ContinuousPrior", "function"),
     })
 
 
-#' @rdname ContinuousPrior-class
+#' @examples
+#' tmp <- condition(
+#'     ContinuousPrior(function(x) dunif(x, .2, .4), c(.2, .4)),
+#'     c(.3, .5)
+#' )
+#' bounds(tmp) # c(.3, .4)
+#'
+#' @rdname condition
 #' @export
 setMethod("condition", signature("ContinuousPrior", "numeric"),
     function(dist, interval, ...) {
@@ -69,30 +112,40 @@ setMethod("condition", signature("ContinuousPrior", "numeric"),
             stop("interval must be finite")
         if (diff(interval) < 0)
             stop("interval[2] must be larger or equal to interval[1]")
-        # Update interval
-        while(dist@pdf(interval[1]) < .Machine$double.eps^2) {
-            interval[1] <- interval[1] + .001
-        }
-        while(dist@pdf(interval[2]) < .Machine$double.eps^2) {
-            interval[2] <- interval[2] - .001
-        }
+
+        interval[1] <- max(interval[1], dist@support[1])
+        interval[2] <- min(interval[2], dist@support[2])
+        if (diff(interval) < 0)
+            stop("resulting interval is empty")
         # compute new normalizing constant
         z <- stats::integrate(dist@pdf, interval[1], interval[2], abs.tol = .00001)$value
+        new_pdf <- function(theta) {
+            ifelse(interval[1] <= theta & theta <= interval[2],
+                dist@pdf(theta) / z,
+                0
+            )
+        }
         ContinuousPrior(
-            function(theta) dist@pdf(theta)/z, interval
+            new_pdf,
+            interval
         )
     })
 
 
-#' @param k number of pivots for crude integral approximation [TODO: this needs to be done properly!, cant use integrate since we wnat this vectorized!]
-#' @rdname ContinuousPrior-class
+#' @examples
+#' tmp <- ContinuousPrior(function(x) dunif(x, .2, .4), c(.2, .4))
+#' predictive_pdf(Normal(), tmp, 2, 20)
+#'
+#' @param  k number of pivots for crude integral approximation
+#'
+#' @rdname predictive_pdf
 #' @export
 setMethod("predictive_pdf", signature("DataDistribution", "ContinuousPrior", "numeric"),
     function(dist, prior, x1, n1, k = 33, ...) {
-        piv <- seq(prior@support[1], prior@support[2], length.out = k)
+        piv  <- seq(prior@support[1], prior@support[2], length.out = k)
         mass <- sapply(piv, prior@pdf)
         mass <- mass / sum(mass) # (renormalize!)
-        res <- numeric(length(x1))
+        res  <- numeric(length(x1))
         for (i in 1:k) {
             res <- res + mass[i] * probability_density_function(dist, x1, n1, piv[i])
         }
@@ -100,7 +153,13 @@ setMethod("predictive_pdf", signature("DataDistribution", "ContinuousPrior", "nu
     })
 
 
-#' @rdname ContinuousPrior-class
+#' @examples
+#' tmp <- ContinuousPrior(function(x) dunif(x, .2, .4), c(.2, .4))
+#' predictive_cdf(Normal(), tmp, 2, 20)
+#'
+#' @param  k number of pivots for crude integral approximation
+#'
+#' @rdname predictive_cdf
 #' @export
 setMethod("predictive_cdf", signature("DataDistribution", "ContinuousPrior", "numeric"),
     function(dist, prior, x1, n1, k = 33, ...) {
@@ -115,10 +174,17 @@ setMethod("predictive_cdf", signature("DataDistribution", "ContinuousPrior", "nu
     })
 
 
-#' @rdname ContinuousPrior-class
+#' @examples
+#' tmp <- ContinuousPrior(function(x) dunif(x, .2, .4), c(.2, .4))
+#' posterior(Normal(), tmp, 2, 20)
+#'
+#' @template tighten_support
+#' @template check_normalization
+#'
+#' @rdname posterior
 #' @export
 setMethod("posterior", signature("DataDistribution", "ContinuousPrior", "numeric"),
-    function(dist, prior, x1, n1, ...) {
+    function(dist, prior, x1, n1, tighten_support = FALSE, check_normalization = FALSE, ...) {
         if (length(x1) != 1)
             stop("no vectorized version in x1")
         prop_pdf <- function(theta) {
@@ -129,14 +195,16 @@ setMethod("posterior", signature("DataDistribution", "ContinuousPrior", "numeric
         )$value
         ContinuousPrior(
             function(theta) prop_pdf(theta) / z,
-            prior@support
+            prior@support,
+            tighten_support     = tighten_support,
+            check_normalization = check_normalization
         )
     })
 
 
-#' @rdname ContinuousPrior-class
-#'
 #' @param object object of class \code{ContinuousPrior}
+#'
+#' @rdname ContinuousPrior-class
 #' @export
 setMethod("show", signature(object = "ContinuousPrior"),
           function(object) cat(class(object)[1]))

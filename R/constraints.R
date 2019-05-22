@@ -1,89 +1,47 @@
-#' Formulating constraints
+#' Formulating Constraints
 #'
 #' Conceptually, constraints work very similar to scores (any score can be put in
 #' a constraint).
 #' Currently,  constraints of the form 'score <=/>= x',
 #' 'x <=/>= score' and 'score <=/>= score' are admissable.
 #'
-#' [TODO: conditional constraints are only evaluated at the continuation area]
+#' @template s
+#' @template design
+#' @template optimization
+#' @template dotdotdot
+#' @template object
+#' @param e1 left hand side (score or numeric)
+#' @param e2 right hand side (score or numeric)
 #'
-#' @param e1 first comparator
-#' @param e2 second comparator
-#' @template dotdotdotTemplate
+#' @seealso \code{\link{minimize}}
 #'
 #' @examples
-#' cp          <- ConditionalPower(Normal(), PointMassPrior(0.4, 1))
-#' pow         <- expected(cp)
-#' constraint1 <- pow >= 0.8 # an unconditional power constraint
-#' constraint2 <- cp >= 0.7 # a conditional power constraint
-#' constraint3 <- 0.7 <= cp # yields the same as constraint2
+#' design <- OneStageDesign(50, 1.96)
 #'
-#' @exportClass Constraint
+#' cp     <- ConditionalPower(Normal(), PointMassPrior(0.4, 1))
+#' pow    <- Power(Normal(), PointMassPrior(0.4, 1))
+#'
+#' # unconditional power constraint
+#' constraint1 <- pow >= 0.8
+#' evaluate(constraint1, design)
+#'
+#' # conditional power constraint
+#' constraint2 <- cp  >= 0.7
+#' evaluate(constraint2, design, .5)
+#' constraint3 <- 0.7 <= cp # same as constraint2
+#' evaluate(constraint3, design, .5)
+#'
+#' @name Constraints
+NULL
+
+
+
 setClass("Constraint")
-
-#' @param s constraint to evaluate
-#' @param design TwoStageDesign to evaluate
-#' @param optimization logical, if TRUE uses a relaxation to real parameters of
-#'       the underlying design; used for smooth optimization.
-#'
-#' @rdname Constraint-class
-#' @export
-setMethod("evaluate", signature("Constraint", "TwoStageDesign"),
-          function(s, design, optimization = FALSE, ...) {
-              evaluate(s@score, design, optimization, ...) - s@rhs
-          })
-
-
-
-#' @rdname Constraint-class
-#'
-#' @param object object of class \code{Constraint}
-#' @export
-setMethod("show", signature(object = "Constraint"),
-          function(object) cat(class(object)[1]))
-
-
-
-#' @rdname Constraint-class
-#' @exportClass ConditionalConstraint
 setClass("ConditionalConstraint", representation(
-        score = "AbstractConditionalScore",
+        score = "ConditionalScore",
         rhs   = "numeric"
     ),
     contains = "Constraint")
-
-
-#' @rdname Constraint-class
-#' @export
-setMethod("<=", signature("AbstractConditionalScore", "numeric"),
-          function(e1, e2) new("ConditionalConstraint", score = e1, rhs = e2))
-#' @rdname Constraint-class
-#' @export
-setMethod(">=", signature("AbstractConditionalScore", "numeric"),
-          function(e1, e2) new("ConditionalConstraint", score = -1 * e1, rhs = -e2))
-#' @rdname Constraint-class
-#' @export
-setMethod("<=", signature("numeric", "AbstractConditionalScore"),
-          function(e1, e2) new("ConditionalConstraint", score = -1 * e2, rhs = -e1))
-#' @rdname Constraint-class
-#' @export
-setMethod(">=", signature("numeric", "AbstractConditionalScore"),
-          function(e1, e2) new("ConditionalConstraint", score = e2, rhs = e1))
-#' @rdname Constraint-class
-#' @export
-setMethod("<=", signature("AbstractConditionalScore", "AbstractConditionalScore"),
-          function(e1, e2) new("ConditionalConstraint", score = e1 + (-1) * e2, rhs = 0))
-#' @rdname Constraint-class
-#' @export
-setMethod(">=", signature("AbstractConditionalScore", "AbstractConditionalScore"),
-          function(e1, e2) new("ConditionalConstraint", score = e2 + (-1) * e1, rhs = 0))
-
-
-
-
-
-#' @rdname Constraint-class
-#' @exportClass UnconditionalConstraint
 setClass("UnconditionalConstraint", representation(
         score = "UnconditionalScore",
         rhs   = "numeric"
@@ -91,75 +49,126 @@ setClass("UnconditionalConstraint", representation(
     contains = "Constraint")
 
 
-#' @rdname Constraint-class
+
+
+
+#' @rdname Constraints
+#' @export
+setMethod("evaluate", signature("Constraint", "TwoStageDesign"),
+          function(s, design, optimization = FALSE, ...) {
+              evaluate(s@score, design, optimization, ...) - s@rhs
+          })
+
+#' @rdname Constraints
+#' @export
+setMethod("show", signature(object = "Constraint"),
+          function(object) cat(class(object)[1]))
+
+
+
+
+
+#' @rdname Constraints
+#' @export
+setMethod("<=", signature("ConditionalScore", "numeric"),
+          function(e1, e2) new("ConditionalConstraint", score = e1, rhs = e2))
+
+#' @rdname Constraints
+#' @export
+setMethod(">=", signature("ConditionalScore", "numeric"),
+          function(e1, e2) new("ConditionalConstraint", score = compose({-1*e1}), rhs = -e2))
+
+#' @rdname Constraints
+#' @export
+setMethod("<=", signature("numeric", "ConditionalScore"),
+          function(e1, e2) new("ConditionalConstraint", score = compose({-1*e2}), rhs = -e1))
+
+#' @rdname Constraints
+#' @export
+setMethod(">=", signature("numeric", "ConditionalScore"),
+          function(e1, e2) new("ConditionalConstraint", score = e2, rhs = e1))
+
+#' @rdname Constraints
+#' @export
+setMethod("<=", signature("ConditionalScore", "ConditionalScore"),
+          function(e1, e2) new("ConditionalConstraint", score = compose({e1 - e2}), rhs = 0))
+
+#' @rdname Constraints
+#' @export
+setMethod(">=", signature("ConditionalScore", "ConditionalScore"),
+          function(e1, e2) new("ConditionalConstraint", score = compose({e2 - e1}), rhs = 0))
+
+
+
+#' @rdname Constraints
 #' @export
 setMethod("<=", signature("UnconditionalScore", "numeric"),
           function(e1, e2) new("UnconditionalConstraint", score = e1, rhs = e2))
-#' @rdname Constraint-class
+
+#' @rdname Constraints
 #' @export
 setMethod(">=", signature("UnconditionalScore", "numeric"),
-          function(e1, e2) new("UnconditionalConstraint", score = -1 * e1, rhs = -e2))
-#' @rdname Constraint-class
+          function(e1, e2) new("UnconditionalConstraint", score = compose({-e1}), rhs = -e2))
+
+#' @rdname Constraints
 #' @export
 setMethod("<=", signature("numeric", "UnconditionalScore"),
-          function(e1, e2) new("UnconditionalConstraint", score = -1 * e2, rhs = -e1))
-#' @rdname Constraint-class
+          function(e1, e2) new("UnconditionalConstraint", score = compose({-e2}), rhs = -e1))
+
+#' @rdname Constraints
 #' @export
 setMethod(">=", signature("numeric", "UnconditionalScore"),
           function(e1, e2) new("UnconditionalConstraint", score = e2, rhs = e1))
-#' @rdname Constraint-class
+
+#' @rdname Constraints
 #' @export
 setMethod("<=", signature("UnconditionalScore", "UnconditionalScore"),
-          function(e1, e2) new("UnconditionalConstraint", score = e1 + (-1) * e2, rhs = 0))
-#' @rdname Constraint-class
+          function(e1, e2) new("UnconditionalConstraint", score = compose({e1 - e2}), rhs = 0))
+
+#' @rdname Constraints
 #' @export
 setMethod(">=", signature("UnconditionalScore", "UnconditionalScore"),
-          function(e1, e2) new("UnconditionalConstraint", score = e2 + (-1) * e1, rhs = 0))
+          function(e1, e2) new("UnconditionalConstraint", score = compose({e2 - e1}), rhs = 0))
 
 
 
 
-
-#' Collection of constraints
-#'
-#' @slot unconditional_constraints [todo]
-#' @slot conditional_constraints [todo]
-#'
-#' @param s constraint collection
-#' @param design design
-#'
-#' @exportClass ConstraintsCollection
+# not user-facing
 setClass("ConstraintsCollection", representation(
         unconditional_constraints = "list",
-        conditional_constraints = "list"))
+        conditional_constraints   = "list"
+    ))
 
 
-#' @param optimization logical, if TRUE uses a relaxation to real parameters of
-#'    the underlying design; used for smooth optimization.
-#' @rdname ConstraintsCollection-class
-#' @export
-setMethod("evaluate", signature("ConstraintsCollection", "TwoStageDesign"),
-          function(s, design, optimization = FALSE, ...) {
-              x1_cont <- scaled_integration_pivots(design)
-              unconditional <- as.numeric(sapply(
-                  s@unconditional_constraints,
-                  function(cnstr) evaluate(cnstr, design, optimization, ...)
-              ))
-              conditional <- as.numeric(sapply(
-                  s@conditional_constraints,
-                  function(cnstr) evaluate(cnstr, design, x1_cont, optimization, ...)
-              ))
-              return(c(unconditional, conditional))
-        })
 
-
-#' @description \code{subject_to(...)} can be used to generate an object of class
-#'      \code{ConstrintsCollection} from an arbitrary number of (un)conditional
-#'      constraints.
+#' Create a collection of constraints
 #'
-#' @param ... arbitrary number of (un)conditional constraints
+#' \code{subject_to(...)} can be used to generate an object of class
+#' \code{ConstraintsCollection} from an arbitrary number of (un)conditional
+#' constraints.
 #'
-#' @rdname ConstraintsCollection-class
+#' @param s object of class \code{ConstraintCollection}
+#' @template design
+#' @template optimization
+#' @param ... either constraint objects (for \code{subject_to} or optional arguments passed to \code{evaluate})
+#'
+#' @return an object of class \code{ConstraintsCollection}
+#'
+#' @seealso \code{subject_to} is intended to be used for constraint
+#'   specification the constraints in \code{\link{minimize}}.
+#'
+#' @examples
+#' # define type one error rate and power
+#' toer  <- Power(Normal(), PointMassPrior(0.0, 1))
+#' power <- Power(Normal(), PointMassPrior(0.4, 1))
+#'
+#' # create constrain collection
+#' subject_to(
+#'   toer  <= 0.025,
+#'   power >= 0.9
+#' )
+#'
+#' @aliases ConstraintCollection
 #' @export
 subject_to <- function(...) {
     args <- list(...)
@@ -180,3 +189,21 @@ subject_to <- function(...) {
     res <- new("ConstraintsCollection", unconditional_constraints = unconditional, conditional_constraints = conditional)
     return(res)
 }
+
+
+
+#' @rdname subject_to
+#' @export
+setMethod("evaluate", signature("ConstraintsCollection", "TwoStageDesign"),
+          function(s, design, optimization = FALSE, ...) {
+              x1_cont <- scaled_integration_pivots(design)
+              unconditional <- as.numeric(sapply(
+                  s@unconditional_constraints,
+                  function(cnstr) evaluate(cnstr, design, optimization, ...)
+              ))
+              conditional <- as.numeric(sapply(
+                  s@conditional_constraints,
+                  function(cnstr) evaluate(cnstr, design, x1_cont, optimization, ...)
+              ))
+              return(c(unconditional, conditional))
+          })

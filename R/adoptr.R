@@ -1,25 +1,54 @@
 #' Adaptive Optimal Two-Stage Designs
 #'
-#' This package provides functionality to compute and analyze optimal
-#' two-stage designs for two-stage superiority tests based on a Z statistic.
-#' A range of pre-implemented objective/constraint functions are provided.
+#' The \pkg{adoptr} package provides functionality to explore custom optimal
+#' two-stage designs for one or two-arm superiority tests.
+#' Currently, only (asymptotically) normal test statistics are supported.
+#' \pkg{adoptr} is makes heavy use of the S4 class system.
+#' A good place to start learning about it can be found
+#' \href{http://adv-r.had.co.nz/OO-essentials.html}{here}.
+#'
+#'
 #'
 #' @section Quickstart:
 #'
-#' For a sample workflow and a quick demo of the capabilities, see the
-#' vignette .
+#' For a sample workflow and a quick demo of the capabilities, see
+#' \href{https://kkmann.github.io/adoptr/articles/adoptr.html}{here}.
+#'
+#' A variety of examples is presented in the validation report hosted
+#' \href{https://kkmann.github.io/adoptr-validation-report/}{here}.
+#'
+#'
 #'
 #' @section Designs:
 #'
-#' list designs
+#' \pkg{adoptr} currently supports \code{\link{TwoStageDesign}},
+#' \code{\link{GroupSequentialDesign}}, and \code{\link{OneStageDesign}}.
 #'
-#' @section Prios:
 #'
-#' List prior classes
+#'
+#' @section Data distributions:
+#'
+#' Currently, the only implemented data distribution is \code{\link{Normal}}
+#' (one or two arms).
+#'
+#'
+#'
+#' @section Priors:
+#'
+#' Both \code{\link{ContinuousPrior}} and \code{\link{PointMassPrior}} are
+#' supported for the single parameter of a \code{\link{DataDistribution}}.
+#'
+#'
 #'
 #' @section Scores:
 #'
-#' list score classes
+#' See \code{\link{Scores}} for information on the basic system of representing
+#' scores.
+#' Available scores are \code{\link{ConditionalPower}},
+#' \code{\link{ConditionalSampleSize}}, \code{\link{Power}}, and
+#' \code{\link{ExpectedSampleSize}}..
+#'
+#'
 #'
 #' @import methods
 #' @docType package
