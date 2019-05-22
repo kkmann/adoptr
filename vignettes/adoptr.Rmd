@@ -1,5 +1,5 @@
 ---
-title: "Get started with **adoptr**"
+title: "Get started with adoptr"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -25,10 +25,11 @@ knitr::opts_chunk$set(
 
 In prospectively planned confirmatory clinical trials there has been a 
 long-standing debate about the merits of allowing pre-planned interim analyses
-to stop or modify an ongoing trial, cf. [REFEENCE BAUER et al 2016].
+to stop or modify an ongoing trial, cf. 
+[BAUER *et al.*, 2016](https://onlinelibrary.wiley.com/doi/pdf/10.1002/sim.6472).
 It is common consensus that such two-stage designs should still maintain 
 strict control of the maximal type one error rate despite the data dependent
-decision at the interim analyis.
+decision at the interim analysis.
 Most authors use combination function approaches to combine either the
 independent p values or test statistics from the respective stages.
 Doing so with pre-specified weights maintains the type one error rate control.
@@ -83,7 +84,7 @@ library(adoptr)
 ```
 
 First, we define the null and alternative hypotheses as prior distributions 
-over the unknown paramter $\delta$.
+over the unknown parameter $\delta$.
 
 ```{r define-hypotheses}
 H_0 <- PointMassPrior(.0, 1)
