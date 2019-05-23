@@ -85,9 +85,8 @@ test_that("Integrals of compositions", {
 
 test_that("Nested compositions", {
 
-    a <- 2
-    s <- composite({a*css + css + 1})
-
+    a   <- 2
+    s   <- composite({a*css + css + 1})
     s_n <- composite({a * ess})
 
     expect_equal(
@@ -101,6 +100,27 @@ test_that("Nested compositions", {
             design
         ),
         3*evaluate(ess, design) + 1
+    )
+
+}) # end 'nested compositions'
+
+
+
+test_that("Nested compositions", {
+
+    cs1 <- composite({2*css})
+    cs2 <- composite({3*cs1})
+
+    expect_equal(
+        6 * evaluate(css, design, .5),
+        evaluate(cs2, design, .5)
+    )
+
+    cs3 <- function(a) composite({a*cs1})
+
+    expect_equal(
+        evaluate(cs3(3), design, .5),
+        3*evaluate(cs1, design, .5)
     )
 
 }) # end 'nested compositions'
