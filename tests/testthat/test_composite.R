@@ -43,7 +43,7 @@ test_that("Composition of unconditional scores", {
         sin(evaluate(ess, design))
     ) # functional composition
 
-}) # end 'Linear combinations of unconditional scores work'
+}) # end 'composition of unconditional scores'
 
 
 
@@ -64,7 +64,7 @@ test_that("Composition of conditional scores", {
         sin(evaluate(css, design, z1))
     ) # functional composition
 
-})
+}) # end 'composition of conditional scores'
 
 
 
@@ -78,31 +78,8 @@ test_that("Integrals of compositions", {
         3*evaluate(ess, design) + 1
     )
 
-}) # end 'show method returns class name'
+}) # end 'integrals of compositions'
 
-
-
-
-test_that("Nested compositions", {
-
-    a   <- 2
-    s   <- composite({a*css + css + 1})
-    s_n <- composite({a * ess})
-
-    expect_equal(
-        a * evaluate(ess, design),
-        evaluate(s_n, design)
-    )
-
-    expect_equal(
-        evaluate(
-            expected(composite({2*css + css + 1}), Normal(), PointMassPrior(.3, 1)),
-            design
-        ),
-        3*evaluate(ess, design) + 1
-    )
-
-}) # end 'nested compositions'
 
 
 
