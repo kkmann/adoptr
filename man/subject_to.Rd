@@ -17,7 +17,7 @@ subject_to(...)
 
 \item{s}{object of class \code{ConstraintCollection}}
 
-\item{design}{\code{\link[=Designs]{Design}} object}
+\item{design}{object}
 
 \item{optimization}{logical, if \code{TRUE} uses a relaxation to real
 parameters of the underlying design; used for smooth optimization.}

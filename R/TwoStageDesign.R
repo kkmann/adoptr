@@ -1,12 +1,3 @@
-#' Designs
-#'
-#' TODO generic information on design objects and classes!
-#'
-#' @name Designs
-NULL
-
-
-
 #' Two-stage designs
 #'
 #' \code{TwoStageDesign} is the fundamental design class of the

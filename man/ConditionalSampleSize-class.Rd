@@ -22,7 +22,7 @@ ExpectedSampleSize(dist, prior)
 
 \item{s}{\code{\link[=Scores]{Score}} object}
 
-\item{design}{\code{\link[=Designs]{Design}} object}
+\item{design}{object}
 
 \item{x1}{stage-one test statistic}
 

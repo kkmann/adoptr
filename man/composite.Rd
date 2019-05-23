@@ -17,7 +17,7 @@ or unconditional. Currently, no non-score variables are supported}
 
 \item{s}{object of class \code{CompositeScore}}
 
-\item{design}{\code{\link[=Designs]{Design}} object}
+\item{design}{object}
 
 \item{...}{further optional arguments}
 }
