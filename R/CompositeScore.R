@@ -84,7 +84,10 @@ composite <- function(expr) {
             ))
         } else {
             # only unconditional scores
-            return(new("CompositeUnconditionalScore", expr = substitute(expr), scores = scores))
+            return(new("CompositeUnconditionalScore",
+                       expr       = substitute(expr),
+                       scores     = scores,
+                       non_scores = non_scores))
         }
     }
 
