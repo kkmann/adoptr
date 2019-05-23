@@ -222,10 +222,16 @@ and comparing different designs and to experiment with different
 combinations of objective functions and constraints.
 In particular, **adoptr** supports:
 
-* Arbitrary continuous or discrete [prior distributions](https://kkmann.github.io/adoptr/articles/working-with-priors.html) for the single location 
-parameter $\theta$ of the test statistic.
+* Important predefined scores as (conditional) power or sample size functions as 
+well as a framework for constraints on scores 
+(cf. [conditional scores](https://kkmann.github.io/adoptr/articles/conditional-scores.html))
+
+* Arbitrary continuous or discrete 
+[prior distributions](https://kkmann.github.io/adoptr/articles/working-with-priors.html) 
+for the single location  parameter $\theta$ of the test statistic.
 
 * Support for simple arithmetic operations on scores to quickly define weighted
-sums etc. (cf. [working with priors](https://kkmann.github.io/adoptr/articles/score-and-constraints-arithmetic.html)).
+sums etc. (cf. [composite scores](https://kkmann.github.io/adoptr/articles/composite-scores.html)).
 
-* Relatively flexible framework for [defining custom scores](https://kkmann.github.io/adoptr/articles/score-and-constraints-arithmetic.html).
+* Relatively flexible framework for
+[defining new scores](https://kkmann.github.io/adoptr/articles/defining-new-scores.html).
