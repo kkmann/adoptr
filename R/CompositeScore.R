@@ -18,7 +18,7 @@ setClass("CompositeConditionalScore",
 
 #' Score Composition
 #'
-#' \code{compose} defines new composite scores by point-wise evaluation of
+#' \code{composite} defines new composite scores by point-wise evaluation of
 #' scores in any valid numerical expression.
 #'
 #' @param expr Expression (in curly brackets); must contain at least one score
@@ -39,10 +39,10 @@ setClass("CompositeConditionalScore",
 #' power <- Power(Normal(), PointMassPrior(.4, 1))
 #'
 #' # linear combination:
-#' compose({ess - 50*power})
+#' composite({ess - 50*power})
 #'
 #' # control flow
-#' compose({
+#' composite({
 #'   res <- 0
 #'   for (i in 1:3) {
 #'      res <- res + ess
@@ -51,12 +51,12 @@ setClass("CompositeConditionalScore",
 #' })
 #'
 #' # functional composition
-#' compose({log(ess)})
+#' composite({log(ess)})
 #' cp <- ConditionalPower(Normal(), PointMassPrior(.4, 1))
-#' compose({3*cp})
+#' composite({3*cp})
 #'
 #' @export
-compose <- function(expr) {
+composite <- function(expr) {
 
     vars <- mget(
         x          = all.vars(substitute(expr)),
@@ -91,7 +91,7 @@ compose <- function(expr) {
 }
 
 
-#' @rdname compose
+#' @rdname composite
 #' @export
 setMethod("evaluate", signature("CompositeScore", "TwoStageDesign"),
           function(s, design, ...) {
