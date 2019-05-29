@@ -2,6 +2,14 @@ context("check minimize()")
 
 
 
+expect_delta_within <- function(x1, x2, abs_tol) expect_lt(abs(x1 - x2), abs_tol)
+
+tol_n   <- .75 # tolerance for sample size differneces
+tol_pow <- .01 # tolerance for power differences
+tol_a   <- .001 # tolerance for type one error rates
+
+
+
 # preliminaries
 order <- 5L
 
@@ -143,7 +151,7 @@ test_that("Optimal group-sequential design is computable", {
 
 test_that("Optimal group-sequential design is superior to standard gs design", {
 
-        # Create design from rpact
+    # Create design from rpact
     design_rp <- rpact::getDesignInverseNormal(
         kMax = 2,
         alpha = alpha,
@@ -151,32 +159,27 @@ test_that("Optimal group-sequential design is superior to standard gs design", {
         futilityBounds = 0,
         typeOfDesign = "P"
     )
-
     res <- rpact::getSampleSizeMeans(
         design_rp, normalApproximation = TRUE, alternative = .4 * sqrt(2)
     )
-
     c2_fun <- function(z){
         w1 <- 1 / sqrt(2)
         w2 <- sqrt(1 - w1^2)
         out <- (design_rp$criticalValues[2] - w1 * z) / w2
         return(out)
     }
-
     c1f <- qnorm(
         rpact::getDesignCharacteristics(design_rp)$futilityProbabilities
-    ) + sqrt(res$numberOfPatientsGroup1[1]) * .4
-
+    ) + sqrt(res$numberOfSubjects1[1]) * .4
     rpact_design <- GroupSequentialDesign(
-        ceiling(res$numberOfPatientsGroup1[1,]),
+            ceiling(res$numberOfSubjects1[1,]),
         c1f,
         design_rp$criticalValues[1],
-        ceiling(res$numberOfPatientsGroup1[2,]),
+        ceiling(res$numberOfSubjects1[2,]),
         rep(2.0, 100),
         100L
     )
-
-    rpact_design@c2_pivots <- sapply(scaled_integration_pivots(rpact_design), c2_fun)
+    rpact_design@c2_pivots <- sapply(adoptr:::scaled_integration_pivots(rpact_design), c2_fun)
 
     # use opt_gs from above
     testthat::expect_lte(
