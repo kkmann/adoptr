@@ -94,16 +94,16 @@ test_that("Optimal one-stage design can be computed", {
         initial_design = OneStageDesign(100, 1.97)
     )
 
-    expect_equal(
+    expect_delta_within(
         opt_os$design@c1f,
         qnorm(1 - alpha),
-        tolerance = 1e-3
+        abs_tol = 1e-3
     ) # c-value known for one-stage
 
-    expect_equal(
+    expect_delta_within(
         opt_os$design@n1,
         ((qnorm(1 - beta) + qnorm(1 - alpha)) / 0.4)^2,
-        tolerance = .01
+        abs_tol = .01
     ) # n-value known for one-stage
 
 }) # end 'optimal one-stage design can be computed'
@@ -249,13 +249,15 @@ test_that("base-case results are consistent - no post processing", {
     )
 
     # check type one error rate on boundary of null
-    expect_equal(mean(sim_null$reject), alpha, tolerance = 0.005)
+    expect_delta_within(mean(sim_null$reject),
+                        alpha,
+                        abs_tol = 0.005)
 
     # expected sample size on boundary of null
-    expect_equal(
+    expect_delta_within(
         mean(sim_null$n2 + sim_null$n1),
         evaluate(ess_0, opt_ts$design),
-        tolerance = 1
+        abs_tol = 1
     )
 
     # simulate under alternative
@@ -264,13 +266,15 @@ test_that("base-case results are consistent - no post processing", {
     )
 
     # check power constraint
-    expect_equal(mean(sim_alt$reject), 1 - beta, tolerance = 0.01)
+    expect_delta_within(mean(sim_alt$reject),
+                 1 - beta,
+                 abs_tol = 0.01)
 
     # check expected sample size under alternative
-    expect_equal(
+    expect_delta_within(
         mean(sim_alt$n2 + sim_alt$n1),
         evaluate(ess, opt_ts$design),
-        tolerance = 1
+        abs_tol = 1
     )
 
 }) # end 'base-case results are consistent'

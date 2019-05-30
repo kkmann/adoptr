@@ -1,4 +1,6 @@
-context("constraint specifications                                            ")
+context("constraint specifications")
+
+expect_delta_within <- function(x1, x2, abs_tol) expect_lt(abs(x1 - x2), abs_tol)
 
 # create dummy design
 design <- TwoStageDesign(25, 0, 2, 40.5, 1.96, 5L)
@@ -18,16 +20,16 @@ test_that("UnconditionalConstraints", {
                           theta = .4, seed = 42)$reject)
 
     # see if it evaluates to the right value
-    expect_equal(
-        evaluate(cnstr, design), (.8 - pow_true), tolerance = .001)
+    expect_delta_within(
+        evaluate(cnstr, design), (.8 - pow_true), abs_tol = .001)
 
     # compute true value
     toer_true <-  mean(adoptr::simulate
                       (design, nsim = 10^6, dist = Normal(two_armed = FALSE),
                           theta = .0, seed = 142)$reject)
 
-    expect_equal(
-        evaluate(toer <= .05, design), (toer_true - .05), tolerance = .001)
+    expect_delta_within(
+        evaluate(toer <= .05, design), (toer_true - .05), abs_tol = .001)
 
 
     # Check syntax
@@ -56,13 +58,13 @@ test_that("ConditionalConstraints", {
     cnstr <- cp >= 0.8
 
     # see if it evaluates to the right value
-    expect_equal(
-        evaluate(cnstr, design, .8), 0.0844, tolerance = .001)
+    expect_delta_within(
+        evaluate(cnstr, design, .8), 0.0844, abs_tol = .001)
 
     # check other direction
     ctoer <- ConditionalPower(Normal(two_armed = FALSE), PointMassPrior(.0, 1))
-    expect_equal(
-        evaluate(ctoer <= .05, design, .8), -.0250, tolerance = .001)
+    expect_delta_within(
+        evaluate(ctoer <= .05, design, .8), -.0250, abs_tol = .001)
 
 })
 

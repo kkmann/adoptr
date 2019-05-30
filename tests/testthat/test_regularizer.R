@@ -1,5 +1,7 @@
 context("Regularization")
 
+expect_delta_within <- function(x1, x2, abs_tol) expect_lt(abs(x1 - x2), abs_tol)
+
 test_that("AverageN2 defines a norm", {
     order <- 5L
 
@@ -49,10 +51,10 @@ test_that("Specific implementation of AverageN2 yields similar results", {
     order = 5L
     design2 <- TwoStageDesign(25, 0, 2, c(20, 72, 15, 3, 80), rep(2, order))
 
-    expect_equal(
+    expect_delta_within(
         evaluate(avn2, design2),
         evaluate(avn2, design2, optimization = TRUE),
-        tolerance = 1.0
+        abs_tol = 1.0
     )
 
 

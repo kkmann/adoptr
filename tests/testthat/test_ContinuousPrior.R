@@ -1,4 +1,6 @@
-context("ContinuousPrior                                                      ")
+context("ContinuousPrior")
+
+expect_delta_within <- function(x1, x2, abs_tol) expect_lt(abs(x1 - x2), abs_tol)
 
 test_that("Constructor works", {
 
@@ -49,14 +51,14 @@ test_that("predictive_pdf integrates to 1", {
 
     normal <<- Normal() # define for later reuse
     n1     <<- 20
-    expect_equal(
+    expect_delta_within(
         stats::integrate(
             function(x1) predictive_pdf(normal, prior, x1, n1),
             qnorm(.0005), qnorm(.9995, mean = sqrt(n1)),
             abs.tol = .0001
         )$value,
         1,
-        tolerance = .005
+        abs_tol = .005
     )
 
 }) # end 'predictive_pdf integrates to 1'
@@ -144,14 +146,14 @@ test_that("tightening can decrease support", {
 
 test_that("conditional predictive pdf integrates to 1", {
 
-    expect_equal(
+    expect_delta_within(
         stats::integrate(
             function(x1) predictive_pdf(normal, prior_cond, x1, n1),
             qnorm(.0005), qnorm(.9995, mean = sqrt(n1)),
             abs.tol = .0001
         )$value,
         1,
-        tolerance = .005
+        abs_tol = .005
     )
 
 }) # end 'conditional predictive pdf integrates to 1'
@@ -183,14 +185,14 @@ test_that("posterior pdf integrates to 1", {
     x1    <- delta * sqrt(n1)
     post  <<- posterior(normal, prior, x1, n1)
 
-    expect_equal(
+    expect_delta_within(
         stats::integrate(
             function(theta) post@pdf(theta),
             bounds(post)[1], bounds(post)[2],
             abs.tol = .0001
         )$value,
         1,
-        tolerance = .005
+        abs_tol = .005
     )
 
 }) # end 'posterior pdf integrates to 1'

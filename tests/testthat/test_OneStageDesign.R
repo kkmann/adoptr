@@ -1,5 +1,7 @@
 context("OneStageDesign")
 
+expect_delta_within <- function(x1, x2, abs_tol) expect_lt(abs(x1 - x2), abs_tol)
+
 test_that("Optimal one-stage design with point prior is computable", {
     # define an initial design
     n1      <- 60
@@ -138,16 +140,16 @@ test_that("OneStageDesign can be converted to TwoStageDesign", {
         length(design2@n2_pivots) == 7
     )
 
-    expect_equal(
+    expect_delta_within(
         evaluate(pow, design1),
         evaluate(pow, design2),
-        tolerance = .001
+        abs_tol = .001
     )
 
-    expect_equal(
+    expect_delta_within(
         evaluate(pow, design1),
         .8,
-        tolerance = .01
+        abs_tol = .01
     ) # power works for OneStageDesign
 
 }) # end 'OneStageDesign can be converted to TwoStageDesign'
