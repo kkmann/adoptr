@@ -198,30 +198,21 @@ test_that("base-case satisfies constraints", {
             pow  >= 1 - beta,
             toer <= alpha
         ),
-        initial_design        = initial_design,
-        lower_boundary_design = lb_design,
-        upper_boundary_design = ub_design,
-        opts = list(
-            algorithm   = "NLOPT_LN_COBYLA",
-            xtol_rel    = 1e-4, # we use reduced precision, not optimal but should
-                                # respect constraints!
-            maxeval     = 10000
-        )
-
+        initial_design
     )
 
     # compute summaries
     out <- summary(opt_ts$design, "power" = pow, "toer" = toer)
 
     expect_equal(
-        round(as.numeric(out$scores["power"]), 1),
-        0.8
-    )
+        as.numeric(out$scores["power"]),
+        0.8,
+        scale = 1, tolerance = tol_pow)
 
     expect_equal(
-        round(as.numeric(out$scores["toer"]), 3),
-        0.05
-    )
+        as.numeric(out$scores["toer"]),
+        0.05,
+        scale = 1, tolerance = tol_a)
 
 }) # end base-case respects constraints
 
