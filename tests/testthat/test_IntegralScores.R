@@ -42,10 +42,10 @@ test_that("Expected sample size is computed correctly",{
 
     # Simulation
     sim_alt  <<- simulate(
-        design_gs, nsim = 1e5, dist = Normal(), theta = .4, seed = 59)
+        design_gs, nsim = 1e4, dist = Normal(), theta = .4, seed = 59)
 
     sim_null <<- simulate(
-        design_gs, nsim = 1e5, dist = Normal(), theta = .0, seed = 59)
+        design_gs, nsim = 1e4, dist = Normal(), theta = .0, seed = 59)
 
 
     # optimization = TRUE uses non-rounded values of n (as does rpact!)
