@@ -172,11 +172,7 @@ test_that("errors are defined correctly", {
 test_that("show method returns class name", {
 
     prior <- PointMassPrior(.3, 1)
-
-    expect_equal(
-        cat(class(prior)[1]),
-        show(prior),
-        tolerance = sqrt(.Machine$double.eps), scale = 1)
+    expect_true(
+        class(prior)[1] == capture.output(show(prior)))
 
 }) # end 'show method returns class name'
-
