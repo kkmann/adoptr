@@ -8,6 +8,7 @@
     Instead, expected() now requires explicit specification of the data and
     prior distribution to integrate with.
 * Vignettes updated
+* fixed broked tests due to updated rpact
 
 
 
