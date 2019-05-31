@@ -33,55 +33,46 @@ test_that("Expected sample size is computed correctly",{
     x <- h * x + (h + c1f)
 
     design_gs <<- TwoStageDesign(
-        round(n1),
+        n1,
         c1f,
         c1e,
-        rep(round(n2), 5),
+        rep(n2, 5),
         sapply(x, f))
 
 
     # Simulation
     sim_alt  <<- simulate(
-        design_gs, nsim = 10000, dist = Normal(), theta = .4, seed = 59)
+        design_gs, nsim = 1e5, dist = Normal(), theta = .4, seed = 59)
 
     sim_null <<- simulate(
-        design_gs, nsim = 10000, dist = Normal(), theta = .0, seed = 59)
+        design_gs, nsim = 1e5, dist = Normal(), theta = .0, seed = 59)
 
+
+    # optimization = TRUE uses non-rounded values of n (as does rpact!)
 
     # Expected Sample sizes under H1
     expect_equal(
         res$expectedNumberOfSubjectsH1/2, # per group!
-        evaluate(ExpectedSampleSize(dist, alternative), design_gs),
-        tolerance = .5, scale = 1)
+        evaluate(ExpectedSampleSize(dist, alternative), design_gs, optimization = TRUE),
+        tolerance = .1, scale = 1)
 
     expect_equal(
         res$expectedNumberOfSubjectsH1/2,
         evaluate(ExpectedSampleSize(dist, alternative),
-                   design_gs, specific = FALSE),
-        tolerance = .5, scale = 1)
-
-    expect_equal(
-        res$expectedNumberOfSubjectsH1/2,
-        (mean(sim_alt[, "n1"]) + mean(sim_alt[,"n2"])),
-        tolerance = .5, scale = 1)
-
+                   design_gs, specific = FALSE, optimization = TRUE),
+        tolerance = .1, scale = 1)
 
     # Expected Sample sizes under H0
     expect_equal(
         res$expectedNumberOfSubjectsH1/2,
-        evaluate(expected(ConditionalSampleSize(), dist, null), design_gs),
-        tolerance = .5, scale = 1)
+        evaluate(expected(ConditionalSampleSize(), dist, null), design_gs, optimization = TRUE),
+        tolerance = .1, scale = 1)
 
     expect_equal(
         res$expectedNumberOfSubjectsH0/2,
         evaluate(expected(ConditionalSampleSize(), dist, null),
-                 design_gs, specific = FALSE),
-        tolerance = .5, scale = 1)
-
-    expect_equal(
-        res$expectedNumberOfSubjectsH0/2,
-        mean(sim_null[, "n1"]) + mean(sim_null[,"n2"]),
-        tolerance = .75, scale = 1)
+                 design_gs, specific = FALSE, optimization = TRUE),
+        tolerance = .1, scale = 1)
 
 }) # end 'expected sample size is computed correctly'
 
