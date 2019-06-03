@@ -1,9 +1,9 @@
 #' Adaptive Optimal Two-Stage Designs
 #'
 #' The \pkg{adoptr} package provides functionality to explore custom optimal
-#' two-stage designs for one or two-arm superiority tests.
+#' two-stage designs for one- or two-arm superiority tests.
 #' Currently, only (asymptotically) normal test statistics are supported.
-#' \pkg{adoptr} is makes heavy use of the S4 class system.
+#' \pkg{adoptr} makes heavy use of the S4 class system.
 #' A good place to start learning about it can be found
 #' \href{http://adv-r.had.co.nz/OO-essentials.html}{here}.
 #'

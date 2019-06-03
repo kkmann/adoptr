@@ -29,7 +29,7 @@ setClass("CompositeConditionalScore",
 #' @template dotdotdot
 #'
 #' @return an object of class \code{CompositeConditionalScore} or
-#'   \code{CompositeUnconditionalScore} depending of the class of the scores used
+#'   \code{CompositeUnconditionalScore} depending on the class of the scores used
 #'   in \code{expr}
 #'
 #' @seealso \link{Scores}
