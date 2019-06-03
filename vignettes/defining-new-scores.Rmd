@@ -2,7 +2,7 @@
 title: "Defining New Scores"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{SDefining New Scores}
+  %\VignetteIndexEntry{Defining New Scores}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

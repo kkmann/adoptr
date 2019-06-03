@@ -29,7 +29,7 @@ setClass("CompositeConditionalScore",
 #' @template dotdotdot
 #'
 #' @return an object of class \code{CompositeConditionalScore} or
-#'   \code{CompositeUnconditionalScore} depending of the class of the scores used
+#'   \code{CompositeUnconditionalScore} depending on the class of the scores used
 #'   in \code{expr}
 #'
 #' @seealso \link{Scores}
@@ -41,7 +41,7 @@ setClass("CompositeConditionalScore",
 #' # linear combination:
 #' composite({ess - 50*power})
 #'
-#' # control flow
+#' # control flow (e.g. for and while loops)
 #' composite({
 #'   res <- 0
 #'   for (i in 1:3) {
