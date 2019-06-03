@@ -37,7 +37,7 @@ power <- Power(Normal(), PointMassPrior(.4, 1))
 # linear combination:
 composite({ess - 50*power})
 
-# control flow
+# control flow (e.g. for and while loops)
 composite({
   res <- 0
   for (i in 1:3) {
