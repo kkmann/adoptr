@@ -18,10 +18,9 @@ null        <- PointMassPrior(.0, 1)
 alternative <- PointMassPrior(.4, 1)
 datadist    <- Normal(two_armed = FALSE)
 
-ess  <- expected(ConditionalSampleSize(datadist, alternative))
-cp   <- ConditionalPower(datadist, alternative)
-pow  <- expected(cp)
-toer <- expected(ConditionalPower(datadist, null))
+ess  <- ExpectedSampleSize(datadist, alternative)
+pow  <- Power(datadist, alternative)
+toer <- Power(datadist, null)
 
 optimal_design <- minimize(
     ess,
@@ -29,7 +28,7 @@ optimal_design <- minimize(
         pow  >= 0.8,
         toer <= .05
     ),
-    initial_design        = design,
+    design,
     opts = list(
         algorithm   = "NLOPT_LN_COBYLA",
         xtol_rel    = 1e-5,
@@ -88,3 +87,5 @@ pp <- cowplot::plot_grid(p1, p2, nrow = 2)
 
 sticker(pp, package="adoptr", p_size = 120, s_x=1, s_y=1.125, s_width=1.5, s_height=1.15,
         filename="man/figures/logo.png", h_fill = "#DE29F5", h_color = "#8B1999", dpi = 1200)
+sticker(pp, package="adoptr", p_size = 10, s_x=1, s_y=1.125, s_width=1.5, s_height=1.15,
+        filename="man/figures/logo.pdf", h_fill = "#DE29F5", h_color = "#8B1999")
