@@ -23,7 +23,7 @@ or unconditional. Currently, no non-score variables are supported}
 }
 \value{
 an object of class \code{CompositeConditionalScore} or
-  \code{CompositeUnconditionalScore} depending of the class of the scores used
+  \code{CompositeUnconditionalScore} depending on the class of the scores used
   in \code{expr}
 }
 \description{
@@ -37,7 +37,7 @@ power <- Power(Normal(), PointMassPrior(.4, 1))
 # linear combination:
 composite({ess - 50*power})
 
-# control flow
+# control flow (e.g. for and while loops)
 composite({
   res <- 0
   for (i in 1:3) {
