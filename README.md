@@ -1,5 +1,6 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.2616952.svg)](https://doi.org/10.5281/zenodo.2616952)
 
+[![Join the chat at https://gitter.im/adoptr/community](https://badges.gitter.im/adoptr/community.svg)](https://gitter.im/adoptr/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Travis build status](https://travis-ci.org/kkmann/adoptr.svg?branch=master)](https://travis-ci.org/kkmann/adoptr)
 [![Codecov test coverage](https://codecov.io/gh/kkmann/adoptr/branch/master/graph/badge.svg)](https://codecov.io/gh/kkmann/adoptr?branch=master)
 [![CRAN status](https://www.r-pkg.org/badges/version/adoptr)](https://cran.r-project.org/package=adoptr)
@@ -36,7 +37,7 @@ The documentation is hosted at https://kkmann.github.io/adoptr.
 
 
 
-## Validation Report [![Travis build status](https://travis-ci.com/kkmann/adoptr-validation-report.svg?branch=master)](https://travis-ci.com/kkmann/adoptr-validation-report) [![Join the chat at https://gitter.im/adoptr/community](https://badges.gitter.im/adoptr/community.svg)](https://gitter.im/adoptr/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+## Validation Report [![Travis build status](https://travis-ci.com/kkmann/adoptr-validation-report.svg?branch=master)](https://travis-ci.com/kkmann/adoptr-validation-report)
 
 We provide an extensive validation report for **adoptr** which is implemented 
 using the **bookdown** package.
