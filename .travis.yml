@@ -1,7 +1,20 @@
 # R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
 
-language: R
-sudo: false
+language: r
+r:
+  - oldrel
+  - release
+  - devel
+  
+os:
+  - linux
+  - osx
+  
+matrix: 
+  exclude:
+    - r: devel
+      os: osx
+ 
 warnings_are_errors: true
 cache: packages
 notifications:
