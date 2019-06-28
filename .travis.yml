@@ -1,5 +1,7 @@
 # R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
 
+sudo: false
+
 language: r
 r:
   - oldrel
@@ -37,10 +39,10 @@ after_success:
 before_deploy: Rscript -e 'remotes::install_cran("pkgdown")'
 
 deploy:
-  on:
-      os:      linux
-      r:      release
-      branch: master
   provider: script
   script: bash deploy.sh
   skip_cleanup: true
+   on:
+     os:     linux
+     r:      release
+     branch: master
