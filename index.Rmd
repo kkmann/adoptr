@@ -40,8 +40,9 @@ supported.
 
 ## Installation
 
-install the development version directly from [GitHub](https://github.com/) with:
-
+**adoptr** is avilable on CRAN and the most recent release ca be installed using
+`install.packages("adoptr")`.
+Alternatively, the current development version can be installed directly from [GitHub](https://github.com/) with:
 ``` r
 # install.packages("devtools")
 devtools::install_github("kkmann/adoptr")
