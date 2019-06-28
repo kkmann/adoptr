@@ -13,3 +13,4 @@
 sticker.R
 ^deploy.sh$
 Index.Rmd
+pkgdown/
