@@ -43,3 +43,14 @@ We provide an extensive validation report for **adoptr** which is implemented
 using the **bookdown** package.
 The sources are available at https://github.com/kkmann/adoptr-validation-report and
 the last build version is hosted at https://kkmann.github.io/adoptr-validation-report.
+
+
+
+## References
+
+A theoretical investigation of optimal two-stage designs is described in:
+
+Pilz M, Kunzmann K, Herrmann C, Rauch G, Kieser M. A variational approach to
+optimal two-stage designs. Statistics in Medicine. 2019;1–13.
+https://doi.org/10.1002/sim.8291
+
