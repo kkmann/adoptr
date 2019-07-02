@@ -46,9 +46,7 @@ the last build version is hosted at https://kkmann.github.io/adoptr-validation-r
 
 
 
-## References
-
-A theoretical investigation of optimal two-stage designs is described in:
+## Reference
 
 Pilz M, Kunzmann K, Herrmann C, Rauch G, Kieser M. A variational approach to
 optimal two-stage designs. Statistics in Medicine. 2019;1–13.
