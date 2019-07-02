@@ -11,7 +11,11 @@
 # adoptr <a href='https://github.com/kkmann/adoptr'><img src='man/figures/logo.png' align="right" height="139" /></a>
 
 
-Adaptive optimal two-stage designs for clinical trials with one or two arms.
+Adaptive optimal two-stage designs for clinical trials with one or two arms for details on the core theoretical background, see:
+
+Pilz M, Kunzmann K, Herrmann C, Rauch G, Kieser M. A variational approach to
+optimal two-stage designs. Statistics in Medicine. 2019;1–13.
+https://doi.org/10.1002/sim.8291
 
 
 
@@ -43,12 +47,3 @@ We provide an extensive validation report for **adoptr** which is implemented
 using the **bookdown** package.
 The sources are available at https://github.com/kkmann/adoptr-validation-report and
 the last build version is hosted at https://kkmann.github.io/adoptr-validation-report.
-
-
-
-## Reference
-
-Pilz M, Kunzmann K, Herrmann C, Rauch G, Kieser M. A variational approach to
-optimal two-stage designs. Statistics in Medicine. 2019;1–13.
-https://doi.org/10.1002/sim.8291
-
