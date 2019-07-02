@@ -109,7 +109,7 @@
     <div class="page-header toc-ignore">
       <h1>Get started with adoptr</h1>
             
-            <h4 class="date">2019-07-01</h4>
+            <h4 class="date">2019-07-02</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/kkmann/adoptr/blob/master/vignettes/adoptr.Rmd"><code>vignettes/adoptr.Rmd</code></a></small>
       <div class="hidden name"><code>adoptr.Rmd</code></div>
@@ -122,9 +122,9 @@
 <h2 class="hasAnchor">
 <a href="#two-stage-designs-for-clinical-trials" class="anchor"></a>Two-stage designs for clinical trials</h2>
 <p>In prospectively planned confirmatory clinical trials there has been a long-standing debate about the merits of allowing pre-planned interim analyses to stop or modify an ongoing trial, cf. <a href="https://onlinelibrary.wiley.com/doi/pdf/10.1002/sim.6472">BAUER <em>et al.</em>, 2016</a>. It is common consensus that such two-stage designs should still maintain strict control of the maximal type one error rate despite the data dependent decision at the interim analysis. Most authors use combination function approaches to combine either the independent p values or test statistics from the respective stages. Doing so with pre-specified weights maintains the type one error rate control.</p>
-<p>With <strong>adoptr</strong> we provide tools to explore optimal two-stage designs for one or two-arm clinical trials with (asymptotically) normally distributed and stage-wise independent test statistics. In [our paper], it was argued that such techniques are not necessary, in fact, that they are counter-productive, since the pre-specified weights might be sub-optimal. Instead, one may see the problem of defining an optimal two-stage designs as a variational problem to find the optimal configuration <span class="math display">\[
+<p>With <strong>adoptr</strong> we provide tools to explore optimal two-stage designs for one or two-arm clinical trials with (asymptotically) normally distributed and stage-wise independent test statistics. In <a href="https://doi.org/10.1002/sim.8291">Pilz <em>et al.</em>, 2019</a>, it was argued that such techniques are not necessary, in fact, that they are counter-productive, since the pre-specified weights might be sub-optimal. Instead, one may see the problem of defining an optimal two-stage designs as a variational problem to find the optimal configuration <span class="math display">\[
 \mathcal{D}:=\big(n_1, c_1^e, c_1^f, n_2(\cdot), c_2(\cdot)\big)
-\]</span> directly for a given objective function and potentially a set of constraints. The relaxation of this mixed-integer problem to the real numbers can then be solved with standard methods from analysis. E.g., one could construct an implicit solution by solving the corresponding Euler-Lagrange equation for given first-stage and then find an optimal first-stage configuration [our paper]. Instead, the <strong>adoptr</strong> package implements a direct numerical solution algorithm by embedding the variation problem via a set of pivot points in the <span class="math inline">\(\mathbb{R}^k\)</span> and solving the corresponding finite-dimensional problem using gradient-free numerical optimization procedures (COBYLA / nloptr).</p>
+\]</span> directly for a given objective function and potentially a set of constraints. The relaxation of this mixed-integer problem to the real numbers can then be solved with standard methods from analysis. E.g., one could construct an implicit solution by solving the corresponding Euler-Lagrange equation for given first-stage and then find an optimal first-stage configuration, cf. <a href="https://doi.org/10.1002/sim.8291">Pilz <em>et al.</em>, 2019</a>. Instead, the <strong>adoptr</strong> package implements a direct numerical solution algorithm by embedding the variation problem via a set of pivot points in the <span class="math inline">\(\mathbb{R}^k\)</span> and solving the corresponding finite-dimensional problem using gradient-free numerical optimization procedures (COBYLA / nloptr).</p>
 </div>
 <div id="example" class="section level1">
 <h1 class="hasAnchor">
