@@ -37,7 +37,8 @@ Doing so with pre-specified weights maintains the type one error rate control.
 With **adoptr** we provide tools to explore optimal two-stage designs for
 one or two-arm clinical trials with (asymptotically) normally distributed
 and stage-wise independent test statistics.
-In [our paper], it was argued that such techniques are not necessary, in fact,
+In [Pilz *et al.*, 2019](https://doi.org/10.1002/sim.8291),
+it was argued that such techniques are not necessary, in fact,
 that they are counter-productive, since the pre-specified weights might be
 sub-optimal.
 Instead, one may see the problem of defining an optimal two-stage designs as
@@ -50,7 +51,8 @@ The relaxation of this mixed-integer problem to the real numbers can then
 be solved with standard methods from analysis.
 E.g., one could construct an implicit solution by solving the corresponding
 Euler-Lagrange equation for given first-stage and then find an optimal
-first-stage configuration [our paper].
+first-stage configuration, 
+cf. [Pilz *et al.*, 2019](https://doi.org/10.1002/sim.8291).
 Instead, the **adoptr** package implements a direct numerical solution 
 algorithm by embedding the variation problem via a set of pivot points in 
 the $\mathbb{R}^k$ and solving the corresponding finite-dimensional problem 
