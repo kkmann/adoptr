@@ -5,23 +5,20 @@
 \alias{plot,TwoStageDesign-method}
 \title{Plot \code{TwoStageDesign} with optional set of conditional scores}
 \usage{
-\S4method{plot}{TwoStageDesign}(x, y = NULL, rounded = TRUE, ...,
-  k = 100, fontsize = 1, lwd = 1)
+\S4method{plot}{TwoStageDesign}(x, y = NULL, ..., rounded = TRUE,
+  k = 100)
 }
 \arguments{
 \item{x}{design to plot}
 
 \item{y}{not used}
 
+\item{...}{further named \code{ConditinonalScores} to plot for the design
+and/or further graphic parameters}
+
 \item{rounded}{should n-values be rounded?}
 
-\item{...}{further named \code{ConditinonalScores} to plot for the design}
-
 \item{k}{number of points to use for plotting}
-
-\item{fontsize}{fontsize of axis and main}
-
-\item{lwd}{line width}
 }
 \description{
 This method allows to plot the stage-two sample size and decision boundary
@@ -34,7 +31,7 @@ user-defined elements of the class \code{\link[=Scores]{ConditionalScore}}.
 \examples{
 design <- TwoStageDesign(50, 0, 2, 50, 2, 5)
 cp     <- ConditionalPower(dist = Normal(), prior = PointMassPrior(.4, 1))
-plot(design, "Conditional Power" = cp)
+plot(design, "Conditional Power" = cp, cex.axis = 2)
 
 }
 \seealso{

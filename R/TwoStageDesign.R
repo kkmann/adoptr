@@ -425,23 +425,27 @@ setMethod("show", signature(object = "TwoStageDesign"),
 #' @param rounded should n-values be rounded?
 #' @param k number of points to use for plotting
 #' @param ... further named \code{ConditinonalScores} to plot for the design
+#' and/or further graphic parameters
 #'
 #' @seealso \code{\link{TwoStageDesign}}
 #'
 #' @examples
 #' design <- TwoStageDesign(50, 0, 2, 50, 2, 5)
 #' cp     <- ConditionalPower(dist = Normal(), prior = PointMassPrior(.4, 1))
-#' plot(design, "Conditional Power" = cp)
+#' plot(design, "Conditional Power" = cp, cex.axis = 2)
 #'
 #' @export
 setMethod("plot", signature(x = "TwoStageDesign"),
-          function(x, y = NULL, rounded = TRUE, ..., k = 100, fontsize = 1, lwd = 1) {
-              scores <- list(...)
+          function(x, y = NULL, ..., rounded = TRUE, k = 100) {
+              args   <- list(...)
+              scores <- args[which(sapply(args, function(s) is (s, "ConditionalScore")))]
               if (!all(sapply(scores, function(s) is(s, "ConditionalScore"))))
-                  stop("optional arguments must be ConditionalScores")
+                 stop("optional arguments must be ConditionalScores")
 
-              opts <- graphics::par(mfrow = c(1, length(scores) + 2), cex.lab = fontsize,
-                                    cex.axis = fontsize, cex.main = fontsize, lwd = lwd)
+
+              plot_opts <- args[-which(sapply(args, function(s) is (s, "ConditionalScore")))]
+
+              opts <- graphics::par(c(list(mfrow = c(1, length(scores) + 2)), plot_opts))
               x1   <- seq(x@c1f, x@c1e, length.out = k)
               x2   <- seq(x@c1f - (x@c1e - x@c1f)/5, x@c1f - .01*(x@c1e - x@c1f)/5, length.out = k)
               x3   <- seq(x@c1e + .01*(x@c1e - x@c1f)/5, x@c1e + (x@c1e - x@c1f)/5, length.out = k)
