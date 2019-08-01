@@ -438,12 +438,12 @@ setMethod("show", signature(object = "TwoStageDesign"),
 setMethod("plot", signature(x = "TwoStageDesign"),
           function(x, y = NULL, ..., rounded = TRUE, k = 100) {
               args   <- list(...)
-              scores <- args[which(sapply(args, function(s) is (s, "ConditionalScore")))]
+
+              scores <- args[which(sapply(args, function(s) is (s, "Score")))]
               if (!all(sapply(scores, function(s) is(s, "ConditionalScore"))))
-                 stop("optional arguments must be ConditionalScores")
+                 stop("additional scores must be ConditionalScores")
 
-
-              plot_opts <- args[-which(sapply(args, function(s) is (s, "ConditionalScore")))]
+              plot_opts <- args[-which(sapply(args, function(s) is (s, "Score")))]
 
               opts <- graphics::par(c(list(mfrow = c(1, length(scores) + 2)), plot_opts))
               x1   <- seq(x@c1f, x@c1e, length.out = k)
