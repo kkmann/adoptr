@@ -85,7 +85,7 @@ test_that("print methods", {
 test_that("plot produces correct number of columns", {
 
     cp  <- ConditionalPower(Normal(), PointMassPrior(.3, 1))
-    pic <- plot(design, "ConditionalPower" = cp)
+    pic <- plot(design, "ConditionalPower" = cp, fontsize = 1.5, lwd = 1.5)
 
     expect_true(
         pic$mfrow[2] == 3)

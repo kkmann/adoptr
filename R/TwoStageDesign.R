@@ -435,23 +435,24 @@ setMethod("show", signature(object = "TwoStageDesign"),
 #'
 #' @export
 setMethod("plot", signature(x = "TwoStageDesign"),
-          function(x, y = NULL, rounded = TRUE, ..., k = 100) {
+          function(x, y = NULL, rounded = TRUE, ..., k = 100, fontsize = 1, lwd = 1) {
               scores <- list(...)
               if (!all(sapply(scores, function(s) is(s, "ConditionalScore"))))
                   stop("optional arguments must be ConditionalScores")
 
-              opts <- graphics::par(mfrow = c(1, length(scores) + 2))
+              opts <- graphics::par(mfrow = c(1, length(scores) + 2), cex.lab = fontsize,
+                                    cex.axis = fontsize, cex.main = fontsize, lwd = lwd)
               x1   <- seq(x@c1f, x@c1e, length.out = k)
               x2   <- seq(x@c1f - (x@c1e - x@c1f)/5, x@c1f - .01*(x@c1e - x@c1f)/5, length.out = k)
               x3   <- seq(x@c1e + .01*(x@c1e - x@c1f)/5, x@c1e + (x@c1e - x@c1f)/5, length.out = k)
               x4   <- seq(x@c1f - (x@c1e - x@c1f)/5, x@c1e + (x@c1e - x@c1f)/5, length.out = k)
-              graphics::plot(x1, sapply(x1, function(z) n(x, z, round = rounded)), 'l',
+              graphics::plot(x1, sapply(x1, function(z) n(x, z, round = rounded)), type = 'l',
                              xlim = c(min(x4), max(x4)),
                              ylim = c(0, 1.05 * max(sapply(x1, function(z) n(x, z, round = rounded)))),
                              main = "Overall sample size", ylab = "" , xlab = expression("x"[1]))
               graphics::lines(x2, sapply(x2, function(z) n(x, z, round = rounded)))
               graphics::lines(x3, sapply(x3, function(z) n(x, z, round = rounded)))
-              graphics::plot(x4, c2(x, x4), 'l', main = "Stage-two critical value",
+              graphics::plot(x4, c2(x, x4), type = 'l', main = "Stage-two critical value",
                              ylab = "", xlab = expression("x"[1]))
               if (length(scores) > 0) {
                   for (i in 1:length(scores)) {
@@ -463,7 +464,7 @@ setMethod("plot", signature(x = "TwoStageDesign"),
                       expand <- .05*(max(do.call(c, y)) - min(do.call(c, y)))
                       graphics::plot(
                           x1, y$middle,
-                          'l',
+                          type = 'l',
                           xlim = c(min(x4), max(x4)),
                           ylim = c(min(do.call(c, y)) - expand, max(do.call(c, y)) + expand),
                           main = names(scores[i]),

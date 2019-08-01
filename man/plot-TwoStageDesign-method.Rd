@@ -6,7 +6,7 @@
 \title{Plot \code{TwoStageDesign} with optional set of conditional scores}
 \usage{
 \S4method{plot}{TwoStageDesign}(x, y = NULL, rounded = TRUE, ...,
-  k = 100)
+  k = 100, fontsize = 1, lwd = 1)
 }
 \arguments{
 \item{x}{design to plot}
@@ -18,6 +18,10 @@
 \item{...}{further named \code{ConditinonalScores} to plot for the design}
 
 \item{k}{number of points to use for plotting}
+
+\item{fontsize}{fontsize of axis and main}
+
+\item{lwd}{line width}
 }
 \description{
 This method allows to plot the stage-two sample size and decision boundary
