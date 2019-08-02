@@ -5,7 +5,7 @@
 \alias{plot,TwoStageDesign-method}
 \title{Plot \code{TwoStageDesign} with optional set of conditional scores}
 \usage{
-\S4method{plot}{TwoStageDesign}(x, y = NULL, rounded = TRUE, ...,
+\S4method{plot}{TwoStageDesign}(x, y = NULL, ..., rounded = TRUE,
   k = 100)
 }
 \arguments{
@@ -13,9 +13,10 @@
 
 \item{y}{not used}
 
-\item{rounded}{should n-values be rounded?}
+\item{...}{further named \code{ConditinonalScores} to plot for the design
+and/or further graphic parameters}
 
-\item{...}{further named \code{ConditinonalScores} to plot for the design}
+\item{rounded}{should n-values be rounded?}
 
 \item{k}{number of points to use for plotting}
 }
@@ -30,7 +31,7 @@ user-defined elements of the class \code{\link[=Scores]{ConditionalScore}}.
 \examples{
 design <- TwoStageDesign(50, 0, 2, 50, 2, 5)
 cp     <- ConditionalPower(dist = Normal(), prior = PointMassPrior(.4, 1))
-plot(design, "Conditional Power" = cp)
+plot(design, "Conditional Power" = cp, cex.axis = 2)
 
 }
 \seealso{
