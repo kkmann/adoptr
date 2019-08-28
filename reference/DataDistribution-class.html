@@ -15,11 +15,13 @@
 <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -43,14 +45,14 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="Data distributions — DataDistribution-class" />
 
+<meta property="og:title" content="Data distributions — DataDistribution-class" />
 <meta property="og:description" content="DataDistribution is an abstract class used to represent the distribution
 of a sufficient statistic x given a sample size n and a
 single parameter value theta." />
-
 <meta property="og:image" content="https://kkmann.github.io/adoptr/logo.png" />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -123,7 +125,6 @@ single parameter value theta." />
   <a href="../reference/index.html">Reference</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/kkmann/adoptr">
@@ -155,14 +156,12 @@ single parameter value theta." />
     </div>
 
     <div class="ref-description">
-    
     <p><code>DataDistribution</code> is an abstract class used to represent the distribution
 of a sufficient statistic <code>x</code> given a sample size <code>n</code> and a
 single parameter value <code>theta</code>.</p>
-    
     </div>
 
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -183,7 +182,7 @@ single parameter value <code>theta</code>.</p>
       <td><p>further optional arguments</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>This abstraction layer allows the representation of t-distributions
@@ -193,14 +192,12 @@ Currently, only the normal case is implemented with <code><a href='NormalDataDis
 <p>The logical option <code>two_armed</code> allows to decide whether a one-arm or
 a two-arm (the default) design should be computed. In the case of a two-arm
 design all sample sizes are per group.</p>
-    
     <h2 class="hasAnchor" id="slots"><a class="anchor" href="#slots"></a>Slots</h2>
 
     
     <dl class='dl-horizontal'>
 <dt><code>two_armed</code></dt><dd><p>Logical that indicates if a two-arm design is assumed.</p></dd>
 </dl>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>datadist</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='NormalDataDistribution-class.html'>Normal</a></span>(<span class='kw'>two_armed</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div></pre>
@@ -209,11 +206,8 @@ design all sample sizes are per group.</p>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#details">Details</a></li>
-
       <li><a href="#slots">Slots</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 

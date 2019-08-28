@@ -15,11 +15,13 @@
 <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -43,8 +45,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="Boundary designs — get_lower_boundary_design" />
 
+<meta property="og:title" content="Boundary designs — get_lower_boundary_design" />
 <meta property="og:description" content="The optimization method minimize is based on the package
 nloptr. This requires upper and lower boundaries for optimization.
 Such boundaries can be computed via lower_boundary_design
@@ -52,9 +54,9 @@ respectively upper_boundary_design.
 They are implemented by default in minimize.
 Note that minimize allows the user to define its own
 boundary designs, too." />
-
 <meta property="og:image" content="https://kkmann.github.io/adoptr/logo.png" />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -127,7 +129,6 @@ boundary designs, too." />
   <a href="../reference/index.html">Reference</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/kkmann/adoptr">
@@ -159,7 +160,6 @@ boundary designs, too." />
     </div>
 
     <div class="ref-description">
-    
     <p>The optimization method <code><a href='minimize.html'>minimize</a></code> is based on the package
 <code>nloptr</code>. This requires upper and lower boundaries for optimization.
 Such boundaries can be computed via <code>lower_boundary_design</code>
@@ -167,7 +167,6 @@ respectively <code>upper_boundary_design</code>.
 They are implemented by default in <code><a href='minimize.html'>minimize</a></code>.
 Note that <code><a href='minimize.html'>minimize</a></code> allows the user to define its own
 boundary designs, too.</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>get_lower_boundary_design</span>(<span class='no'>initial_design</span>, <span class='no'>...</span>)
@@ -201,7 +200,7 @@ boundary designs, too.</p>
 <span class='fu'>get_upper_boundary_design</span>(<span class='no'>initial_design</span>,
   <span class='kw'>n1</span> <span class='kw'>=</span> <span class='fl'>5</span> * <span class='no'>initial_design</span>@<span class='kw'>n1</span>, <span class='kw'>n2_pivots</span> <span class='kw'>=</span> <span class='fl'>5</span> * <span class='no'>initial_design</span>@<span class='kw'>n2_pivots</span>,
   <span class='kw'>c1_buffer</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>c2_buffer</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='no'>...</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -236,7 +235,7 @@ This is handled analogously with <code>c2_pivots</code> and <code>c2_buffer</cod
       <td><p>shift of the final decision boundary from the initial one</p></td>
     </tr>
     </table>
-    
+
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>initial_design</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='TwoStageDesign-class.html'>TwoStageDesign</a></span>(
@@ -254,7 +253,6 @@ This is handled analogously with <code>c2_pivots</code> and <code>c2_buffer</cod
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-            
       <li><a href="#examples">Examples</a></li>
     </ul>
 

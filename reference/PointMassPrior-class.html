@@ -15,11 +15,13 @@
 <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -43,14 +45,14 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="Univariate discrete point mass priors — PointMassPrior-class" />
 
+<meta property="og:title" content="Univariate discrete point mass priors — PointMassPrior-class" />
 <meta property="og:description" content="PointMassPrior is a sub-class of Prior
 representing a univariate prior over a discrete set of points with positive
 probability mass." />
-
 <meta property="og:image" content="https://kkmann.github.io/adoptr/logo.png" />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -123,7 +125,6 @@ probability mass." />
   <a href="../reference/index.html">Reference</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/kkmann/adoptr">
@@ -155,18 +156,16 @@ probability mass." />
     </div>
 
     <div class="ref-description">
-    
     <p><code>PointMassPrior</code> is a sub-class of <code><a href='Prior-class.html'>Prior</a></code>
 representing a univariate prior over a discrete set of points with positive
 probability mass.</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>PointMassPrior</span>(<span class='no'>theta</span>, <span class='no'>mass</span>)
 
 <span class='co'># S4 method for PointMassPrior</span>
 <span class='fu'>show</span>(<span class='no'>object</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -184,11 +183,10 @@ probability mass.</p>
       <td><p>object of class <code>PointMassPrior</code></p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>an object of class <code>PointMassPrior</code></p>
-    
     <h2 class="hasAnchor" id="slots"><a class="anchor" href="#slots"></a>Slots</h2>
 
     
@@ -196,11 +194,9 @@ probability mass.</p>
 <dt><code>theta</code></dt><dd><p>cf. parameter 'theta'</p></dd>
     <dt><code>mass</code></dt><dd><p>cf. parameter 'mass'</p></dd>
 </dl>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>To represent continuous prior distributions use <code><a href='ContinuousPrior-class.html'>ContinuousPrior</a></code>.</p></div>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>PointMassPrior</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>.5</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>.3</span>, <span class='fl'>.7</span>))</div><div class='output co'>#&gt; PointMassPrior</div><div class='input'>
@@ -210,13 +206,9 @@ probability mass.</p>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#slots">Slots</a></li>
-
       <li><a href="#see-also">See also</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 

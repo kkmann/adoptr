@@ -15,11 +15,13 @@
 <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -43,14 +45,14 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="Switch between numeric and S4 class representation of a design — tunable_parameters" />
 
+<meta property="og:title" content="Switch between numeric and S4 class representation of a design — tunable_parameters" />
 <meta property="og:description" content="Get tunable parameters of a design as numeric vector via
 tunable_parameters or update a design object with a suitable
 vector of values for its tunable parameters." />
-
 <meta property="og:image" content="https://kkmann.github.io/adoptr/logo.png" />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -123,7 +125,6 @@ vector of values for its tunable parameters." />
   <a href="../reference/index.html">Reference</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/kkmann/adoptr">
@@ -155,11 +156,9 @@ vector of values for its tunable parameters." />
     </div>
 
     <div class="ref-description">
-    
     <p>Get tunable parameters of a design as numeric vector via
 <code>tunable_parameters</code> or <code>update</code> a design object with a suitable
 vector of values for its tunable parameters.</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>tunable_parameters</span>(<span class='no'>object</span>, <span class='no'>...</span>)
@@ -172,7 +171,7 @@ vector of values for its tunable parameters.</p>
 
 <span class='co'># S4 method for OneStageDesign</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/update'>update</a></span>(<span class='no'>object</span>, <span class='no'>params</span>, <span class='no'>...</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -191,7 +190,7 @@ by <br />
 <code>tunable_parameters</code></p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The <code>tunable</code> slot of a <code><a href='TwoStageDesign-class.html'>TwoStageDesign</a></code> stores information about
@@ -199,11 +198,9 @@ the set of design parameters which are considered fixed (not changed during
 optimization) or tunable (changed during optimization).
 For details on how to fix certain parameters or how to make them tunable
 again, see <code><a href='make_tunable.html'>make_fixed</a></code> and <code><a href='make_tunable.html'>make_tunable</a></code>.</p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='TwoStageDesign-class.html'>TwoStageDesign</a></code></p></div>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>design</span>  <span class='kw'>&lt;-</span> <span class='fu'><a href='TwoStageDesign-class.html'>TwoStageDesign</a></span>(<span class='fl'>25</span>, <span class='fl'>0</span>, <span class='fl'>2</span>, <span class='fl'>25</span>, <span class='fl'>2</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='fl'>5</span>)
@@ -215,11 +212,8 @@ again, see <code><a href='make_tunable.html'>make_fixed</a></code> and <code><a 
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#details">Details</a></li>
-
       <li><a href="#see-also">See also</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 

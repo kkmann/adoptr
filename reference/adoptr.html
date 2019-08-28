@@ -15,11 +15,13 @@
 <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -43,8 +45,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="Adaptive Optimal Two-Stage Designs — adoptr" />
 
+<meta property="og:title" content="Adaptive Optimal Two-Stage Designs — adoptr" />
 <meta property="og:description" content="The adoptr package provides functionality to explore custom optimal
 two-stage designs for one- or two-arm superiority tests.
 Currently, only (asymptotically) normal test statistics are supported.
@@ -53,9 +55,9 @@ For more details on the theoretical background see
 adoptr makes heavy use of the S4 class system.
 A good place to start learning about it can be found
 here." />
-
 <meta property="og:image" content="https://kkmann.github.io/adoptr/logo.png" />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -128,7 +130,6 @@ here." />
   <a href="../reference/index.html">Reference</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/kkmann/adoptr">
@@ -160,7 +161,6 @@ here." />
     </div>
 
     <div class="ref-description">
-    
     <p>The <span class="pkg">adoptr</span> package provides functionality to explore custom optimal
 two-stage designs for one- or two-arm superiority tests.
 Currently, only (asymptotically) normal test statistics are supported.
@@ -169,10 +169,10 @@ For more details on the theoretical background see
 <span class="pkg">adoptr</span> makes heavy use of the S4 class system.
 A good place to start learning about it can be found
 <a href='http://adv-r.had.co.nz/OO-essentials.html'>here</a>.</p>
-    
     </div>
 
-        
+
+
     <h2 class="hasAnchor" id="quickstart"><a class="anchor" href="#quickstart"></a>Quickstart</h2>
 
     
@@ -180,25 +180,21 @@ A good place to start learning about it can be found
 <a href='https://kkmann.github.io/adoptr/articles/adoptr.html'>here</a>.</p>
 <p>A variety of examples is presented in the validation report hosted
 <a href='https://kkmann.github.io/adoptr-validation-report/'>here</a>.</p>
-    
     <h2 class="hasAnchor" id="designs"><a class="anchor" href="#designs"></a>Designs</h2>
 
     
     <p><span class="pkg">adoptr</span> currently supports <code><a href='TwoStageDesign-class.html'>TwoStageDesign</a></code>,
 <code><a href='GroupSequentialDesign-class.html'>GroupSequentialDesign</a></code>, and <code><a href='OneStageDesign-class.html'>OneStageDesign</a></code>.</p>
-    
     <h2 class="hasAnchor" id="data-distributions"><a class="anchor" href="#data-distributions"></a>Data distributions</h2>
 
     
     <p>Currently, the only implemented data distribution is <code><a href='NormalDataDistribution-class.html'>Normal</a></code>
 (one or two arms).</p>
-    
     <h2 class="hasAnchor" id="priors"><a class="anchor" href="#priors"></a>Priors</h2>
 
     
     <p>Both <code><a href='ContinuousPrior-class.html'>ContinuousPrior</a></code> and <code><a href='PointMassPrior-class.html'>PointMassPrior</a></code> are
 supported for the single parameter of a <code><a href='DataDistribution-class.html'>DataDistribution</a></code>.</p>
-    
     <h2 class="hasAnchor" id="scores"><a class="anchor" href="#scores"></a>Scores</h2>
 
     
@@ -207,23 +203,17 @@ scores.
 Available scores are <code><a href='ConditionalPower-class.html'>ConditionalPower</a></code>,
 <code><a href='ConditionalSampleSize-class.html'>ConditionalSampleSize</a></code>, <code><a href='ConditionalPower-class.html'>Power</a></code>, and
 <code><a href='ConditionalSampleSize-class.html'>ExpectedSampleSize</a></code>..</p>
-    
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      
       <li><a href="#quickstart">Quickstart</a></li>
-
       <li><a href="#designs">Designs</a></li>
-
       <li><a href="#data-distributions">Data distributions</a></li>
-
       <li><a href="#priors">Priors</a></li>
-
       <li><a href="#scores">Scores</a></li>
-          </ul>
+    </ul>
 
   </div>
 </div>
