@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Find optimal two-stage design by constraint minimization — minimize • adoptr</title>
+<title>Printing an optimization result — print.adoptrOptimizationResult • adoptr</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,15 +46,8 @@
 
 
 
-<meta property="og:title" content="Find optimal two-stage design by constraint minimization — minimize" />
-<meta property="og:description" content="minimize takes an unconditional score and
-a constraint set (or no constraint) and solves the corresponding
-minimization problem using
-nloptr
-(using COBYLA by default).
-An initial design has to be defined. It is also possible to define
-lower- and upper-boundary designs. If this is not done, the boundaries are
-determined automatically heuristically." />
+<meta property="og:title" content="Printing an optimization result — print.adoptrOptimizationResult" />
+<meta property="og:description" content="Printing an optimization result" />
 <meta property="og:image" content="https://kkmann.github.io/adoptr/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -155,101 +148,36 @@ determined automatically heuristically." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Find optimal two-stage design by constraint minimization</h1>
-    <small class="dont-index">Source: <a href='https://github.com/kkmann/adoptr/blob/master/R/minimize.R'><code>R/minimize.R</code></a></small>
-    <div class="hidden name"><code>minimize.Rd</code></div>
+    <h1>Printing an optimization result</h1>
+    
+    <div class="hidden name"><code>print.adoptrOptimizationResult.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>minimize</code> takes an unconditional score and
-a constraint set (or no constraint) and solves the corresponding
-minimization problem using
-<a href='https://cran.r-project.org/package=nloptr'><code>nloptr</code></a>
-(using COBYLA by default).
-An initial design has to be defined. It is also possible to define
-lower- and upper-boundary designs. If this is not done, the boundaries are
-determined automatically heuristically.</p>
+    <p>Printing an optimization result</p>
     </div>
 
-    <pre class="usage"><span class='fu'>minimize</span>(<span class='no'>objective</span>, <span class='no'>subject_to</span>, <span class='no'>initial_design</span>,
-  <span class='kw'>lower_boundary_design</span> <span class='kw'>=</span> <span class='fu'><a href='boundary-designs.html'>get_lower_boundary_design</a></span>(<span class='no'>initial_design</span>),
-  <span class='kw'>upper_boundary_design</span> <span class='kw'>=</span> <span class='fu'><a href='boundary-designs.html'>get_upper_boundary_design</a></span>(<span class='no'>initial_design</span>),
-  <span class='kw'>opts</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>algorithm</span> <span class='kw'>=</span> <span class='st'>"NLOPT_LN_COBYLA"</span>, <span class='kw'>xtol_rel</span> <span class='kw'>=</span> <span class='fl'>1e-05</span>, <span class='kw'>maxeval</span> <span class='kw'>=</span>
-  <span class='fl'>10000</span>), <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>print</span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>objective</th>
-      <td><p>objective function</p></td>
-    </tr>
-    <tr>
-      <th>subject_to</th>
-      <td><p>constraint collection</p></td>
-    </tr>
-    <tr>
-      <th>initial_design</th>
-      <td><p>initial guess (x0 for nloptr)</p></td>
-    </tr>
-    <tr>
-      <th>lower_boundary_design</th>
-      <td><p>design specifying the lower boundary.</p></td>
-    </tr>
-    <tr>
-      <th>upper_boundary_design</th>
-      <td><p>design specifying the upper boundary</p></td>
-    </tr>
-    <tr>
-      <th>opts</th>
-      <td><p>options list passed to nloptr</p></td>
+      <th>x</th>
+      <td><p>object to print</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>further optional arguments passed to <code>nloptr</code></p></td>
+      <td><p>further arguments passed form other methods</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a list with elements:</p>
-<dt>design</dt><dd><p>The resulting optimal design</p></dd>
-    <dt>nloptr_return</dt><dd><p>Output of the corresponding nloptr call</p></dd>
-    <dt>call_args</dt><dd><p>The arguments given to the optimization call</p></dd>
-
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Define Type one error rate</span>
-<span class='no'>toer</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ConditionalPower-class.html'>Power</a></span>(<span class='fu'><a href='NormalDataDistribution-class.html'>Normal</a></span>(), <span class='fu'><a href='PointMassPrior-class.html'>PointMassPrior</a></span>(<span class='fl'>0.0</span>, <span class='fl'>1</span>))
-
-<span class='co'># Define Power at delta = 0.4</span>
-<span class='no'>pow</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ConditionalPower-class.html'>Power</a></span>(<span class='fu'><a href='NormalDataDistribution-class.html'>Normal</a></span>(), <span class='fu'><a href='PointMassPrior-class.html'>PointMassPrior</a></span>(<span class='fl'>0.4</span>, <span class='fl'>1</span>))
-
-<span class='co'># Define expected sample size at delta = 0.4</span>
-<span class='no'>ess</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ConditionalSampleSize-class.html'>ExpectedSampleSize</a></span>(<span class='fu'><a href='NormalDataDistribution-class.html'>Normal</a></span>(), <span class='fu'><a href='PointMassPrior-class.html'>PointMassPrior</a></span>(<span class='fl'>0.4</span>, <span class='fl'>1</span>))
-
-<span class='co'># Compute design minimizing ess subject to power and toer constraints</span></div><span class='co'># NOT RUN {</span>
-<span class='fu'>minimize</span>(
-
-   <span class='no'>ess</span>,
-
-   <span class='fu'><a href='subject_to.html'>subject_to</a></span>(
-      <span class='no'>toer</span> <span class='kw'>&lt;=</span> <span class='fl'>0.025</span>,
-      <span class='no'>pow</span>  <span class='kw'>&gt;=</span> <span class='fl'>0.9</span>
-   ),
-
-   <span class='kw'>initial_design</span> <span class='kw'>=</span> <span class='fu'><a href='TwoStageDesign-class.html'>TwoStageDesign</a></span>(<span class='fl'>50</span>, <span class='fl'>.0</span>, <span class='fl'>2.0</span>, <span class='fl'>60.0</span>, <span class='fl'>2.0</span>, <span class='fl'>5L</span>)
-
-)
-<span class='co'># }</span><div class='input'>
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>
