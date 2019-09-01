@@ -7,7 +7,7 @@
 \alias{evaluate,N1,TwoStageDesign-method}
 \title{Regularize n1}
 \usage{
-N1()
+N1(label = NA_character_)
 
 \S4method{evaluate}{N1,TwoStageDesign}(s, design, optimization = FALSE,
   ...)

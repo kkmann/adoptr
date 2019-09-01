@@ -169,10 +169,16 @@ test_that("errors are defined correctly", {
 
 
 
-test_that("show method returns class name", {
+test_that("show method", {
 
-    prior <- PointMassPrior(.3, 1)
-    expect_true(
-        class(prior)[1] == capture.output(show(prior)))
+    expect_equal(
+        capture.output(show(PointMassPrior(.3, 1))),
+        "PointMass<0.30> "
+    )
 
-}) # end 'show method returns class name'
+    expect_equal(
+        capture.output(show(PointMassPrior(c(.0, .3), c(.25, .75)))),
+        "PointMass<Pr[0.00]=0.25;Pr[0.30]=0.75> "
+    )
+
+}) # end show method

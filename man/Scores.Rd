@@ -11,7 +11,8 @@
 \usage{
 expected(s, data_distribution, prior, ...)
 
-\S4method{expected}{ConditionalScore}(s, data_distribution, prior, ...)
+\S4method{expected}{ConditionalScore}(s, data_distribution, prior,
+  label = NA_character_, ...)
 
 evaluate(s, design, ...)
 

@@ -31,21 +31,23 @@ setClass("PointMassPrior", representation(
 #'
 #' @rdname PointMassPrior-class
 #' @export
-PointMassPrior <- function(theta, mass) {
+PointMassPrior <- function(theta, mass, label = NA_character_) {
     if (sum(mass) != 1)
         stop("mass must sum to one")
-    new("PointMassPrior", theta = theta[order(theta)], mass = mass[order(theta)])
+    new("PointMassPrior", theta = theta[order(theta)], mass = mass[order(theta)],
+        label = label)
 }
 
 
 
 
 setMethod("print", signature('PointMassPrior'), function(x, ...) {
+    name <- if (!is.na(x@label)) x@label else 'PointMass'
     if (length(x@theta) == 1)
-        glue::glue("{class(x)[1]}<{sprintf('%.2f',x@theta)}>")
+        glue::glue("{name}<{sprintf('%.2f',x@theta)}>")
     else
         paste0(
-            glue::glue("{class(x)[1]}<"),
+            glue::glue("{name}<"),
             paste0(glue::glue("Pr[{sprintf('%.2f',x@theta)}]={sprintf('%3.2f',x@mass)}"), collapse = ";"),
             ">",
             collapse = ""

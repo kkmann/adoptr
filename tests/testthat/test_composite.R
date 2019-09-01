@@ -101,14 +101,14 @@ test_that("Nested compositions", {
 
 
 
-test_that("show method returns class name", {
+test_that("show works", {
 
     expect_equal(
         capture.output(show(composite({2*ess}))),
-        "CompositeUnconditionalScore")
+        "2 * E[n(x1)]<Normal<two-armed>;PointMass<0.30>> ")
 
     expect_equal(
         capture.output(show(composite({2*css}))),
-        "CompositeConditionalScore")
+        "2 * n(x1) ")
 
 }) # end 'show method returns class name'

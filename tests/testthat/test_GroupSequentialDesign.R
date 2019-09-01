@@ -74,21 +74,21 @@ test_that("GSDesign can be converted to TwoStageDesign", {
 
 test_that("Rounding works", {
 
-    design1 <- GroupSequentialDesign(50, 0, 2, 50.2, rep(2, 5))
-
     expect_equal(
-        n2(design1, 1),
+        n2(GroupSequentialDesign(50, 0, 2, 50.2, rep(2, 5)), 1),
         50.0,
-        tolerance = 1e-6, scale = 1)
+        tolerance = 1e-6, scale = 1
+    )
 
 })
 
 
-test_that("show method returns design name", {
 
-    design <- GroupSequentialDesign(25, 0.0, 2.0, 40.0, 1.96, 5L)
+test_that("show method", {
 
-    expect_true(
-        class(design)[1] == capture.output(show(design)))
+    expect_equal(
+        paste0(capture.output(show(GroupSequentialDesign(25, 0.0, 2.0, 40.0, 1.96, 5L))), collapse = "\n\r"),
+        "GroupSequentialDesign<\n\r\r      x1    c2   n\n\r\r    -0.00   Inf   25\n\r\r     0.09  1.96   65\n\r\r     0.46  1.96   65\n\r\r     1.00  1.96   65\n\r\r     1.54  1.96   65\n\r\r     1.91  1.96   65\n\r\r     2.00  -Inf   25>\n\r\r "
+    )
 
-}) # end 'show method returns design name'
+})

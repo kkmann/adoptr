@@ -6,7 +6,6 @@
 \alias{TwoStageDesign}
 \alias{TwoStageDesign,numeric-method}
 \alias{summary,TwoStageDesign-method}
-\alias{print.TwoStageDesignSummary}
 \title{Two-stage designs}
 \usage{
 TwoStageDesign(n1, ...)
@@ -15,8 +14,6 @@ TwoStageDesign(n1, ...)
   order = NULL, ...)
 
 \S4method{summary}{TwoStageDesign}(object, ..., rounded = TRUE)
-
-print.TwoStageDesignSummary(x, ..., round = TRUE)
 }
 \arguments{
 \item{n1}{stage-one sample size}
@@ -40,10 +37,6 @@ are taken to be constant in stage-two and replicated to match the number of
 pivots specified by \code{order}}
 
 \item{rounded}{should rounded n-values be used?}
-
-\item{x}{return value of call to \code{summary}}
-
-\item{round}{\code{logical} should sample sizes be rounded to next integer?}
 }
 \description{
 \code{TwoStageDesign} is the fundamental design class of the

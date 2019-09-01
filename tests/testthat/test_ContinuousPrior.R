@@ -286,11 +286,16 @@ test_that("Errors are defined correctly", {
 
 
 
-test_that("show method returns class name", {
+test_that("show method", {
 
-    prior <- ContinuousPrior(function(x) 2*x, c(0, 1))
+    expect_equal(
+        capture.output(show(ContinuousPrior(function(x) 2*x, c(0, 1)))),
+        "ContinuousPrior<[0,1]> "
+    )
 
-    expect_true(
-        class(prior)[1] == capture.output(show(prior)))
+    expect_equal(
+        capture.output(show(ContinuousPrior(function(x) 2*x, c(0, 1), label = "MyPrior"))),
+        "MyPrior<[0,1]> "
+    )
 
-}) # end 'show method returns class name'
+}) # end show method

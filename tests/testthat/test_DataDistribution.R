@@ -87,10 +87,16 @@ test_that("simulate respects seed", {
 
 
 
-test_that("show method returns class name", {
+test_that("show method", {
 
-    dist <- Normal()
-    expect_true(
-        class(dist)[1] == capture.output(show(dist)))
+    expect_equal(
+        capture.output(show(Normal())),
+        "Normal<two-armed> "
+    )
+
+    expect_equal(
+        capture.output(show(Normal(two_armed = FALSE))),
+        "Normal<single-armed> "
+    )
 
 })

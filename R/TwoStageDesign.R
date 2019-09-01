@@ -405,9 +405,16 @@ setMethod("scaled_integration_pivots", signature("TwoStageDesign"),
 
 setMethod("print", signature('TwoStageDesign'), function(x, ...) {
     xx <- c(x@c1f - sqrt(.Machine$double.eps), scaled_integration_pivots(x), x@c1e + sqrt(.Machine$double.eps))
-    paste(glue::glue("{class(x)[1]}<\n\r"), "      x1    c2   n\n\r", paste(glue::glue(
-        "    {sprintf('%5.2f', xx)} {sprintf('%5.2f', c2(x, xx))} {sprintf('%4i', n(x, xx))}",
-    ), collapse = "\n\r") , ">\n\r", sep = "")
+    paste(
+        glue::glue("{class(x)[1]}<\n\r"), "      x1    c2   n\n\r",
+        paste(glue::glue(
+            "    {sprintf('%5.2f', xx)} {sprintf('%5.2f', c2(x, xx))} {sprintf('%4i', n(x, xx))}",
+            ),
+            collapse = "\n\r"
+        ) ,
+        ">\n\r",
+        sep = ""
+    )
 })
 
 setMethod("show", signature(object = "TwoStageDesign"), function(object) {
@@ -519,33 +526,6 @@ setMethod("summary", signature("TwoStageDesign"),
               class(res) <- c("TwoStageDesignSummary", "list")
               return(res)
           })
-
-#' @param  x return value of call to \code{summary}
-#' @template round
-#'
-#' @rdname TwoStageDesign-class
-#' @export
-print.TwoStageDesignSummary <- function(x, ..., round = TRUE) {
-    x1 <- seq(x$design@c1f, x$design@c1e, length.out = 1000)
-            cat(sprintf("%s with:\n\r", class(x$design)[1]))
-    cat(sprintf("     n1: %6.2f\n\r", n1(x$design, round)))
-    cat(sprintf("    c1f: %6.2f\n\r", x$design@c1f))
-    cat(sprintf("    c1e: %6.2f\n\r", x$design@c1e))
-    cat(sprintf(" max n2: %6.2f\n\r", max(n2(x$design, x1, round))))
-    cat(sprintf(" min n2: %6.2f\n\r", min(n2(x$design, x1, round))))
-    cat(sprintf("%i integration pivots at: ", length(x$design@x1_norm_pivots)))
-    cat(paste0(sprintf("%.2f", scaled_integration_pivots(x$design)), collapse = ", "))
-    cat("\n\r    integration weights: ")
-    cat(paste0(sprintf("%.2f", x$design@weights), collapse = ", "))
-    cat("\n\r")
-    if (length(x$scores) > 0) {
-        cat("Unconditional scores:\n\r")
-        for (i in 1:length(x$scores)) {
-            cat(sprintf("    %10s: %7.3f\n\r", names(x$scores)[i], x$scores[i]))
-        }
-        cat("\n\r")
-    }
-}
 
 
 

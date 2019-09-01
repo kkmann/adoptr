@@ -137,8 +137,9 @@ test_that("OneStageDesign can be converted to TwoStageDesign", {
 
 test_that("show method returns design name", {
 
-    design  <-  OneStageDesign(90, 2.0)
-    expect_true(
-        class(design)[1] == capture.output(show(design)))
+    expect_equal(
+        capture.output(show(OneStageDesign(90, 2.0))),
+        "OneStageDesign<90;2.00> "
+    )
 
-}) # end 'show method returns design name'
+})

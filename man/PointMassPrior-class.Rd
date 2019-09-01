@@ -6,7 +6,7 @@
 \alias{PointMassPrior}
 \title{Univariate discrete point mass priors}
 \usage{
-PointMassPrior(theta, mass)
+PointMassPrior(theta, mass, label = NA_character_)
 }
 \arguments{
 \item{theta}{numeric vector of pivot points with positive prior mass}

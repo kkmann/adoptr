@@ -26,7 +26,7 @@
 #'
 #' @aliases Prior
 #' @exportClass Prior
-setClass("Prior")
+setClass("Prior", representation(label = "character"))
 
 
 

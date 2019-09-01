@@ -6,7 +6,7 @@
 \alias{evaluate,CompositeScore,TwoStageDesign-method}
 \title{Score Composition}
 \usage{
-composite(expr)
+composite(expr, label = NA_character_)
 
 \S4method{evaluate}{CompositeScore,TwoStageDesign}(s, design, ...)
 }

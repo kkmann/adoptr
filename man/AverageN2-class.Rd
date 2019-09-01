@@ -7,7 +7,7 @@
 \alias{evaluate,AverageN2,TwoStageDesign-method}
 \title{Regularization via L1 norm}
 \usage{
-AverageN2()
+AverageN2(label = NA_character_)
 
 \S4method{evaluate}{AverageN2,TwoStageDesign}(s, design,
   optimization = FALSE, subdivisions = 10000L, ...)

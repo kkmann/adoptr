@@ -8,9 +8,9 @@
 \alias{evaluate,ConditionalPower,TwoStageDesign-method}
 \title{(Conditional) Power of a Design}
 \usage{
-ConditionalPower(dist, prior)
+ConditionalPower(dist, prior, label = "Pr[x2>=c2(x1)|x1]")
 
-Power(dist, prior)
+Power(dist, prior, label = "Pr[x2>=c2(x1)]")
 
 \S4method{evaluate}{ConditionalPower,TwoStageDesign}(s, design, x1,
   optimization = FALSE, ...)

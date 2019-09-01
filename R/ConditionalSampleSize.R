@@ -35,13 +35,15 @@ setClass("ConditionalSampleSize", contains = "ConditionalScore")
 
 #' @rdname ConditionalSampleSize-class
 #' @export
-ConditionalSampleSize <- function() new("ConditionalSampleSize")
+ConditionalSampleSize <- function(label = "n(x1)") new("ConditionalSampleSize", label = label)
 
 
 
 #' @rdname ConditionalSampleSize-class
 #' @export
-ExpectedSampleSize <- function(dist, prior) expected(ConditionalSampleSize(), dist, prior)
+ExpectedSampleSize <- function(dist, prior, label = "E[n(x1)]") {
+    expected(ConditionalSampleSize(), dist, prior, label = label)
+}
 
 
 

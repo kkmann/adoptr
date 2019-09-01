@@ -8,9 +8,9 @@
 \alias{evaluate,ConditionalSampleSize,TwoStageDesign-method}
 \title{(Conditional) Sample Size of a Design}
 \usage{
-ConditionalSampleSize()
+ConditionalSampleSize(label = "n(x1)")
 
-ExpectedSampleSize(dist, prior)
+ExpectedSampleSize(dist, prior, label = "E[n(x1)]")
 
 \S4method{evaluate}{ConditionalSampleSize,TwoStageDesign}(s, design, x1,
   optimization = FALSE, ...)

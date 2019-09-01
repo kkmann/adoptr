@@ -31,6 +31,7 @@ setClass("ContinuousPrior", representation(
 #' @export
 ContinuousPrior <- function(pdf,
                             support,
+                            label = NA_character_,
                             tighten_support = FALSE,
                             check_normalization = TRUE) {
     if (length(support) != 2)
@@ -60,7 +61,7 @@ ContinuousPrior <- function(pdf,
         pdf     <- function(theta) pdf_old(theta) / norm
     }
 
-    new("ContinuousPrior", pdf = pdf, support = support)
+    new("ContinuousPrior", pdf = pdf, support = support, label = label)
 }
 
 
@@ -204,7 +205,6 @@ setMethod("posterior", signature("DataDistribution", "ContinuousPrior", "numeric
 
 
 setMethod("print", signature('ContinuousPrior'), function(x, ...) {
-    glue::glue(
-        "{class(x)[1]}<[{x@support[1]},{x@support[2]}]>"
-    )
+    name <- if (!is.na(x@label)) x@label else class(x)[1]
+    glue::glue("{name}<[{x@support[1]},{x@support[2]}]>")
 })

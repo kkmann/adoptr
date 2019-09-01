@@ -1,7 +1,8 @@
 setClass("CompositeScore", representation(
         expr       = "{",
         scores     = "list",
-        non_scores = "list"
+        non_scores = "list",
+        label      = "character"
     ),
     contains = "Score"
 )
@@ -14,6 +15,17 @@ setClass("CompositeConditionalScore",
      contains = c("ConditionalScore", "CompositeScore")
 )
 
+
+setMethod("print", signature("CompositeScore"), function(x, ...) {
+    labels <- lapply(x@scores, function(x) print(x, ...))
+    str <- as.character(x@expr)
+    for (i in 1:length(str)) {
+        for (j in 1:length(labels)) {
+            str[i] <- sub(names(labels)[j], sprintf("{%s}", names(labels)[j]), str[i])
+        }
+    }
+    glue::glue(paste0(str[-1], collapse = "; "), .envir = c(labels, x@non_scores))
+})
 
 
 #' Score Composition
@@ -56,7 +68,7 @@ setClass("CompositeConditionalScore",
 #' composite({3*cp})
 #'
 #' @export
-composite <- function(expr) {
+composite <- function(expr, label = NA_character_) {
 
     vars <- mget(
         x          = all.vars(substitute(expr)),
@@ -80,14 +92,15 @@ composite <- function(expr) {
             return(new("CompositeConditionalScore",
                        expr       = substitute(expr),
                        scores     = scores,
-                       non_scores = non_scores
-            ))
+                       non_scores = non_scores,
+                       label      = label))
         } else {
             # only unconditional scores
             return(new("CompositeUnconditionalScore",
                        expr       = substitute(expr),
                        scores     = scores,
-                       non_scores = non_scores))
+                       non_scores = non_scores,
+                       label      = label))
         }
     }
 

@@ -36,7 +36,8 @@ NULL
 
 
 
-setClass("Constraint")
+setClass("Constraint", representation(label = "character"),
+         prototype(label = NA_character_))
 setClass("ConditionalConstraint", representation(
         score = "ConditionalScore",
         rhs   = "numeric"
@@ -83,12 +84,12 @@ setMethod("<=", signature("ConditionalScore", "numeric"),
 #' @rdname Constraints
 #' @export
 setMethod(">=", signature("ConditionalScore", "numeric"),
-          function(e1, e2) new("ConditionalConstraint", score = composite({-1*e1}), rhs = -e2))
+          function(e1, e2) new("ConditionalConstraint", score = composite({-e1}), rhs = -e2))
 
 #' @rdname Constraints
 #' @export
 setMethod("<=", signature("numeric", "ConditionalScore"),
-          function(e1, e2) new("ConditionalConstraint", score = composite({-1*e2}), rhs = -e1))
+          function(e1, e2) new("ConditionalConstraint", score = composite({-e2}), rhs = -e1))
 
 #' @rdname Constraints
 #' @export
