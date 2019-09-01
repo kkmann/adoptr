@@ -6,7 +6,6 @@
 \alias{Normal}
 \alias{quantile,Normal-method}
 \alias{simulate,Normal,numeric-method}
-\alias{show,Normal-method}
 \title{Normal data distribution}
 \usage{
 Normal(two_armed = TRUE)
@@ -15,8 +14,6 @@ Normal(two_armed = TRUE)
 
 \S4method{simulate}{Normal,numeric}(object, nsim, n, theta, seed = NULL,
   ...)
-
-\S4method{show}{Normal}(object)
 }
 \arguments{
 \item{two_armed}{logical indicating if a two-armed trial is regarded}

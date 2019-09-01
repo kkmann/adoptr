@@ -44,6 +44,14 @@ ConditionalPower <- function(dist, prior) {
 
 
 
+setMethod("print", signature('ConditionalPower'), function(x, ...) {
+    glue::glue(
+        "{class(x)[1]}<{print(x@distribution)};{print(x@prior)}>"
+    )
+})
+
+
+
 #' @rdname ConditionalPower-class
 #' @export
 Power <- function(dist, prior) expected(ConditionalPower(dist, prior), dist, prior)

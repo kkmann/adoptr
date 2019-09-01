@@ -3,15 +3,12 @@
 \docType{methods}
 \name{Scores}
 \alias{Scores}
-\alias{show,Score-method}
 \alias{expected}
 \alias{expected,ConditionalScore-method}
 \alias{evaluate}
 \alias{evaluate,IntegralScore,TwoStageDesign-method}
 \title{Scores}
 \usage{
-\S4method{show}{Score}(object)
-
 expected(s, data_distribution, prior, ...)
 
 \S4method{expected}{ConditionalScore}(s, data_distribution, prior, ...)
@@ -22,8 +19,6 @@ evaluate(s, design, ...)
   optimization = FALSE, subdivisions = 10000L, ...)
 }
 \arguments{
-\item{object}{object to show}
-
 \item{s}{\code{\link[=Scores]{Score}} object}
 
 \item{data_distribution}{\code{\link{DataDistribution}} object}
@@ -39,6 +34,8 @@ parameters of the underlying design; used for smooth optimization.}
 
 \item{subdivisions}{maximal number of subdivisions when evaluating an integral
 score using adaptive quadrature (optimization = FALSE)}
+
+\item{object}{object to show}
 }
 \description{
 In \code{adoptr} scores are used to assess the performance of a design.

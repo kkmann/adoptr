@@ -26,7 +26,8 @@ Suggests:
     vdiffr
 Imports:
     nloptr,
-    methods
+    methods,
+    glue
 VignetteBuilder: knitr
 Collate: 
     adoptr.R

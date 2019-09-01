@@ -5,7 +5,6 @@
 \alias{TwoStageDesign-class}
 \alias{TwoStageDesign}
 \alias{TwoStageDesign,numeric-method}
-\alias{show,TwoStageDesign-method}
 \alias{summary,TwoStageDesign-method}
 \alias{print.TwoStageDesignSummary}
 \title{Two-stage designs}
@@ -15,11 +14,9 @@ TwoStageDesign(n1, ...)
 \S4method{TwoStageDesign}{numeric}(n1, c1f, c1e, n2_pivots, c2_pivots,
   order = NULL, ...)
 
-\S4method{show}{TwoStageDesign}(object)
-
 \S4method{summary}{TwoStageDesign}(object, ..., rounded = TRUE)
 
-\method{print}{TwoStageDesignSummary}(x, ..., round = TRUE)
+print.TwoStageDesignSummary(x, ..., round = TRUE)
 }
 \arguments{
 \item{n1}{stage-one sample size}
@@ -41,8 +38,6 @@ integration rule to evaluate scores. Automatically set to \code{length(n2_pivots
 \code{length(n2_pivots) == length(c2_pivots) > 1}, otherwise c2 and n2
 are taken to be constant in stage-two and replicated to match the number of
 pivots specified by \code{order}}
-
-\item{object}{design to show or summarize}
 
 \item{rounded}{should rounded n-values be used?}
 

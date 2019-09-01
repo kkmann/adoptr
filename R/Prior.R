@@ -29,6 +29,16 @@
 setClass("Prior")
 
 
+
+
+setMethod("show", signature(object = "Prior"), function(object) {
+    cat(print(object), "\n")
+})
+
+
+
+
+
 #' Get support of a prior or data distribution
 #'
 #' \code{bounds()} returns the range of the support of a prior or data distribution.

@@ -4,23 +4,19 @@
 \name{PointMassPrior-class}
 \alias{PointMassPrior-class}
 \alias{PointMassPrior}
-\alias{show,PointMassPrior-method}
 \title{Univariate discrete point mass priors}
 \usage{
 PointMassPrior(theta, mass)
-
-\S4method{show}{PointMassPrior}(object)
 }
 \arguments{
 \item{theta}{numeric vector of pivot points with positive prior mass}
 
 \item{mass}{numeric vector of probability masses at the pivot points
 (must sum to 1)}
-
-\item{object}{object of class \code{PointMassPrior}}
 }
 \value{
-an object of class \code{PointMassPrior}
+an object of class \code{PointMassPrior}, \code{theta} is
+automatically sorted in ascending order
 }
 \description{
 \code{PointMassPrior} is a sub-class of \code{\link[=Prior-class]{Prior}}

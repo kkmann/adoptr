@@ -403,12 +403,16 @@ setMethod("scaled_integration_pivots", signature("TwoStageDesign"),
 
 
 
-#' @param object design to show or summarize
-#'
-#' @rdname TwoStageDesign-class
-#' @export
-setMethod("show", signature(object = "TwoStageDesign"),
-          function(object) cat(class(object)[1]))
+setMethod("print", signature('TwoStageDesign'), function(x, ...) {
+    xx <- c(x@c1f - sqrt(.Machine$double.eps), scaled_integration_pivots(x), x@c1e + sqrt(.Machine$double.eps))
+    paste(glue::glue("{class(x)[1]}<\n\r"), "      x1    c2   n\n\r", paste(glue::glue(
+        "    {sprintf('%5.2f', xx)} {sprintf('%5.2f', c2(x, xx))} {sprintf('%4i', n(x, xx))}",
+    ), collapse = "\n\r") , ">\n\r", sep = "")
+})
+
+setMethod("show", signature(object = "TwoStageDesign"), function(object) {
+    cat(print(object), "\n")
+})
 
 
 

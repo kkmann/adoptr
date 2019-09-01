@@ -68,12 +68,21 @@ setClass("IntegralScore", representation(
 
 
 
-#' @rdname Scores
-#' @export
-setMethod("show", signature(object = "Score"),
-          function(object) cat(class(object)[1]))
+setMethod("show", signature(object = "Score"), function(object) {
+    cat(print(object), "\n")
+})
 
+setMethod("print", signature('Score'), function(x, ...) {
+    glue::glue(
+        "{class(x)[1]}<>"
+    )
+})
 
+setMethod("print", signature('IntegralScore'), function(x, ...) {
+    glue::glue(
+        "{class(x)[1]}<{print(x@cs)};{print(x@data_distribution)};{print(x@prior)}>"
+    )
+})
 
 
 

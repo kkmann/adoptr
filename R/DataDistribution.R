@@ -159,8 +159,13 @@ setMethod("simulate", signature("Normal", "numeric"),
           })
 
 
-#' @rdname NormalDataDistribution-class
-#' @export
-setMethod("show", signature(object = "Normal"),
-          function(object) cat(class(object)[1]))
 
+setMethod("print", signature('Normal'), function(x, ...) {
+    glue::glue(
+        "{class(x)[1]}<{if (x@two_armed) 'two-armed' else 'single-armed'}>"
+    )
+})
+
+setMethod("show", signature(object = "Normal"), function(object) {
+    cat(print(object), "\n")
+})

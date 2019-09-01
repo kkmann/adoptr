@@ -202,10 +202,9 @@ setMethod("posterior", signature("DataDistribution", "ContinuousPrior", "numeric
     })
 
 
-#' @param object object of class \code{ContinuousPrior}
-#'
-#' @rdname ContinuousPrior-class
-#' @export
-setMethod("show", signature(object = "ContinuousPrior"),
-          function(object) cat(class(object)[1]))
 
+setMethod("print", signature('ContinuousPrior'), function(x, ...) {
+    glue::glue(
+        "{class(x)[1]}<[{x@support[1]},{x@support[2]}]>"
+    )
+})

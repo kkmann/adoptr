@@ -4,7 +4,6 @@
 \name{Constraints}
 \alias{Constraints}
 \alias{evaluate,Constraint,TwoStageDesign-method}
-\alias{show,Constraint-method}
 \alias{<=,ConditionalScore,numeric-method}
 \alias{>=,ConditionalScore,numeric-method}
 \alias{<=,numeric,ConditionalScore-method}
@@ -21,8 +20,6 @@
 \usage{
 \S4method{evaluate}{Constraint,TwoStageDesign}(s, design,
   optimization = FALSE, ...)
-
-\S4method{show}{Constraint}(object)
 
 \S4method{<=}{ConditionalScore,numeric}(e1, e2)
 
@@ -58,11 +55,11 @@ parameters of the underlying design; used for smooth optimization.}
 
 \item{...}{further optional arguments}
 
-\item{object}{object to show}
-
 \item{e1}{left hand side (score or numeric)}
 
 \item{e2}{right hand side (score or numeric)}
+
+\item{object}{object to show}
 }
 \description{
 Conceptually, constraints work very similar to scores (any score can be put in

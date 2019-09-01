@@ -59,10 +59,17 @@ setMethod("evaluate", signature("Constraint", "TwoStageDesign"),
               evaluate(s@score, design, optimization, ...) - s@rhs
           })
 
-#' @rdname Constraints
-#' @export
-setMethod("show", signature(object = "Constraint"),
-          function(object) cat(class(object)[1]))
+setMethod("print", signature('UnconditionalConstraint'), function(x, ...) {
+    glue::glue("{print(x@score)} <= {x@rhs}")
+})
+
+setMethod("print", signature('ConditionalConstraint'), function(x, ...) {
+    glue::glue("{print(x@score)}(x1) <= {x@rhs} for x1 in [c1f,c1e]")
+})
+
+setMethod("show", signature(object = "Constraint"), function(object) {
+    cat(print(object), "\n")
+})
 
 
 
