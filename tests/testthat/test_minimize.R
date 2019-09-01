@@ -288,3 +288,15 @@ test_that("conditional constraints work", {
         sign(diff(opt_ts$design@c2_pivots)) == -1))
 
 }) # end 'conditional constraints work'
+
+
+
+test_that("conditional constraints work", {
+
+    expect_equal(
+        capture.output(print(opt_os)),
+        "optimized OneStageDesign<39;1.64> "
+    )
+
+
+}) # end 'conditional constraints work'

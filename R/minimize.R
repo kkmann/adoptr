@@ -17,9 +17,10 @@
 #' @param opts options list passed to nloptr
 #' @param ... further optional arguments passed to \code{\link{nloptr}}
 #'
-#' @return \item{design}{ The resulting optimal design}
-#'         \item{nloptr_return}{ Output of the corresponding nloptr call}
-#'         \item{call_args}{ The arguments given to the optimization call}
+#' @return a list with elements:
+#'     \item{design}{ The resulting optimal design}
+#'     \item{nloptr_return}{ Output of the corresponding nloptr call}
+#'     \item{call_args}{ The arguments given to the optimization call}
 #'
 #' @examples
 #' # Define Type one error rate
@@ -95,13 +96,23 @@ minimize <- function(
     if (res$status == 5 | res$status == 6)
         warning(res$message)
 
-    return(list(
+    res <- list(
         design        = update(initial_design, res$solution),
         nloptr_return = res,
         call_args     = args
-    ))
-
+    )
+    class(res) <- c("adoptrOptimizationResult", class(res))
+    return(res)
 }
+
+
+
+#' @S3method print adoptrOptimizationResult
+print.adoptrOptimizationResult <- function(x, ...) {
+    cat(sprintf("optimized %s", utils::capture.output(print(x$design))), "\n")
+}
+
+
 
 
 

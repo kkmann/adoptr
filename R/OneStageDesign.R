@@ -126,7 +126,7 @@ setMethod("plot", signature("OneStageDesign"),
 
 setMethod("print", signature('OneStageDesign'), function(x, ...) {
     glue::glue(
-        "{class(x)[1]}<{x@n1};{sprintf('%3.2f',x@c1f)}>",
+        "{class(x)[1]}<{round(x@n1)};{sprintf('%3.2f',x@c1f)}>",
     )
 })
 
