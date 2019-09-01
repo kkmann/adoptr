@@ -81,7 +81,7 @@ This can be used as a score in minimize." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">adoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.3.9000</span>
       </span>
     </div>
 
@@ -159,7 +159,7 @@ This can be used as a score in minimize." />
 This can be used as a score in <code><a href='minimize.html'>minimize</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>N1</span>()
+    <pre class="usage"><span class='fu'>N1</span>(<span class='kw'>label</span> <span class='kw'>=</span> <span class='fl'>NA_character_</span>)
 
 <span class='co'># S4 method for N1,TwoStageDesign</span>
 <span class='fu'><a href='Scores.html'>evaluate</a></span>(<span class='no'>s</span>, <span class='no'>design</span>, <span class='kw'>optimization</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
@@ -168,6 +168,10 @@ This can be used as a score in <code><a href='minimize.html'>minimize</a></code>
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>label</th>
+      <td><p>object label (string)</p></td>
+    </tr>
     <tr>
       <th>s</th>
       <td><p><code><a href='Scores.html'>Score</a></code> object</p></td>

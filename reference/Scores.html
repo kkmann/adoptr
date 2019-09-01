@@ -84,7 +84,7 @@ UnconditionalScore." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">adoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.3.9000</span>
       </span>
     </div>
 
@@ -165,13 +165,11 @@ Consequently, score objects are either of class <code>ConditionalScore</code> or
 <code>UnconditionalScore</code>.</p>
     </div>
 
-    <pre class="usage"><span class='co'># S4 method for Score</span>
-<span class='fu'>show</span>(<span class='no'>object</span>)
-
-<span class='fu'>expected</span>(<span class='no'>s</span>, <span class='no'>data_distribution</span>, <span class='no'>prior</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>expected</span>(<span class='no'>s</span>, <span class='no'>data_distribution</span>, <span class='no'>prior</span>, <span class='no'>...</span>)
 
 <span class='co'># S4 method for ConditionalScore</span>
-<span class='fu'>expected</span>(<span class='no'>s</span>, <span class='no'>data_distribution</span>, <span class='no'>prior</span>, <span class='no'>...</span>)
+<span class='fu'>expected</span>(<span class='no'>s</span>, <span class='no'>data_distribution</span>, <span class='no'>prior</span>,
+  <span class='kw'>label</span> <span class='kw'>=</span> <span class='fl'>NA_character_</span>, <span class='no'>...</span>)
 
 <span class='fu'>evaluate</span>(<span class='no'>s</span>, <span class='no'>design</span>, <span class='no'>...</span>)
 
@@ -182,10 +180,6 @@ Consequently, score objects are either of class <code>ConditionalScore</code> or
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>object</th>
-      <td><p>object to show</p></td>
-    </tr>
     <tr>
       <th>s</th>
       <td><p><code>Score</code> object</p></td>
@@ -201,6 +195,10 @@ Consequently, score objects are either of class <code>ConditionalScore</code> or
     <tr>
       <th>...</th>
       <td><p>further optional arguments</p></td>
+    </tr>
+    <tr>
+      <th>label</th>
+      <td><p>object label (string)</p></td>
     </tr>
     <tr>
       <th>design</th>
@@ -244,7 +242,7 @@ The returned unconditional score is of class <code>IntegralScore</code>.</p>
 
 <span class='co'># conditional</span>
 <span class='no'>cp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ConditionalPower-class.html'>ConditionalPower</a></span>(<span class='fu'><a href='NormalDataDistribution-class.html'>Normal</a></span>(), <span class='no'>prior</span>)
-<span class='fu'>expected</span>(<span class='no'>cp</span>, <span class='fu'><a href='NormalDataDistribution-class.html'>Normal</a></span>(), <span class='no'>prior</span>)</div><div class='output co'>#&gt; IntegralScore</div><div class='input'><span class='fu'>evaluate</span>(<span class='no'>cp</span>, <span class='no'>design</span>, <span class='kw'>x1</span> <span class='kw'>=</span> <span class='fl'>.5</span>)</div><div class='output co'>#&gt; [1] 0.3227581</div><div class='input'>
+<span class='fu'>expected</span>(<span class='no'>cp</span>, <span class='fu'><a href='NormalDataDistribution-class.html'>Normal</a></span>(), <span class='no'>prior</span>)</div><div class='output co'>#&gt; E[Pr[x2&gt;=c2(x1)|x1]&lt;Normal&lt;two-armed&gt;;PointMass&lt;0.30&gt;&gt;]&lt;Normal&lt;two-armed&gt;;PointMass&lt;0.30&gt;&gt; </div><div class='input'><span class='fu'>evaluate</span>(<span class='no'>cp</span>, <span class='no'>design</span>, <span class='kw'>x1</span> <span class='kw'>=</span> <span class='fl'>.5</span>)</div><div class='output co'>#&gt; [1] 0.3227581</div><div class='input'>
 <span class='co'># unconditional</span>
 <span class='no'>power</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ConditionalPower-class.html'>Power</a></span>(<span class='fu'><a href='NormalDataDistribution-class.html'>Normal</a></span>(), <span class='no'>prior</span>)
 <span class='fu'>evaluate</span>(<span class='no'>power</span>, <span class='no'>design</span>)</div><div class='output co'>#&gt; [1] 0.3269562</div><div class='input'><span class='fu'>evaluate</span>(<span class='no'>power</span>, <span class='no'>design</span>, <span class='kw'>optimization</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) <span class='co'># use non-adaptive quadrature</span></div><div class='output co'>#&gt; [1] 0.3269562</div><div class='input'>

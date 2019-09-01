@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">adoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.3.9000</span>
       </span>
     </div>
 
@@ -178,10 +178,10 @@
 <a href="#conditional-constraints" class="anchor"></a>Conditional Constraints</h2>
 <p>The same syntax for constraint specification as for unconditional constraints (power etc.) can be used for conditional scores (e.g. conditional power) as well. Currently, these constraints apply to the continuation area only. E.g.,</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">cp <span class="op">&gt;=</span><span class="st"> </span><span class="fl">0.7</span></a>
-<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="co">#&gt; ConditionalConstraint</span></a></code></pre></div>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="co">#&gt; -Pr[x2&gt;=c2(x1)|x1]&lt;Normal&lt;two-armed&gt;;ContinuousPrior&lt;[0.3,0.5]&gt;&gt; (x1) &lt;= -0.7 for x1 in [c1f,c1e]</span></a></code></pre></div>
 <p>imposes a constraint on the minimal conditional power upon continuation. Inter-score comparisons are also supported, e.g.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">cp <span class="op">&gt;=</span><span class="st"> </span><span class="kw"><a href="../reference/ConditionalPower-class.html">ConditionalPower</a></span>(<span class="kw"><a href="../reference/NormalDataDistribution-class.html">Normal</a></span>(), <span class="kw"><a href="../reference/PointMassPrior-class.html">PointMassPrior</a></span>(<span class="dv">0</span>, <span class="dv">1</span>))</a>
-<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="co">#&gt; ConditionalConstraint</span></a></code></pre></div>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="co">#&gt; Pr[x2&gt;=c2(x1)|x1]&lt;Normal&lt;two-armed&gt;;PointMass&lt;0.00&gt;&gt;  - Pr[x2&gt;=c2(x1)|x1]&lt;Normal&lt;two-armed&gt;;ContinuousPrior&lt;[0.3,0.5]&gt;&gt; (x1) &lt;= 0 for x1 in [c1f,c1e]</span></a></code></pre></div>
 <p>Would enforce that conditional power is always larger than conditional error.</p>
 </div>
   </div>

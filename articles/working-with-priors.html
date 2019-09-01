@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">adoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.3.9000</span>
       </span>
     </div>
 
@@ -146,10 +146,10 @@
 <a href="#conditioning" class="anchor"></a>Conditioning</h3>
 <p>In practice, the most important operation will be conditioning. This is important to implement type one and type two error rate constraints. Consider, e.g., the case of power. Typically, a power constraint is imposed on a single point in the alternative, e.g. using the constraint</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="../reference/ConditionalPower-class.html">Power</a></span>(<span class="kw"><a href="../reference/NormalDataDistribution-class.html">Normal</a></span>(), <span class="kw"><a href="../reference/PointMassPrior-class.html">PointMassPrior</a></span>(.<span class="dv">4</span>, <span class="dv">1</span>)) <span class="op">&gt;=</span><span class="st"> </span><span class="fl">0.8</span></a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co">#&gt; UnconditionalConstraint</span></a></code></pre></div>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co">#&gt; -E[Pr[x2&gt;=c2(x1)]]&lt;Normal&lt;two-armed&gt;;PointMass&lt;0.40&gt;&gt;  &lt;= -0.8</span></a></code></pre></div>
 <p>If uncertainty about the true response rate should be incorporated in the design, it makes sense to assume a continuous prior on <span class="math inline">\(\theta\)</span>. In this case, the prior should be conditioned for the power constraint to avoid integrating over the null hypothesis:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="../reference/ConditionalPower-class.html">Power</a></span>(<span class="kw"><a href="../reference/NormalDataDistribution-class.html">Normal</a></span>(), <span class="kw"><a href="../reference/condition.html">condition</a></span>(cont_prior, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>, <span class="dv">3</span>))) <span class="op">&gt;=</span><span class="st"> </span><span class="fl">0.8</span></a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co">#&gt; UnconditionalConstraint</span></a></code></pre></div>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co">#&gt; -E[Pr[x2&gt;=c2(x1)]]&lt;Normal&lt;two-armed&gt;;ContinuousPrior&lt;[0,3]&gt;&gt;  &lt;= -0.8</span></a></code></pre></div>
 </div>
   </div>
 

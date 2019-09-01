@@ -96,7 +96,7 @@ For available methods, see the 'See Also' section at the end of this page." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">adoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.3.9000</span>
       </span>
     </div>
 
@@ -196,13 +196,7 @@ For available methods, see the 'See Also' section at the end of this page.</p>
   <span class='kw'>order</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
 
 <span class='co'># S4 method for TwoStageDesign</span>
-<span class='fu'>show</span>(<span class='no'>object</span>)
-
-<span class='co'># S4 method for TwoStageDesign</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/summary'>summary</a></span>(<span class='no'>object</span>, <span class='no'>...</span>, <span class='kw'>rounded</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-
-<span class='co'># S3 method for TwoStageDesignSummary</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>x</span>, <span class='no'>...</span>, <span class='kw'>round</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/summary'>summary</a></span>(<span class='no'>object</span>, <span class='no'>...</span>, <span class='kw'>rounded</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -243,19 +237,11 @@ pivots specified by <code>order</code></p></td>
     </tr>
     <tr>
       <th>object</th>
-      <td><p>design to show or summarize</p></td>
+      <td><p>object to show</p></td>
     </tr>
     <tr>
       <th>rounded</th>
       <td><p>should rounded n-values be used?</p></td>
-    </tr>
-    <tr>
-      <th>x</th>
-      <td><p>return value of call to <code>summary</code></p></td>
-    </tr>
-    <tr>
-      <th>round</th>
-      <td><p><code>logical</code> should sample sizes be rounded to next integer?</p></td>
     </tr>
     </table>
 
@@ -303,18 +289,24 @@ Both <a href='GroupSequentialDesign-class.html'>group-sequential</a> and
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>design</span> <span class='kw'>&lt;-</span> <span class='fu'>TwoStageDesign</span>(<span class='fl'>50</span>, <span class='fl'>0</span>, <span class='fl'>2</span>, <span class='fl'>50.0</span>, <span class='fl'>2.0</span>, <span class='fl'>5</span>)
 <span class='no'>pow</span>    <span class='kw'>&lt;-</span> <span class='fu'><a href='ConditionalPower-class.html'>Power</a></span>(<span class='fu'><a href='NormalDataDistribution-class.html'>Normal</a></span>(), <span class='fu'><a href='PointMassPrior-class.html'>PointMassPrior</a></span>(<span class='fl'>.4</span>, <span class='fl'>1</span>))
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/summary'>summary</a></span>(<span class='no'>design</span>, <span class='st'>"Power"</span> <span class='kw'>=</span> <span class='no'>pow</span>)</div><div class='output co'>#&gt; TwoStageDesign with:
-#&gt;      n1:  50.00
-#&gt;     c1f:   0.00
-#&gt;     c1e:   2.00
-#&gt;  max n2:  50.00
-#&gt;  min n2:  50.00
-#&gt; 5 integration pivots at: 0.09, 0.46, 1.00, 1.54, 1.91
-#&gt;     integration weights: 0.24, 0.48, 0.57, 0.48, 0.24
-#&gt; Unconditional scores:
-#&gt;          Power:   0.739
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/summary'>summary</a></span>(<span class='no'>design</span>, <span class='st'>"Power"</span> <span class='kw'>=</span> <span class='no'>pow</span>)</div><div class='output co'>#&gt; $design
+#&gt; TwoStageDesign&lt;
+#&gt;       x1    c2   n
+#&gt;     -0.00   Inf   50
+#&gt;      0.09  2.00  100
+#&gt;      0.46  2.00  100
+#&gt;      1.00  2.00  100
+#&gt;      1.54  2.00  100
+#&gt;      1.91  2.00  100
+#&gt;      2.00  -Inf   50&gt;
+#&gt;  
 #&gt; 
-#&gt; </div><div class='input'>
+#&gt; $scores
+#&gt;     Power 
+#&gt; 0.7386249 
+#&gt; 
+#&gt; attr(,"class")
+#&gt; [1] "TwoStageDesignSummary" "list"                 </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

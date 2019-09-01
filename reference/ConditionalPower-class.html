@@ -82,7 +82,7 @@ observing X1 = x1." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">adoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.3.9000</span>
       </span>
     </div>
 
@@ -161,9 +161,9 @@ Note that the distribution of X<sub>2</sub> is the posterior predictive after
 observing X<sub>1</sub> = x<sub>1</sub>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ConditionalPower</span>(<span class='no'>dist</span>, <span class='no'>prior</span>)
+    <pre class="usage"><span class='fu'>ConditionalPower</span>(<span class='no'>dist</span>, <span class='no'>prior</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='st'>"Pr[x2&gt;=c2(x1)|x1]"</span>)
 
-<span class='fu'>Power</span>(<span class='no'>dist</span>, <span class='no'>prior</span>)
+<span class='fu'>Power</span>(<span class='no'>dist</span>, <span class='no'>prior</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='st'>"Pr[x2&gt;=c2(x1)]"</span>)
 
 <span class='co'># S4 method for ConditionalPower,TwoStageDesign</span>
 <span class='fu'><a href='Scores.html'>evaluate</a></span>(<span class='no'>s</span>, <span class='no'>design</span>, <span class='no'>x1</span>,
@@ -179,6 +179,10 @@ observing X<sub>1</sub> = x<sub>1</sub>.</p>
     <tr>
       <th>prior</th>
       <td><p>a <code><a href='Prior-class.html'>Prior</a></code> object</p></td>
+    </tr>
+    <tr>
+      <th>label</th>
+      <td><p>object label (string)</p></td>
     </tr>
     <tr>
       <th>s</th>
@@ -215,7 +219,7 @@ parameters of the underlying design; used for smooth optimization.</p></td>
    <span class='fu'><a href='TwoStageDesign-class.html'>TwoStageDesign</a></span>(<span class='fl'>50</span>, <span class='fl'>.0</span>, <span class='fl'>2.0</span>, <span class='fl'>50</span>, <span class='fl'>2.0</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='fl'>5L</span>),
    <span class='kw'>x1</span> <span class='kw'>=</span> <span class='fl'>1</span>
 )</div><div class='output co'>#&gt; [1] 0.5</div><div class='input'><span class='co'># these two are equivalent:</span>
-<span class='fu'><a href='Scores.html'>expected</a></span>(<span class='no'>cp</span>, <span class='fu'><a href='NormalDataDistribution-class.html'>Normal</a></span>(), <span class='no'>prior</span>)</div><div class='output co'>#&gt; IntegralScore</div><div class='input'><span class='fu'>Power</span>(<span class='fu'><a href='NormalDataDistribution-class.html'>Normal</a></span>(), <span class='no'>prior</span>)</div><div class='output co'>#&gt; IntegralScore</div><div class='input'>
+<span class='fu'><a href='Scores.html'>expected</a></span>(<span class='no'>cp</span>, <span class='fu'><a href='NormalDataDistribution-class.html'>Normal</a></span>(), <span class='no'>prior</span>)</div><div class='output co'>#&gt; E[Pr[x2&gt;=c2(x1)|x1]&lt;Normal&lt;two-armed&gt;;PointMass&lt;0.40&gt;&gt;]&lt;Normal&lt;two-armed&gt;;PointMass&lt;0.40&gt;&gt; </div><div class='input'><span class='fu'>Power</span>(<span class='fu'><a href='NormalDataDistribution-class.html'>Normal</a></span>(), <span class='no'>prior</span>)</div><div class='output co'>#&gt; E[Pr[x2&gt;=c2(x1)]]&lt;Normal&lt;two-armed&gt;;PointMass&lt;0.40&gt;&gt; </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

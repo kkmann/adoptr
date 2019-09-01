@@ -82,7 +82,7 @@ probability mass." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">adoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.3.9000</span>
       </span>
     </div>
 
@@ -161,10 +161,7 @@ representing a univariate prior over a discrete set of points with positive
 probability mass.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>PointMassPrior</span>(<span class='no'>theta</span>, <span class='no'>mass</span>)
-
-<span class='co'># S4 method for PointMassPrior</span>
-<span class='fu'>show</span>(<span class='no'>object</span>)</pre>
+    <pre class="usage"><span class='fu'>PointMassPrior</span>(<span class='no'>theta</span>, <span class='no'>mass</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='fl'>NA_character_</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -179,14 +176,15 @@ probability mass.</p>
 (must sum to 1)</p></td>
     </tr>
     <tr>
-      <th>object</th>
-      <td><p>object of class <code>PointMassPrior</code></p></td>
+      <th>label</th>
+      <td><p>object label (string)</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>an object of class <code>PointMassPrior</code></p>
+    <p>an object of class <code>PointMassPrior</code>, <code>theta</code> is
+automatically sorted in ascending order</p>
     <h2 class="hasAnchor" id="slots"><a class="anchor" href="#slots"></a>Slots</h2>
 
     
@@ -199,7 +197,7 @@ probability mass.</p>
     <div class='dont-index'><p>To represent continuous prior distributions use <code><a href='ContinuousPrior-class.html'>ContinuousPrior</a></code>.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>PointMassPrior</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>.5</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>.3</span>, <span class='fl'>.7</span>))</div><div class='output co'>#&gt; PointMassPrior</div><div class='input'>
+    <pre class="examples"><div class='input'><span class='fu'>PointMassPrior</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>.5</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>.3</span>, <span class='fl'>.7</span>))</div><div class='output co'>#&gt; PointMass&lt;Pr[0.00]=0.30;Pr[0.50]=0.70&gt; </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
