@@ -23,6 +23,7 @@ setClass("ContinuousPrior", representation(
 #'     the compact interval on which the pdf is positive.
 #' @template tighten_support
 #' @template check_normalization
+#' @template label
 #'
 #' @examples
 #' ContinuousPrior(function(x) 2*x, c(0, 1))

@@ -16,6 +16,8 @@ ExpectedSampleSize(dist, prior, label = "E[n(x1)]")
   optimization = FALSE, ...)
 }
 \arguments{
+\item{label}{object label (string)}
+
 \item{dist}{a univariate \code{\link[=DataDistribution-class]{distribution}} object}
 
 \item{prior}{a \code{\link{Prior}} object}

@@ -28,6 +28,8 @@ evaluate(s, design, ...)
 
 \item{...}{further optional arguments}
 
+\item{label}{object label (string)}
+
 \item{design}{object}
 
 \item{optimization}{logical, if \code{TRUE} uses a relaxation to real
@@ -35,8 +37,6 @@ parameters of the underlying design; used for smooth optimization.}
 
 \item{subdivisions}{maximal number of subdivisions when evaluating an integral
 score using adaptive quadrature (optimization = FALSE)}
-
-\item{object}{object to show}
 }
 \description{
 In \code{adoptr} scores are used to assess the performance of a design.

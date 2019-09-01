@@ -123,12 +123,13 @@ test_that("score vs score inequalities", {
 
 
 
-test_that("show method correct", {
+test_that("show method", {
 
     cp <- ConditionalPower(Normal(two_armed = FALSE), PointMassPrior(.4, 1))
-    cnstr <- cp >= 0.8
 
-    expect_true(
-        capture.output(show(cnstr)) == "-Pr[x2>=c2(x1)|x1]<Normal<single-armed>;PointMass<0.40>>(x1) <= -0.8 for x1 in [c1f,c1e] ")
+    expect_equal(
+        capture.output(show(cp >= 0.8)),
+        "-Pr[x2>=c2(x1)|x1]<Normal<single-armed>;PointMass<0.40>> (x1) <= -0.8 for x1 in [c1f,c1e] "
+    )
 
 })

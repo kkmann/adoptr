@@ -13,6 +13,8 @@ AverageN2(label = NA_character_)
   optimization = FALSE, subdivisions = 10000L, ...)
 }
 \arguments{
+\item{label}{object label (string)}
+
 \item{s}{\code{\link[=Scores]{Score}} object}
 
 \item{design}{object}

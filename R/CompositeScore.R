@@ -17,9 +17,11 @@ setClass("CompositeConditionalScore",
 
 
 setMethod("print", signature("CompositeScore"), function(x, ...) {
-    labels <- lapply(x@scores, function(x) print(x, ...))
+    labels <- lapply(x@scores, function(x) utils::capture.output(show((x))))
     str <- as.character(x@expr)
-    for (i in 1:length(str)) {
+    for (i in 2:length(str)) {
+        str[i] <- sub('\\{', "\\{\\{", str[i])
+        str[i] <- sub('\\}', "\\}\\}", str[i])
         for (j in 1:length(labels)) {
             str[i] <- sub(names(labels)[j], sprintf("{%s}", names(labels)[j]), str[i])
         }
@@ -38,6 +40,7 @@ setMethod("print", signature("CompositeScore"), function(x, ...) {
 #'   or unconditional. Currently, no non-score variables are supported
 #' @param s object of class \code{CompositeScore}
 #' @template design
+#' @template label
 #' @template dotdotdot
 #'
 #' @return an object of class \code{CompositeConditionalScore} or

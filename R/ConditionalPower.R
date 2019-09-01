@@ -35,7 +35,8 @@ setClass("ConditionalPower", representation(
     contains = "ConditionalScore")
 
 
-
+#' @template label
+#'
 #' @rdname ConditionalPower-class
 #' @export
 ConditionalPower <- function(dist, prior, label = "Pr[x2>=c2(x1)|x1]") {

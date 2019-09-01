@@ -11,7 +11,7 @@
 #' @template dotdotdot
 #' @param data_distribution \code{\link{DataDistribution}} object
 #' @template prior
-#' @template object
+#' @template label
 #' @template optimization
 #' @param subdivisions maximal number of subdivisions when evaluating an integral
 #'   score using adaptive quadrature (optimization = FALSE)

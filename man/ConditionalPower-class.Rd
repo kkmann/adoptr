@@ -20,6 +20,8 @@ Power(dist, prior, label = "Pr[x2>=c2(x1)]")
 
 \item{prior}{a \code{\link{Prior}} object}
 
+\item{label}{object label (string)}
+
 \item{s}{\code{\link[=Scores]{Score}} object}
 
 \item{design}{object}

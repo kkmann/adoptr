@@ -504,6 +504,7 @@ setMethod("plot", signature(x = "TwoStageDesign"),
 #' provided via the optional arguments \code{...} and are included in the summary displayed using
 #' \code{\link{print}}.
 #'
+#' @template object
 #' @param rounded should rounded n-values be used?
 #'
 #' @examples

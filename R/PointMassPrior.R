@@ -22,6 +22,7 @@ setClass("PointMassPrior", representation(
 #' @param theta numeric vector of pivot points with positive prior mass
 #' @param mass numeric vector of probability masses at the pivot points
 #'     (must sum to 1)
+#' @template label
 #'
 #' @return an object of class \code{PointMassPrior}, \code{theta} is
 #' automatically sorted in ascending order

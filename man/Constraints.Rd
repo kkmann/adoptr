@@ -58,8 +58,6 @@ parameters of the underlying design; used for smooth optimization.}
 \item{e1}{left hand side (score or numeric)}
 
 \item{e2}{right hand side (score or numeric)}
-
-\item{object}{object to show}
 }
 \description{
 Conceptually, constraints work very similar to scores (any score can be put in

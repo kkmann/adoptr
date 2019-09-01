@@ -15,6 +15,8 @@ ContinuousPrior(pdf, support, label = NA_character_,
 \item{support}{numeric vector of length two with the bounds of
 the compact interval on which the pdf is positive.}
 
+\item{label}{object label (string)}
+
 \item{tighten_support}{logical indicating if the support should be tightened}
 
 \item{check_normalization}{logical indicating if it should be checked

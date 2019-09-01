@@ -33,6 +33,8 @@ setClass("ConditionalSampleSize", contains = "ConditionalScore")
 
 
 
+#' @template label
+#'
 #' @rdname ConditionalSampleSize-class
 #' @export
 ConditionalSampleSize <- function(label = "n(x1)") new("ConditionalSampleSize", label = label)

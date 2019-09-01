@@ -13,6 +13,8 @@ N1(label = NA_character_)
   ...)
 }
 \arguments{
+\item{label}{object label (string)}
+
 \item{s}{\code{\link[=Scores]{Score}} object}
 
 \item{design}{object}

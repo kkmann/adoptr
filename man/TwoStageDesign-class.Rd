@@ -36,6 +36,8 @@ integration rule to evaluate scores. Automatically set to \code{length(n2_pivots
 are taken to be constant in stage-two and replicated to match the number of
 pivots specified by \code{order}}
 
+\item{object}{object to show}
+
 \item{rounded}{should rounded n-values be used?}
 }
 \description{

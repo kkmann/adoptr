@@ -15,6 +15,8 @@ composite(expr, label = NA_character_)
 variable; if multiple scores are used, they must either all be conditional
 or unconditional. Currently, no non-score variables are supported}
 
+\item{label}{object label (string)}
+
 \item{s}{object of class \code{CompositeScore}}
 
 \item{design}{object}

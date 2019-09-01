@@ -9,6 +9,7 @@
 #' @template s
 #' @template design
 #' @template optimization
+#' @template label
 #' @template dotdotdot
 #' @param subdivisions number of subdivisions to use for adaptive integration
 #'   (only affects non-optimization code)
@@ -89,6 +90,7 @@ setMethod(".evaluate", signature("AverageN2", "TwoStageDesign"),
 #' @template design
 #' @template optimization
 #' @template dotdotdot
+#' @template label
 #'
 #' @seealso See \code{\link{AverageN2}} for a regularization of
 #'  the second-stage sample size.

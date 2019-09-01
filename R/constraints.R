@@ -9,7 +9,6 @@
 #' @template design
 #' @template optimization
 #' @template dotdotdot
-#' @template object
 #' @param e1 left hand side (score or numeric)
 #' @param e2 right hand side (score or numeric)
 #'

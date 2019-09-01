@@ -105,10 +105,10 @@ test_that("show works", {
 
     expect_equal(
         capture.output(show(composite({2*ess}))),
-        "2 * E[n(x1)]<Normal<two-armed>;PointMass<0.30>> ")
+        "2 * E[n(x1)]<Normal<two-armed>;PointMass<0.30>>  ")
 
     expect_equal(
         capture.output(show(composite({2*css}))),
-        "2 * n(x1) ")
+        "2 * n(x1)  ")
 
-}) # end 'show method returns class name'
+})

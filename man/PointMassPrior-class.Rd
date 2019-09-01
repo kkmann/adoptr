@@ -13,6 +13,8 @@ PointMassPrior(theta, mass, label = NA_character_)
 
 \item{mass}{numeric vector of probability masses at the pivot points
 (must sum to 1)}
+
+\item{label}{object label (string)}
 }
 \value{
 an object of class \code{PointMassPrior}, \code{theta} is
