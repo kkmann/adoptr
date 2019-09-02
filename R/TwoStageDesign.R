@@ -530,6 +530,14 @@ setMethod("summary", signature("TwoStageDesign"),
 
 
 
+#' @S3method print TwoStageDesignSummary
+print.TwoStageDesignSummary <- function(x, ...) {
+    print(x$scores)
+}
+
+
+
+
 #' Draw samples from a two-stage design
 #'
 #' \code{simulate} allows to draw samples from a given
