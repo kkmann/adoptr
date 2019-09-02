@@ -289,24 +289,8 @@ Both <a href='GroupSequentialDesign-class.html'>group-sequential</a> and
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>design</span> <span class='kw'>&lt;-</span> <span class='fu'>TwoStageDesign</span>(<span class='fl'>50</span>, <span class='fl'>0</span>, <span class='fl'>2</span>, <span class='fl'>50.0</span>, <span class='fl'>2.0</span>, <span class='fl'>5</span>)
 <span class='no'>pow</span>    <span class='kw'>&lt;-</span> <span class='fu'><a href='ConditionalPower-class.html'>Power</a></span>(<span class='fu'><a href='NormalDataDistribution-class.html'>Normal</a></span>(), <span class='fu'><a href='PointMassPrior-class.html'>PointMassPrior</a></span>(<span class='fl'>.4</span>, <span class='fl'>1</span>))
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/summary'>summary</a></span>(<span class='no'>design</span>, <span class='st'>"Power"</span> <span class='kw'>=</span> <span class='no'>pow</span>)</div><div class='output co'>#&gt; $design
-#&gt; TwoStageDesign&lt;
-#&gt;       x1    c2   n
-#&gt;     -0.00   Inf   50
-#&gt;      0.09  2.00  100
-#&gt;      0.46  2.00  100
-#&gt;      1.00  2.00  100
-#&gt;      1.54  2.00  100
-#&gt;      1.91  2.00  100
-#&gt;      2.00  -Inf   50&gt;
-#&gt;  
-#&gt; 
-#&gt; $scores
-#&gt;     Power 
-#&gt; 0.7386249 
-#&gt; 
-#&gt; attr(,"class")
-#&gt; [1] "TwoStageDesignSummary" "list"                 </div><div class='input'>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/summary'>summary</a></span>(<span class='no'>design</span>, <span class='st'>"Power"</span> <span class='kw'>=</span> <span class='no'>pow</span>)</div><div class='output co'>#&gt;     Power 
+#&gt; 0.7386249 </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
