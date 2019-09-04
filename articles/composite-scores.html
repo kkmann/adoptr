@@ -13,8 +13,9 @@
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><!-- docsearch --><script src="../docsearch.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous">
 <link href="../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="Composite Scores">
@@ -90,7 +91,7 @@
   </a>
 </li>
       </ul>
-<form class="navbar-form navbar-right" role="search">
+<form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
 </div>
@@ -104,6 +105,7 @@
 <!--/.navbar -->
 
       
+
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
@@ -117,7 +119,7 @@
 
     
     
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(adoptr)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(adoptr)</a></code></pre></div>
 <p>While adopt also allows implementation of custom scores via subclassing, for most applications a simple point-wise arithmetic on scores is sufficient. For instance, consider the case of a utility maximizing approach to planning where not a hard constraint on power but rather a trade-off betweem power and expected sample size is required. The simplest utility function would just be a weightes sum of both power (negative weight since we minimize costs!) and expected sample size.</p>
 <p>Consider the following situation</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">H_<span class="dv">0</span>      &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PointMassPrior-class.html">PointMassPrior</a></span>(.<span class="dv">0</span>, <span class="dv">1</span>)</a>
@@ -134,8 +136,8 @@
 <a class="sourceLine" id="cb4-2" data-line-number="2">    <span class="dt">n1  =</span> <span class="dv">100</span>,</a>
 <a class="sourceLine" id="cb4-3" data-line-number="3">    <span class="dt">c1f =</span> <span class="fl">.0</span>,</a>
 <a class="sourceLine" id="cb4-4" data-line-number="4">    <span class="dt">c1e =</span> <span class="fl">2.0</span>,</a>
-<a class="sourceLine" id="cb4-5" data-line-number="5">    <span class="dt">n2_pivots =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="dv">150</span>, <span class="dv">5</span>),</a>
-<a class="sourceLine" id="cb4-6" data-line-number="6">    <span class="dt">c2_pivots =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/lapply">sapply</a></span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>adoptr<span class="op">:::</span><span class="kw">GaussLegendreRule</span>(<span class="dv">5</span>)<span class="op">$</span>nodes, <span class="cf">function</span>(x) <span class="op">-</span>x <span class="op">+</span><span class="st"> </span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb4-5" data-line-number="5">    <span class="dt">n2_pivots =</span> <span class="kw"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="dv">150</span>, <span class="dv">5</span>),</a>
+<a class="sourceLine" id="cb4-6" data-line-number="6">    <span class="dt">c2_pivots =</span> <span class="kw"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>adoptr<span class="op">:::</span><span class="kw">GaussLegendreRule</span>(<span class="dv">5</span>)<span class="op">$</span>nodes, <span class="cf">function</span>(x) <span class="op">-</span>x <span class="op">+</span><span class="st"> </span><span class="dv">2</span>)</a>
 <a class="sourceLine" id="cb4-7" data-line-number="7">)</a>
 <a class="sourceLine" id="cb4-8" data-line-number="8"></a>
 <a class="sourceLine" id="cb4-9" data-line-number="9"><span class="kw"><a href="../reference/Scores.html">evaluate</a></span>(objective, design)</a>
@@ -145,7 +147,7 @@
 <a class="sourceLine" id="cb5-2" data-line-number="2">css &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ConditionalSampleSize-class.html">ConditionalSampleSize</a></span>()</a>
 <a class="sourceLine" id="cb5-3" data-line-number="3"></a>
 <a class="sourceLine" id="cb5-4" data-line-number="4">cs  &lt;-<span class="st"> </span><span class="kw"><a href="../reference/composite.html">composite</a></span>({css <span class="op">-</span><span class="st"> </span><span class="dv">50</span><span class="op">*</span>cp})</a></code></pre></div>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="../reference/Scores.html">evaluate</a></span>(cs, design, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>, <span class="fl">.5</span>, <span class="dv">1</span>))</a>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="../reference/Scores.html">evaluate</a></span>(cs, design, <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>, <span class="fl">.5</span>, <span class="dv">1</span>))</a>
 <a class="sourceLine" id="cb6-2" data-line-number="2"><span class="co">#&gt; [1] 216.3270 208.5593 203.6800</span></a></code></pre></div>
 <p>Of course, composite conditional scores can also be integrated</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="../reference/Scores.html">evaluate</a></span>(<span class="kw"><a href="../reference/Scores.html">expected</a></span>(cs, datadist, H_<span class="dv">1</span>), design)</a>
@@ -155,8 +157,8 @@
 <h2 class="hasAnchor">
 <a href="#functional-composition" class="anchor"></a>Functional Composition</h2>
 <p>Composite scores are not restricted to linear operations but support any valid numerical expression:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">cs &lt;-<span class="st"> </span><span class="kw"><a href="../reference/composite.html">composite</a></span>({<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Log">log</a></span>(css) <span class="op">-</span><span class="st"> </span><span class="dv">50</span><span class="op">*</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Trig">sin</a></span>(cp)})</a>
-<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="kw"><a href="../reference/Scores.html">evaluate</a></span>(cs, design, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>, <span class="fl">.5</span>, <span class="dv">1</span>))</a>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">cs &lt;-<span class="st"> </span><span class="kw"><a href="../reference/composite.html">composite</a></span>({<span class="kw"><a href="https://rdrr.io/r/base/Log.html">log</a></span>(css) <span class="op">-</span><span class="st"> </span><span class="dv">50</span><span class="op">*</span><span class="kw"><a href="https://rdrr.io/r/base/Trig.html">sin</a></span>(cp)})</a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="kw"><a href="../reference/Scores.html">evaluate</a></span>(cs, design, <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>, <span class="fl">.5</span>, <span class="dv">1</span>))</a>
 <a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co">#&gt; [1] -25.66328 -31.33507 -34.45165</span></a></code></pre></div>
 <p>Even control flow is supported:</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">cs &lt;-<span class="st"> </span><span class="kw"><a href="../reference/composite.html">composite</a></span>({</a>
@@ -166,7 +168,7 @@
 <a class="sourceLine" id="cb9-5" data-line-number="5">  }</a>
 <a class="sourceLine" id="cb9-6" data-line-number="6">  res</a>
 <a class="sourceLine" id="cb9-7" data-line-number="7">})</a>
-<a class="sourceLine" id="cb9-8" data-line-number="8"><span class="kw"><a href="../reference/Scores.html">evaluate</a></span>(cs, design, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>, <span class="fl">.5</span>, <span class="dv">1</span>))</a>
+<a class="sourceLine" id="cb9-8" data-line-number="8"><span class="kw"><a href="../reference/Scores.html">evaluate</a></span>(cs, design, <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>, <span class="fl">.5</span>, <span class="dv">1</span>))</a>
 <a class="sourceLine" id="cb9-9" data-line-number="9"><span class="co">#&gt; [1] 750 750 750</span></a></code></pre></div>
 <p>The only real constrain is that the expression must be vectorized.</p>
 </div>
@@ -186,13 +188,15 @@
 </div>
 
 
+
       <footer><div class="copyright">
   <p>Developed by Kevin Kunzmann, Maximilian Pilz.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
 </div>
+
       </footer>
 </div>
 

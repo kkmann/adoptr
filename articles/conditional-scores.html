@@ -13,8 +13,9 @@
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><!-- docsearch --><script src="../docsearch.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous">
 <link href="../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="Conditional Scores and Constraints">
@@ -90,7 +91,7 @@
   </a>
 </li>
       </ul>
-<form class="navbar-form navbar-right" role="search">
+<form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
 </div>
@@ -104,6 +105,7 @@
 <!--/.navbar -->
 
       
+
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
@@ -117,7 +119,7 @@
 
     
     
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(adoptr)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(adoptr)</a></code></pre></div>
 <div id="unconditional-scores-in-adoptr" class="section level2">
 <h2 class="hasAnchor">
 <a href="#unconditional-scores-in-adoptr" class="anchor"></a>(Un)conditional Scores in <strong>adoptr</strong>
@@ -127,27 +129,27 @@
 <a class="sourceLine" id="cb2-2" data-line-number="2">    <span class="dt">n1        =</span> <span class="dv">100</span>,</a>
 <a class="sourceLine" id="cb2-3" data-line-number="3">    <span class="dt">c1f       =</span> <span class="fl">.0</span>,</a>
 <a class="sourceLine" id="cb2-4" data-line-number="4">    <span class="dt">c1e       =</span> <span class="fl">2.0</span>,</a>
-<a class="sourceLine" id="cb2-5" data-line-number="5">    <span class="dt">n2_pivots =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="dv">150</span>, <span class="dv">5</span>),</a>
-<a class="sourceLine" id="cb2-6" data-line-number="6">    <span class="dt">c2_pivots =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/lapply">sapply</a></span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>adoptr<span class="op">:::</span><span class="kw">GaussLegendreRule</span>(<span class="dv">5</span>)<span class="op">$</span>nodes, <span class="cf">function</span>(x) <span class="op">-</span>x <span class="op">+</span><span class="st"> </span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">    <span class="dt">n2_pivots =</span> <span class="kw"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="dv">150</span>, <span class="dv">5</span>),</a>
+<a class="sourceLine" id="cb2-6" data-line-number="6">    <span class="dt">c2_pivots =</span> <span class="kw"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>adoptr<span class="op">:::</span><span class="kw">GaussLegendreRule</span>(<span class="dv">5</span>)<span class="op">$</span>nodes, <span class="cf">function</span>(x) <span class="op">-</span>x <span class="op">+</span><span class="st"> </span><span class="dv">2</span>)</a>
 <a class="sourceLine" id="cb2-7" data-line-number="7">)</a>
-<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(design)</a></code></pre></div>
+<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(design)</a></code></pre></div>
 <p><img src="conditional-scores_files/figure-html/define-design-1.png" width="672"></p>
 <p>In adoptr, scores are instances of their respective score class. The most important ones are: <code>ConditionalScore</code>, <code>UnconditionalScore</code>, and <code>IntegralScore</code>. An object of class <code>ConditionalScore</code> can evaluate a design for a particular stage-one outcome. A <code>ConditionalScore</code> is a function <span class="math inline">\(s(\mathcal{D}, x_1)\)</span> evaluating a design <span class="math inline">\(\mathcal{D}\)</span> at a stage-one outcome <span class="math inline">\(X_1 = x_1\)</span>. Some conditional scores might depend on the data distribution (conditional power) others do not (conditional sample size). Conditional score evaluation is completely vectorized:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">uniform_prior &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ContinuousPrior-class.html">ContinuousPrior</a></span>(</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">  <span class="cf">function</span>(x) <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/numeric">numeric</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(x)) <span class="op">+</span><span class="st"> </span><span class="dv">1</span><span class="op">/</span>.<span class="dv">2</span>,</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3">  <span class="dt">support =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(.<span class="dv">3</span>, <span class="fl">.5</span>)</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">  <span class="cf">function</span>(x) <span class="kw"><a href="https://rdrr.io/r/base/numeric.html">numeric</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/length.html">length</a></span>(x)) <span class="op">+</span><span class="st"> </span><span class="dv">1</span><span class="op">/</span>.<span class="dv">2</span>,</a>
+<a class="sourceLine" id="cb3-3" data-line-number="3">  <span class="dt">support =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(.<span class="dv">3</span>, <span class="fl">.5</span>)</a>
 <a class="sourceLine" id="cb3-4" data-line-number="4">)</a>
 <a class="sourceLine" id="cb3-5" data-line-number="5"></a>
 <a class="sourceLine" id="cb3-6" data-line-number="6">cp  &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ConditionalPower-class.html">ConditionalPower</a></span>(<span class="kw"><a href="../reference/NormalDataDistribution-class.html">Normal</a></span>(), uniform_prior)</a>
 <a class="sourceLine" id="cb3-7" data-line-number="7">css &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ConditionalSampleSize-class.html">ConditionalSampleSize</a></span>()</a>
 <a class="sourceLine" id="cb3-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb3-9" data-line-number="9">x1  &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>, <span class="fl">.5</span>, <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb3-9" data-line-number="9">x1  &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>, <span class="fl">.5</span>, <span class="dv">1</span>)</a>
 <a class="sourceLine" id="cb3-10" data-line-number="10"><span class="kw"><a href="../reference/Scores.html">evaluate</a></span>(cp, design, x1)</a>
 <a class="sourceLine" id="cb3-11" data-line-number="11"><span class="co">#&gt; [1] 0.8312538 0.9303985 0.9772962</span></a>
 <a class="sourceLine" id="cb3-12" data-line-number="12"><span class="kw"><a href="../reference/Scores.html">evaluate</a></span>(css, design, x1)</a>
 <a class="sourceLine" id="cb3-13" data-line-number="13"><span class="co">#&gt; [1] 250 250 250</span></a></code></pre></div>
-<p>Conditional scores can also be plotted directly for a given design by including them in the <code><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot()</a></code> call.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(design, <span class="st">"Conditional Power"</span> =<span class="st"> </span>cp)</a></code></pre></div>
+<p>Conditional scores can also be plotted directly for a given design by including them in the <code><a href="https://rdrr.io/r/graphics/plot.html">plot()</a></code> call.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(design, <span class="st">"Conditional Power"</span> =<span class="st"> </span>cp)</a></code></pre></div>
 <p><img src="conditional-scores_files/figure-html/unnamed-chunk-3-1.png" width="672"></p>
 <p>Any conditional score can be integrated with respect to a prior and data distribution to obtain an unconditional score. Note that for conditional scores which depend on a specification of these distributions (e.g., conditional power) these arguments must be consistent! The resulting score is of class <code>IntegralScore</code>, a specific subclass of <code>UnconditionalScore</code> and evaluates designs independent of a particular <span class="math inline">\(x_1\)</span>, i.e., unconditionally</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">ep &lt;-<span class="st"> </span><span class="kw"><a href="../reference/Scores.html">expected</a></span>(cp, <span class="kw"><a href="../reference/NormalDataDistribution-class.html">Normal</a></span>(), uniform_prior)</a>
@@ -201,13 +203,15 @@
 </div>
 
 
+
       <footer><div class="copyright">
   <p>Developed by Kevin Kunzmann, Maximilian Pilz.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
 </div>
+
       </footer>
 </div>
 
