@@ -530,7 +530,7 @@ setMethod("summary", signature("TwoStageDesign"),
 
 
 
-#' @S3method print TwoStageDesignSummary
+#' @rawNamespace S3method(print, TwoStageDesignSummary)
 print.TwoStageDesignSummary <- function(x, ...) {
     print(x$scores)
 }
