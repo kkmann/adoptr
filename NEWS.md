@@ -1,4 +1,7 @@
-# adoptr 0.3.0
+# adoptr 0.2.3
+
+* reworked the class printing system to be more informative
+* minimize() now also returns an S3 class object to allow pretty-printing
 
 
 
