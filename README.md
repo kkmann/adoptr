@@ -14,7 +14,7 @@
 Adaptive optimal two-stage designs for clinical trials with one or two arms for details on the core theoretical background, see:
 
 Pilz M, Kunzmann K, Herrmann C, Rauch G, Kieser M. A variational approach to
-optimal two-stage designs. Statistics in Medicine. 2019;1–13.
+optimal two-stage designs. Statistics in Medicine. 2019; 38: 4159– 4171.
 https://doi.org/10.1002/sim.8291
 
 
