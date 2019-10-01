@@ -27,7 +27,9 @@ Suggests:
 Imports:
     nloptr,
     methods,
-    glue
+    glue,
+    npsp,
+    dplyr
 VignetteBuilder: knitr
 Collate: 
     adoptr.R
@@ -46,6 +48,7 @@ Collate:
     ConditionalSampleSize.R
     regularization.R
     CompositeScore.R
+    StageWiseDataModel.R
 RoxygenNote: 6.1.1
 BugReports: https://github.com/kkmann/adoptr/issues
 URL: https://github.com/kkmann/adoptr

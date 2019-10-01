@@ -5,7 +5,7 @@
 \alias{OneStageDesign-class}
 \alias{OneStageDesign}
 \alias{TwoStageDesign,OneStageDesign-method}
-\alias{plot,OneStageDesign-method}
+\alias{plot,OneStageDesign,ANY-method}
 \title{One-stage designs}
 \usage{
 OneStageDesign(n, c)
@@ -13,7 +13,7 @@ OneStageDesign(n, c)
 \S4method{TwoStageDesign}{OneStageDesign}(n1, order = 5L, eps = 0.01,
   ...)
 
-\S4method{plot}{OneStageDesign}(x, y, ...)
+\S4method{plot}{OneStageDesign,ANY}(x, y, ...)
 }
 \arguments{
 \item{n}{sample size (stage-one sample size)}
