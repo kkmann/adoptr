@@ -27,10 +27,10 @@ setClass("StageWiseDataModel", representation(
 # constructor: precompute pdf/cdf for marginal and posterior and store as arrays
 #' @export
 StageWiseDataModel <- function(data_pdf, prior_pdf, dims = c(100, 100, 100)) {
-
-    n      <- seq(attr(data_pdf, "support_n")[1], attr(data_pdf, "support_n")[2], length.out = dims[1])
-    min_x  <- attr(prior_pdf, "support")[1] + attr(data_pdf, "rel_support_x")[1]
-    max_x  <- attr(prior_pdf, "support")[2] + attr(data_pdf, "rel_support_x")[2]
+    n_max   <- attr(data_pdf, "support_n")[2]
+    n      <- seq(attr(data_pdf, "support_n")[1], n_max, length.out = dims[1])
+    min_x  <- sqrt(n_max) * attr(prior_pdf, "support")[1] + attr(data_pdf, "rel_support_x")[1]
+    max_x  <- sqrt(n_max) * attr(prior_pdf, "support")[2] + attr(data_pdf, "rel_support_x")[2]
     x      <- seq(min_x,max_x, length.out = dims[2])
     theta  <- seq(attr(prior_pdf, "support")[1], attr(prior_pdf, "support")[2], length.out = dims[3])
     dn     <- n[2] - n[1]

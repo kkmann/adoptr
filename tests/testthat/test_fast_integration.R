@@ -28,23 +28,41 @@ NormalPrior2 <- function(mu, sd, support) {
     return(res)
 }
 
-# new
-pdf_x     <- Normal2(c(1, 100))
-pdf_theta <- NormalPrior2(.3, .1, c(0, 1))
-m         <- StageWiseDataModel(pdf_x, pdf_theta, dims = c(100, 500, 100))
 
-new_marginal_pdf <- marginal_pdf(m, n = 10, x = m@x)
+sd_prior          <- .1
+mu_prior          <- .3
+support_prior     <- c(-3, 3)
+
+n                 <- 25
+
+# new
+pdf_x             <- Normal2(c(1, 100))
+pdf_theta         <- NormalPrior2(mu_prior, sd_prior, support_prior)
+m                 <- StageWiseDataModel(pdf_x, pdf_theta, dims = c(100, 500, 100))
+
+marginal_pdf_new  <- marginal_pdf(m, n = n, x = m@x)
+marginal_pdf_true <- dnorm(m@x, mean = mu_prior * sqrt(n), sd = sqrt(1 + sd_prior^2))
+# xbar | theta ~ N(theta, 1/n)
+# xbar         ~ N(mu_theta, (1 + sigma_theta^2)/n)
+# z            ~ N(sqrt(n)* mu_theta, (1 + sigma_theta^2))
+
+testthat::expect_true(
+    all(abs(marginal_pdf_new - marginal_pdf_true) <= .025)
+)
 
 # old
 datadist <- Normal(two_armed = FALSE)
-prior    <- ContinuousPrior(pdf_theta, support = c(0, 1))
+prior    <- ContinuousPrior(pdf_theta, support = support_prior)
 
-old_marginal_pdf <- predictive_pdf(datadist, prior, x1 = m@x, n1 = 10)
-
+marginal_pdf_old <- predictive_pdf(datadist, prior, x1 = m@x, n1 = n)
 
 testthat::expect_true(
-    all(abs(old_marginal_pdf - new_marginal_pdf) <= 10^(-4))
+    all(abs(marginal_pdf_old - marginal_pdf_true) <= .025)
 )
+
+plot(m@x, marginal_pdf_true, 'l')
+lines(m@x, marginal_pdf_new, col = 'red')
+lines(m@x, marginal_pdf_old, col = 'blue')
 
 
 # SAVE FOR LATER
