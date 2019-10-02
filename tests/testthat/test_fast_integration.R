@@ -54,7 +54,7 @@ testthat::expect_true(
 
 # old
 datadist <- Normal(two_armed = FALSE)
-prior    <- ContinuousPrior(prior_pdf, support = support_prior)
+prior    <- ContinuousPrior(prior_pdf, support = support_prior, tighten_support = T)
 
 marginal_pdf_old <- predictive_pdf(datadist, prior, x1 = m@x, n1 = n)
 
@@ -67,13 +67,17 @@ lines(m@x, marginal_pdf_new, col = 'red')
 lines(m@x, marginal_pdf_old, col = 'blue')
 
 
-# bit dodgy yet...
+# posteriors
 xobs              <- sqrt(n) * 3 * mu_prior
 theta             <- seq(-3, 3, length.out = 1000)
 posterior_pdf_new <- posterior_pdf(m, theta = theta, n, x = xobs)
 posterior_pdf_old <- posterior(datadist, prior, x1 = xobs, n1 = n)@pdf(theta)
 
+mean_posterior     <- 1 / (1 / sd_prior^2 + n) * (mu_prior / sd_prior^2 + sqrt(n) * xobs)
+sd_posterior       <- sqrt(1 / (1 / sd_prior^2 + n))
+posterior_pdf_true <- dnorm(theta, mean = mean_posterior, sd = sd_posterior)
 
-plot(theta, prior_pdf(theta), 'l', ylim = c(-1, 6))
+
+plot(theta, posterior_pdf_true, 'l', ylim = c(-1, 10))
 lines(theta, posterior_pdf_new, col = 'red')
 lines(theta, posterior_pdf_old, col = 'blue')
