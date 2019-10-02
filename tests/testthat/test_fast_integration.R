@@ -35,7 +35,7 @@ sd_prior          <- .1
 mu_prior          <- .3
 support_prior     <- c(-3, 3)
 
-n                 <- 100 # play around with that here
+n                 <- 200 # play around with that here
 
 # new
 data_pdf          <- Normal2(c(1, 250))
@@ -67,14 +67,13 @@ lines(m@x, marginal_pdf_new, col = 'red')
 lines(m@x, marginal_pdf_old, col = 'blue')
 
 
-# SAVE FOR LATER
-#
-# posterior_pdf(m, theta = m@theta, 10, x = -1) %>%
-#     {plot(m@theta, ., 'l')}
-#
-# x <- runif(100, -5, 10) %>% sort
-# marginal_pdf(m, n = 10, x = x) %>%
-#     {plot(x, ., 'l', xlim = c(-5, 10))}
-#
-# posterior_pdf(m, 0, 25, x = x) %>%
-#     {plot(x, ., 'l', xlim = c(-2, 2))}
+# bit dodgy yet...
+xobs              <- sqrt(n) * 3 * mu_prior
+theta             <- seq(-3, 3, length.out = 1000)
+posterior_pdf_new <- posterior_pdf(m, theta = theta, n, x = xobs)
+posterior_pdf_old <- posterior(datadist, prior, x1 = xobs, n1 = n)@pdf(theta)
+
+
+plot(theta, prior_pdf(theta), 'l', ylim = c(-1, 6))
+lines(theta, posterior_pdf_new, col = 'red')
+lines(theta, posterior_pdf_old, col = 'blue')

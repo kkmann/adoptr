@@ -38,7 +38,7 @@ StageWiseDataModel <- function(data_pdf, prior_pdf, dims = c(NA_real_, NA_real_,
     x      <- seq(x_min, x_max, length.out = dims[2])
     theta_min <- attr(prior_pdf, "support")[1]
     theta_max <- attr(prior_pdf, "support")[2]
-    if (is.na(dims[3])) dims[3] <- 5 * (theta_max - theta_min)
+    if (is.na(dims[3])) dims[3] <- 50 * (theta_max - theta_min)
     theta  <- seq(theta_min, theta_max, length.out = dims[3])
 
     dn     <- n[2] - n[1]
@@ -61,7 +61,7 @@ StageWiseDataModel <- function(data_pdf, prior_pdf, dims = c(NA_real_, NA_real_,
     group_by(n, x) %>%
     mutate(
         marginal_pdf  = exp(log(sum(exp(joint_pdf))) + log(dtheta)),
-        posterior_pdf = exp(joint_pdf) / ifelse(marginal_pdf == 0, 1, marginal_pdf)
+        posterior_pdf = ifelse(marginal_pdf == 0, 0, exp(joint_pdf) / marginal_pdf)
     ) %>%
     ungroup()
 
@@ -99,8 +99,10 @@ StageWiseDataModel <- function(data_pdf, prior_pdf, dims = c(NA_real_, NA_real_,
 
 #' @export
 marginal_pdf <- function(m, n, x) { # vectorized over x, not n
-    npsp::interp(m@marginal_grid, m@marginal_pdfs, cbind(n, x))$y}
+    npsp::interp(m@marginal_grid, m@marginal_pdfs, cbind(n, x))$y
+}
 
 #' @export
 posterior_pdf <- function(m, theta, n, x) { # vectorized over theta, not n, x
-    npsp::interp(m@posterior_grid, m@posterior_pdfs, cbind(n, x, theta))$y}
+    interp(m@posterior_grid, m@posterior_pdfs, cbind(n, x, theta))$y
+}
