@@ -35,12 +35,12 @@ sd_prior          <- .1
 mu_prior          <- .3
 support_prior     <- c(-3, 3)
 
-n                 <- 25
+n                 <- 100 # play around with that here
 
 # new
 data_pdf          <- Normal2(c(1, 250))
 prior_pdf         <- NormalPrior2(mu_prior, sd_prior, support_prior)
-m                 <- StageWiseDataModel(data_pdf, prior_pdf, dims = c(250, 250, 250))
+m                 <- StageWiseDataModel(data_pdf, prior_pdf)
 
 marginal_pdf_new  <- marginal_pdf(m, n = n, x = m@x)
 marginal_pdf_true <- dnorm(m@x, mean = mu_prior * sqrt(n), sd = sqrt(1 + sd_prior^2))
