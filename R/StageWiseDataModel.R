@@ -26,33 +26,44 @@ setClass("StageWiseDataModel", representation(
 
 # constructor: precompute pdf/cdf for marginal and posterior and store as arrays
 #' @export
-StageWiseDataModel <- function(data_pdf, prior_pdf, dims = c(100, 100, 100)) {
-    n_max   <- attr(data_pdf, "support_n")[2]
-    n      <- seq(attr(data_pdf, "support_n")[1], n_max, length.out = dims[1])
-    min_x  <- sqrt(n_max) * attr(prior_pdf, "support")[1] + attr(data_pdf, "rel_support_x")[1]
-    max_x  <- sqrt(n_max) * attr(prior_pdf, "support")[2] + attr(data_pdf, "rel_support_x")[2]
-    x      <- seq(min_x,max_x, length.out = dims[2])
-    theta  <- seq(attr(prior_pdf, "support")[1], attr(prior_pdf, "support")[2], length.out = dims[3])
+StageWiseDataModel <- function(data_pdf, prior_pdf, dims = c(NA_real_, NA_real_, NA_real_)) {
+
+    n_max  <- attr(data_pdf, "support_n")[2]
+    n_min  <- attr(data_pdf, "support_n")[1]
+    if (is.na(dims[1])) dims[1] <- ceiling((n_max - n_min + 1) / 5)
+    n      <- seq(n_min, n_max, length.out = dims[1])
+    x_min  <- sqrt(n_max) * attr(prior_pdf, "support")[1] + attr(data_pdf, "rel_support_x")[1]
+    x_max  <- sqrt(n_max) * attr(prior_pdf, "support")[2] + attr(data_pdf, "rel_support_x")[2]
+    if (is.na(dims[2])) dims[2] <- ceiling(3 * (x_max - x_min))
+    x      <- seq(x_min, x_max, length.out = dims[2])
+    theta_min <- attr(prior_pdf, "support")[1]
+    theta_max <- attr(prior_pdf, "support")[2]
+    if (is.na(dims[3])) dims[3] <- 5 * (theta_max - theta_min)
+    theta  <- seq(theta_min, theta_max, length.out = dims[3])
+
     dn     <- n[2] - n[1]
     dx     <- x[2] - x[1]
     dtheta <- theta[2] - theta[1]
 
-    pdfs <- expand.grid(n = n, x = x, theta = theta) %>%
-        mutate(
-            joint_pdf = log(data_pdf(n, x, theta)) + log(prior_pdf(theta))
-        ) %>%
-        group_by(n) %>% # normalize
-        mutate(
-            joint_pdf = joint_pdf - log(sum(exp(joint_pdf))) - log(dx * dtheta)
-        ) %>%
-        ungroup() %>%
-        group_by(n, x) %>%
-        mutate(
-            marginal_pdf  = exp(log(sum(exp(joint_pdf))) + log(dtheta)),
-            posterior_pdf = exp(joint_pdf) / ifelse(marginal_pdf == 0, 1, marginal_pdf)
-        ) %>%
-        ungroup()
-
+    pdfs <- expand.grid(
+        n = n,
+        x = x,
+        theta = theta
+    ) %>%
+    mutate(
+        joint_pdf = log(data_pdf(n, x, theta)) + log(prior_pdf(theta))
+    ) %>%
+    group_by(n) %>% # normalize
+    mutate(
+        joint_pdf = joint_pdf - log(sum(exp(joint_pdf))) - log(dx * dtheta)
+    ) %>%
+    ungroup() %>%
+    group_by(n, x) %>%
+    mutate(
+        marginal_pdf  = exp(log(sum(exp(joint_pdf))) + log(dtheta)),
+        posterior_pdf = exp(joint_pdf) / ifelse(marginal_pdf == 0, 1, marginal_pdf)
+    ) %>%
+    ungroup()
 
     marginal_grid <- npsp::grid.par(dims[1:2], c(min(n), min(x)), c(max(n), max(x)))
 
@@ -71,14 +82,12 @@ StageWiseDataModel <- function(data_pdf, prior_pdf, dims = c(100, 100, 100)) {
         pull(posterior_pdf) %>%
         array(dim = dims) # n-by-x-by-theta array of posteriors
 
-
     posterior_cdfs <- posterior_pdfs
     for (i in 1:length(n)) {
         for (j in 1:length(x)) {
             posterior_cdfs[i, j, ] <- cumsum(posterior_pdfs[i, j, ]) * dtheta
         }
     }
-
 
     new("StageWiseDataModel", marginal_pdfs = marginal_pdfs, marginal_cdfs = marginal_cdfs,
         marginal_grid = marginal_grid, posterior_pdfs = posterior_pdfs,

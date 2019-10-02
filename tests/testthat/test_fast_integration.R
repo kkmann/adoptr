@@ -4,12 +4,14 @@ context("fast integration for cdf/pdf")
 Normal2 <- function(support_n, rel_support_x = c(-5, 5)) {
 
     res <- function(n, x, theta) {
-        z <- pnorm(theta + rel_support_x[2], theta, 1/sqrt(n)) - pnorm(theta + rel_support_x[1], theta, 1/sqrt(n))
+        z <- pnorm(sqrt(n) * theta + rel_support_x[2], sqrt(n) * theta, 1) - pnorm(sqrt(n) * theta + rel_support_x[1], sqrt(n) * theta, 1)
+
         ifelse(
-            x <= theta + rel_support_x[2] & x >= theta + rel_support_x[1],
-            dnorm(x, theta, 1/sqrt(n)) / z,
+            x <= sqrt(n) * theta + rel_support_x[2] & x >= sqrt(n) * theta + rel_support_x[1],
+            dnorm(x, sqrt(n) * theta, 1) / z,
             0
         )
+
     }
     attr(res, "support_n") <- support_n
     attr(res, "rel_support_x") <- rel_support_x
@@ -36,9 +38,9 @@ support_prior     <- c(-3, 3)
 n                 <- 25
 
 # new
-pdf_x             <- Normal2(c(1, 100))
-pdf_theta         <- NormalPrior2(mu_prior, sd_prior, support_prior)
-m                 <- StageWiseDataModel(pdf_x, pdf_theta, dims = c(100, 500, 100))
+data_pdf          <- Normal2(c(1, 250))
+prior_pdf         <- NormalPrior2(mu_prior, sd_prior, support_prior)
+m                 <- StageWiseDataModel(data_pdf, prior_pdf, dims = c(250, 250, 250))
 
 marginal_pdf_new  <- marginal_pdf(m, n = n, x = m@x)
 marginal_pdf_true <- dnorm(m@x, mean = mu_prior * sqrt(n), sd = sqrt(1 + sd_prior^2))
@@ -52,7 +54,7 @@ testthat::expect_true(
 
 # old
 datadist <- Normal(two_armed = FALSE)
-prior    <- ContinuousPrior(pdf_theta, support = support_prior)
+prior    <- ContinuousPrior(prior_pdf, support = support_prior)
 
 marginal_pdf_old <- predictive_pdf(datadist, prior, x1 = m@x, n1 = n)
 
