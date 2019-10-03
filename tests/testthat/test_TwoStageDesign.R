@@ -2,16 +2,16 @@ context("TwoStageDesign")
 
 test_that("gaussian quadrature constructor", {
 
-    n1           <<-  49.6
+    n_1          <<-  49.6
     c1f          <<-   0.7
     c1e          <<-   2.5
     number_knots <<-   5L
     n2_piv       <<- rep(49.6, number_knots)
     c2_piv       <<- rep(1.96, number_knots)
-    design       <<- TwoStageDesign(n1, c1f, c1e, n2_piv, c2_piv, number_knots)
+    design       <<- TwoStageDesign(n_1, c1f, c1e, n2_piv, c2_piv, number_knots)
 
     expect_equal(
-        c(n1, c1f, c1e),
+        c(n_1, c1f, c1e),
         c(design@n1, design@c1f, design@c1e),
         tolerance = sqrt(.Machine$double.eps), scale = 1)
 
@@ -76,7 +76,7 @@ test_that("plot produces correct number of columns", {
     cp  <- ConditionalPower(Normal(), PointMassPrior(.3, 1))
     pic1 <- plot(design, "ConditionalPower" = cp, lwd = 1.5, col = "green")
     pic2 <- plot(design, "ConditionalPower" = cp)
-    pic3 <- plot(design, cex = 2)
+    pic3 <- plot(design, cex = 1.1)
     pic4 <- plot(design)
 
     expect_true(pic1$mfrow[2] == 3)
