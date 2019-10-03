@@ -43,7 +43,7 @@ prior_pdf         <- NormalPrior2(mu_prior, sd_prior, support_prior)
 m                 <- StageWiseDataModel(data_pdf, prior_pdf)
 
 marginal_pdf_new  <- marginal_pdf(m, n = n, x = m@x)
-marginal_pdf_true <- dnorm(m@x, mean = mu_prior * sqrt(n), sd = sqrt(1 + sd_prior^2))
+marginal_pdf_true <- dnorm(m@x, mean = mu_prior * sqrt(n), sd = sqrt(1 + n * sd_prior^2))
 # xbar | theta ~ N(theta, 1/n)
 # xbar         ~ N(mu_theta, (1 + sigma_theta^2)/n)
 # z            ~ N(sqrt(n)* mu_theta, (1 + sigma_theta^2))
