@@ -38,18 +38,44 @@ setMethod("StageWiseDataModel", signature("DataDistribution", "Prior"),
               n_min  <- min(support_n)
               if (is.na(dims[1])) dims[1] <- ceiling((n_max - n_min + 1) / 5)
               n      <- seq(n_min, n_max, length.out = dims[1])
-              x_min  <- sqrt(n_max) * prior@support[1] + support_x[1]
-              x_max  <- sqrt(n_max) * prior@support[2] + support_x[2]
+              dn     <- n[2] - n[1]
+
+
+              if(is(prior, "ContinuousPrior")) {
+                  x_min  <- sqrt(n_max) * prior@support[1] + support_x[1]
+                  x_max  <- sqrt(n_max) * prior@support[2] + support_x[2]
+              } else{
+                  x_min  <- sqrt(n_max) * min(prior@theta) + support_x[1]
+                  x_max  <- sqrt(n_max) * max(prior@theta) + support_x[2]
+              }
               if (is.na(dims[2])) dims[2] <- ceiling(3 * (x_max - x_min))
               x      <- seq(x_min, x_max, length.out = dims[2])
-              theta_min <- prior@support[1]
-              theta_max <- prior@support[2]
-              if (is.na(dims[3])) dims[3] <- 50 * ceiling(theta_max - theta_min)
-              theta  <- seq(theta_min, theta_max, length.out = dims[3])
-
-              dn     <- n[2] - n[1]
               dx     <- x[2] - x[1]
-              dtheta <- theta[2] - theta[1]
+
+
+              if(is(prior, "ContinuousPrior")) {
+                  theta_min <- prior@support[1]
+                  theta_max <- prior@support[2]
+                  if (is.na(dims[3])) dims[3] <- 50 * ceiling(theta_max - theta_min)
+                  theta  <- seq(theta_min, theta_max, length.out = dims[3])
+                  dtheta <- theta[2] - theta[1]
+
+                  prior_pdf <- function(th) prior@pdf(th)
+
+              } else {
+                  theta   <- prior@theta
+                  dims[3] <- length(theta)
+                  dtheta  <- 1 #/ length(theta) # todo: check
+
+                  prior_pdf <- function(th) {
+                      res <- rep(0, length(th))
+                      for(i in 1:length(theta)) {
+                          for(j in 1:length(th)) if(th[j] == theta[i]) res[j] <- prior@mass[i]
+                      }
+                      return(res)
+                  }
+              }
+
 
                 pdfs <- expand.grid(
                     n = n,
@@ -57,7 +83,7 @@ setMethod("StageWiseDataModel", signature("DataDistribution", "Prior"),
                     theta = theta
                 ) %>%
                 mutate(
-                    joint_pdf = log(probability_density_function(dist, x, n, theta)) + log(prior@pdf(theta))
+                    joint_pdf = log(probability_density_function(dist, x, n, theta)) + log(prior_pdf(theta))
                 ) %>%
                 group_by(n) %>% # normalize
                 mutate(
