@@ -38,13 +38,13 @@ setMethod("StageWiseDataModel", signature("DataDistribution", "Prior"),
               n_min  <- min(support_n)
               if (is.na(dims[1])) dims[1] <- ceiling((n_max - n_min + 1) / 5)
               n      <- seq(n_min, n_max, length.out = dims[1])
-              x_min  <- sqrt(n_min) * prior@support[1] + support_x[1]
+              x_min  <- sqrt(n_max) * prior@support[1] + support_x[1]
               x_max  <- sqrt(n_max) * prior@support[2] + support_x[2]
               if (is.na(dims[2])) dims[2] <- ceiling(3 * (x_max - x_min))
               x      <- seq(x_min, x_max, length.out = dims[2])
               theta_min <- prior@support[1]
               theta_max <- prior@support[2]
-              if (is.na(dims[3])) dims[3] <- 50 * (theta_max - theta_min)
+              if (is.na(dims[3])) dims[3] <- 50 * ceiling(theta_max - theta_min)
               theta  <- seq(theta_min, theta_max, length.out = dims[3])
 
               dn     <- n[2] - n[1]
@@ -57,7 +57,7 @@ setMethod("StageWiseDataModel", signature("DataDistribution", "Prior"),
                     theta = theta
                 ) %>%
                 mutate(
-                    joint_pdf = log(data_pdf(n, x, theta)) + log(prior_pdf(theta))
+                    joint_pdf = log(probability_density_function(dist, x, n, theta)) + log(prior@pdf(theta))
                 ) %>%
                 group_by(n) %>% # normalize
                 mutate(
