@@ -2,8 +2,8 @@ context("fast integration for cdf/pdf")
 
 test_that("normal priors and normal data build a correct data model", {
 
-    library(dplyr)
-    # TODO: Delete this when we do no longer depend on dplyr
+    library(dplyr) # TODO: Delete this when we do no longer depend on dplyr
+
     '
     # define scenarios
     mu  <- c(-.3, 0, .3, 1)
@@ -26,7 +26,7 @@ test_that("normal priors and normal data build a correct data model", {
                 prior    <- ContinuousPrior(
                     function(theta) dnorm(theta, mean = mu_prior, sd = sd_prior),
                     support = c(-5, 5),
-                    tighten_support = T
+                    tighten_support = TRUE
                 )
 
 
@@ -60,5 +60,53 @@ test_that("normal priors and normal data build a correct data model", {
             }
         }
     }
+
+})
+
+
+test_that("discrete point priors and normal data build a correct data model", {
+
+    datadist <- Normal(two_armed = FALSE)
+    prior    <- PointMassPrior(seq(.1, .5, .1), c(.1, .2, .4, .2, .1))
+
+    m <- StageWiseDataModel(datadist, prior)
+
+    # test posterior pdfs
+    xobs              <- .5
+    posterior_pdf_new <- posterior_pdf(m, theta = prior@theta, n = 50, x = xobs)
+
+    testthat::expect_equal(
+        sum(posterior_pdf_new), 1.0
+    )
+
+    xobs_2              <- 5
+    posterior_pdf_new_2 <- posterior_pdf(m, theta = prior@theta, n = 50, x = xobs_2)
+
+    testthat::expect_equal(
+        sum(posterior_pdf_new_2), 1.0
+    )
+
+    # test: less probability mass on small theta value if larger test statistic is observed
+    testthat::expect_true(
+        posterior_pdf_new_2[1] <= posterior_pdf_new[1]
+    )
+
+})
+
+
+
+test_that("single-point prior and normal data build a correct data model", {
+    datadist <- Normal(two_armed = TRUE)
+    prior    <- PointMassPrior(0, 1)
+
+    m <- StageWiseDataModel(datadist, prior)
+
+    # test posterior pdfs
+    xobs              <- -1
+    posterior_pdf_new <- posterior_pdf(m, theta = prior@theta, n = 300, x = xobs)
+
+    testthat::expect_equal(
+        posterior_pdf_new, 1.0
+    )
 
 })

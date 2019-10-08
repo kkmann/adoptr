@@ -64,13 +64,19 @@ setMethod("StageWiseDataModel", signature("DataDistribution", "Prior"),
 
               } else {
                   theta   <- prior@theta
+                  mass    <- prior@mass
+                  if(length(theta) == 1) {
+                      theta <- c(prior@theta - .Machine$double.eps, prior@theta + .Machine$double.eps)
+                      mass  <- rep(prior@mass, 2)
+                  }
+
                   dims[3] <- length(theta)
                   dtheta  <- 1 #/ length(theta) # todo: check
 
                   prior_pdf <- function(th) {
                       res <- rep(0, length(th))
                       for(i in 1:length(theta)) {
-                          for(j in 1:length(th)) if(th[j] == theta[i]) res[j] <- prior@mass[i]
+                          for(j in 1:length(th)) if(th[j] == theta[i]) res[j] <- mass[i]
                       }
                       return(res)
                   }
@@ -97,7 +103,9 @@ setMethod("StageWiseDataModel", signature("DataDistribution", "Prior"),
                 ) %>%
                 ungroup()
 
-                marginal_grid <- npsp::grid.par(dims[1:2], c(min(n), min(x)), c(max(n), max(x)))
+                marginal_grid <- npsp::grid.par(dims[1:2],
+                                                min = c(min(n), min(x)),
+                                                max = c(max(n), max(x)))
 
                 marginal_pdfs <- pdfs %>%
                     distinct(n, x, marginal_pdf) %>%
@@ -108,11 +116,15 @@ setMethod("StageWiseDataModel", signature("DataDistribution", "Prior"),
                     apply(., 1, function(y) cumsum(y) * dx) %>%
                     t(.) -> marginal_cdfs
 
-                posterior_grid <- npsp::grid.par(dims, c(min(n), min(x), min(theta)), c(max(n), max(x), max(theta)))
+                posterior_grid <- npsp::grid.par(dims,
+                                                 min = c(min(n), min(x), min(theta)),
+                                                 max = c(max(n), max(x), max(theta)))
 
                 posterior_pdfs <- pdfs %>%
                     pull(posterior_pdf) %>%
                     array(dim = dims) # n-by-x-by-theta array of posteriors
+
+                if(is(prior, "PointMassPrior") && length(prior@theta) == 1)  posterior_pdfs <- 2 * posterior_pdfs
 
                 posterior_cdfs <- posterior_pdfs
                 for (i in 1:length(n)) {
