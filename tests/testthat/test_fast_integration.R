@@ -2,8 +2,6 @@ context("fast integration for cdf/pdf")
 
 test_that("normal priors and normal data build a correct data model", {
 
-    library(dplyr) # TODO: Delete this when we do no longer depend on dplyr
-
     '
     # define scenarios
     mu  <- c(-.3, 0, .3, 1)

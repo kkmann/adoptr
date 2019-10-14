@@ -82,61 +82,76 @@ setMethod("StageWiseDataModel", signature("DataDistribution", "Prior"),
                   }
               }
 
+              joint_pdfs <- array(
+                  sapply(theta, function(th) {
+                      vapply(x, function(xx) {
+                          vapply(n, function(nn) {
+                              log(probability_density_function(dist, xx, nn, th)) +
+                                  log(prior_pdf(th))
+                              }, 0)
+                          }, rep(0, length(n)))
+                      }),
+                  dim = c(length(n), length(x), length(theta))
+              )
 
-                pdfs <- expand.grid(
-                    n = n,
-                    x = x,
-                    theta = theta
-                ) %>%
-                mutate(
-                    joint_pdf = log(probability_density_function(dist, x, n, theta)) + log(prior_pdf(theta))
-                ) %>%
-                group_by(n) %>% # normalize
-                mutate(
-                    joint_pdf = joint_pdf - log(sum(exp(joint_pdf))) - log(dx * dtheta)
-                ) %>%
-                ungroup() %>%
-                group_by(n, x) %>%
-                mutate(
-                    marginal_pdf  = exp(log(sum(exp(joint_pdf))) + log(dtheta)),
-                    posterior_pdf = ifelse(marginal_pdf == 0, 0, exp(joint_pdf) / marginal_pdf)
-                ) %>%
-                ungroup()
+              for(i in 1:length(n)) {
+                  joint_pdfs[i, , ] <- joint_pdfs[i, , ] - log(sum(exp(joint_pdfs[i, , ]))) - log(dx * dtheta) # normalize
+              }
+              '
+              joint_pdfs <- array(dim = c(length(n), length(x), length(theta)))
 
-                marginal_grid <- npsp::grid.par(dims[1:2],
-                                                min = c(min(n), min(x)),
-                                                max = c(max(n), max(x)))
+              for(i in 1:length(n)) {
+                  for(j in 1:length(x)) {
+                      joint_pdfs[i, j, ] = sapply(theta, function(th) {
+                          log(probability_density_function(dist, x[j], n[i], th)) +
+                              log(prior_pdf(th))
+                      })
+                  }
+                  joint_pdfs[i, , ] <- joint_pdfs[i, , ] - log(sum(exp(joint_pdfs[i, , ]))) - log(dx * dtheta) # normalize
+              }
+              '
 
-                marginal_pdfs <- pdfs %>%
-                    distinct(n, x, marginal_pdf) %>%
-                    pull(marginal_pdf) %>%
-                    matrix(nrow = length(n), byrow = FALSE) # n-by-x matrix of marginals
+              marginal_pdfs  <- array(dim = c(length(n), length(x)))
+              posterior_pdfs <- array(dim = c(length(n), length(x), length(theta)))
 
-                marginal_pdfs %>%
-                    apply(., 1, function(y) cumsum(y) * dx) %>%
-                    t(.) -> marginal_cdfs
 
-                posterior_grid <- npsp::grid.par(dims,
-                                                 min = c(min(n), min(x), min(theta)),
-                                                 max = c(max(n), max(x), max(theta)))
+              for(i in 1:length(n)) {
+                  for(j in 1:length(x)) {
+                      marginal_pdfs[i, j]  = exp(log(sum(exp(joint_pdfs[i, j, ]))) + log(dtheta))
+                      for(k in 1:length(theta)) {
+                      posterior_pdfs[i, j, k] = ifelse(marginal_pdfs[i, j] == 0,
+                                                      0,
+                                                      exp(joint_pdfs[i, j, k]) / marginal_pdfs[i, j])
+                      }
+                  }
+              }
 
-                posterior_pdfs <- pdfs %>%
-                    pull(posterior_pdf) %>%
-                    array(dim = dims) # n-by-x-by-theta array of posteriors
 
-                if(is(prior, "PointMassPrior") && length(prior@theta) == 1)  posterior_pdfs <- 2 * posterior_pdfs
 
-                posterior_cdfs <- posterior_pdfs
-                for (i in 1:length(n)) {
-                    for (j in 1:length(x)) {
-                        posterior_cdfs[i, j, ] <- cumsum(posterior_pdfs[i, j, ]) * dtheta
-                    }
-                }
+              marginal_cdfs <- t(apply(marginal_pdfs, 1, function(y) cumsum(y) * dx))
 
-                new("StageWiseDataModel", marginal_pdfs = marginal_pdfs, marginal_cdfs = marginal_cdfs,
-                    marginal_grid = marginal_grid, posterior_pdfs = posterior_pdfs,
-                    posterior_cdfs = posterior_cdfs, posterior_grid = posterior_grid,
-                    n = n, x = x, theta = theta)
+              marginal_grid <- npsp::grid.par(dims[1:2],
+                                              min = c(min(n), min(x)),
+                                              max = c(max(n), max(x)))
+
+              posterior_grid <- npsp::grid.par(dims,
+                                               min = c(min(n), min(x), min(theta)),
+                                               max = c(max(n), max(x), max(theta)))
+
+
+              if(is(prior, "PointMassPrior") && length(prior@theta) == 1)  posterior_pdfs <- 2 * posterior_pdfs
+
+              posterior_cdfs <- posterior_pdfs
+              for (i in 1:length(n)) {
+                  for (j in 1:length(x)) {
+                      posterior_cdfs[i, j, ] <- cumsum(posterior_pdfs[i, j, ]) * dtheta
+                  }
+              }
+
+              new("StageWiseDataModel", marginal_pdfs = marginal_pdfs, marginal_cdfs = marginal_cdfs,
+                  marginal_grid = marginal_grid, posterior_pdfs = posterior_pdfs,
+                  posterior_cdfs = posterior_cdfs, posterior_grid = posterior_grid,
+                  n = n, x = x, theta = theta)
 
 })
 
