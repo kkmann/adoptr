@@ -82,50 +82,32 @@ setMethod("StageWiseDataModel", signature("DataDistribution", "Prior"),
                   }
               }
 
-              joint_pdfs <- array(
-                  sapply(theta, function(th) {
-                      vapply(x, function(xx) {
-                          vapply(n, function(nn) {
-                              log(probability_density_function(dist, xx, nn, th)) +
-                                  log(prior_pdf(th))
-                              }, 0)
-                          }, rep(0, length(n)))
-                      }),
-                  dim = c(length(n), length(x), length(theta))
-              )
-
-              for(i in 1:length(n)) {
-                  joint_pdfs[i, , ] <- joint_pdfs[i, , ] - log(sum(exp(joint_pdfs[i, , ]))) - log(dx * dtheta) # normalize
-              }
-              '
               joint_pdfs <- array(dim = c(length(n), length(x), length(theta)))
 
               for(i in 1:length(n)) {
                   for(j in 1:length(x)) {
-                      joint_pdfs[i, j, ] = sapply(theta, function(th) {
-                          log(probability_density_function(dist, x[j], n[i], th)) +
-                              log(prior_pdf(th))
-                      })
+                      joint_pdfs[i, j, ] =
+                          log(probability_density_function(dist, x[j], n[i], theta)) +
+                              log(prior_pdf(theta))
                   }
                   joint_pdfs[i, , ] <- joint_pdfs[i, , ] - log(sum(exp(joint_pdfs[i, , ]))) - log(dx * dtheta) # normalize
               }
-              '
+
 
               marginal_pdfs  <- array(dim = c(length(n), length(x)))
               posterior_pdfs <- array(dim = c(length(n), length(x), length(theta)))
 
 
               for(i in 1:length(n)) {
-                  for(j in 1:length(x)) {
-                      marginal_pdfs[i, j]  = exp(log(sum(exp(joint_pdfs[i, j, ]))) + log(dtheta))
-                      for(k in 1:length(theta)) {
-                      posterior_pdfs[i, j, k] = ifelse(marginal_pdfs[i, j] == 0,
-                                                      0,
-                                                      exp(joint_pdfs[i, j, k]) / marginal_pdfs[i, j])
-                      }
-                  }
+                  marginal_pdfs[i, ]  = sapply(seq(1, length(x), 1),
+                                               function(jj) exp(log(sum(exp(joint_pdfs[i, jj, ]))) + log(dtheta)))
               }
 
+              for(k in 1:length(theta)) {
+                  posterior_pdfs[, , k] = ifelse(marginal_pdfs == 0,
+                                                 0,
+                                                 exp(joint_pdfs[, , k]) / marginal_pdfs)
+              }
 
 
               marginal_cdfs <- t(apply(marginal_pdfs, 1, function(y) cumsum(y) * dx))
