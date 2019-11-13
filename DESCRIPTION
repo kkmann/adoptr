@@ -1,4 +1,4 @@
-Package: adoptr
+﻿Package: adoptr
 Type: Package
 Title: Adaptive Optimal Two-Stage Designs in R
 Version: 0.3.0.9000
@@ -12,7 +12,7 @@ Description: Optimize one or two-arm, two-stage designs for clinical trials with
     Optimization under uncertainty and conditional (given stage-one outcome) 
     constraints are supported.
     See Pilz M, Kunzmann K, Herrmann C, Rauch G, Kieser M. A variational 
-    approach to optimal two-stage designs. Statistics in Medicine. 2019;1–13. 
+    approach to optimal two-stage designs. Statistics in Medicine. 2019;38(21):4159–4171.
     <doi:10.1002/sim.8291> for details.
 License: MIT + file LICENSE
 Encoding: UTF-8
