@@ -83,16 +83,20 @@ setMethod(".evaluate", signature("ConditionalPower", "TwoStageDesign"),
           function(s, design, x1, ...) {
               sapply(x1,
                      function(x1) {
-                         if(x1 < design@c1f) 0
-                         else if(x1 > design@c1e) 1
-                         else {
+                         if(x1 < design@c1f) {
+                             return(0)
+                         } else if(x1 > design@c1e) {
+                             return(1)
+                         } else {
                              i <- which.min(abs(x1 - scaled_integration_pivots(design)))
-                             expectation(
+                             cp <- expectation(
                                  posterior(s@distribution, s@prior, x1, n1(design, round = FALSE), ...),
                                  function(theta)
                                      1 - cumulative_distribution_function(s@distribution, design@c2_pivots[i], design@n2_pivots[i], theta)
-                             )}
+                                 )
+                             return(cp)
                          }
+                    }
               )
           })
 
@@ -101,15 +105,19 @@ setMethod(".evaluate", signature("ConditionalPower", "GroupSequentialDesign"),
           function(s, design, x1, ...) {
               sapply(x1,
                      function(x1) {
-                         if(x1 < design@c1f) 0
-                         else if(x1 > design@c1e) 1
-                         else {
+                         if(x1 < design@c1f) {
+                             return(0)
+                         } else if(x1 > design@c1e) {
+                             return(1)
+                         } else {
                              i <- which.min(abs(x1 - scaled_integration_pivots(design)))
-                             expectation(
+                             cp <- expectation(
                                  posterior(s@distribution, s@prior, x1, n1(design, round = FALSE), ...),
                                  function(theta)
                                      1 - cumulative_distribution_function(s@distribution, design@c2_pivots[i], design@n2_pivots, theta)
-                             )}
-                     }
+                                 )
+                             return(cp)
+                         }
+                    }
               )
           })
