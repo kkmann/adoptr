@@ -101,6 +101,7 @@ setMethod(".evaluate", signature("ConditionalPower", "TwoStageDesign"),
           })
 
 
+# not user facing!
 setMethod(".evaluate", signature("ConditionalPower", "GroupSequentialDesign"),
           function(s, design, x1, ...) {
               sapply(x1,
