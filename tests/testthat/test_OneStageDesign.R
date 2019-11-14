@@ -115,11 +115,8 @@ test_that("OneStageDesign can be converted to TwoStageDesign", {
     design2 <- TwoStageDesign(design1, order = 7)
     pow     <- Power(Normal(two_armed = FALSE), PointMassPrior(.3, 1))
 
-    expect_true(
-        length(design2@x1_norm_pivots) == 7)
-
-    expect_true(
-        length(design2@n2_pivots) == 7)
+    expect_true(length(design2@x1_norm_pivots) == 7)
+    expect_true(length(design2@n2_pivots) == 7)
 
     expect_equal(
         evaluate(pow, design1),
@@ -130,7 +127,6 @@ test_that("OneStageDesign can be converted to TwoStageDesign", {
         evaluate(pow, design1, optimization = TRUE),
         .8,
         tolerance = 1e-5, scale = 1)
-
 
     expect_lte(
         evaluate(pow, design1, optimization = FALSE),
