@@ -185,7 +185,7 @@ test_that("base-case satisfies constraints", {
     )
 
     # compute summaries
-    out <- summary(opt_ts$design, "power" = pow, "toer" = toer)
+    out <- summary(opt_ts$design, "power" = pow, "toer" = toer, rounded = FALSE)
 
     expect_equal(
         as.numeric(out$scores["power"]),

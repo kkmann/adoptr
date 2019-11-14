@@ -127,9 +127,15 @@ test_that("OneStageDesign can be converted to TwoStageDesign", {
         tolerance = 1e-6, scale = 1)
 
     expect_equal(
-        evaluate(pow, design1),
+        evaluate(pow, design1, optimization = TRUE),
         .8,
         tolerance = 1e-5, scale = 1)
+
+
+    expect_lte(
+        evaluate(pow, design1, optimization = FALSE),
+        .8)
+
 
 }) # end 'OneStageDesign can be converted to TwoStageDesign'
 

@@ -118,7 +118,7 @@ setMethod("evaluate", signature("IntegralScore", "TwoStageDesign"),
         epsilon <- sqrt(.Machine$double.eps)
         c1f     <- design@c1f
         c1e     <- design@c1e
-        n1      <- if (optimization) design@n1 else design@n1 # todo: this is wrong ;)
+        n1      <- if (optimization) design@n1 else n1(design, round = TRUE)
         early_futility <- predictive_cdf(s@data_distribution, s@prior, c1f, n1) *
             evaluate(s@cs, design, c1f - epsilon, optimization, ...) # score is constant on early stopping region
         early_efficacy <- (1 - predictive_cdf(s@data_distribution, s@prior, c1e, n1)) *
