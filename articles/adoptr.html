@@ -111,7 +111,7 @@
     <div class="page-header toc-ignore">
       <h1>Get started with adoptr</h1>
             
-            <h4 class="date">2019-11-13</h4>
+            <h4 class="date">2019-11-14</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/kkmann/adoptr/blob/master/vignettes/adoptr.Rmd"><code>vignettes/adoptr.Rmd</code></a></small>
       <div class="hidden name"><code>adoptr.Rmd</code></div>
@@ -188,7 +188,7 @@
 <p><img src="adoptr_files/figure-html/plot-optimal-design-1.png" width="672"></p>
 <p>Numerical integration yields an expected sample size of</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw"><a href="../reference/Scores.html">evaluate</a></span>(ess, opt_res<span class="op">$</span>design)</a>
-<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="co">#&gt; [1] 39.80969</span></a></code></pre></div>
+<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="co">#&gt; [1] 39.80959</span></a></code></pre></div>
 <p>which is way below the single-stage 51. We can check this results against simulated values</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">df_sim &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/simulate.html">simulate</a></span>(</a>
 <a class="sourceLine" id="cb13-2" data-line-number="2">  opt_res<span class="op">$</span>design, </a>
@@ -200,14 +200,14 @@
 <a class="sourceLine" id="cb13-8" data-line-number="8"></a>
 <a class="sourceLine" id="cb13-9" data-line-number="9">n &lt;-<span class="st"> </span>df_sim<span class="op">$</span>n1 <span class="op">+</span><span class="st"> </span>df_sim<span class="op">$</span>n2</a>
 <a class="sourceLine" id="cb13-10" data-line-number="10"><span class="kw"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(n)</a>
-<a class="sourceLine" id="cb13-11" data-line-number="11"><span class="co">#&gt; [1] 39.8399</span></a>
+<a class="sourceLine" id="cb13-11" data-line-number="11"><span class="co">#&gt; [1] 39.84006</span></a>
 <a class="sourceLine" id="cb13-12" data-line-number="12"><span class="kw"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span>(n) <span class="op">/</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/length.html">length</a></span>(n))</a>
-<a class="sourceLine" id="cb13-13" data-line-number="13"><span class="co">#&gt; [1] 0.01372656</span></a></code></pre></div>
+<a class="sourceLine" id="cb13-13" data-line-number="13"><span class="co">#&gt; [1] 0.01372669</span></a></code></pre></div>
 <p>The values from simulation and numerical integration are almost identical and the constraints are also met almost perfectly:</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw"><a href="../reference/Scores.html">evaluate</a></span>(toer, opt_res<span class="op">$</span>design)</a>
-<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="co">#&gt; [1] 0.02500571</span></a>
+<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="co">#&gt; [1] 0.02500572</span></a>
 <a class="sourceLine" id="cb14-3" data-line-number="3"><span class="kw"><a href="../reference/Scores.html">evaluate</a></span>(power, opt_res<span class="op">$</span>design)</a>
-<a class="sourceLine" id="cb14-4" data-line-number="4"><span class="co">#&gt; [1] 0.7999964</span></a></code></pre></div>
+<a class="sourceLine" id="cb14-4" data-line-number="4"><span class="co">#&gt; [1] 0.7999983</span></a></code></pre></div>
 </div>
 <div id="variations" class="section level2">
 <h2 class="hasAnchor">
