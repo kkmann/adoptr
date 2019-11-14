@@ -101,43 +101,11 @@ setMethod(".evaluate", signature("ConditionalPower", "TwoStageDesign"),
                         function(theta) 1 - cumulative_distribution_function( # candidate for memoisation
                             s@distribution,
                             design@c2_pivots[idx[[i]]],
-                            design@n2_pivots[idx[[i]]],
+                            if (is(design, 'GroupSequentialDesign')) design@n2_pivots else design@n2_pivots[idx[[i]]],
                             theta
                         )
                     )
                )
-            }
-        )
-    })
-
-
-# not user facing!
-setMethod(".evaluate", signature("ConditionalPower", "GroupSequentialDesign"),
-    function(s, design, x1, ...) {
-        pivots <- scaled_integration_pivots(design)
-        idx    <- lapply(x1, function(x) which.min(abs(x - pivots)))
-        sapply(
-            1:length(x1),
-            function(i) {
-                if (x1[i] < design@c1f) return(0)
-                if (x1[i] > design@c1e) return(1)
-                return(
-                    expectation(
-                        posterior( # candidate for memoisation
-                            s@distribution,
-                            s@prior,
-                            pivots[idx[[i]]],
-                            design@n1,
-                            ...
-                        ),
-                        function(theta) 1 - cumulative_distribution_function( # candidate for memoisation
-                            s@distribution,
-                            design@c2_pivots[idx[[i]]],
-                            design@n2_pivots,
-                            theta
-                        )
-                    )
-                )
             }
         )
     })
