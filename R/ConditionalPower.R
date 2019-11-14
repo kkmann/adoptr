@@ -64,11 +64,61 @@ Power <- function(dist, prior, label = "Pr[x2>=c2(x1)]") {
 #' @export
 setMethod("evaluate", signature("ConditionalPower", "TwoStageDesign"),
           function(s, design, x1, optimization = FALSE, ...) {
+              if (optimization) { # use design-specific implementation
+                  return(.evaluate(s, design, x1, ...))
+              } else {
+                  sapply(x1,
+                         function(x1) expectation(
+                             posterior(s@distribution, s@prior, x1, n1(design, round = TRUE), ...),
+                             function(theta)
+                                 1 - cumulative_distribution_function(s@distribution, c2(design, x1), n2(design, x1, round = TRUE), theta)
+                             )
+              )}
+          })
+
+
+
+# not user facing!
+setMethod(".evaluate", signature("ConditionalPower", "TwoStageDesign"),
+          function(s, design, x1, ...) {
               sapply(x1,
-                  function(x1) expectation(
-                      posterior(s@distribution, s@prior, x1, n1(design, round = !optimization), ...),
-                      function(theta)
-                          1 - cumulative_distribution_function(s@distribution, c2(design, x1), n2(design, x1, round = !optimization), theta)
-                  )
+                     function(x1) {
+                         if(x1 < design@c1f) {
+                             return(0)
+                         } else if(x1 > design@c1e) {
+                             return(1)
+                         } else {
+                             i <- which.min(abs(x1 - scaled_integration_pivots(design)))
+                             cp <- expectation(
+                                 posterior(s@distribution, s@prior, x1, n1(design, round = FALSE), ...),
+                                 function(theta)
+                                     1 - cumulative_distribution_function(s@distribution, design@c2_pivots[i], design@n2_pivots[i], theta)
+                                 )
+                             return(cp)
+                         }
+                    }
+              )
+          })
+
+
+# not user facing!
+setMethod(".evaluate", signature("ConditionalPower", "GroupSequentialDesign"),
+          function(s, design, x1, ...) {
+              sapply(x1,
+                     function(x1) {
+                         if(x1 < design@c1f) {
+                             return(0)
+                         } else if(x1 > design@c1e) {
+                             return(1)
+                         } else {
+                             i <- which.min(abs(x1 - scaled_integration_pivots(design)))
+                             cp <- expectation(
+                                 posterior(s@distribution, s@prior, x1, n1(design, round = FALSE), ...),
+                                 function(theta)
+                                     1 - cumulative_distribution_function(s@distribution, design@c2_pivots[i], design@n2_pivots, theta)
+                                 )
+                             return(cp)
+                         }
+                    }
               )
           })
