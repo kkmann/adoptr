@@ -56,6 +56,9 @@ NULL
 # abstract class structure for scores
 setClass("Score", representation(label = "character"))
 setClass("ConditionalScore", contains = "Score")
+# internal method to evaluate condition scores effectively on grid
+setGeneric(".evaluate", function(s, design, ...) standardGeneric(".evaluate"))
+
 setClass("UnconditionalScore", contains = "Score")
 
 # class for expected scores
@@ -150,6 +153,3 @@ setMethod("evaluate", signature("IntegralScore", "TwoStageDesign"),
         }
         return(early_futility + continuation + early_efficacy)
     })
-
-# not user facing
-setGeneric(".evaluate", function(s, design, ...) standardGeneric(".evaluate"))
