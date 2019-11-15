@@ -120,7 +120,7 @@ setMethod("condition", signature("ContinuousPrior", "numeric"),
         if (diff(interval) < 0)
             stop("resulting interval is empty")
         # compute new normalizing constant
-        z <- stats::integrate(dist@pdf, interval[1], interval[2], abs.tol = .00001)$value
+        z <- stats::integrate(dist@pdf, interval[1], interval[2], abs.tol = .001)$value
         new_pdf <- function(theta) {
             ifelse(interval[1] <= theta & theta <= interval[2],
                 dist@pdf(theta) / z,
@@ -143,15 +143,12 @@ setMethod("condition", signature("ContinuousPrior", "numeric"),
 #' @rdname predictive_pdf
 #' @export
 setMethod("predictive_pdf", signature("DataDistribution", "ContinuousPrior", "numeric"),
-    function(dist, prior, x1, n1, k = 33, ...) {
+    function(dist, prior, x1, n1, k = 10*(prior@support[2] - prior@support[1]) + 1, ...) {
         piv  <- seq(prior@support[1], prior@support[2], length.out = k)
         mass <- sapply(piv, prior@pdf)
         mass <- mass / sum(mass) # (renormalize!)
-        res  <- numeric(length(x1))
-        for (i in 1:k) {
-            res <- res + mass[i] * probability_density_function(dist, x1, n1, piv[i])
-        }
-        return(res)
+        grid <- expand.grid(x1 = x1, piv = piv)
+        (matrix(probability_density_function(dist, grid$x1, n1, grid$piv), nrow = length(x1)) %*% mass)[, 1]
     })
 
 
@@ -164,15 +161,12 @@ setMethod("predictive_pdf", signature("DataDistribution", "ContinuousPrior", "nu
 #' @rdname predictive_cdf
 #' @export
 setMethod("predictive_cdf", signature("DataDistribution", "ContinuousPrior", "numeric"),
-    function(dist, prior, x1, n1, k = 33, ...) {
+    function(dist, prior, x1, n1, k = 10*(prior@support[2] - prior@support[1]) + 1, ...) {
         piv  <- seq(prior@support[1], prior@support[2], length.out = k)
         mass <- sapply(piv, prior@pdf)
         mass <- mass / sum(mass) # (renormalize!)
-        res  <- numeric(length(x1))
-        for (i in 1:k) {
-            res <- res + mass[i] * cumulative_distribution_function(dist, x1, n1, piv[i])
-        }
-        return(res)
+        grid <- expand.grid(x1 = x1, piv = piv)
+        (matrix(cumulative_distribution_function(dist, grid$x1, n1, grid$piv), nrow = length(x1)) %*% mass)[, 1]
     })
 
 
@@ -192,9 +186,7 @@ setMethod("posterior", signature("DataDistribution", "ContinuousPrior", "numeric
         prop_pdf <- function(theta) {
             probability_density_function(dist, x1, n1, theta) * prior@pdf(theta)
         }
-        z <- stats::integrate(
-            prop_pdf, prior@support[1], prior@support[2], abs.tol = .00001
-        )$value
+        z <- stats::integrate(prop_pdf, prior@support[1], prior@support[2], abs.tol = .001)$value
         ContinuousPrior(
             function(theta) prop_pdf(theta) / z,
             prior@support,
