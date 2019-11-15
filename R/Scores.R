@@ -131,10 +131,8 @@ setMethod("evaluate", signature("IntegralScore", "TwoStageDesign"),
             pdf            <- predictive_pdf(s@data_distribution, s@prior, pivots, n1)
             continuation   <- gauss_quad(cs$pivots*pdf, c1f, c1e, design@weights)
         } else {
-            early_stopping <- predictive_cdf(s@data_distribution, s@prior, c1f, n1) *
-                evaluate(s@cs, design, c1f - epsilon, optimization = FALSE, ...) +
-                (1 - predictive_cdf(s@data_distribution, s@prior, c1e, n1)) *
-                evaluate(s@cs, design, c1e + epsilon, optimization = FALSE, ...)
+            early_stopping <- pr_ef * evaluate(s@cs, design, c1f - epsilon, optimization = FALSE, ...) +
+                pr_ee * evaluate(s@cs, design, c1e + epsilon, optimization = FALSE, ...)
             if (is(design, 'OneStageDesign')) return(early_stopping)
             continuation <- stats::integrate(
                 function(x1) predictive_pdf(s@data_distribution, s@prior, x1, n1, ...) *
