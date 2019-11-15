@@ -118,13 +118,13 @@ setMethod("evaluate", signature("IntegralScore", "TwoStageDesign"),
         epsilon <- sqrt(.Machine$double.eps)
         c1f     <- design@c1f
         c1e     <- design@c1e
-        n1      <- if (optimization) design@n1 else n1(design, round = TRUE)
-        early_futility <- predictive_cdf(s@data_distribution, s@prior, c1f, n1) *
-            evaluate(s@cs, design, c1f - epsilon, optimization, ...) # score is constant on early stopping region
-        early_efficacy <- (1 - predictive_cdf(s@data_distribution, s@prior, c1e, n1)) *
-            evaluate(s@cs, design, c1e + epsilon, optimization, ...)
-        if (is(design, 'OneStageDesign')) return(early_futility + early_efficacy)
-        if (optimization) {
+        if (optimization == TRUE) {
+            n1 <- design@n1
+            early_futility <- predictive_cdf(s@data_distribution, s@prior, c1f, n1) *
+                evaluate(s@cs, design, c1f - epsilon, optimization = TRUE, ...)
+            early_efficacy <- (1 - predictive_cdf(s@data_distribution, s@prior, c1e, n1)) *
+                evaluate(s@cs, design, c1e + epsilon, optimization = TRUE, ...)
+            if (is(design, 'OneStageDesign')) return(early_futility + early_efficacy)
             continuation <- integrate_rule(
                 function(x1) predictive_pdf(s@data_distribution, s@prior, x1, n1, ...) *
                     evaluate(s@cs, design, x1, optimization = TRUE, ...),
@@ -134,6 +134,11 @@ setMethod("evaluate", signature("IntegralScore", "TwoStageDesign"),
                 weights = design@weights
             )
         } else {
+            n1 <- n1(design, round = TRUE)
+            early_futility <- predictive_cdf(s@data_distribution, s@prior, c1f, n1) *
+                evaluate(s@cs, design, c1f - epsilon, optimization = FALSE, ...)
+            early_efficacy <- (1 - predictive_cdf(s@data_distribution, s@prior, c1e, n1)) *
+                evaluate(s@cs, design, c1e + epsilon, optimization = FALSE, ...)
             continuation <- stats::integrate(
                 function(x1) predictive_pdf(s@data_distribution, s@prior, x1, n1, ...) *
                     evaluate(s@cs, design, x1, ...),
@@ -141,11 +146,10 @@ setMethod("evaluate", signature("IntegralScore", "TwoStageDesign"),
                 upper        = design@c1e,
                 subdivisions = subdivisions
             )$value
+            if (is(design, 'OneStageDesign')) return(early_futility + early_efficacy)
         }
         return(early_futility + continuation + early_efficacy)
     })
-
-
 
 # not user facing
 setGeneric(".evaluate", function(s, design, ...) standardGeneric(".evaluate"))
