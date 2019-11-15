@@ -119,37 +119,28 @@ setGeneric("evaluate", function(s, design, ...) standardGeneric("evaluate"))
 setMethod("evaluate", signature("IntegralScore", "TwoStageDesign"),
     function(s, design, optimization = FALSE, subdivisions = 10000L, ...) {
         epsilon <- sqrt(.Machine$double.eps)
-        c1f     <- design@c1f
-        c1e     <- design@c1e
+        c1f     <- design@c1f; c1e <- design@c1e
+        n1      <- if (optimization) design@n1 else n1(design, round = TRUE)
+        pr_ef   <- predictive_cdf(s@data_distribution, s@prior, c1f, n1)
+        pr_ee   <- 1 - predictive_cdf(s@data_distribution, s@prior, c1e, n1)
         if (optimization == TRUE) {
-            n1 <- design@n1
-            early_futility <- predictive_cdf(s@data_distribution, s@prior, c1f, n1) *
-                evaluate(s@cs, design, c1f - epsilon, optimization = TRUE, ...)
-            early_efficacy <- (1 - predictive_cdf(s@data_distribution, s@prior, c1e, n1)) *
-                evaluate(s@cs, design, c1e + epsilon, optimization = TRUE, ...)
-            if (is(design, 'OneStageDesign')) return(early_futility + early_efficacy)
-            continuation <- integrate_rule(
-                function(x1) predictive_pdf(s@data_distribution, s@prior, x1, n1, ...) *
-                    evaluate(s@cs, design, x1, optimization = TRUE, ...),
-                low     = c1f,
-                up      = c1e,
-                x       = design@x1_norm_pivots,
-                weights = design@weights
-            )
+            cs             <- .evaluate(s@cs, design)
+            early_stopping <- pr_ef*cs$early_futility + pr_ee*cs$early_efficacy
+            if (is(design, 'OneStageDesign')) return(early_stopping)
+            pivots         <- scaled_integration_pivots(design)
+            pdf            <- predictive_pdf(s@data_distribution, s@prior, pivots, n1)
+            continuation   <- gauss_quad(cs$pivots*pdf, c1f, c1e, design@weights)
         } else {
-            n1 <- n1(design, round = TRUE)
-            early_futility <- predictive_cdf(s@data_distribution, s@prior, c1f, n1) *
-                evaluate(s@cs, design, c1f - epsilon, optimization = FALSE, ...)
-            early_efficacy <- (1 - predictive_cdf(s@data_distribution, s@prior, c1e, n1)) *
+            early_stopping <- predictive_cdf(s@data_distribution, s@prior, c1f, n1) *
+                evaluate(s@cs, design, c1f - epsilon, optimization = FALSE, ...) +
+                (1 - predictive_cdf(s@data_distribution, s@prior, c1e, n1)) *
                 evaluate(s@cs, design, c1e + epsilon, optimization = FALSE, ...)
+            if (is(design, 'OneStageDesign')) return(early_stopping)
             continuation <- stats::integrate(
                 function(x1) predictive_pdf(s@data_distribution, s@prior, x1, n1, ...) *
                     evaluate(s@cs, design, x1, ...),
-                lower        = design@c1f,
-                upper        = design@c1e,
-                subdivisions = subdivisions
+                lower = c1f, upper = c1e, subdivisions = subdivisions
             )$value
-            if (is(design, 'OneStageDesign')) return(early_futility + early_efficacy)
         }
-        return(early_futility + continuation + early_efficacy)
+        return(early_stopping + continuation)
     })

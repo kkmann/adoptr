@@ -42,3 +42,6 @@ integrate_rule <- function(f, low, up, x, weights) {
   return(a * sum(weights * ff))
 
 }
+
+
+gauss_quad <- function(ff, low, up, weights) (up - low)/2 * sum(weights * ff)
