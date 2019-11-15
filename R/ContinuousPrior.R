@@ -90,10 +90,9 @@ setMethod("bounds", signature("ContinuousPrior"),
 #' @export
 setMethod("expectation", signature("ContinuousPrior", "function"),
     function(dist, f, rel.tol = .001, ...) {
-        stats::integrate(
-            function(theta) f(theta) * dist@pdf(theta),
-            dist@support[1], dist@support[2], rel.tol = rel.tol
-        )$value
+        h      <- (dist@support[2] - dist@support[1])/2
+        pivots <- h * gq10$nodes + (h + dist@support[1])
+        gauss_quad(f(pivots) * dist@pdf(pivots), dist@support[1], dist@support[2], gq10$weights)
     })
 
 
@@ -108,29 +107,15 @@ setMethod("expectation", signature("ContinuousPrior", "function"),
 #' @export
 setMethod("condition", signature("ContinuousPrior", "numeric"),
     function(dist, interval, ...) {
-        if (length(interval) != 2)
-            stop("interval must be of length 2")
-        if (any(!is.finite(interval)))
-            stop("interval must be finite")
-        if (diff(interval) < 0)
-            stop("interval[2] must be larger or equal to interval[1]")
-
+        if (length(interval) != 2) stop("interval must be of length 2")
+        if (any(!is.finite(interval))) stop("interval must be finite")
+        if (diff(interval) < 0) stop("interval[2] must be larger or equal to interval[1]")
         interval[1] <- max(interval[1], dist@support[1])
         interval[2] <- min(interval[2], dist@support[2])
-        if (diff(interval) < 0)
-            stop("resulting interval is empty")
-        # compute new normalizing constant
+        if (diff(interval) < 0) stop("resulting interval is empty")
         z <- stats::integrate(dist@pdf, interval[1], interval[2], abs.tol = .001)$value
-        new_pdf <- function(theta) {
-            ifelse(interval[1] <= theta & theta <= interval[2],
-                dist@pdf(theta) / z,
-                0
-            )
-        }
-        ContinuousPrior(
-            new_pdf,
-            interval
-        )
+        new_pdf <- function(theta) ifelse(interval[1] <= theta & theta <= interval[2], dist@pdf(theta)/z, 0)
+        ContinuousPrior(new_pdf, interval)
     })
 
 
@@ -181,12 +166,11 @@ setMethod("predictive_cdf", signature("DataDistribution", "ContinuousPrior", "nu
 #' @export
 setMethod("posterior", signature("DataDistribution", "ContinuousPrior", "numeric"),
     function(dist, prior, x1, n1, tighten_support = FALSE, check_normalization = FALSE, ...) {
-        if (length(x1) != 1)
-            stop("no vectorized version in x1")
-        prop_pdf <- function(theta) {
-            probability_density_function(dist, x1, n1, theta) * prior@pdf(theta)
-        }
-        z <- stats::integrate(prop_pdf, prior@support[1], prior@support[2], abs.tol = .001)$value
+        if (length(x1) != 1) stop("no vectorized version in x1")
+        prop_pdf <- function(theta) probability_density_function(dist, x1, n1, theta) * prior@pdf(theta)
+        h      <- (prior@support[2] - prior@support[1]) / 2
+        pivots <- h * gq10$nodes + (h + prior@support[1])
+        z <- gauss_quad(prop_pdf(pivots), prior@support[1], prior@support[2], gq10$weights)
         ContinuousPrior(
             function(theta) prop_pdf(theta) / z,
             prior@support,

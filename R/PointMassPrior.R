@@ -135,7 +135,7 @@ setMethod("predictive_cdf", signature("DataDistribution", "PointMassPrior", "num
 setMethod("posterior", signature("DataDistribution", "PointMassPrior", "numeric"),
     function(dist, prior, x1, n1, ...) {
         if (length(prior@theta) == 1) return(prior) # shortcut
-        mass <- prior@mass * sapply(prior@theta, function(theta) probability_density_function(dist, x1, n1, theta))
+        mass <- prior@mass * probability_density_function(dist, x1, n1, prior@theta)
         mass <- mass / sum(mass) # normalize
-        return(PointMassPrior(prior@theta, mass))
+        PointMassPrior(prior@theta, mass)
     })

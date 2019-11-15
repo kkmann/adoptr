@@ -6,8 +6,7 @@
 # internal
 GaussLegendreRule <- function(order) {
     order <- as.integer(order)
-    if (order < 2)
-        stop("At least two nodes are necessary for integration!")
+    if (order < 2) stop("At least two nodes are necessary for integration!")
     j   <- 1:(order - 1)
     mu0 <- 2
     b   <- j / (4 * j^2 - 1)^0.5
@@ -21,6 +20,8 @@ GaussLegendreRule <- function(order) {
     x <- rev(sd$values)
     return(data.frame(nodes = x, weights = w))
 }
+
+gq10 <- GaussLegendreRule(10)
 
 
 # integration via the Gauss-Legendre quadrature, internal
