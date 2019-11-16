@@ -44,5 +44,5 @@ integrate_rule <- function(f, low, up, x, weights) {
 
 }
 
-
+# application of Gauus-Legendre quadrature on a set of pivots
 gauss_quad <- function(ff, low, up, weights) (up - low)/2 * sum(weights * ff)
