@@ -249,7 +249,7 @@ setMethod("get_upper_boundary_design", signature("GroupSequentialDesign"),
               n1        = 5 * initial_design@n1,
               n2_pivots = 5 * initial_design@n2_pivots,
               c1_buffer = 2,
-              c2_buffer = 2,
+              c2_buffer = 1,
               ...
           ) {
               ub_design <- GroupSequentialDesign(
@@ -273,7 +273,7 @@ setMethod("get_upper_boundary_design", signature("TwoStageDesign"),
               n1        = 5 * initial_design@n1,
               n2_pivots = 5 * initial_design@n2_pivots,
               c1_buffer = 2,
-              c2_buffer = 2,
+              c2_buffer = 1,
               ...
           ) {
               ub_design <- TwoStageDesign(

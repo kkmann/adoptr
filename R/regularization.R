@@ -46,10 +46,11 @@ AverageN2 <- function(label = NA_character_) new("AverageN2", label = label, dum
 setMethod("evaluate", signature("AverageN2", "TwoStageDesign"),
           function(s, design, optimization = FALSE, subdivisions = 10000L, ...) {
               if (optimization) {
-                  # use design-specific implementation
-                  return(.evaluate(s, design, ...))
+                  res <- gauss_quad(design@n2_pivots,
+                                    design@c1f,
+                                    design@c1e,
+                                    design@weights)
               } else {
-                  # generic integration
                   res <- stats::integrate(
                       function(x) n2(design, x, round = TRUE),
                       design@c1f,
@@ -57,26 +58,12 @@ setMethod("evaluate", signature("AverageN2", "TwoStageDesign"),
                       subdivisions = subdivisions,
                       ...
                   )$value
-                  res <- res / (design@c1e - design@c1f)
-                  return(res)
               }
+              res <- res / (design@c1e - design@c1f)
+              return(res)
           }
 )
 
-
-# not user facing!
-setMethod(".evaluate", signature("AverageN2", "TwoStageDesign"),
-          function(s, design, ...) {
-              # use non-rounded version
-              integrate_rule(
-                  function(x) n2(design, x, round = FALSE, ...),
-                  design@c1f,
-                  design@c1e,
-                  design@x1_norm_pivots,
-                  design@weights
-                ) / (design@c1e - design@c1f)
-          }
-)
 
 
 
@@ -120,6 +107,7 @@ N1 <- function(label = NA_character_) new("N1", label = label, dummy = FALSE)
 #' @export
 setMethod("evaluate", signature("N1", "TwoStageDesign"),
           function(s, design, optimization = FALSE, ...)
-              n1(design, round = !optimization)
+              if(optimization) design@n1
+              else n1(design, round = !optimization)
           )
 
