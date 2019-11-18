@@ -401,10 +401,11 @@ setMethod("scaled_integration_pivots", signature("TwoStageDesign"),
 
 
 design2str <- function(design, optimized = FALSE) {
+    if (is(design, 'OneStageDesign')) return(sprintf("OneStageDesign<%sn=%i;c=%.2f>", if (optimized) "optimized;" else "", n1(design), design@c1f))
     n2range <- round(range(design@n2_pivots))
     sprintf(
-        "%s<%s;n1=%i;%.1f<=x1<=%.1f:n2=%s>",
-        class(design)[1], if (optimized) "optimized" else "", n1(design),
+        "%s<%sn1=%i;%.1f<=x1<=%.1f:n2=%s>",
+        class(design)[1], if (optimized) "optimized;" else "", n1(design),
         design@c1f, design@c1e,
         if (diff(n2range) == 0) sprintf("%i", n2range[1]) else paste(n2range, collapse = '-')
     )
