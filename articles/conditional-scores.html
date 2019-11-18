@@ -154,7 +154,7 @@
 <p>Any conditional score can be integrated with respect to a prior and data distribution to obtain an unconditional score. Note that for conditional scores which depend on a specification of these distributions (e.g., conditional power) these arguments must be consistent! The resulting score is of class <code>IntegralScore</code>, a specific subclass of <code>UnconditionalScore</code> and evaluates designs independent of a particular <span class="math inline">\(x_1\)</span>, i.e., unconditionally</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">ep &lt;-<span class="st"> </span><span class="kw"><a href="../reference/Scores.html">expected</a></span>(cp, <span class="kw"><a href="../reference/NormalDataDistribution-class.html">Normal</a></span>(), uniform_prior)</a>
 <a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw"><a href="../reference/Scores.html">evaluate</a></span>(ep, design)</a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#&gt; [1] 0.9921388</span></a></code></pre></div>
+<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#&gt; [1] 0.989392</span></a></code></pre></div>
 <p>Power at a point alternative can be obtained by forming the expected value with respect to a point prior. For convenience, we include a constructor for power directly, e.g., both variants are equivalent and give power at <span class="math inline">\(0.4\)</span>.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">power1 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/Scores.html">expected</a></span>(</a>
 <a class="sourceLine" id="cb6-2" data-line-number="2">  <span class="kw"><a href="../reference/ConditionalPower-class.html">ConditionalPower</a></span>(<span class="kw"><a href="../reference/NormalDataDistribution-class.html">Normal</a></span>(), <span class="kw"><a href="../reference/PointMassPrior-class.html">PointMassPrior</a></span>(.<span class="dv">4</span>, <span class="fl">1.0</span>)),</a>
@@ -171,9 +171,9 @@
 <a class="sourceLine" id="cb7-2" data-line-number="2">ess2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ConditionalSampleSize-class.html">ExpectedSampleSize</a></span>(<span class="kw"><a href="../reference/NormalDataDistribution-class.html">Normal</a></span>(), uniform_prior)</a>
 <a class="sourceLine" id="cb7-3" data-line-number="3"></a>
 <a class="sourceLine" id="cb7-4" data-line-number="4"><span class="kw"><a href="../reference/Scores.html">evaluate</a></span>(ess1, design)</a>
-<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt; [1] 132.8275</span></a>
+<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt; [1] 134.9135</span></a>
 <a class="sourceLine" id="cb7-6" data-line-number="6"><span class="kw"><a href="../reference/Scores.html">evaluate</a></span>(ess2, design)</a>
-<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co">#&gt; [1] 132.8275</span></a></code></pre></div>
+<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co">#&gt; [1] 134.9135</span></a></code></pre></div>
 </div>
 <div id="conditional-constraints" class="section level2">
 <h2 class="hasAnchor">
