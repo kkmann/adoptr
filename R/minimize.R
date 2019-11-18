@@ -109,7 +109,7 @@ minimize <- function(
 
 #' @rawNamespace S3method(print, adoptrOptimizationResult)
 print.adoptrOptimizationResult <- function(x, ...) {
-    cat(sprintf("optimized %s", paste0(utils::capture.output(print(x$design)), collapse = '\n')), "\n")
+    cat(design2str(x$design, TRUE))
 }
 
 

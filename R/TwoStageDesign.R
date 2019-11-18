@@ -400,22 +400,13 @@ setMethod("scaled_integration_pivots", signature("TwoStageDesign"),
           })
 
 
-
-
-
-setMethod("print", signature('TwoStageDesign'), function(x, ...) {
-    xx <- c(x@c1f - sqrt(.Machine$double.eps), scaled_integration_pivots(x), x@c1e + sqrt(.Machine$double.eps))
-    paste(
-        glue::glue("{class(x)[1]}<\n\r"), "      x1    c2   n\n\r",
-        paste(glue::glue(
-            "    {sprintf('%5.2f', xx)} {sprintf('%5.2f', c2(x, xx))} {sprintf('%4i', n(x, xx))}",
-            ),
-            collapse = "\n\r"
-        ) ,
-        ">\n\r",
-        sep = ""
-    )
-})
+design2str <- function(design, optimized = FALSE) sprintf(
+    "%s<%s;n1=%i;%.1f<=x1<=%.1f:n2=%i-%i>",
+    class(design)[1], if (optimized) "optimized" else "", n1(design),
+    design@c1f, design@c1e,
+    round(min(design@n2_pivots)), round(max(design@n2_pivots))
+)
+setMethod("print", signature('TwoStageDesign'), function(x, ...) design2str(x))
 
 setMethod("show", signature(object = "TwoStageDesign"), function(object) {
     cat(print(object), "\n")
