@@ -110,12 +110,8 @@ setMethod("condition", signature("PointMassPrior", "numeric"),
 #' @export
 setMethod("predictive_pdf", signature("DataDistribution", "PointMassPrior", "numeric"),
     function(dist, prior, x1, n1, ...) {
-        k   <- length(prior@theta)
-        res <- numeric(length(x1))
-        for (i in 1:k) {
-            res <- res + prior@mass[i] * probability_density_function(dist, x1, n1, prior@theta[i]) # must be implemented
-        }
-        return(res)
+        grid <- expand.grid(x1 = x1, piv = prior@theta)
+        (matrix(probability_density_function(dist, grid$x1, n1, grid$piv), nrow = length(x1)) %*% prior@mass)[, 1]
     })
 
 
@@ -126,12 +122,8 @@ setMethod("predictive_pdf", signature("DataDistribution", "PointMassPrior", "num
 #' @export
 setMethod("predictive_cdf", signature("DataDistribution", "PointMassPrior", "numeric"),
     function(dist, prior, x1, n1, ...) {
-        k   <- length(prior@theta)
-        res <- numeric(length(x1))
-        for (i in 1:k) {
-            res <- res + prior@mass[i] * cumulative_distribution_function(dist, x1, n1, prior@theta[i])
-        }
-        return(res)
+        grid <- expand.grid(x1 = x1, piv = prior@theta)
+        (matrix(cumulative_distribution_function(dist, grid$x1, n1, grid$piv), nrow = length(x1)) %*% prior@mass)[, 1]
     })
 
 
@@ -142,7 +134,8 @@ setMethod("predictive_cdf", signature("DataDistribution", "PointMassPrior", "num
 #' @export
 setMethod("posterior", signature("DataDistribution", "PointMassPrior", "numeric"),
     function(dist, prior, x1, n1, ...) {
-        mass <- prior@mass * sapply(prior@theta, function(theta) probability_density_function(dist, x1, n1, theta))
+        if (length(prior@theta) == 1) return(prior) # shortcut
+        mass <- prior@mass * probability_density_function(dist, x1, n1, prior@theta)
         mass <- mass / sum(mass) # normalize
-        return(PointMassPrior(prior@theta, mass))
+        PointMassPrior(prior@theta, mass)
     })

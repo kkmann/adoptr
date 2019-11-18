@@ -56,6 +56,9 @@ NULL
 # abstract class structure for scores
 setClass("Score", representation(label = "character"))
 setClass("ConditionalScore", contains = "Score")
+# internal method to evaluate condition scores effectively on grid
+setGeneric(".evaluate", function(s, design, ...) standardGeneric(".evaluate"))
+
 setClass("UnconditionalScore", contains = "Score")
 
 # class for expected scores
@@ -115,62 +118,27 @@ setGeneric("evaluate", function(s, design, ...) standardGeneric("evaluate"))
 #' @export
 setMethod("evaluate", signature("IntegralScore", "TwoStageDesign"),
     function(s, design, optimization = FALSE, subdivisions = 10000L, ...) {
-        # use design-specific implementation
-        if (optimization) return(.evaluate(s, design, ...))
-        # use generic approach
         epsilon <- sqrt(.Machine$double.eps)
-        n1      <- design@n1 # n1(design)
-        early_futility <- predictive_cdf(s@data_distribution, s@prior, design@c1f, n1) *
-            evaluate(s@cs, design, design@c1f - epsilon) # score is constant on early stopping region
-        early_efficacy <- (1 - predictive_cdf(s@data_distribution, s@prior, design@c1e, n1)) *
-            evaluate(s@cs, design, design@c1e + epsilon)
-        continuation <- stats::integrate(
-            function(x1) predictive_pdf(s@data_distribution, s@prior, x1, n1, ...) * evaluate(s@cs, design, x1, ...),
-            lower        = design@c1f,
-            upper        = design@c1e,
-            subdivisions = subdivisions
-        )$value
-        return(early_futility + continuation + early_efficacy)
-    })
-
-
-
-
-
-# not user facing
-setGeneric(".evaluate", function(s, design, ...) standardGeneric(".evaluate"))
-
-
-
-# not user facing!
-setMethod(".evaluate", signature("IntegralScore", "TwoStageDesign"),
-    function(s, design, ...) {
-        epsilon <- sqrt(.Machine$double.eps)
-        n1 <- design@n1; c1f <- design@c1f; c1e <- design@c1e
-        early_futility <- predictive_cdf(s@data_distribution, s@prior, c1f, n1) *
-            evaluate(s@cs, design, c1f - epsilon, optimization = TRUE, ...) # score is constant on early stopping region
-        early_efficacy <- (1 - predictive_cdf(s@data_distribution, s@prior, c1e, n1)) *
-            evaluate(s@cs, design, c1e + epsilon, optimization = TRUE, ...)
-        continuation <- integrate_rule(
-            function(x1) predictive_pdf(s@data_distribution, s@prior, x1, n1, ...) * evaluate(s@cs, design, x1, optimization = TRUE, ...),
-            low     = c1f,
-            up      = c1e,
-            x       = design@x1_norm_pivots,
-            weights = design@weights
-        )
-        return(early_futility + continuation + early_efficacy)
-    })
-
-
-
-# not user facing!
-setMethod(".evaluate", signature("IntegralScore", "OneStageDesign"),
-    function(s, design, ...) {
-        epsilon <- sqrt(.Machine$double.eps)
-        n1 <- design@n1; c1f <- design@c1f; c1e <- design@c1e
-        futility <- predictive_cdf(s@data_distribution, s@prior, c1f, n1) *
-            evaluate(s@cs, design, c1f - epsilon, optimization = TRUE, ...) # score is constant on early stopping region
-        efficacy <- (1 - predictive_cdf(s@data_distribution, s@prior, c1e, n1)) *
-            evaluate(s@cs, design, c1e + epsilon, optimization = TRUE, ...)
-        return(futility + efficacy)
+        c1f     <- design@c1f; c1e <- design@c1e
+        n1      <- if (optimization) design@n1 else n1(design, round = TRUE)
+        pr_ef   <- predictive_cdf(s@data_distribution, s@prior, c1f, n1)
+        pr_ee   <- 1 - predictive_cdf(s@data_distribution, s@prior, c1e, n1)
+        if (optimization == TRUE) {
+            cs             <- .evaluate(s@cs, design)
+            early_stopping <- pr_ef*cs$early_futility + pr_ee*cs$early_efficacy
+            if (is(design, 'OneStageDesign')) return(early_stopping)
+            pivots         <- scaled_integration_pivots(design)
+            pdf            <- predictive_pdf(s@data_distribution, s@prior, pivots, n1)
+            continuation   <- gauss_quad(cs$pivots*pdf, c1f, c1e, design@weights)
+        } else {
+            early_stopping <- pr_ef * evaluate(s@cs, design, c1f - epsilon, optimization = FALSE, ...) +
+                pr_ee * evaluate(s@cs, design, c1e + epsilon, optimization = FALSE, ...)
+            if (is(design, 'OneStageDesign')) return(early_stopping)
+            continuation <- stats::integrate(
+                function(x1) predictive_pdf(s@data_distribution, s@prior, x1, n1, ...) *
+                    evaluate(s@cs, design, x1, ...),
+                lower = c1f, upper = c1e, subdivisions = subdivisions
+            )$value
+        }
+        return(early_stopping + continuation)
     })

@@ -521,7 +521,7 @@ setMethod("summary", signature("TwoStageDesign"),
                   stop("optional arguments must be UnconditionalScores")
               res <- list(
                   design = object,
-                  scores = sapply(scores, function(s) evaluate(s, object, round = rounded, ...))
+                  scores = sapply(scores, function(s) evaluate(s, object, optimization = !rounded, ...))
               )
               names(res$scores) <- names(scores)
               class(res) <- c("TwoStageDesignSummary", "list")

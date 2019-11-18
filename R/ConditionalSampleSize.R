@@ -52,6 +52,14 @@ ExpectedSampleSize <- function(dist, prior, label = "E[n(x1)]") {
 #' @rdname ConditionalSampleSize-class
 #' @export
 setMethod("evaluate", signature("ConditionalSampleSize", "TwoStageDesign"),
-          function(s, design, x1, optimization = FALSE, ...) {
-              n(design, x1, round = !optimization)
-          })
+    function(s, design, x1, optimization = FALSE, ...) {
+        n(design, x1, round = !optimization)
+    })
+
+setMethod(".evaluate", signature("ConditionalSampleSize", "TwoStageDesign"),
+    function(s, design, x1, ...) list(
+            early_futility = design@n1,
+            pivots         = design@n2_pivots + design@n1,
+            early_efficacy = design@n1
+        )
+    )

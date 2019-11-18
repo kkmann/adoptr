@@ -84,9 +84,9 @@ minimize <- function(
     }
 
     res <- nloptr::nloptr(
-        x0 = tunable_parameters(initial_design),
-        lb = tunable_parameters(lower_boundary_design),
-        ub = tunable_parameters(upper_boundary_design),
+        x0          = tunable_parameters(initial_design),
+        lb          = tunable_parameters(lower_boundary_design),
+        ub          = tunable_parameters(upper_boundary_design),
         eval_f      = f_obj,
         eval_g_ineq = g_cnstr,
         opts        = opts,
