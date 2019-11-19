@@ -21,7 +21,6 @@ GaussLegendreRule <- function(order) {
     return(data.frame(nodes = x, weights = w))
 }
 
-gq10 <- GaussLegendreRule(10)
 
 
 # integration via the Gauss-Legendre quadrature, internal
