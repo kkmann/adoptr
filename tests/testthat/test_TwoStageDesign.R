@@ -92,7 +92,7 @@ test_that("show method", {
 
     expect_equal(
         paste0(capture.output(show(design)), collapse = "\n\r"),
-        "TwoStageDesign<\n\r\r      x1    c2   n\n\r\r     0.70   Inf   50\n\r\r     0.78  1.96  100\n\r\r     1.12  1.96  100\n\r\r     1.60  1.96  100\n\r\r     2.08  1.96  100\n\r\r     2.42  1.96  100\n\r\r     2.50  -Inf   50>\n\r\r "
+        "TwoStageDesign<n1=50;0.7<=x1<=2.5:n2=50> "
     )
 
 })

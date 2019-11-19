@@ -141,7 +141,7 @@ test_that("show method returns design name", {
 
     expect_equal(
         capture.output(show(OneStageDesign(90, 2.0))),
-        "OneStageDesign<90;2.00> "
+        "OneStageDesign<n=90;c=2.00> "
     )
 
 })
