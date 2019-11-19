@@ -102,8 +102,8 @@ setMethod("bounds", signature("ContinuousPrior"),
 setMethod("expectation", signature("ContinuousPrior", "function"),
     function(dist, f, rel.tol = .001, ...) {
         h      <- (dist@support[2] - dist@support[1])/2
-        pivots <- h * prior@pivots + (h + dist@support[1])
-        gauss_quad(f(pivots) * dist@pdf(pivots), dist@support[1], dist@support[2], prior@weights)
+        pivots <- h * dist@pivots + (h + dist@support[1])
+        gauss_quad(f(pivots) * dist@pdf(pivots), dist@support[1], dist@support[2], dist@weights)
     })
 
 
