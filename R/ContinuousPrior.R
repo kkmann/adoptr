@@ -70,10 +70,13 @@ ContinuousPrior <- function(pdf,
         pdf     <- function(theta) pdf_old(theta) / norm
     }
 
-    rule <- GaussLegendreRule(order)
+    rule   <- GaussLegendreRule(order)
+    h      <- (support[2] - support[1]) / 2
+    pivots <- h * rule$nodes + (h + support[1])
+
 
     new("ContinuousPrior", pdf = pdf, support = support,
-        pivots = rule$nodes, weights = rule$weights, label = label)
+        pivots = pivots, weights = rule$weights, label = label)
 }
 
 
@@ -94,16 +97,11 @@ setMethod("bounds", signature("ContinuousPrior"),
 #' )
 #' # > 0.3
 #'
-#' @param rel.tol \code{numeric}, relative tolerance used in adaptive gaussian
-#'     quadrature to evaluate the integral
-#'
 #' @rdname expectation
 #' @export
 setMethod("expectation", signature("ContinuousPrior", "function"),
-    function(dist, f, rel.tol = .001, ...) {
-        h      <- (dist@support[2] - dist@support[1])/2
-        pivots <- h * dist@pivots + (h + dist@support[1])
-        gauss_quad(f(pivots) * dist@pdf(pivots), dist@support[1], dist@support[2], dist@weights)
+    function(dist, f, ...) {
+        gauss_quad(f(dist@pivots) * dist@pdf(dist@pivots), dist@support[1], dist@support[2], dist@weights)
     })
 
 
@@ -126,8 +124,13 @@ setMethod("condition", signature("ContinuousPrior", "numeric"),
         if (diff(interval) < 0) stop("resulting interval is empty")
         z       <- stats::integrate(dist@pdf, interval[1], interval[2], abs.tol = .001)$value
         new_pdf <- function(theta) ifelse(interval[1] <= theta & theta <= interval[2], dist@pdf(theta)/z, 0)
+        h_old   <- (dist@support[2] - dist@support[1]) / 2
+        nodes   <- (dist@pivots - (h_old + dist@support[1])) / h_old
+        h_new   <- (interval[2] - interval[1]) / 2
+        pivots  <- h_new * nodes + (h_new + interval[1])
+
         new("ContinuousPrior", pdf = new_pdf, support = interval,
-            pivots = dist@pivots, weights = dist@weights, label = dist@label)
+            pivots = pivots, weights = dist@weights, label = dist@label)
     })
 
 
@@ -177,15 +180,13 @@ setMethod("posterior", signature("DataDistribution", "ContinuousPrior", "numeric
     function(dist, prior, x1, n1, ...) {
         if (length(x1) != 1) stop("no vectorized version in x1")
         prop_pdf <- function(theta) probability_density_function(dist, x1, n1, theta) * prior@pdf(theta)
-        h        <- (prior@support[2] - prior@support[1]) / 2
-        pivots   <- h * prior@pivots + (h + prior@support[1])
-        z        <- gauss_quad(prop_pdf(pivots), prior@support[1], prior@support[2], prior@weights)
+        z        <- gauss_quad(prop_pdf(prior@pivots), prior@support[1], prior@support[2], prior@weights)
         new("ContinuousPrior",
-            pdf = function(theta) prop_pdf(theta) / z,
+            pdf     = function(theta) prop_pdf(theta) / z,
             support = prior@support,
-            pivots = prior@pivots,
+            pivots  = prior@pivots,
             weights = prior@weights,
-            label = prior@label
+            label   = prior@label
         )
     })
 
