@@ -21,7 +21,6 @@ GaussLegendreRule <- function(order) {
     return(data.frame(nodes = x, weights = w))
 }
 
-gq10 <- GaussLegendreRule(10)
 
 
 # integration via the Gauss-Legendre quadrature, internal
@@ -37,12 +36,12 @@ integrate_rule <- function(f, low, up, x, weights) {
     stop("weights must be positive")
 
   a  <- (up - low) / 2
-  b  <- (up + low) / 2
+  b  <- a + low
   ff <- f(a * x + b)
 
   return(a * sum(weights * ff))
 
 }
 
-# application of Gauus-Legendre quadrature on a set of pivots
+# application of Gauss-Legendre quadrature on a set of pivots, internal
 gauss_quad <- function(ff, low, up, weights) (up - low)/2 * sum(weights * ff)

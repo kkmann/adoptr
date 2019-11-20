@@ -12,8 +12,7 @@ expectation(dist, f, ...)
 
 \S4method{expectation}{PointMassPrior,`function`}(dist, f, ...)
 
-\S4method{expectation}{ContinuousPrior,`function`}(dist, f,
-  rel.tol = 0.001, ...)
+\S4method{expectation}{ContinuousPrior,`function`}(dist, f, ...)
 }
 \arguments{
 \item{dist}{a univariate \code{\link[=DataDistribution-class]{distribution}} object}
@@ -21,9 +20,6 @@ expectation(dist, f, ...)
 \item{f}{a univariate function, must be vectorized}
 
 \item{...}{further optional arguments}
-
-\item{rel.tol}{\code{numeric}, relative tolerance used in adaptive gaussian
-quadrature to evaluate the integral}
 }
 \value{
 \code{numeric}, expected value of \code{f} with respect to \code{dist}

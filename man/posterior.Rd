@@ -14,7 +14,7 @@ posterior(dist, prior, x1, n1, ...)
   x1, n1, ...)
 
 \S4method{posterior}{DataDistribution,ContinuousPrior,numeric}(dist, prior,
-  x1, n1, tighten_support = FALSE, check_normalization = FALSE, ...)
+  x1, n1, ...)
 }
 \arguments{
 \item{dist}{a univariate \code{\link[=DataDistribution-class]{distribution}} object}
@@ -26,11 +26,6 @@ posterior(dist, prior, x1, n1, ...)
 \item{n1}{stage-one sample size}
 
 \item{...}{further optional arguments}
-
-\item{tighten_support}{logical indicating if the support should be tightened}
-
-\item{check_normalization}{logical indicating if it should be checked
-that \code{pdf} defines a density.}
 }
 \value{
 Object of class \code{\link{Prior}}

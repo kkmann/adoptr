@@ -6,7 +6,7 @@
 \alias{ContinuousPrior}
 \title{Continuous univariate prior distributions}
 \usage{
-ContinuousPrior(pdf, support, label = NA_character_,
+ContinuousPrior(pdf, support, order = 10, label = NA_character_,
   tighten_support = FALSE, check_normalization = TRUE)
 }
 \arguments{
@@ -14,6 +14,12 @@ ContinuousPrior(pdf, support, label = NA_character_,
 
 \item{support}{numeric vector of length two with the bounds of
 the compact interval on which the pdf is positive.}
+
+\item{order}{\code{integer}, integration order of the employed Gaussian quadrature
+integration rule to evaluate scores. Automatically set to \code{length(n2_pivots)} if \cr
+\code{length(n2_pivots) == length(c2_pivots) > 1}, otherwise c2 and n2
+are taken to be constant in stage-two and replicated to match the number of
+pivots specified by \code{order}}
 
 \item{label}{object label (string)}
 
@@ -33,6 +39,12 @@ interval on the real line.
 \item{\code{pdf}}{cf. parameter 'pdf'}
 
 \item{\code{support}}{cf. parameter 'support'}
+
+\item{\code{pivots}}{normalized pivots for integration rule (in [-1, 1])
+the actual pivots are scaled to the support of the prior}
+
+\item{\code{weights}}{weights of of integration rule at \code{pivots} for
+approximating integrals over \code{delta}}
 }}
 
 \examples{
