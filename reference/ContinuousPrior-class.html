@@ -165,7 +165,7 @@ a generic representation of continuous prior distributions over a compact
 interval on the real line.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ContinuousPrior</span>(<span class='no'>pdf</span>, <span class='no'>support</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='fl'>NA_character_</span>,
+    <pre class="usage"><span class='fu'>ContinuousPrior</span>(<span class='no'>pdf</span>, <span class='no'>support</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='fl'>NA_character_</span>,
   <span class='kw'>tighten_support</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>check_normalization</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -179,6 +179,14 @@ interval on the real line.</p>
       <th>support</th>
       <td><p>numeric vector of length two with the bounds of
 the compact interval on which the pdf is positive.</p></td>
+    </tr>
+    <tr>
+      <th>order</th>
+      <td><p><code>integer</code>, integration order of the employed Gaussian quadrature
+integration rule to evaluate scores. Automatically set to <code><a href='https://rdrr.io/r/base/length.html'>length(n2_pivots)</a></code> if <br />
+<code>length(n2_pivots) == length(c2_pivots) &gt; 1</code>, otherwise c2 and n2
+are taken to be constant in stage-two and replicated to match the number of
+pivots specified by <code>order</code></p></td>
     </tr>
     <tr>
       <th>label</th>
@@ -203,6 +211,12 @@ that <code>pdf</code> defines a density.</p></td>
 <dt><code>pdf</code></dt><dd><p>cf. parameter 'pdf'</p></dd>
 
 <dt><code>support</code></dt><dd><p>cf. parameter 'support'</p></dd>
+
+<dt><code>pivots</code></dt><dd><p>normalized pivots for integration rule (in [-1, 1])
+the actual pivots are scaled to the support of the prior</p></dd>
+
+<dt><code>weights</code></dt><dd><p>weights of of integration rule at <code>pivots</code> for
+approximating integrals over <code>delta</code></p></dd>
 
 </dl>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
