@@ -1,3 +1,9 @@
+# adoptr 0.3.0
+
+* bugfix for pretty printing of optimization results
+* streamlined code for internal evaluation of integral scores during optimization; 
+substantial speedup!
+
 # adoptr 0.2.3
 
 * reworked the class printing system to be more informative
