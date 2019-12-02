@@ -116,5 +116,4 @@ setMethod("evaluate", signature("CompositeScore", "TwoStageDesign"),
           function(s, design, ...) {
              values <- lapply(s@scores, function(s) evaluate(s, design, ...))
              return(eval(s@expr, c(values, s@non_scores)))
-
           })
