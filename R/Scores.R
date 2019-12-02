@@ -124,12 +124,18 @@ setMethod("evaluate", signature("IntegralScore", "TwoStageDesign"),
         pr_ef   <- predictive_cdf(s@data_distribution, s@prior, c1f, n1)
         pr_ee   <- 1 - predictive_cdf(s@data_distribution, s@prior, c1e, n1)
         if (optimization == TRUE) {
-            cs             <- .evaluate(s@cs, design)
-            early_stopping <- pr_ef*cs$early_futility + pr_ee*cs$early_efficacy
+            cs     <- tryCatch(.evaluate(s@cs, design), error = function(e) e)
+            pivots <- scaled_integration_pivots(design)
+            if(is(cs, "error")) {
+                cs <- list()
+                cs$early_futility <- evaluate(s@cs, design, c1f - epsilon, optimization = TRUE, ...)
+                cs$early_efficacy <- evaluate(s@cs, design, c1e + epsilon, optimization = TRUE, ...)
+                cs$pivots         <- evaluate(s@cs, design, pivots, optimization = TRUE, ...)
+            }
+            early_stopping <- pr_ef * cs$early_futility + pr_ee * cs$early_efficacy
             if (is(design, 'OneStageDesign')) return(early_stopping)
-            pivots         <- scaled_integration_pivots(design)
             pdf            <- predictive_pdf(s@data_distribution, s@prior, pivots, n1)
-            continuation   <- gauss_quad(cs$pivots*pdf, c1f, c1e, design@weights)
+            continuation   <- gauss_quad(cs$pivots * pdf, c1f, c1e, design@weights)
         } else {
             early_stopping <- pr_ef * evaluate(s@cs, design, c1f - epsilon, optimization = FALSE, ...) +
                 pr_ee * evaluate(s@cs, design, c1e + epsilon, optimization = FALSE, ...)
