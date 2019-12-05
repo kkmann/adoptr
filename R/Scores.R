@@ -56,8 +56,6 @@ NULL
 # abstract class structure for scores
 setClass("Score", representation(label = "character"))
 setClass("ConditionalScore", contains = "Score")
-# internal method to evaluate condition scores effectively on grid
-setGeneric(".evaluate", function(s, design, ...) standardGeneric(".evaluate"))
 
 setClass("UnconditionalScore", contains = "Score")
 
@@ -105,6 +103,20 @@ setMethod("expected", signature("ConditionalScore"),
 
 
 
+# internal method to evaluate condition scores effectively on grid
+setGeneric(".evaluate", function(s, design, ...) standardGeneric(".evaluate"))
+
+setMethod(".evaluate", signature("ConditionalScore", "TwoStageDesign"),
+          function(s, design, ...) {
+              epsilon <- sqrt(.Machine$double.eps)
+              pivots  <- scaled_integration_pivots(design)
+              return(list(
+                  early_futility = evaluate(s, design, design@c1f - epsilon, optimization = TRUE, ...),
+                  early_efficacy = evaluate(s, design, design@c1e + epsilon, optimization = TRUE, ...),
+                  pivots         = evaluate(s, design, pivots, optimization = TRUE, ...)
+              ))
+            })
+
 
 
 
@@ -124,16 +136,10 @@ setMethod("evaluate", signature("IntegralScore", "TwoStageDesign"),
         pr_ef   <- predictive_cdf(s@data_distribution, s@prior, c1f, n1)
         pr_ee   <- 1 - predictive_cdf(s@data_distribution, s@prior, c1e, n1)
         if (optimization == TRUE) {
-            cs     <- tryCatch(.evaluate(s@cs, design), error = function(e) e)
-            pivots <- scaled_integration_pivots(design)
-            if(is(cs, "error")) {
-                cs <- list()
-                cs$early_futility <- evaluate(s@cs, design, c1f - epsilon, optimization = TRUE, ...)
-                cs$early_efficacy <- evaluate(s@cs, design, c1e + epsilon, optimization = TRUE, ...)
-                cs$pivots         <- evaluate(s@cs, design, pivots, optimization = TRUE, ...)
-            }
+            cs             <- .evaluate(s@cs, design)
             early_stopping <- pr_ef * cs$early_futility + pr_ee * cs$early_efficacy
             if (is(design, 'OneStageDesign')) return(early_stopping)
+            pivots         <- scaled_integration_pivots(design)
             pdf            <- predictive_pdf(s@data_distribution, s@prior, pivots, n1)
             continuation   <- gauss_quad(cs$pivots * pdf, c1f, c1e, design@weights)
         } else {
