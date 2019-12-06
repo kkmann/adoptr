@@ -6,8 +6,7 @@
 # internal
 GaussLegendreRule <- function(order) {
     order <- as.integer(order)
-    if (order < 2)
-        stop("At least two nodes are necessary for integration!")
+    if (order < 2) stop("At least two nodes are necessary for integration!")
     j   <- 1:(order - 1)
     mu0 <- 2
     b   <- j / (4 * j^2 - 1)^0.5
@@ -23,6 +22,7 @@ GaussLegendreRule <- function(order) {
 }
 
 
+
 # integration via the Gauss-Legendre quadrature, internal
 integrate_rule <- function(f, low, up, x, weights) {
 
@@ -36,9 +36,12 @@ integrate_rule <- function(f, low, up, x, weights) {
     stop("weights must be positive")
 
   a  <- (up - low) / 2
-  b  <- (up + low) / 2
-  ff <- sapply(x, function(x) f(a * x + b))
+  b  <- a + low
+  ff <- f(a * x + b)
 
   return(a * sum(weights * ff))
 
 }
+
+# application of Gauss-Legendre quadrature on a set of pivots, internal
+gauss_quad <- function(ff, low, up, weights) (up - low)/2 * sum(weights * ff)

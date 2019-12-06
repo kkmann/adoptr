@@ -14,7 +14,7 @@ predictive_pdf(dist, prior, x1, n1, ...)
   prior, x1, n1, ...)
 
 \S4method{predictive_pdf}{DataDistribution,ContinuousPrior,numeric}(dist,
-  prior, x1, n1, k = 33, ...)
+  prior, x1, n1, k = 10 * (prior@support[2] - prior@support[1]) + 1, ...)
 }
 \arguments{
 \item{dist}{a univariate \code{\link[=DataDistribution-class]{distribution}} object}

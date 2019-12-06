@@ -84,9 +84,9 @@ minimize <- function(
     }
 
     res <- nloptr::nloptr(
-        x0 = tunable_parameters(initial_design),
-        lb = tunable_parameters(lower_boundary_design),
-        ub = tunable_parameters(upper_boundary_design),
+        x0          = tunable_parameters(initial_design),
+        lb          = tunable_parameters(lower_boundary_design),
+        ub          = tunable_parameters(upper_boundary_design),
         eval_f      = f_obj,
         eval_g_ineq = g_cnstr,
         opts        = opts,
@@ -109,7 +109,7 @@ minimize <- function(
 
 #' @rawNamespace S3method(print, adoptrOptimizationResult)
 print.adoptrOptimizationResult <- function(x, ...) {
-    cat(sprintf("optimized %s", utils::capture.output(print(x$design))), "\n")
+    cat(design2str(x$design, TRUE))
 }
 
 

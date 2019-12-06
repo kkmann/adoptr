@@ -119,14 +119,3 @@ setMethod("plot", signature("OneStageDesign"),
           function(x, y, ...)
               stop("plot method is only defined for two-stage designs!")
           )
-
-
-
-
-
-setMethod("print", signature('OneStageDesign'), function(x, ...) {
-    glue::glue(
-        "{class(x)[1]}<{round(x@n1)};{sprintf('%3.2f',x@c1f)}>",
-    )
-})
-

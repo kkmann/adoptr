@@ -185,7 +185,7 @@ test_that("base-case satisfies constraints", {
     )
 
     # compute summaries
-    out <- summary(opt_ts$design, "power" = pow, "toer" = toer)
+    out <- summary(opt_ts$design, "power" = pow, "toer" = toer, rounded = FALSE)
 
     expect_equal(
         as.numeric(out$scores["power"]),
@@ -295,7 +295,7 @@ test_that("conditional constraints work", {
 
     expect_equal(
         capture.output(print(opt_os)),
-        "optimized OneStageDesign<39;1.64> "
+        "OneStageDesign<optimized;n=39;c=1.64>"
     )
 
 

@@ -88,7 +88,7 @@ test_that("show method", {
 
     expect_equal(
         paste0(capture.output(show(GroupSequentialDesign(25, 0.0, 2.0, 40.0, 1.96, 5L))), collapse = "\n\r"),
-        "GroupSequentialDesign<\n\r\r      x1    c2   n\n\r\r    -0.00   Inf   25\n\r\r     0.09  1.96   65\n\r\r     0.46  1.96   65\n\r\r     1.00  1.96   65\n\r\r     1.54  1.96   65\n\r\r     1.91  1.96   65\n\r\r     2.00  -Inf   25>\n\r\r "
+        "GroupSequentialDesign<n1=25;0.0<=x1<=2.0:n2=40> "
     )
 
 })

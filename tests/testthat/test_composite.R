@@ -7,7 +7,7 @@ cp     <- ConditionalPower(Normal(), PointMassPrior(.3, 1))
 ce     <- ConditionalPower(Normal(), PointMassPrior(.0, 1))
 ess    <- expected(css, Normal(), PointMassPrior(.3, 1))
 pow    <- expected(cp, Normal(), PointMassPrior(.3, 1))
-order  <- 5L
+order  <- 9L
 design <- TwoStageDesign(30, -.5, 2.5, rep(50.0, order), rep(2.0, order))
 z1     <- seq(-1, 3, .1)
 
@@ -69,12 +69,24 @@ test_that("Composition of conditional scores", {
 
 test_that("Integrals of compositions", {
 
+    # outside optimization
     expect_equal(
         evaluate(
             expected(composite({2*css + css + 1}), Normal(), PointMassPrior(.3, 1)),
             design
         ),
         3*evaluate(ess, design) + 1,
+        tolerance = sqrt(.Machine$double.eps), scale = 1)
+
+
+    # in optimization
+    expect_equal(
+        evaluate(
+            expected(composite({2*css + css + 1}), Normal(), PointMassPrior(.3, 1)),
+            design,
+            optimization = TRUE
+        ),
+        3*evaluate(ess, design, optimization = TRUE) + 1,
         tolerance = sqrt(.Machine$double.eps), scale = 1)
 
 }) # end 'integrals of compositions'
