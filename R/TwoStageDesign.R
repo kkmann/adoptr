@@ -534,16 +534,10 @@ print.TwoStageDesignSummary <- function(x, ..., rounded = TRUE) {
     cat(sprintf("    c1e: %6.2f\n\r", x$design@c1e))
     cat(sprintf(" max n2: %6.2f\n\r", max(n2(x$design, x1, rounded))))
     cat(sprintf(" min n2: %6.2f\n\r", min(n2(x$design, x1, rounded))))
-    cat(sprintf("%i integration pivots at: ", length(x$design@x1_norm_pivots)))
-    cat(paste0(sprintf("%.2f", scaled_integration_pivots(x$design)), collapse = ", "))
-    cat("\n\r    integration weights: ")
-    cat(paste0(sprintf("%.2f", x$design@weights), collapse = ", "))
     cat("\n\r")
     if (length(x$scores) > 0) {
         cat("Unconditional scores:\n\r")
-        for (i in 1:length(x$scores)) {
-            cat(sprintf("    %10s: %7.3f\n\r", names(x$scores)[i], x$scores[i]))
-        }
+        print(x$scores)
         cat("\n\r")
     }
 }
