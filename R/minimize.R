@@ -166,6 +166,7 @@ get_initial_design <- function(theta, alpha = 0.025, beta = 0.2,
 
 
 
+
 #' Boundary designs
 #'
 #' The optimization method \code{\link{minimize}} is based on the package
