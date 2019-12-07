@@ -10,8 +10,7 @@
 \usage{
 TwoStageDesign(n1, ...)
 
-\S4method{TwoStageDesign}{numeric}(n1, c1f, c1e, n2_pivots, c2_pivots,
-  order = NULL, ...)
+\S4method{TwoStageDesign}{numeric}(n1, c1f, c1e, n2_pivots, c2_pivots, order = NULL, ...)
 
 \S4method{summary}{TwoStageDesign}(object, ..., rounded = TRUE)
 }
