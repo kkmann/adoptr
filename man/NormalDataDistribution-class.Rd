@@ -12,8 +12,7 @@ Normal(two_armed = TRUE)
 
 \S4method{quantile}{Normal}(x, probs, n, theta, ...)
 
-\S4method{simulate}{Normal,numeric}(object, nsim, n, theta, seed = NULL,
-  ...)
+\S4method{simulate}{Normal,numeric}(object, nsim, n, theta, seed = NULL, ...)
 }
 \arguments{
 \item{two_armed}{logical indicating if a two-armed trial is regarded}

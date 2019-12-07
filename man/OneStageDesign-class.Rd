@@ -10,8 +10,7 @@
 \usage{
 OneStageDesign(n, c)
 
-\S4method{TwoStageDesign}{OneStageDesign}(n1, order = 5L, eps = 0.01,
-  ...)
+\S4method{TwoStageDesign}{OneStageDesign}(n1, order = 5L, eps = 0.01, ...)
 
 \S4method{plot}{OneStageDesign}(x, y, ...)
 }
