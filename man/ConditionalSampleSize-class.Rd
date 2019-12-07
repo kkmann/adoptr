@@ -12,8 +12,7 @@ ConditionalSampleSize(label = "n(x1)")
 
 ExpectedSampleSize(dist, prior, label = "E[n(x1)]")
 
-\S4method{evaluate}{ConditionalSampleSize,TwoStageDesign}(s, design, x1,
-  optimization = FALSE, ...)
+\S4method{evaluate}{ConditionalSampleSize,TwoStageDesign}(s, design, x1, optimization = FALSE, ...)
 }
 \arguments{
 \item{label}{object label (string)}

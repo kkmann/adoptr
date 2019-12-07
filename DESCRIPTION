@@ -46,6 +46,6 @@ Collate:
     ConditionalSampleSize.R
     regularization.R
     CompositeScore.R
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.1
 BugReports: https://github.com/kkmann/adoptr/issues
 URL: https://github.com/kkmann/adoptr

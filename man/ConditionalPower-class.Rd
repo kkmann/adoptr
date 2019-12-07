@@ -12,8 +12,7 @@ ConditionalPower(dist, prior, label = "Pr[x2>=c2(x1)|x1]")
 
 Power(dist, prior, label = "Pr[x2>=c2(x1)]")
 
-\S4method{evaluate}{ConditionalPower,TwoStageDesign}(s, design, x1,
-  optimization = FALSE, ...)
+\S4method{evaluate}{ConditionalPower,TwoStageDesign}(s, design, x1, optimization = FALSE, ...)
 }
 \arguments{
 \item{dist}{a univariate \code{\link[=DataDistribution-class]{distribution}} object}

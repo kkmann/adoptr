@@ -9,8 +9,7 @@
 \usage{
 AverageN2(label = NA_character_)
 
-\S4method{evaluate}{AverageN2,TwoStageDesign}(s, design,
-  optimization = FALSE, subdivisions = 10000L, ...)
+\S4method{evaluate}{AverageN2,TwoStageDesign}(s, design, optimization = FALSE, subdivisions = 10000L, ...)
 }
 \arguments{
 \item{label}{object label (string)}
