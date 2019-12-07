@@ -175,11 +175,15 @@ lower- and upper-boundary designs. If this is not done, the boundaries are
 determined automatically heuristically.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>minimize</span>(<span class='no'>objective</span>, <span class='no'>subject_to</span>, <span class='no'>initial_design</span>,
+    <pre class="usage"><span class='fu'>minimize</span>(
+  <span class='no'>objective</span>,
+  <span class='no'>subject_to</span>,
+  <span class='no'>initial_design</span>,
   <span class='kw'>lower_boundary_design</span> <span class='kw'>=</span> <span class='fu'><a href='boundary-designs.html'>get_lower_boundary_design</a></span>(<span class='no'>initial_design</span>),
   <span class='kw'>upper_boundary_design</span> <span class='kw'>=</span> <span class='fu'><a href='boundary-designs.html'>get_upper_boundary_design</a></span>(<span class='no'>initial_design</span>),
-  <span class='kw'>opts</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>algorithm</span> <span class='kw'>=</span> <span class='st'>"NLOPT_LN_COBYLA"</span>, <span class='kw'>xtol_rel</span> <span class='kw'>=</span> <span class='fl'>1e-05</span>, <span class='kw'>maxeval</span> <span class='kw'>=</span>
-  <span class='fl'>10000</span>), <span class='no'>...</span>)</pre>
+  <span class='kw'>opts</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>algorithm</span> <span class='kw'>=</span> <span class='st'>"NLOPT_LN_COBYLA"</span>, <span class='kw'>xtol_rel</span> <span class='kw'>=</span> <span class='fl'>1e-05</span>, <span class='kw'>maxeval</span> <span class='kw'>=</span> <span class='fl'>10000</span>),
+  <span class='no'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">

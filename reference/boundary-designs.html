@@ -178,32 +178,55 @@ boundary designs, too.</p>
 <span class='fu'>get_upper_boundary_design</span>(<span class='no'>initial_design</span>, <span class='no'>...</span>)
 
 <span class='co'># S4 method for OneStageDesign</span>
-<span class='fu'>get_lower_boundary_design</span>(<span class='no'>initial_design</span>,
-  <span class='kw'>n1</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>c1_buffer</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='no'>...</span>)
+<span class='fu'>get_lower_boundary_design</span>(<span class='no'>initial_design</span>, <span class='kw'>n1</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>c1_buffer</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='no'>...</span>)
 
-
-  <span class='co'># S4 method for GroupSequentialDesign</span>
-<span class='fu'>get_lower_boundary_design</span>(<span class='no'>initial_design</span>,
-  <span class='kw'>n1</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>n2_pivots</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>c1_buffer</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>c2_buffer</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='no'>...</span>)
+<span class='co'># S4 method for GroupSequentialDesign</span>
+<span class='fu'>get_lower_boundary_design</span>(
+  <span class='no'>initial_design</span>,
+  <span class='kw'>n1</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>n2_pivots</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>c1_buffer</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='kw'>c2_buffer</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='no'>...</span>
+)
 
 <span class='co'># S4 method for TwoStageDesign</span>
-<span class='fu'>get_lower_boundary_design</span>(<span class='no'>initial_design</span>,
-  <span class='kw'>n1</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>n2_pivots</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>c1_buffer</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>c2_buffer</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='no'>...</span>)
+<span class='fu'>get_lower_boundary_design</span>(
+  <span class='no'>initial_design</span>,
+  <span class='kw'>n1</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>n2_pivots</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>c1_buffer</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='kw'>c2_buffer</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='no'>...</span>
+)
 
 <span class='co'># S4 method for OneStageDesign</span>
-<span class='fu'>get_upper_boundary_design</span>(<span class='no'>initial_design</span>,
-  <span class='kw'>n1</span> <span class='kw'>=</span> <span class='fl'>5</span> * <span class='no'>initial_design</span>@<span class='kw'>n1</span>, <span class='kw'>c1_buffer</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='no'>...</span>)
+<span class='fu'>get_upper_boundary_design</span>(
+  <span class='no'>initial_design</span>,
+  <span class='kw'>n1</span> <span class='kw'>=</span> <span class='fl'>5</span> * <span class='no'>initial_design</span>@<span class='kw'>n1</span>,
+  <span class='kw'>c1_buffer</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='no'>...</span>
+)
 
-
-  <span class='co'># S4 method for GroupSequentialDesign</span>
-<span class='fu'>get_upper_boundary_design</span>(<span class='no'>initial_design</span>,
-  <span class='kw'>n1</span> <span class='kw'>=</span> <span class='fl'>5</span> * <span class='no'>initial_design</span>@<span class='kw'>n1</span>, <span class='kw'>n2_pivots</span> <span class='kw'>=</span> <span class='fl'>5</span> * <span class='no'>initial_design</span>@<span class='kw'>n2_pivots</span>,
-  <span class='kw'>c1_buffer</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>c2_buffer</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='no'>...</span>)
+<span class='co'># S4 method for GroupSequentialDesign</span>
+<span class='fu'>get_upper_boundary_design</span>(
+  <span class='no'>initial_design</span>,
+  <span class='kw'>n1</span> <span class='kw'>=</span> <span class='fl'>5</span> * <span class='no'>initial_design</span>@<span class='kw'>n1</span>,
+  <span class='kw'>n2_pivots</span> <span class='kw'>=</span> <span class='fl'>5</span> * <span class='no'>initial_design</span>@<span class='kw'>n2_pivots</span>,
+  <span class='kw'>c1_buffer</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='kw'>c2_buffer</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='no'>...</span>
+)
 
 <span class='co'># S4 method for TwoStageDesign</span>
-<span class='fu'>get_upper_boundary_design</span>(<span class='no'>initial_design</span>,
-  <span class='kw'>n1</span> <span class='kw'>=</span> <span class='fl'>5</span> * <span class='no'>initial_design</span>@<span class='kw'>n1</span>, <span class='kw'>n2_pivots</span> <span class='kw'>=</span> <span class='fl'>5</span> * <span class='no'>initial_design</span>@<span class='kw'>n2_pivots</span>,
-  <span class='kw'>c1_buffer</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>c2_buffer</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>get_upper_boundary_design</span>(
+  <span class='no'>initial_design</span>,
+  <span class='kw'>n1</span> <span class='kw'>=</span> <span class='fl'>5</span> * <span class='no'>initial_design</span>@<span class='kw'>n1</span>,
+  <span class='kw'>n2_pivots</span> <span class='kw'>=</span> <span class='fl'>5</span> * <span class='no'>initial_design</span>@<span class='kw'>n2_pivots</span>,
+  <span class='kw'>c1_buffer</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='kw'>c2_buffer</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='no'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">

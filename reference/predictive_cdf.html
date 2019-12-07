@@ -168,12 +168,17 @@ by a <code><a href='DataDistribution-class.html'>DataDistribution</a></code> <co
     <pre class="usage"><span class='fu'>predictive_cdf</span>(<span class='no'>dist</span>, <span class='no'>prior</span>, <span class='no'>x1</span>, <span class='no'>n1</span>, <span class='no'>...</span>)
 
 <span class='co'># S4 method for DataDistribution,PointMassPrior,numeric</span>
-<span class='fu'>predictive_cdf</span>(<span class='no'>dist</span>,
-  <span class='no'>prior</span>, <span class='no'>x1</span>, <span class='no'>n1</span>, <span class='no'>...</span>)
+<span class='fu'>predictive_cdf</span>(<span class='no'>dist</span>, <span class='no'>prior</span>, <span class='no'>x1</span>, <span class='no'>n1</span>, <span class='no'>...</span>)
 
 <span class='co'># S4 method for DataDistribution,ContinuousPrior,numeric</span>
-<span class='fu'>predictive_cdf</span>(<span class='no'>dist</span>,
-  <span class='no'>prior</span>, <span class='no'>x1</span>, <span class='no'>n1</span>, <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>10</span> * (<span class='no'>prior</span>@<span class='kw'>support</span>[<span class='fl'>2</span>] - <span class='no'>prior</span>@<span class='kw'>support</span>[<span class='fl'>1</span>]) + <span class='fl'>1</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>predictive_cdf</span>(
+  <span class='no'>dist</span>,
+  <span class='no'>prior</span>,
+  <span class='no'>x1</span>,
+  <span class='no'>n1</span>,
+  <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>10</span> * (<span class='no'>prior</span>@<span class='kw'>support</span>[<span class='fl'>2</span>] - <span class='no'>prior</span>@<span class='kw'>support</span>[<span class='fl'>1</span>]) + <span class='fl'>1</span>,
+  <span class='no'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
