@@ -515,11 +515,15 @@ setMethod("summary", signature("TwoStageDesign"),
               if (!all(sapply(scores, function(s) is(s, "UnconditionalScore"))))
                   stop("optional arguments must be UnconditionalScores")
               res <- list(
-                  design = object,
-                  scores = sapply(scores, function(s) evaluate(s, object, optimization = !rounded, ...))
+                  design      = object,
+                  scores      = sapply(scores, function(s) evaluate(s, object, optimization = !rounded, ...)),
+                  first_stage = c(object@n1, object@c1f, object@c1e),
+                  n2_pivots   = object@n2_pivots,
+                  c2_pivots   = object@c2_pivots
               )
-              names(res$scores) <- names(scores)
-              class(res) <- c("TwoStageDesignSummary", "list")
+              names(res$scores)      <- names(scores)
+              names(res$first_stage) <- c("n1", "c1f", "c1e")
+              class(res)             <- c("TwoStageDesignSummary", "list")
               return(res)
           })
 
@@ -527,14 +531,15 @@ setMethod("summary", signature("TwoStageDesign"),
 
 #' @rawNamespace S3method(print, TwoStageDesignSummary)
 print.TwoStageDesignSummary <- function(x, ..., rounded = TRUE) {
-    x1 <- seq(x$design@c1f, x$design@c1e, length.out = 1000)
     cat(sprintf("%s with:\n\r", class(x$design)[1]))
-    cat(sprintf("     n1: %6.2f\n\r", n1(x$design, rounded)))
-    cat(sprintf("    c1f: %6.2f\n\r", x$design@c1f))
-    cat(sprintf("    c1e: %6.2f\n\r", x$design@c1e))
-    cat(sprintf(" max n2: %6.2f\n\r", max(n2(x$design, x1, rounded))))
-    cat(sprintf(" min n2: %6.2f\n\r", min(n2(x$design, x1, rounded))))
+    print(x$first_stage)
     cat("\n\r")
+    cat("n2-pivots:\n\r")
+    cat(x$n2_pivots)
+    cat("\n\n\r")
+    cat("c2-pivots:\n\r")
+    cat(x$c2_pivots)
+    cat("\n\n\r")
     if (length(x$scores) > 0) {
         cat("Unconditional scores:\n\r")
         print(x$scores)
