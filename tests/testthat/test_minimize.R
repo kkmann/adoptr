@@ -306,23 +306,23 @@ test_that("conditional constraints work", {
 
 test_that("heuristical initial design works", {
     expect_error(
-        get_initial_design(.4, .025, .2, "adaptive", 6L)
+        get_initial_design(.4, .025, .2, "adaptive", Normal(), 6L)
     )
 
     expect_error(
-        get_initial_design(.4, 1.025, .2, "two-stage", 6L)
+        get_initial_design(.4, 1.025, .2, "two-stage", Normal(), 6L)
     )
 
     expect_true(
-        is(get_initial_design(.4, .025, .2, "two-stage", 6L), "TwoStageDesign")
+        is(get_initial_design(.4, .025, .2, "two-stage", Normal(F), 6L), "TwoStageDesign")
     )
 
     expect_true(
-        is(get_initial_design(.4, .025, .2, "group-sequential", 6L), "GroupSequentialDesign")
+        is(get_initial_design(.4, .025, .2, "group-sequential", Normal(), 6L), "GroupSequentialDesign")
     )
 
     expect_true(
-        is(get_initial_design(.4, .025, .2, "one-stage", 6L), "OneStageDesign")
+        is(get_initial_design(.4, .025, .2, "one-stage", Normal(), 6L), "OneStageDesign")
     )
 
 }) # end 'heuristical initial design works'
