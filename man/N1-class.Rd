@@ -9,8 +9,7 @@
 \usage{
 N1(label = NA_character_)
 
-\S4method{evaluate}{N1,TwoStageDesign}(s, design, optimization = FALSE,
-  ...)
+\S4method{evaluate}{N1,TwoStageDesign}(s, design, optimization = FALSE, ...)
 }
 \arguments{
 \item{label}{object label (string)}

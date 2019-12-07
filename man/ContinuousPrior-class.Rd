@@ -6,8 +6,14 @@
 \alias{ContinuousPrior}
 \title{Continuous univariate prior distributions}
 \usage{
-ContinuousPrior(pdf, support, order = 10, label = NA_character_,
-  tighten_support = FALSE, check_normalization = TRUE)
+ContinuousPrior(
+  pdf,
+  support,
+  order = 10,
+  label = NA_character_,
+  tighten_support = FALSE,
+  check_normalization = TRUE
+)
 }
 \arguments{
 \item{pdf}{vectorized univariate PDF function}

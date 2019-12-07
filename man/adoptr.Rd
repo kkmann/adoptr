@@ -3,7 +3,6 @@
 \docType{package}
 \name{adoptr}
 \alias{adoptr}
-\alias{adoptr-package}
 \title{Adaptive Optimal Two-Stage Designs}
 \description{
 The \pkg{adoptr} package provides functionality to explore custom optimal

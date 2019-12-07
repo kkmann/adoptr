@@ -4,8 +4,15 @@
 \alias{get_initial_design}
 \title{Initial design}
 \usage{
-get_initial_design(theta, alpha = 0.025, beta = 0.2,
-  type = c("two-stage", "group-sequential", "one-stage"), order = 7L)
+get_initial_design(
+  theta,
+  alpha = 0.025,
+  beta = 0.2,
+  type = c("two-stage", "group-sequential", "one-stage"),
+  dist = Normal(),
+  order = 7L,
+  ...
+)
 }
 \arguments{
 \item{theta}{the alternative effect size}
@@ -16,14 +23,22 @@ get_initial_design(theta, alpha = 0.025, beta = 0.2,
 
 \item{type}{is a two-stage, group-sequential, or one-stage design requried?}
 
+\item{dist}{distribution of the test statistic}
+
 \item{order}{desired integration order}
+
+\item{...}{further optional arguments}
 }
 \description{
 The optimization method \code{\link{minimize}} requires an initial
 design for optimization.
 The function \code{get_initial_design} provides an initial guess based on a
-fixed design for a z-test that fulfills constraints on type I error rate and power.
+fixed design that fulfills constraints on type I error rate and power.
 Note that a situation-specific initial design may be much more efficient.
+}
+\details{
+The distribution of the test statistic is specified by \code{dist}.
+The default assumes a two-armed z-test.
 }
 \examples{
 init <- get_initial_design(
@@ -31,6 +46,7 @@ init <- get_initial_design(
    alpha = 0.025,
    beta  = 0.2,
    type  = "two-stage",
+   dist  = Normal(two_armed = FALSE),
    order = 7L
 )
 
