@@ -169,3 +169,141 @@ setMethod("print", signature('Normal'), function(x, ...) {
 setMethod("show", signature(object = "Normal"), function(object) {
     cat(print(object), "\n")
 })
+
+
+
+
+
+#' Binomial data distribution
+#'
+#' Implements the normal approximation for a test on rates.
+#' The reponse rate in the control group,
+#' \ifelse{html}{out{r<sub>C</sub>}}{\eqn{r_C}}, has to be specified by
+#' \code{rate_control}.
+#' The null hypothesis is:
+#' \ifelse{html}{out{r<sub>E</sub> &le; r<sub>E</sub>}}{\eqn{r_E <= r_C}},
+#' where \ifelse{html}{out{r<sub>E</sub>}}{\eqn{r_E}} denotes the response rate
+#' in the invervention group.
+#' It is tested versus the alternative
+#' \ifelse{html}{out{r<sub>E</sub> > r<sub>E</sub>}}{\eqn{r_E > r_C}}
+#'
+#' All priors have to be defined for the rate difference
+#' \ifelse{html}{out{out{r<sub>E</sub> - out{r<sub>C</sub>}}{\eqn{r_E - r_C}}.
+#'
+#' \code{Binomial} contains the standard deviation under the null hypothesis
+#' to save runtime.
+#'
+#' @slot rate_control assumed response rate in control group
+#' @slot sigma_0 standard deviation of rate difference under the null hypothesis
+#'
+#' @template DataDistributionTemplate
+#'
+#' @rdname BinomialDataDistribution-class
+#' @exportClass Binomial
+setClass("Binomial", representation(
+    rate_control = "numeric",
+    sigma_0      = "numeric",
+    two_armed    = "logical"
+),
+contains = "DataDistribution")
+
+
+#' @param rate_control cf. slot 'rate_control'
+#' @param two_armed logical indicating if a two-armed trial is regarded
+#'
+#' @examples
+#' datadist <- Binomial(rate_control = 0.2, two_armed = FALSE)
+#'
+#' @seealso see \code{\link{probability_density_function}} and
+#'    \code{\link{cumulative_distribution_function}} to evaluate the pdf
+#'    and the cdf, respectively.
+#'
+#' @rdname BinomialDataDistribution-class
+#' @export
+Binomial <- function(rate_control, two_armed = TRUE) {
+    if(rate_control >= 1 || rate_control <= 0)
+        stop("The response rate in the control group must be in (0,1)!")
+    sigma_0 = 2 * sqrt(rate_control * (1 - rate_control))
+    sigma_0 = ifelse(two_armed, sigma_0, sigma_0 / 2)
+    new("Binomial", rate_control = rate_control, two_armed = two_armed, sigma_0 = sigma_0)
+}
+
+
+#' @examples
+#' probability_density_function(Binomial(.2, FALSE), 1, 50, .3)
+#'
+#' @details If the distribution is \code{\link{Binomial}},
+#'   \ifelse{html}{\out{theta}}{theta}} denotes the rate difference between
+#'   intervention and control group.
+#'   Then, the mean is assumed to be
+#'   \ifelse{html}{\out{&radic; n  theta}}{\eqn{\sqrt{n} theta}}.
+#'
+#' @rdname probability_density_function
+#' @export
+setMethod("probability_density_function", signature("Binomial", "numeric", "numeric", "numeric"),
+          function(dist, x, n, theta, ...) {
+              rate_intervention <- theta + dist@rate_control
+              if(rate_intervention >= 1 || rate_intervention <= 0)
+                  stop("The response rate in the intervention group must be in (0,1)! Probably the combination of prior and control rate is ill-defined.")
+              sigma_A <- ifelse(dist@two_armed,
+                                sqrt(2 * (dist@rate_control * (1 - dist@rate_control) + rate_intervention * (1 - rate_intervention))),
+                                sqrt(rate_intervention * (1 - rate_intervention)))
+              return(stats::dnorm(x, mean = sqrt(n) * theta / dist@sigma_0, sd = sigma_A / dist@sigma_0))
+          })
+
+
+#' @examples
+#' cumulative_distribution_function(Binomial(.1, TRUE), 1, 50, .3)
+#'
+#' @details If the distribution is \code{\link{Binomial}},
+#'   \ifelse{html}{\out{theta}}{theta}} denotes the rate difference between
+#'   intervention and control group.
+#'   Then, the mean is assumed to be
+#'   \ifelse{html}{\out{&radic; n  theta}}{\eqn{\sqrt{n} theta}}.
+#'
+#' @rdname cumulative_distribution_function
+#' @export
+setMethod("cumulative_distribution_function", signature("Binomial", "numeric", "numeric", "numeric"),
+          function(dist, x, n, theta, ...) {
+              rate_intervention <- theta + dist@rate_control
+              if(rate_intervention >= 1 || rate_intervention <= 0)
+                  stop("The response rate in the intervention group must be in (0,1)! Probably the combination of prior and control rate is ill-defined.")
+              sigma_A <- ifelse(dist@two_armed,
+                                sqrt(2 * (dist@rate_control * (1 - dist@rate_control) + rate_intervention * (1 - rate_intervention))),
+                                sqrt(rate_intervention * (1 - rate_intervention)))
+              return(stats::pnorm(x, mean = sqrt(n) * theta / dist@sigma_0, sd = sigma_A / dist@sigma_0))
+          })
+
+
+
+#' @param probs vector of probabilities
+#' @rdname BinomialDataDistribution-class
+#' @export
+setMethod("quantile", signature("Binomial"),
+          function(x, probs, n, theta, ...) { # must be x to conform with generic
+              rate_intervention <- theta + dist@rate_control
+              if(rate_intervention >= 1 || rate_intervention <= 0)
+                  stop("The response rate in the intervention group must be in (0,1)! Probably the combination of prior and control rate is ill-defined.")
+              sigma_A <- ifelse(dist@two_armed,
+                                sqrt(2 * (dist@rate_control * (1 - dist@rate_control) + rate_intervention * (1 - rate_intervention))),
+                                sqrt(rate_intervention * (1 - rate_intervention)))
+              return(stats::qnorm(probs, mean = sqrt(n) * theta / dist@sigma_0, sd = sigma_A / dist@sigma_0))
+          })
+
+
+# TODO: simulate
+
+
+
+setMethod("print", signature('Binomial'), function(x, ...) {
+    glue::glue(
+        "{class(x)[1]}<{if (x@two_armed) 'two-armed' else 'single-armed'}>",
+        'response rate in control group: {x@rate_control}',
+        .sep = ", "
+    )
+})
+
+setMethod("show", signature(object = "Binomial"), function(object) {
+    cat(print(object), "\n")
+})
+
