@@ -517,12 +517,14 @@ setMethod("summary", signature("TwoStageDesign"),
               res <- list(
                   design      = object,
                   scores      = sapply(scores, function(s) evaluate(s, object, optimization = !rounded, ...)),
-                  first_stage = c(object@n1, object@c1f, object@c1e),
+                  n1          = object@n1,
+                  c1f         = object@c1f,
+                  c1e         = object@c1e,
                   n2_pivots   = object@n2_pivots,
                   c2_pivots   = object@c2_pivots
               )
               names(res$scores)      <- names(scores)
-              names(res$first_stage) <- c("n1", "c1f", "c1e")
+          #    names(res$first_stage) <- c("n1", "c1f", "c1e")
               class(res)             <- c("TwoStageDesignSummary", "list")
               return(res)
           })
@@ -532,18 +534,22 @@ setMethod("summary", signature("TwoStageDesign"),
 #' @rawNamespace S3method(print, TwoStageDesignSummary)
 print.TwoStageDesignSummary <- function(x, ..., rounded = TRUE) {
     cat(sprintf("%s with:\n\r", class(x$design)[1]))
-    print(x$first_stage)
+    cat(glue::glue('n1:{sprintf("%4.0f", x$n1)}',
+                   'early futility: X1 < {sprintf("%1.2f", x$c1f)}',
+                   'early efficacy: X1 > {sprintf("%1.2f", x$c1e)}',
+                   .sep = ",\t"))
     cat("\n\r")
-    cat("n2-pivots:\n\r")
-    cat(x$n2_pivots)
-    cat("\n\n\r")
-    cat("c2-pivots:\n\r")
-    cat(x$c2_pivots)
+    cat("n2-pivots: ")
+    cat(sprintf("%3.0f", x$n2_pivots))
+    cat("\n\r")
+    cat("c2-pivots: ")
+    cat(sprintf("%2.1f", x$c2_pivots))
     cat("\n\n\r")
     if (length(x$scores) > 0) {
-        cat("Unconditional scores:\n\r")
-        print(x$scores)
-        cat("\n\r")
+        for(i in 1:length(x$scores)) {
+            cat(glue::glue('{names(x$scores)[i]}: {sprintf("%5.3f", x$scores[i])}'))
+            cat("\n\r")
+        }
     }
 }
 
