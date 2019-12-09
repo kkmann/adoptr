@@ -8,6 +8,7 @@
 #' (unknown variance), normal distribution (known variance), and normal
 #' approximation of a binary endpoint.
 #' Currently, only the normal case is implemented with \code{\link{Normal-class}}.
+#'  TODO add binomial
 #'
 #' The logical option \code{two_armed} allows to decide whether a one-arm or
 #' a two-arm (the default) design should be computed. In the case of a two-arm
@@ -233,7 +234,7 @@ Binomial <- function(rate_control, two_armed = TRUE) {
 #' probability_density_function(Binomial(.2, FALSE), 1, 50, .3)
 #'
 #' @details If the distribution is \code{\link{Binomial}},
-#'   \ifelse{html}{\out{theta}}{theta}} denotes the rate difference between
+#'   \ifelse{html}{\out{theta}}{\eqn{theta}} denotes the rate difference between
 #'   intervention and control group.
 #'   Then, the mean is assumed to be
 #'   \ifelse{html}{\out{&radic; n  theta}}{\eqn{\sqrt{n} theta}}.
@@ -256,7 +257,7 @@ setMethod("probability_density_function", signature("Binomial", "numeric", "nume
 #' cumulative_distribution_function(Binomial(.1, TRUE), 1, 50, .3)
 #'
 #' @details If the distribution is \code{\link{Binomial}},
-#'   \ifelse{html}{\out{theta}}{theta}} denotes the rate difference between
+#'   \ifelse{html}{\out{theta}}{\eqn{theta}} denotes the rate difference between
 #'   intervention and control group.
 #'   Then, the mean is assumed to be
 #'   \ifelse{html}{\out{&radic; n  theta}}{\eqn{\sqrt{n} theta}}.
