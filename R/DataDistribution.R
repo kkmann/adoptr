@@ -179,17 +179,17 @@ setMethod("show", signature(object = "Normal"), function(object) {
 #'
 #' Implements the normal approximation for a test on rates.
 #' The reponse rate in the control group,
-#' \ifelse{html}{out{r<sub>C</sub>}}{\eqn{r_C}}, has to be specified by
+#' \ifelse{html}{\out{r<sub>C</sub>}}{\eqn{r_C}}, has to be specified by
 #' \code{rate_control}.
 #' The null hypothesis is:
-#' \ifelse{html}{out{r<sub>E</sub> &le; r<sub>E</sub>}}{\eqn{r_E <= r_C}},
-#' where \ifelse{html}{out{r<sub>E</sub>}}{\eqn{r_E}} denotes the response rate
+#' \ifelse{html}{\out{r<sub>E</sub> &le; r<sub>E</sub>}}{\eqn{r_E <= r_C}},
+#' where \ifelse{html}{\out{r<sub>E</sub>}}{\eqn{r_E}} denotes the response rate
 #' in the invervention group.
-#' It is tested versus the alternative
-#' \ifelse{html}{out{r<sub>E</sub> > r<sub>E</sub>}}{\eqn{r_E > r_C}}
+#' It is tested against the alternative
+#' \ifelse{html}{\out{r<sub>E</sub> > r<sub>E</sub>}}{\eqn{r_E > r_C}}
 #'
 #' All priors have to be defined for the rate difference
-#' \ifelse{html}{out{out{r<sub>E</sub> - out{r<sub>C</sub>}}{\eqn{r_E - r_C}}.
+#' \ifelse{html}{\out{r<sub>E</sub> - r<sub>C</sub>}}{\eqn{r_E - r_C}}.
 #'
 #' \code{Binomial} contains the standard deviation under the null hypothesis
 #' to save runtime.
