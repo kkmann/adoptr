@@ -7,8 +7,7 @@
 \alias{TwoStageDesign,GroupSequentialDesign-method}
 \title{Group-sequential two-stage designs}
 \usage{
-GroupSequentialDesign(n1, c1f, c1e, n2_pivots, c2_pivots, order = NULL,
-  ...)
+GroupSequentialDesign(n1, c1f, c1e, n2_pivots, c2_pivots, order = NULL, ...)
 
 \S4method{TwoStageDesign}{GroupSequentialDesign}(n1, ...)
 }
