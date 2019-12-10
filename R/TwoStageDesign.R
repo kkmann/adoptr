@@ -533,20 +533,30 @@ setMethod("summary", signature("TwoStageDesign"),
 
 #' @rawNamespace S3method(print, TwoStageDesignSummary)
 print.TwoStageDesignSummary <- function(x, ..., rounded = TRUE) {
-    cat(sprintf("%s with:\n\r", class(x$design)[1]))
-    cat(glue::glue('n1:{sprintf("%4.0f", x$n1)}',
-                   'early futility: X1 < {sprintf("%1.2f", x$c1f)}',
-                   'early efficacy: X1 > {sprintf("%1.2f", x$c1e)}',
-                   .sep = ",\t"))
-    cat("\n\r")
-    cat("n2-pivots: ")
-    cat(sprintf("%3.0f", x$n2_pivots))
-    cat("\n\r")
-    cat("c2-pivots: ")
-    cat(sprintf("%2.1f", x$c2_pivots))
+    cat(glue::glue(
+        '{class(x$design)}: ',
+        'n1 = {sprintf("%3i", n1(x$design))}; ',
+        'early-futility = {sprintf("%4.2f", x$c1f)} < X1 < {sprintf("%4.2f", x$c1e)} = early-efficacy',
+        '\n\r'
+    ))
+    x1 <- scaled_integration_pivots(x$design)
+    n2 <- n2(x$design, x1)
+    c2 <- c2(x$design, x1)
+    cat('  n2(x1-pivot): ')
+    cat(paste0(
+        sprintf('%4i(%4.2f)', n2, x1),
+        collapse = ', '
+    ))
+    cat('\n\r')
+    cat('  c2(x1-pivot): ')
+    cat(paste0(
+        sprintf('%4.2f(%4.2f)', c2, x1),
+        collapse = ', '
+    ))
+    cat('\n\r')
     cat("\n\n\r")
     if (length(x$scores) > 0) {
-        for(i in 1:length(x$scores)) {
+        for (i in 1:length(x$scores)) {
             cat(glue::glue('{names(x$scores)[i]}: {sprintf("%5.3f", x$scores[i])}'))
             cat("\n\r")
         }
