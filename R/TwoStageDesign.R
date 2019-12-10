@@ -554,11 +554,10 @@ print.TwoStageDesignSummary <- function(x, ..., rounded = TRUE) {
         collapse = ', '
     ))
     cat('\n\r')
-    cat("\n\n\r")
     if (length(x$scores) > 0) {
+        maxlength <- max(sapply(names(x$scores), nchar))
         for (i in 1:length(x$scores)) {
-            cat(glue::glue('{names(x$scores)[i]}: {sprintf("%5.3f", x$scores[i])}'))
-            cat("\n\r")
+            cat(sprintf(glue::glue('%{maxlength+2}s: %10.3f\n\r'), names(x$scores)[i], x$scores[i]))
         }
     }
 }
