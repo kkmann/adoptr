@@ -292,7 +292,30 @@ setMethod("quantile", signature("Binomial"),
           })
 
 
-# TODO: simulate
+
+
+#' @rdname BinomialDataDistribution-class
+#'
+#' @param object object of class \code{Binomial}
+#' @param nsim number of simulation runs
+#' @param seed random seed
+#'
+#' @export
+setMethod("simulate", signature("Binomial", "numeric"),
+          function(object, nsim, n, theta, seed = NULL, ...) {
+              rate_intervention <- theta + object@rate_control
+              if(rate_intervention >= 1 || rate_intervention <= 0)
+                  stop("The response rate in the intervention group must be in (0,1)! Probably the combination of prior and control rate is ill-defined.")
+              sigma_A <- ifelse(object@two_armed,
+                                sqrt(2 * (object@rate_control * (1 - object@rate_control) + rate_intervention * (1 - rate_intervention))),
+                                sqrt(rate_intervention * (1 - rate_intervention)))
+
+              if (!is.null(seed))
+                  set.seed(seed)
+
+              stats::rnorm(nsim, mean = sqrt(n) * theta / object@sigma_0, sd = sigma_A / object@sigma_0)
+})
+
 
 
 
