@@ -167,7 +167,7 @@ setMethod("print", signature('Normal'), function(x, ...) {
     )
 })
 
-setMethod("show", signature(object = "Normal"), function(object) {
+setMethod("show", signature(object = "DataDistribution"), function(object) {
     cat(print(object), "\n")
 })
 
@@ -303,8 +303,3 @@ setMethod("print", signature('Binomial'), function(x, ...) {
         .sep = ", "
     )
 })
-
-setMethod("show", signature(object = "Binomial"), function(object) {
-    cat(print(object), "\n")
-})
-
