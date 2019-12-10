@@ -292,7 +292,9 @@ setMethod("quantile", signature("Binomial"),
 
 
 
-
+#' @details Note that \code{simulate} for class \code{Binomial} simulates the
+#'    normal approximation of the test statistic.
+#'
 #' @rdname BinomialDataDistribution-class
 #'
 #' @param object object of class \code{Binomial}

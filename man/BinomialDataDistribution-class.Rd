@@ -5,11 +5,14 @@
 \alias{Binomial-class}
 \alias{Binomial}
 \alias{quantile,Binomial-method}
+\alias{simulate,Binomial,numeric-method}
 \title{Binomial data distribution}
 \usage{
 Binomial(rate_control, two_armed = TRUE)
 
 \S4method{quantile}{Binomial}(x, probs, n, theta, ...)
+
+\S4method{simulate}{Binomial,numeric}(object, nsim, n, theta, seed = NULL, ...)
 }
 \arguments{
 \item{rate_control}{cf. slot 'rate_control'}
@@ -25,6 +28,12 @@ Binomial(rate_control, two_armed = TRUE)
 \item{theta}{distribution parameter}
 
 \item{...}{further optional arguments}
+
+\item{object}{object of class \code{Binomial}}
+
+\item{nsim}{number of simulation runs}
+
+\item{seed}{random seed}
 }
 \description{
 Implements the normal approximation for a test on rates.
@@ -35,7 +44,7 @@ The null hypothesis is:
 \ifelse{html}{\out{r<sub>E</sub> &le; r<sub>E</sub>}}{\eqn{r_E <= r_C}},
 where \ifelse{html}{\out{r<sub>E</sub>}}{\eqn{r_E}} denotes the response rate
 in the invervention group.
-It is tested versus the alternative
+It is tested against the alternative
 \ifelse{html}{\out{r<sub>E</sub> > r<sub>E</sub>}}{\eqn{r_E > r_C}}
 }
 \details{
@@ -44,6 +53,9 @@ All priors have to be defined for the rate difference
 
 \code{Binomial} contains the standard deviation under the null hypothesis
 to save runtime.
+
+Note that \code{simulate} for class \code{Binomial} simulates the
+   normal approximation of the test statistic.
 }
 \section{Slots}{
 
