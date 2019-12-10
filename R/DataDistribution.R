@@ -149,14 +149,13 @@ setMethod("quantile", signature("Normal"),
 #' @export
 setMethod("simulate", signature("Normal", "numeric"),
           function(object, nsim, n, theta, seed = NULL, ...) {
-              fct <- 1
               if (object@two_armed)
-                  fct <- 1 / sqrt(2)
+                  theta <- theta / sqrt(2)
 
               if (!is.null(seed))
                   set.seed(seed)
 
-              stats::rnorm(nsim, mean = fct * sqrt(n) * theta, sd = 1)
+              stats::rnorm(nsim, mean = sqrt(n) * theta, sd = 1)
           })
 
 
