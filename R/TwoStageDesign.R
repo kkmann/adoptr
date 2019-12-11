@@ -541,53 +541,68 @@ setMethod("summary", signature("TwoStageDesign"),
 
 #' @rawNamespace S3method(print, TwoStageDesignSummary)
 print.TwoStageDesignSummary <- function(x, ..., rounded = TRUE) {
+    space <- 3
     cat(glue::glue(
         '{class(x$design)}: ',
         'n1 = {sprintf("%3i", n1(x$design))} ',
         '\n\r'
     ))
+    x1 <- c(x$c1f - sqrt(.Machine$double.eps), scaled_integration_pivots(x$design), x$c1e + sqrt(.Machine$double.eps))
+    n2 <- sapply(x1, function(y) n2(x$design, y))
+    c2 <- sapply(x1, function(y) c2(x$design, y))
+    maxlength <- max(nchar('futility'),
+                     ifelse(length(x$uncond_scores) > 0, max(sapply(names(x$uncond_scores), nchar)), 0),
+                     ifelse(length(x$cond_scores) > 0, max(sapply(names(x$cond_scores), nchar)) + 4, 0))
+    len <- maxlength - nchar('futility')
+    len2 <- max(nchar(paste0(sprintf("%5.2f", c2[- c(1, length(c2))]), collapse = " ")) -
+        nchar("continue"), 0)
+    cat('  ')
+    cat(strrep(" ", len + 7 + space))
     cat(glue::glue(
-        ' early futility | ',
-        ' continue    ',
-        ' | early efficacy',
+        'futility |',
+        '{strrep(" ", ceiling(len2/2))}',
+        ' continue ',
+        '{strrep(" ", floor(len2/2))}',
+        '| efficacy',
         '\n\r'
     ))
-    x1 <- c(x$c1f - sqrt(.Machine$double.eps), scaled_integration_pivots(x$design), x$c1e + sqrt(.Machine$double.eps))
-    n2 <- n2(x$design, x1)
-    c2 <- c2(x$design, x1)
-    maxlength <- max(nchar('n2(x1)'),
-                     ifelse(length(x$uncond_scores > 0), max(sapply(names(x$uncond_scores), nchar)), 0),
-                     ifelse(length(x$cond_scores > 0), max(sapply(names(x$cond_scores), nchar)) + 4, 0))
     len <- maxlength - nchar('x1')
-    cat(glue::glue('  {strrep(" ", len)}','x1: '))
-    cat(paste0(
-        sprintf('%5.2f', x1),
-        collapse = ' '
-    ))
-    cat('\n\r')
+    cat('  ')
+    cat(glue::glue('{strrep(" ", len)}','x1:', '{strrep(" ", space)}',
+                   ' {sprintf("%5.2f", x1[1])} | ',
+                   '{paste0(
+                           sprintf("%5.2f", x1[- c(1, length(x1))]),
+                           collapse = " ")}',
+                   ' | {sprintf("%5.2f", x1[length(x1)])}',
+                   '\n\r'))
     len <- maxlength - nchar('c2(x1)')
-    cat(glue::glue('  {strrep(" ", len)}','c2(x1): '))
-    cat(paste0(
-        sprintf('%+5.2f', c2),
-        collapse = ' '
-    ))
-    cat('\n\r')
+    cat('  ')
+    cat(glue::glue('{strrep(" ", len)}','c2(x1):', '{strrep(" ", space)}',
+                   ' {sprintf("%5.2f", c2[1])} | ',
+                   '{paste0(
+                           sprintf("%5.2f", c2[- c(1, length(c2))]),
+                           collapse = " ")}',
+                   ' | {sprintf("%5.2f", c2[length(c2)])}',
+                   '\n\r'))
     len <- maxlength - nchar('n2(x1)')
-    cat(glue::glue('  {strrep(" ", len)}','n2(x1): '))
-    cat(paste0(
-        sprintf('%5i', n2),
-        collapse = ' '
-    ))
-    cat('\n\r')
+    cat('  ')
+    cat(glue::glue('{strrep(" ", len)}','n2(x1):', '{strrep(" ", space)}',
+                   ' {sprintf("%5i", n2[1])} | ',
+                   '{paste0(
+                           sprintf("%5i", n2[- c(1, length(n2))]),
+                           collapse = " ")}',
+                   ' | {sprintf("%5i", n2[length(n2)])}',
+                   '\n\r'))
     if (length(x$cond_scores) > 0) {
         for (i in 1:length(x$cond_scores)) {
-            len <- maxlength - nchar(names(x$cond_scores)[i]) - 4
-            cat(glue::glue('  {strrep(" ", len)}','{names(x$cond_scores)[i]}(x1): '))
-             cat(paste0(
-                sprintf("%5.2f", sapply(x1, function(y) evaluate(x$cond_scores[[i]], x$design, y))),
-                collapse = " ")
-            )
-            cat('\n\r')
+            len <- maxlength - nchar(names(x$cond_scores)[i]) - 2
+            cat(glue::glue('{strrep(" ", len)}','{names(x$cond_scores)[i]}(x1):', '{strrep(" ", space)}',
+                           ' {sprintf("%5.2f", evaluate(x$cond_scores[[i]], x$design, x1[1]))} | ',
+                           '{paste0(
+                           sprintf("%5.2f", sapply(x1[-c(1, length(x1))], function(y) evaluate(x$cond_scores[[i]], x$design, y))),
+                           collapse = " ")}',
+                           ' | {sprintf("%5.2f", evaluate(x$cond_scores[[i]], x$design, x1[length(x1)]))}',
+                           '\n\r'))
         }
     }
     if (length(x$uncond_scores) > 0) {
