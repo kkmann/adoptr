@@ -146,7 +146,7 @@ print.adoptrOptimizationResult <- function(x, ...) {
 #' )
 #'
 #' @export
-get_initial_design <- function(theta, alpha = 0.025, beta = 0.2,
+get_initial_design <- function(theta, alpha, beta,
                                type = c("two-stage", "group-sequential", "one-stage"),
                                dist = Normal(), order = 7L, ...) {
     type <- match.arg(type)
