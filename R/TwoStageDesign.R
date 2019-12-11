@@ -514,8 +514,13 @@ setMethod("summary", signature("TwoStageDesign"),
               scores <- list(...)
               if (!all(sapply(scores, function(s) is(s, "Score"))))
                   stop("optional arguments must be Scores")
-              cond_scores   <- scores[which(sapply(scores, function(x) is(x,"ConditionalScore")))]
-              uncond_scores <- scores[which(sapply(scores, function(x) is(x,"UnconditionalScore")))]
+              if (length(scores) > 0) {
+                  cond_scores   <- scores[which(sapply(scores, function(x) is(x, "ConditionalScore")))]
+                  uncond_scores <- scores[which(sapply(scores, function(x) is(x, "UnconditionalScore")))]
+              } else {
+                  cond_scores   <- scores
+                  uncond_scores <- scores
+              }
               res <- list(
                   design        = object,
                   uncond_scores = sapply(uncond_scores, function(s) evaluate(s, object, optimization = !rounded, ...)),
@@ -538,16 +543,21 @@ setMethod("summary", signature("TwoStageDesign"),
 print.TwoStageDesignSummary <- function(x, ..., rounded = TRUE) {
     cat(glue::glue(
         '{class(x$design)}: ',
-        'n1 = {sprintf("%3i", n1(x$design))}; ',
-        #'early-futility = {sprintf("%4.2f", x$c1f)} < X1 < {sprintf("%4.2f", x$c1e)} = early-efficacy',
+        'n1 = {sprintf("%3i", n1(x$design))} ',
+        '\n\r'
+    ))
+    cat(glue::glue(
+        ' early futility | ',
+        ' continue    ',
+        ' | early efficacy',
         '\n\r'
     ))
     x1 <- c(x$c1f - sqrt(.Machine$double.eps), scaled_integration_pivots(x$design), x$c1e + sqrt(.Machine$double.eps))
     n2 <- n2(x$design, x1)
     c2 <- c2(x$design, x1)
     maxlength <- max(nchar('n2(x1)'),
-                     max(sapply(names(x$uncond_scores), nchar)),
-                     max(sapply(names(x$cond_scores), nchar)))
+                     ifelse(length(x$uncond_scores > 0), max(sapply(names(x$uncond_scores), nchar)), 0),
+                     ifelse(length(x$cond_scores > 0), max(sapply(names(x$cond_scores), nchar)) + 4, 0))
     len <- maxlength - nchar('x1')
     cat(glue::glue('  {strrep(" ", len)}','x1: '))
     cat(paste0(
@@ -571,12 +581,12 @@ print.TwoStageDesignSummary <- function(x, ..., rounded = TRUE) {
     cat('\n\r')
     if (length(x$cond_scores) > 0) {
         for (i in 1:length(x$cond_scores)) {
-            len <- maxlength - nchar(names(x$cond_scores)[i])
-            cat(glue::glue('  {strrep(" ", len)}','{names(x$cond_scores)[i]}: '))
-            cat(paste0(
-                sprintf("%5.2f", sapply(x1, function(y) evaluate(x$cond_scores[[i]], x$design, y))),
-                collapse = ' '
-            ))
+            len <- maxlength - nchar(names(x$cond_scores)[i]) - 4
+            cat(glue::glue('  {strrep(" ", len)}','{names(x$cond_scores)[i]}(x1): '))
+             cat(paste0(
+                sprintf("%5.2f", sapply(x1[-c(1, length(x1))], function(y) evaluate(x$cond_scores[[i]], x$design, y))),
+                collapse = " ")
+            )
             cat('\n\r')
         }
     }
