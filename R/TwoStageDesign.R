@@ -584,7 +584,7 @@ print.TwoStageDesignSummary <- function(x, ..., rounded = TRUE) {
             len <- maxlength - nchar(names(x$cond_scores)[i]) - 4
             cat(glue::glue('  {strrep(" ", len)}','{names(x$cond_scores)[i]}(x1): '))
              cat(paste0(
-                sprintf("%5.2f", sapply(x1[-c(1, length(x1))], function(y) evaluate(x$cond_scores[[i]], x$design, y))),
+                sprintf("%5.2f", sapply(x1, function(y) evaluate(x$cond_scores[[i]], x$design, y))),
                 collapse = " ")
             )
             cat('\n\r')
