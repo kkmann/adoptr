@@ -5,8 +5,6 @@ context("check minimize()")
 # preliminaries
 order <- 5L
 
-initial_design <- TwoStageDesign(25, 0, 2, rep(35.0, order), rep(1.96, order))
-
 null        <- PointMassPrior(.0, 1)
 alternative <- PointMassPrior(.4, 1)
 datadist    <- Normal(two_armed = FALSE)
@@ -19,6 +17,8 @@ toer  <- Power(datadist, null)
 
 alpha <- 0.05
 beta  <- 0.2
+
+initial_design <- get_initial_design(.4, alpha, beta, "two-stage", datadist, order)
 
 
 
@@ -80,7 +80,7 @@ test_that("Optimal one-stage design can be computed", {
             pow  >= 1 - beta,
             toer <= alpha
         ),
-        initial_design = OneStageDesign(100, 1.97)
+        initial_design = get_initial_design(.4, alpha, beta, "one-stage", datadist, order)
     )
 
     expect_equal(
@@ -99,7 +99,7 @@ test_that("Optimal one-stage design can be computed", {
 
 test_that("Optimal group-sequential design is computable", {
 
-    initial_design_gs <- GroupSequentialDesign(25, 0, 2, 35, 1.96, order)
+    initial_design_gs <- get_initial_design(.4, alpha, beta, "group-sequential", datadist, order)
 
     opt_gs <<- minimize(
         ess,
