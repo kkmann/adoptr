@@ -3,7 +3,7 @@ context("check minimize()")
 
 
 # preliminaries
-order <- 9L
+order <- 5L
 
 initial_design <- TwoStageDesign(25, 0, 2, rep(35.0, order), rep(1.96, order))
 

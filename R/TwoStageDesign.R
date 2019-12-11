@@ -539,19 +539,25 @@ print.TwoStageDesignSummary <- function(x, ..., rounded = TRUE) {
         'early-futility = {sprintf("%4.2f", x$c1f)} < X1 < {sprintf("%4.2f", x$c1e)} = early-efficacy',
         '\n\r'
     ))
-    x1 <- scaled_integration_pivots(x$design)
+    x1 <- c(x$c1f - sqrt(.Machine$double.eps), scaled_integration_pivots(x$design), x$c1e + sqrt(.Machine$double.eps))
     n2 <- n2(x$design, x1)
     c2 <- c2(x$design, x1)
-    cat('  n2(x1-pivot): ')
+    cat('      x1: ')
     cat(paste0(
-        sprintf('%4i(%4.2f)', n2, x1),
-        collapse = ', '
+        sprintf('%5.2f', x1),
+        collapse = ' '
     ))
     cat('\n\r')
-    cat('  c2(x1-pivot): ')
+    cat('  c2(x1): ')
     cat(paste0(
-        sprintf('%4.2f(%4.2f)', c2, x1),
-        collapse = ', '
+        sprintf('%+5.2f', c2),
+        collapse = ' '
+    ))
+    cat('\n\r')
+    cat('  n2(x1): ')
+    cat(paste0(
+        sprintf('%5i', n2),
+        collapse = ' '
     ))
     cat('\n\r')
     if (length(x$scores) > 0) {
