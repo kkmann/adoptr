@@ -554,7 +554,7 @@ print.TwoStageDesignSummary <- function(x, ..., rounded = TRUE) {
                      ifelse(length(x$uncond_scores) > 0, max(sapply(names(x$uncond_scores), nchar)), 0),
                      ifelse(length(x$cond_scores) > 0, max(sapply(names(x$cond_scores), nchar)) + 4, 0))
     len <- maxlength - nchar('futility')
-    len2 <- max(nchar(paste0(sprintf("%5.2f", c2[- c(1, length(c2))]), collapse = " ")) -
+    len2 <- max(nchar(paste0(sprintf("%+5.2f", c2[- c(1, length(c2))]), collapse = " ")) -
         nchar("continue"), 0)
     cat('  ')
     cat(strrep(" ", len + 7 + space))
@@ -578,11 +578,11 @@ print.TwoStageDesignSummary <- function(x, ..., rounded = TRUE) {
     len <- maxlength - nchar('c2(x1)')
     cat('  ')
     cat(glue::glue('{strrep(" ", len)}','c2(x1):', '{strrep(" ", space)}',
-                   ' {sprintf("%5.2f", c2[1])} | ',
+                   ' {sprintf("%+5.2f", c2[1])} | ',
                    '{paste0(
-                           sprintf("%5.2f", c2[- c(1, length(c2))]),
+                           sprintf("%+5.2f", c2[- c(1, length(c2))]),
                            collapse = " ")}',
-                   ' | {sprintf("%5.2f", c2[length(c2)])}',
+                   ' | {sprintf("%+5.2f", c2[length(c2)])}',
                    '\n\r'))
     len <- maxlength - nchar('n2(x1)')
     cat('  ')
