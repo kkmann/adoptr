@@ -512,20 +512,23 @@ setMethod("plot", signature(x = "TwoStageDesign"),
 setMethod("summary", signature("TwoStageDesign"),
           function(object, ..., rounded = TRUE) {
               scores <- list(...)
-              if (!all(sapply(scores, function(s) is(s, "UnconditionalScore"))))
-                  stop("optional arguments must be UnconditionalScores")
+              if (!all(sapply(scores, function(s) is(s, "Score"))))
+                  stop("optional arguments must be Scores")
+              cond_scores   <- scores[which(sapply(scores, function(x) is(x,"ConditionalScore")))]
+              uncond_scores <- scores[which(sapply(scores, function(x) is(x,"UnconditionalScore")))]
               res <- list(
-                  design      = object,
-                  scores      = sapply(scores, function(s) evaluate(s, object, optimization = !rounded, ...)),
-                  n1          = object@n1,
-                  c1f         = object@c1f,
-                  c1e         = object@c1e,
-                  n2_pivots   = object@n2_pivots,
-                  c2_pivots   = object@c2_pivots
+                  design        = object,
+                  uncond_scores = sapply(uncond_scores, function(s) evaluate(s, object, optimization = !rounded, ...)),
+                  cond_scores   = cond_scores,
+                  n1            = object@n1,
+                  c1f           = object@c1f,
+                  c1e           = object@c1e,
+                  n2_pivots     = object@n2_pivots,
+                  c2_pivots     = object@c2_pivots
               )
-              names(res$scores)      <- names(scores)
-          #    names(res$first_stage) <- c("n1", "c1f", "c1e")
-              class(res)             <- c("TwoStageDesignSummary", "list")
+              names(res$uncond_scores) <- names(uncond_scores)
+              names(res$cond_scores)   <- names(cond_scores)
+              class(res)               <- c("TwoStageDesignSummary", "list")
               return(res)
           })
 
@@ -536,34 +539,50 @@ print.TwoStageDesignSummary <- function(x, ..., rounded = TRUE) {
     cat(glue::glue(
         '{class(x$design)}: ',
         'n1 = {sprintf("%3i", n1(x$design))}; ',
-        'early-futility = {sprintf("%4.2f", x$c1f)} < X1 < {sprintf("%4.2f", x$c1e)} = early-efficacy',
+        #'early-futility = {sprintf("%4.2f", x$c1f)} < X1 < {sprintf("%4.2f", x$c1e)} = early-efficacy',
         '\n\r'
     ))
     x1 <- c(x$c1f - sqrt(.Machine$double.eps), scaled_integration_pivots(x$design), x$c1e + sqrt(.Machine$double.eps))
     n2 <- n2(x$design, x1)
     c2 <- c2(x$design, x1)
-    cat('      x1: ')
+    maxlength <- max(nchar('n2(x1)'),
+                     max(sapply(names(x$uncond_scores), nchar)),
+                     max(sapply(names(x$cond_scores), nchar)))
+    len <- maxlength - nchar('x1')
+    cat(glue::glue('  {strrep(" ", len)}','x1: '))
     cat(paste0(
         sprintf('%5.2f', x1),
         collapse = ' '
     ))
     cat('\n\r')
-    cat('  c2(x1): ')
+    len <- maxlength - nchar('c2(x1)')
+    cat(glue::glue('  {strrep(" ", len)}','c2(x1): '))
     cat(paste0(
         sprintf('%+5.2f', c2),
         collapse = ' '
     ))
     cat('\n\r')
-    cat('  n2(x1): ')
+    len <- maxlength - nchar('n2(x1)')
+    cat(glue::glue('  {strrep(" ", len)}','n2(x1): '))
     cat(paste0(
         sprintf('%5i', n2),
         collapse = ' '
     ))
     cat('\n\r')
-    if (length(x$scores) > 0) {
-        maxlength <- max(sapply(names(x$scores), nchar))
-        for (i in 1:length(x$scores)) {
-            cat(sprintf(glue::glue('%{maxlength+2}s: %10.3f\n\r'), names(x$scores)[i], x$scores[i]))
+    if (length(x$cond_scores) > 0) {
+        for (i in 1:length(x$cond_scores)) {
+            len <- maxlength - nchar(names(x$cond_scores)[i])
+            cat(glue::glue('  {strrep(" ", len)}','{names(x$cond_scores)[i]}: '))
+            cat(paste0(
+                sprintf("%5.2f", sapply(x1, function(y) evaluate(x$cond_scores[[i]], x$design, y))),
+                collapse = ' '
+            ))
+            cat('\n\r')
+        }
+    }
+    if (length(x$uncond_scores) > 0) {
+        for (i in 1:length(x$uncond_scores)) {
+            cat(sprintf(glue::glue('%{maxlength+2}s: %10.3f\n\r'), names(x$uncond_scores)[i], x$uncond_scores[i]))
         }
     }
 }
