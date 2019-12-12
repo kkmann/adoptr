@@ -550,52 +550,55 @@ print.TwoStageDesignSummary <- function(x, ..., rounded = TRUE) {
     x1 <- c(x$c1f - sqrt(.Machine$double.eps), scaled_integration_pivots(x$design), x$c1e + sqrt(.Machine$double.eps))
     n2 <- sapply(x1, function(y) n2(x$design, y))
     c2 <- sapply(x1, function(y) c2(x$design, y))
+
+    # compute maximal length of rownames
     maxlength <- max(nchar('futility'),
                      ifelse(length(x$uncond_scores) > 0, max(sapply(names(x$uncond_scores), nchar)), 0),
                      ifelse(length(x$cond_scores) > 0, max(sapply(names(x$cond_scores), nchar)) + 4, 0))
-    len <- maxlength - nchar('futility')
+
+    # add columnnames such that 'continue' is centered
+    len  <- maxlength - nchar('futility')
     len2 <- max(nchar(paste0(sprintf("%+5.2f", c2[- c(1, length(c2))]), collapse = " ")) -
         nchar("continue"), 0)
-    cat('  ')
-    cat(strrep(" ", len + 7 + space))
-    cat(glue::glue(
-        'futility |',
-        '{strrep(" ", ceiling(len2/2))}',
-        ' continue ',
-        '{strrep(" ", floor(len2/2))}',
-        '| efficacy',
-        '\n\r'
-    ))
+    cat(glue::glue(' ',
+                   '{strrep(" ", len + 7 + space)}',
+                   'futility |',
+                   '{strrep(" ", ceiling(len2/2))}',
+                   ' continue ',
+                   '{strrep(" ", floor(len2/2))}',
+                   '| efficacy',
+                   '\n\r'))
+
     len <- maxlength - nchar('x1')
-    cat('  ')
-    cat(glue::glue('{strrep(" ", len)}','x1:', '{strrep(" ", space)}',
+    cat(glue::glue(' ','{strrep(" ", len)}','x1:', '{strrep(" ", space)}',
                    ' {sprintf("%5.2f", x1[1])} | ',
                    '{paste0(
                            sprintf("%5.2f", x1[- c(1, length(x1))]),
                            collapse = " ")}',
                    ' | {sprintf("%5.2f", x1[length(x1)])}',
                    '\n\r'))
+
     len <- maxlength - nchar('c2(x1)')
-    cat('  ')
-    cat(glue::glue('{strrep(" ", len)}','c2(x1):', '{strrep(" ", space)}',
+    cat(glue::glue(' ', '{strrep(" ", len)}','c2(x1):', '{strrep(" ", space)}',
                    ' {sprintf("%+5.2f", c2[1])} | ',
                    '{paste0(
                            sprintf("%+5.2f", c2[- c(1, length(c2))]),
                            collapse = " ")}',
                    ' | {sprintf("%+5.2f", c2[length(c2)])}',
                    '\n\r'))
+
     len <- maxlength - nchar('n2(x1)')
-    cat('  ')
-    cat(glue::glue('{strrep(" ", len)}','n2(x1):', '{strrep(" ", space)}',
+    cat(glue::glue(' ','{strrep(" ", len)}','n2(x1):', '{strrep(" ", space)}',
                    ' {sprintf("%5i", n2[1])} | ',
                    '{paste0(
                            sprintf("%5i", n2[- c(1, length(n2))]),
                            collapse = " ")}',
                    ' | {sprintf("%5i", n2[length(n2)])}',
                    '\n\r'))
+
     if (length(x$cond_scores) > 0) {
         for (i in 1:length(x$cond_scores)) {
-            len <- maxlength - nchar(names(x$cond_scores)[i]) - 2
+            len <- maxlength - nchar(names(x$cond_scores)[i]) - nchar('(x1)')
             cat(glue::glue('{strrep(" ", len)}','{names(x$cond_scores)[i]}(x1):', '{strrep(" ", space)}',
                            ' {sprintf("%5.2f", evaluate(x$cond_scores[[i]], x$design, x1[1]))} | ',
                            '{paste0(
@@ -605,9 +608,10 @@ print.TwoStageDesignSummary <- function(x, ..., rounded = TRUE) {
                            '\n\r'))
         }
     }
+
     if (length(x$uncond_scores) > 0) {
         for (i in 1:length(x$uncond_scores)) {
-            cat(sprintf(glue::glue('%{maxlength+2}s: %10.3f\n\r'), names(x$uncond_scores)[i], x$uncond_scores[i]))
+            cat(sprintf(glue::glue('%{maxlength}s: %10.3f\n\r'), names(x$uncond_scores)[i], x$uncond_scores[i]))
         }
     }
 }
