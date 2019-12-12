@@ -115,6 +115,57 @@ print.adoptrOptimizationResult <- function(x, ...) {
 
 
 
+#' Initial design
+#'
+#' The optimization method \code{\link{minimize}} requires an initial
+#' design for optimization.
+#' The function \code{get_initial_design} provides an initial guess based on a
+#' fixed design that fulfills constraints on type I error rate and power.
+#' Note that a situation-specific initial design may be much more efficient.
+#'
+#' @param theta the alternative effect size
+#' @param alpha maximal type I error rate
+#' @param beta maximale type II error rate
+#' @param type is a two-stage, group-sequential, or one-stage design requried?
+#' @param dist distribution of the test statistic
+#' @param order desired integration order
+#' @template dotdotdot
+#'
+#' @details
+#' The distribution of the test statistic is specified by \code{dist}.
+#' The default assumes a two-armed z-test.
+#'
+#' @examples
+#' init <- get_initial_design(
+#'    theta = 0.3,
+#'    alpha = 0.025,
+#'    beta  = 0.2,
+#'    type  = "two-stage",
+#'    dist  = Normal(two_armed = FALSE),
+#'    order = 7L
+#' )
+#'
+#' @export
+get_initial_design <- function(theta, alpha, beta,
+                               type = c("two-stage", "group-sequential", "one-stage"),
+                               dist = Normal(), order = 7L, ...) {
+    type <- match.arg(type)
+    if (alpha <= 0 || alpha >= 1 || beta <= 0 || beta >= 1)
+        stop("alpha and beta must be in (0, 1)!")
+    theta <- ifelse(dist@two_armed, theta / sqrt(2), theta)
+    c     <- quantile(dist, 1 - alpha, 1, 0)
+    n     <- 2 * (c + quantile(dist, 1 - beta, 1, 0))^2 / theta^2
+    if (type == "one-stage")
+        return(OneStageDesign(n, c))
+    else if (type == "group-sequential")
+        return(GroupSequentialDesign(n/2, 0, quantile(dist, 1 - alpha/2, 1, 0), n/2, c, order))
+    else if (type == "two-stage")
+        return(TwoStageDesign(n/2, 0, quantile(dist, 1 - alpha/2, 1, 0), n/2, c, order))
+}
+
+
+
+
 
 #' Boundary designs
 #'
