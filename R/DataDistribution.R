@@ -53,6 +53,9 @@ setGeneric("probability_density_function", function(dist, x, n, theta, ...) stan
 setGeneric("cumulative_distribution_function", function(dist, x, n, theta, ...) standardGeneric("cumulative_distribution_function"))
 
 
+setMethod("show", signature(object = "DataDistribution"), function(object) {
+    cat(print(object), "\n")
+})
 
 
 
@@ -167,9 +170,6 @@ setMethod("print", signature('Normal'), function(x, ...) {
     )
 })
 
-setMethod("show", signature(object = "DataDistribution"), function(object) {
-    cat(print(object), "\n")
-})
 
 
 
