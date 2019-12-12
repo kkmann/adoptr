@@ -123,17 +123,18 @@ To complete the problem specification, we only need to provide an initial
 design and an integration order for the Gaussian quadrature rule to be used for
 the numerical integration of the variational objective between $c_1^f$ and 
 $c_1^e$.
-For the initial design, we simply set the stage-one sample size to half the 
-sample size of the t-test and we use a rule of order 7:
-
+**adoptr** provides a heuristic method to obtain an initial design.
+It is based on a one-stage design under specific constraints on type one error
+rate and power.
+However, it may be more efficient to use a situation-specific initial design.
 ```{r create-design}
-initial_design <- TwoStageDesign(
-    n1    = 25,
-    c1f   = 0,
-    c1e   = 2.5,
-    n2    = 50, 
-    c2    = 1.96,
-    order = 7L
+initial_design <- get_initial_design(
+  theta = .4,
+  alpha = .025,
+  beta  = .2,
+  type  = "two-stage",
+  dist  = datadist,
+  order = 7L
 )
 ```
 
