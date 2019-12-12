@@ -127,13 +127,13 @@ test_that("Approximation works in evaluate", {
     expect_equal(
         evaluate(Power(dist, H_1), design),
         1 - beta,
-        tolerance = 1 / sqrt(iters), scale = 1
+        tolerance = 1e-3, scale = 1
     )
 
     expect_equal(
         evaluate(Power(dist, H_0), design),
         alpha,
-        tolerance = 1 / sqrt(iters), scale = 1
+        tolerance = 1e-3, scale = 1
     )
 
 })
