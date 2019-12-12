@@ -185,16 +185,18 @@ setMethod("show", signature(object = "DataDistribution"), function(object) {
 #' where \ifelse{html}{\out{r<sub>E</sub>}}{\eqn{r_E}} denotes the response rate
 #' in the invervention group.
 #' It is tested against the alternative
-#' \ifelse{html}{\out{r<sub>E</sub> > r<sub>E</sub>}}{\eqn{r_E > r_C}}
+#' \ifelse{html}{\out{r<sub>E</sub> > r<sub>E</sub>}}{\eqn{r_E > r_C}}.
+#' The test statistic is given as
+#' \ifelse{html}{\out{X<sub>1</sub> = (r<sub>E</sub> - r<sub>C</sub>) / &radic;(2  r<sub>0</sub> (1-r<sub>0</sub>))}}{\eqn{X_1 = (r_E - r_C) / \sqrt{2 r_0 (1- r_0)}}},
+#' where \ifelse{html}{\out{r<sub>0</sub>}}{\eqn{r_0}} denotes the mean between
+#' \ifelse{html}{\out{r<sub>E</sub>}}{\eqn{r_E}} and
+#' \ifelse{html}{\out{r<sub>C</sub>}}{\eqn{r_C}} in the two-armed case,
+#' and \ifelse{html}{\out{r<sub>E</sub>}}{\eqn{r_E}} in the one-armed case.
 #'
 #' All priors have to be defined for the rate difference
 #' \ifelse{html}{\out{r<sub>E</sub> - r<sub>C</sub>}}{\eqn{r_E - r_C}}.
 #'
-#' \code{Binomial} contains the standard deviation under the null hypothesis
-#' to save runtime.
-#'
 #' @slot rate_control assumed response rate in control group
-#' @slot sigma_0 standard deviation of rate difference under the null hypothesis
 #'
 #' @template DataDistributionTemplate
 #'
@@ -202,7 +204,6 @@ setMethod("show", signature(object = "DataDistribution"), function(object) {
 #' @exportClass Binomial
 setClass("Binomial", representation(
     rate_control = "numeric",
-    sigma_0      = "numeric",
     two_armed    = "logical"
 ),
 contains = "DataDistribution")
@@ -221,11 +222,9 @@ contains = "DataDistribution")
 #' @rdname BinomialDataDistribution-class
 #' @export
 Binomial <- function(rate_control, two_armed = TRUE) {
-    if(rate_control >= 1 || rate_control <= 0)
+    if (rate_control >= 1 || rate_control <= 0)
         stop("The response rate in the control group must be in (0,1)!")
-    sigma_0 = 2 * sqrt(rate_control * (1 - rate_control))
-    sigma_0 = ifelse(two_armed, sigma_0, sigma_0 / 2)
-    new("Binomial", rate_control = rate_control, two_armed = two_armed, sigma_0 = sigma_0)
+    new("Binomial", rate_control = rate_control, two_armed = two_armed)
 }
 
 
@@ -243,12 +242,14 @@ Binomial <- function(rate_control, two_armed = TRUE) {
 setMethod("probability_density_function", signature("Binomial", "numeric", "numeric", "numeric"),
           function(dist, x, n, theta, ...) {
               rate_intervention <- theta + dist@rate_control
-              if(rate_intervention >= 1 || rate_intervention <= 0)
+              if (rate_intervention >= 1 || rate_intervention <= 0)
                   stop("The response rate in the intervention group must be in (0,1)! Probably the combination of prior and control rate is ill-defined.")
-              sigma_A <- ifelse(dist@two_armed,
-                                sqrt(2 * (dist@rate_control * (1 - dist@rate_control) + rate_intervention * (1 - rate_intervention))),
-                                sqrt(rate_intervention * (1 - rate_intervention)))
-              return(stats::dnorm(x, mean = sqrt(n) * theta / dist@sigma_0, sd = sigma_A / dist@sigma_0))
+              r_0 <- ifelse(dist@two_armed,
+                            (dist@rate_control + rate_intervention) / 2,
+                            rate_intervention / 2)
+              sigma <- sqrt(2 * r_0 * (1 - r_0))
+
+              return(stats::dnorm(x, mean = sqrt(n) * theta / sigma, sd = 1))
           })
 
 
@@ -266,12 +267,14 @@ setMethod("probability_density_function", signature("Binomial", "numeric", "nume
 setMethod("cumulative_distribution_function", signature("Binomial", "numeric", "numeric", "numeric"),
           function(dist, x, n, theta, ...) {
               rate_intervention <- theta + dist@rate_control
-              if(rate_intervention >= 1 || rate_intervention <= 0)
+              if (rate_intervention >= 1 || rate_intervention <= 0)
                   stop("The response rate in the intervention group must be in (0,1)! Probably the combination of prior and control rate is ill-defined.")
-              sigma_A <- ifelse(dist@two_armed,
-                                sqrt(2 * (dist@rate_control * (1 - dist@rate_control) + rate_intervention * (1 - rate_intervention))),
-                                sqrt(rate_intervention * (1 - rate_intervention)))
-              return(stats::pnorm(x, mean = sqrt(n) * theta / dist@sigma_0, sd = sigma_A / dist@sigma_0))
+              r_0 <- ifelse(dist@two_armed,
+                            (dist@rate_control + rate_intervention) / 2,
+                            rate_intervention / 2)
+              sigma <- sqrt(2 * r_0 * (1 - r_0))
+
+              return(stats::pnorm(x, mean = sqrt(n) * theta / sigma, sd = 1))
           })
 
 
@@ -281,13 +284,16 @@ setMethod("cumulative_distribution_function", signature("Binomial", "numeric", "
 #' @export
 setMethod("quantile", signature("Binomial"),
           function(x, probs, n, theta, ...) { # must be x to conform with generic
-              rate_intervention <- theta + dist@rate_control
-              if(rate_intervention >= 1 || rate_intervention <= 0)
+              rate_intervention <- theta + x@rate_control
+              if (rate_intervention >= 1 || rate_intervention <= 0)
                   stop("The response rate in the intervention group must be in (0,1)! Probably the combination of prior and control rate is ill-defined.")
-              sigma_A <- ifelse(dist@two_armed,
-                                sqrt(2 * (dist@rate_control * (1 - dist@rate_control) + rate_intervention * (1 - rate_intervention))),
-                                sqrt(rate_intervention * (1 - rate_intervention)))
-              return(stats::qnorm(probs, mean = sqrt(n) * theta / dist@sigma_0, sd = sigma_A / dist@sigma_0))
+
+              r_0 <- ifelse(x@two_armed,
+                            (x@rate_control + rate_intervention) / 2,
+                            rate_intervention / 2)
+              sigma <- sqrt(2) * sqrt(r_0 * (1 - r_0))
+
+              return(stats::qnorm(probs, mean = sqrt(n) * theta / sigma, sd = 1))
           })
 
 
@@ -305,16 +311,18 @@ setMethod("quantile", signature("Binomial"),
 setMethod("simulate", signature("Binomial", "numeric"),
           function(object, nsim, n, theta, seed = NULL, ...) {
               rate_intervention <- theta + object@rate_control
-              if(rate_intervention >= 1 || rate_intervention <= 0)
+              if (rate_intervention >= 1 || rate_intervention <= 0)
                   stop("The response rate in the intervention group must be in (0,1)! Probably the combination of prior and control rate is ill-defined.")
-              sigma_A <- ifelse(object@two_armed,
-                                sqrt(2 * (object@rate_control * (1 - object@rate_control) + rate_intervention * (1 - rate_intervention))),
-                                sqrt(rate_intervention * (1 - rate_intervention)))
+
+              r_0 <- ifelse(object@two_armed,
+                            (object@rate_control + rate_intervention) / 2,
+                            rate_intervention / 2)
+              sigma <- sqrt(2) * sqrt(r_0 * (1 - r_0))
 
               if (!is.null(seed))
                   set.seed(seed)
 
-              stats::rnorm(nsim, mean = sqrt(n) * theta / object@sigma_0, sd = sigma_A / object@sigma_0)
+              stats::rnorm(nsim, mean = sqrt(n) * theta / sigma, sd = 1)
 })
 
 

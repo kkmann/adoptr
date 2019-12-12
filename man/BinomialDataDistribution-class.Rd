@@ -45,14 +45,17 @@ The null hypothesis is:
 where \ifelse{html}{\out{r<sub>E</sub>}}{\eqn{r_E}} denotes the response rate
 in the invervention group.
 It is tested against the alternative
-\ifelse{html}{\out{r<sub>E</sub> > r<sub>E</sub>}}{\eqn{r_E > r_C}}
+\ifelse{html}{\out{r<sub>E</sub> > r<sub>E</sub>}}{\eqn{r_E > r_C}}.
+The test statistic is given as
+\ifelse{html}{\out{X<sub>1</sub> = (r<sub>E</sub> - r<sub>C</sub>) / &radic;(2  r<sub>0</sub> (1-r<sub>0</sub>))}}{\eqn{X_1 = (r_E - r_C) / \sqrt{2 r_0 (1- r_0)}}},
+where \ifelse{html}{\out{r<sub>0</sub>}}{\eqn{r_0}} denotes the mean between
+\ifelse{html}{\out{r<sub>E</sub>}}{\eqn{r_E}} and
+\ifelse{html}{\out{r<sub>C</sub>}}{\eqn{r_C}} in the two-armed case,
+and \ifelse{html}{\out{r<sub>E</sub>}}{\eqn{r_E}} in the one-armed case.
 }
 \details{
 All priors have to be defined for the rate difference
 \ifelse{html}{\out{r<sub>E</sub> - r<sub>C</sub>}}{\eqn{r_E - r_C}}.
-
-\code{Binomial} contains the standard deviation under the null hypothesis
-to save runtime.
 
 Note that \code{simulate} for class \code{Binomial} simulates the
    normal approximation of the test statistic.
@@ -61,8 +64,6 @@ Note that \code{simulate} for class \code{Binomial} simulates the
 
 \describe{
 \item{\code{rate_control}}{assumed response rate in control group}
-
-\item{\code{sigma_0}}{standard deviation of rate difference under the null hypothesis}
 }}
 
 \examples{
