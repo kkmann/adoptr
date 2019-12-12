@@ -94,8 +94,12 @@ H_1 <- PointMassPrior(.4, 1)
 ```
 
 Next, we define the data-generating mechanism (data distribution).
-Currently, only normally distributed test statistics with known variance are
-supported.
+Currently, normally distributed test statistics with known variance,
+and the normal approximation of binary endpoints are supported.
+In this example, we choose a normal distribution, i.e., assume a continuous
+outcome.
+For an example with binomial data distribution, cf. the vignette
+[composite scores](https://kkmann.github.io/adoptr/articles/composite-scores.html).
 
 ```{r define data-gernerating-mechanism}
 datadist <- Normal(two_armed = FALSE)

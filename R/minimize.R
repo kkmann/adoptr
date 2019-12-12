@@ -153,8 +153,12 @@ get_initial_design <- function(theta, alpha, beta,
     if (alpha <= 0 || alpha >= 1 || beta <= 0 || beta >= 1)
         stop("alpha and beta must be in (0, 1)!")
     theta <- ifelse(dist@two_armed, theta / sqrt(2), theta)
+    if (is(dist, "Binomial")) {
+        p_0   <- (theta + dist@rate_control + dist@rate_control) / 2
+        theta <- theta / sqrt(p_0 * (1 - p_0))
+    }
     c     <- quantile(dist, 1 - alpha, 1, 0)
-    n     <- 2 * (c + quantile(dist, 1 - beta, 1, 0))^2 / theta^2
+    n     <- floor(2 * (c + quantile(dist, 1 - beta, 1, 0))^2 / theta^2)
     if (type == "one-stage")
         return(OneStageDesign(n, c))
     else if (type == "group-sequential")

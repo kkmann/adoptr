@@ -3,11 +3,14 @@
 \name{cumulative_distribution_function}
 \alias{cumulative_distribution_function}
 \alias{cumulative_distribution_function,Normal,numeric,numeric,numeric-method}
+\alias{cumulative_distribution_function,Binomial,numeric,numeric,numeric-method}
 \title{Cumulative distribution function}
 \usage{
 cumulative_distribution_function(dist, x, n, theta, ...)
 
 \S4method{cumulative_distribution_function}{Normal,numeric,numeric,numeric}(dist, x, n, theta, ...)
+
+\S4method{cumulative_distribution_function}{Binomial,numeric,numeric,numeric}(dist, x, n, theta, ...)
 }
 \arguments{
 \item{dist}{a univariate \code{\link[=DataDistribution-class]{distribution}} object}
@@ -28,8 +31,16 @@ function of a specific distribution \code{dist} at a point \code{x}.
 If the distribution is \code{\link{Normal}}, then
   the mean is assumed to be
   \ifelse{html}{\out{&radic; n  theta}}{\eqn{\sqrt{n} theta}}.
+
+If the distribution is \code{\link{Binomial}},
+  \ifelse{html}{\out{theta}}{\eqn{theta}} denotes the rate difference between
+  intervention and control group.
+  Then, the mean is assumed to be
+  \ifelse{html}{\out{&radic; n  theta}}{\eqn{\sqrt{n} theta}}.
 }
 \examples{
 cumulative_distribution_function(Normal(), 1, 50, .3)
+
+cumulative_distribution_function(Binomial(.1, TRUE), 1, 50, .3)
 
 }

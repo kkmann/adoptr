@@ -6,8 +6,8 @@
 \usage{
 get_initial_design(
   theta,
-  alpha = 0.025,
-  beta = 0.2,
+  alpha,
+  beta,
   type = c("two-stage", "group-sequential", "one-stage"),
   dist = Normal(),
   order = 7L,
