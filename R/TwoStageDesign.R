@@ -512,22 +512,109 @@ setMethod("plot", signature(x = "TwoStageDesign"),
 setMethod("summary", signature("TwoStageDesign"),
           function(object, ..., rounded = TRUE) {
               scores <- list(...)
-              if (!all(sapply(scores, function(s) is(s, "UnconditionalScore"))))
-                  stop("optional arguments must be UnconditionalScores")
+              if (!all(sapply(scores, function(s) is(s, "Score"))))
+                  stop("optional arguments must be Scores")
+              if (length(scores) > 0) {
+                  cond_scores   <- scores[which(sapply(scores, function(x) is(x, "ConditionalScore")))]
+                  uncond_scores <- scores[which(sapply(scores, function(x) is(x, "UnconditionalScore")))]
+              } else {
+                  cond_scores   <- scores
+                  uncond_scores <- scores
+              }
               res <- list(
-                  design = object,
-                  scores = sapply(scores, function(s) evaluate(s, object, optimization = !rounded, ...))
+                  design        = object,
+                  uncond_scores = sapply(uncond_scores, function(s) evaluate(s, object, optimization = !rounded, ...)),
+                  cond_scores   = cond_scores,
+                  n1            = object@n1,
+                  c1f           = object@c1f,
+                  c1e           = object@c1e,
+                  n2_pivots     = object@n2_pivots,
+                  c2_pivots     = object@c2_pivots
               )
-              names(res$scores) <- names(scores)
-              class(res) <- c("TwoStageDesignSummary", "list")
+              names(res$uncond_scores) <- names(uncond_scores)
+              names(res$cond_scores)   <- names(cond_scores)
+              class(res)               <- c("TwoStageDesignSummary", "list")
               return(res)
           })
 
 
 
 #' @rawNamespace S3method(print, TwoStageDesignSummary)
-print.TwoStageDesignSummary <- function(x, ...) {
-    print(x$scores)
+print.TwoStageDesignSummary <- function(x, ..., rounded = TRUE) {
+    space <- 3
+    cat(glue::glue(
+        '{class(x$design)}: ',
+        'n1 = {sprintf("%3i", n1(x$design))} ',
+        '\n\r'
+    ))
+    x1 <- c(x$c1f - sqrt(.Machine$double.eps), scaled_integration_pivots(x$design), x$c1e + sqrt(.Machine$double.eps))
+    n2 <- sapply(x1, function(y) n2(x$design, y))
+    c2 <- sapply(x1, function(y) c2(x$design, y))
+
+    # compute maximal length of rownames
+    maxlength <- max(nchar('futility'),
+                     ifelse(length(x$uncond_scores) > 0, max(sapply(names(x$uncond_scores), nchar)), 0),
+                     ifelse(length(x$cond_scores) > 0, max(sapply(names(x$cond_scores), nchar)) + 4, 0))
+
+    # add columnnames such that 'continue' is centered
+    len  <- maxlength - nchar('futility')
+    len2 <- max(nchar(paste0(sprintf("%+5.2f", c2[- c(1, length(c2))]), collapse = " ")) -
+        nchar("continue"), 0)
+    cat(glue::glue(' ',
+                   '{strrep(" ", len + 7 + space)}',
+                   'futility |',
+                   '{strrep(" ", ceiling(len2/2))}',
+                   ' continue ',
+                   '{strrep(" ", floor(len2/2))}',
+                   '| efficacy',
+                   '\n\r'))
+
+    # start with design characteristics
+    len <- maxlength - nchar('x1')
+    cat(glue::glue(' ','{strrep(" ", len)}','x1:', '{strrep(" ", space)}',
+                   ' {sprintf("%5.2f", x1[1])} | ',
+                   '{paste0(
+                           sprintf("%5.2f", x1[- c(1, length(x1))]),
+                           collapse = " ")}',
+                   ' | {sprintf("%5.2f", x1[length(x1)])}',
+                   '\n\r'))
+
+    len <- maxlength - nchar('c2(x1)')
+    cat(glue::glue(' ', '{strrep(" ", len)}','c2(x1):', '{strrep(" ", space)}',
+                   ' {sprintf("%+5.2f", c2[1])} | ',
+                   '{paste0(
+                           sprintf("%+5.2f", c2[- c(1, length(c2))]),
+                           collapse = " ")}',
+                   ' | {sprintf("%+5.2f", c2[length(c2)])}',
+                   '\n\r'))
+
+    len <- maxlength - nchar('n2(x1)')
+    cat(glue::glue(' ','{strrep(" ", len)}','n2(x1):', '{strrep(" ", space)}',
+                   ' {sprintf("%5i", n2[1])} | ',
+                   '{paste0(
+                           sprintf("%5i", n2[- c(1, length(n2))]),
+                           collapse = " ")}',
+                   ' | {sprintf("%5i", n2[length(n2)])}',
+                   '\n\r'))
+
+    if (length(x$cond_scores) > 0) {
+        for (i in 1:length(x$cond_scores)) {
+            len <- maxlength - nchar(names(x$cond_scores)[i]) - nchar('(x1)')
+            cat(glue::glue('{strrep(" ", len)}','{names(x$cond_scores)[i]}(x1):', '{strrep(" ", space)}',
+                           ' {sprintf("%5.2f", evaluate(x$cond_scores[[i]], x$design, x1[1]))} | ',
+                           '{paste0(
+                           sprintf("%5.2f", sapply(x1[-c(1, length(x1))], function(y) evaluate(x$cond_scores[[i]], x$design, y))),
+                           collapse = " ")}',
+                           ' | {sprintf("%5.2f", evaluate(x$cond_scores[[i]], x$design, x1[length(x1)]))}',
+                           '\n\r'))
+        }
+    }
+
+    if (length(x$uncond_scores) > 0) {
+        for (i in 1:length(x$uncond_scores)) {
+            cat(sprintf(glue::glue('%{maxlength}s: %10.3f\n\r'), names(x$uncond_scores)[i], x$uncond_scores[i]))
+        }
+    }
 }
 
 

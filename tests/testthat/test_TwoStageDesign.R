@@ -63,9 +63,9 @@ test_that("errors are returned correctly", {
     expect_error(
         plot(design, rounded = TRUE, "Power" = pow))
 
-    # Conditional scores cannot be summarized
+    # only scores can be summarized
     expect_error(
-        summary(design, rounded = TRUE, "Conditional Power" = cp))
+        summary(design, rounded = TRUE, "Alternative" = PointMassPrior(.4, 1)))
 
 }) # end 'errors are returned correctly'
 
