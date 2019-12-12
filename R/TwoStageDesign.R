@@ -569,6 +569,7 @@ print.TwoStageDesignSummary <- function(x, ..., rounded = TRUE) {
                    '| efficacy',
                    '\n\r'))
 
+    # start with design characteristics
     len <- maxlength - nchar('x1')
     cat(glue::glue(' ','{strrep(" ", len)}','x1:', '{strrep(" ", space)}',
                    ' {sprintf("%5.2f", x1[1])} | ',
