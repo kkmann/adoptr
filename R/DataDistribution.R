@@ -7,8 +7,8 @@
 #' This abstraction layer allows the representation of t-distributions
 #' (unknown variance), normal distribution (known variance), and normal
 #' approximation of a binary endpoint.
-#' Currently, only the normal case is implemented with \code{\link{Normal-class}}.
-#'  TODO add binomial
+#' Currently, the two implemented versions are \code{\link{Normal-class}} and
+#' \code{\link{Binomial-class}}.
 #'
 #' The logical option \code{two_armed} allows to decide whether a one-arm or
 #' a two-arm (the default) design should be computed. In the case of a two-arm
@@ -17,7 +17,8 @@
 #' @slot two_armed Logical that indicates if a two-arm design is assumed.
 #'
 #' @examples
-#' datadist <- Normal(two_armed = FALSE)
+#' normaldist   <- Normal(two_armed = FALSE)
+#' binomialdist <- Binomial(rate_control = .25, two_armed = TRUE)
 #'
 #' @template DataDistributionTemplate
 #'
