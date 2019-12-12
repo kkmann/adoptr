@@ -166,6 +166,9 @@ function of a specific distribution <code>dist</code> at a point <code>x</code>.
     <pre class="usage"><span class='fu'>probability_density_function</span>(<span class='no'>dist</span>, <span class='no'>x</span>, <span class='no'>n</span>, <span class='no'>theta</span>, <span class='no'>...</span>)
 
 <span class='co'># S4 method for Normal,numeric,numeric,numeric</span>
+<span class='fu'>probability_density_function</span>(<span class='no'>dist</span>, <span class='no'>x</span>, <span class='no'>n</span>, <span class='no'>theta</span>, <span class='no'>...</span>)
+
+<span class='co'># S4 method for Binomial,numeric,numeric,numeric</span>
 <span class='fu'>probability_density_function</span>(<span class='no'>dist</span>, <span class='no'>x</span>, <span class='no'>n</span>, <span class='no'>theta</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -198,9 +201,15 @@ function of a specific distribution <code>dist</code> at a point <code>x</code>.
     <p>If the distribution is <code><a href='NormalDataDistribution-class.html'>Normal</a></code>, then
   the mean is assumed to be
   &radic; n  theta.</p>
+<p>If the distribution is <code><a href='BinomialDataDistribution-class.html'>Binomial</a></code>,
+  theta denotes the rate difference between
+  intervention and control group.
+  Then, the mean is assumed to be
+  &radic; n  theta.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>probability_density_function</span>(<span class='fu'><a href='NormalDataDistribution-class.html'>Normal</a></span>(), <span class='fl'>1</span>, <span class='fl'>50</span>, <span class='fl'>.3</span>)</div><div class='output co'>#&gt; [1] 0.3520653</div><div class='input'>
+<span class='fu'>probability_density_function</span>(<span class='fu'><a href='BinomialDataDistribution-class.html'>Binomial</a></span>(<span class='fl'>.2</span>, <span class='fl'>FALSE</span>), <span class='fl'>1</span>, <span class='fl'>50</span>, <span class='fl'>.3</span>)</div><div class='output co'>#&gt; [1] 0.002078107</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
