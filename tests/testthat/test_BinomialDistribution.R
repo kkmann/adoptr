@@ -20,11 +20,11 @@ test_that("Constructor works", {
 
 test_that("pdf is defined correctly", {
 
-    dist  <- Binomial(.1, FALSE)
+    dist  <- Binomial(.1, TRUE)
     x     <- seq(-3, 3, by = .1)
     n     <- 22
     theta <- .35
-    p_0   <- (theta + dist@rate_control) / 2
+    p_0   <- (theta + dist@rate_control + dist@rate_control) / 2
     expect_equal(
         probability_density_function(
             dist,
@@ -38,11 +38,11 @@ test_that("pdf is defined correctly", {
 
 test_that("cdf is defined correctly", {
 
-    dist  <- Binomial(.3, FALSE)
+    dist  <- Binomial(.3, TRUE)
     x     <- seq(-3, 3, by = .1)
     n     <- 120
     theta <- .02
-    p_0   <- (theta + dist@rate_control) / 2
+    p_0   <- (theta + dist@rate_control + dist@rate_control) / 2
     expect_equal(
         cumulative_distribution_function(
             dist,
@@ -60,13 +60,10 @@ test_that("quantile is defined correctly", {
     probs <- seq(.01, 1, by = .01)
     n     <- 99
     theta <- .125
-    p_0   <- (theta + dist@rate_control) / 2
+    p_0   <- dist@rate_control + theta
     expect_equal(
-        quantile(
-            dist,
-            probs, n, theta
-        ),
-        qnorm(probs, sqrt(n) * theta / sqrt(2 * p_0 * (1 - p_0)), 1),
+        quantile(dist, probs, n, theta),
+        qnorm(probs, sqrt(n) * theta / sqrt(p_0 * (1 - p_0)), 1),
         tolerance = 1e-6, scale = 1)
 
     expect_warning(

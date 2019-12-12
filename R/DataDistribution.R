@@ -247,8 +247,8 @@ setMethod("probability_density_function", signature("Binomial", "numeric", "nume
                   stop("The response rate in the intervention group must be in (0,1)! Probably the combination of prior and control rate is ill-defined.")
               r_0 <- ifelse(dist@two_armed,
                             (dist@rate_control + rate_intervention) / 2,
-                            rate_intervention / 2)
-              sigma <- sqrt(2 * r_0 * (1 - r_0))
+                            rate_intervention)
+              sigma <- ifelse(dist@two_armed, sqrt(2), 1) * sqrt(r_0 * (1 - r_0))
 
               return(stats::dnorm(x, mean = sqrt(n) * theta / sigma, sd = 1))
           })
@@ -272,8 +272,8 @@ setMethod("cumulative_distribution_function", signature("Binomial", "numeric", "
                   stop("The response rate in the intervention group must be in (0,1)! Probably the combination of prior and control rate is ill-defined.")
               r_0 <- ifelse(dist@two_armed,
                             (dist@rate_control + rate_intervention) / 2,
-                            rate_intervention / 2)
-              sigma <- sqrt(2 * r_0 * (1 - r_0))
+                            rate_intervention)
+              sigma <- ifelse(dist@two_armed, sqrt(2), 1) * sqrt(r_0 * (1 - r_0))
 
               return(stats::pnorm(x, mean = sqrt(n) * theta / sigma, sd = 1))
           })
@@ -291,8 +291,8 @@ setMethod("quantile", signature("Binomial"),
 
               r_0 <- ifelse(x@two_armed,
                             (x@rate_control + rate_intervention) / 2,
-                            rate_intervention / 2)
-              sigma <- sqrt(2) * sqrt(r_0 * (1 - r_0))
+                            rate_intervention)
+              sigma <- ifelse(x@two_armed, sqrt(2), 1) * sqrt(r_0 * (1 - r_0))
 
               return(stats::qnorm(probs, mean = sqrt(n) * theta / sigma, sd = 1))
           })
