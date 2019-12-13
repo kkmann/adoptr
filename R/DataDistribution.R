@@ -197,7 +197,7 @@ setMethod("print", signature('Normal'), function(x, ...) {
 #' All priors have to be defined for the rate difference
 #' \ifelse{html}{\out{r<sub>E</sub> - r<sub>C</sub>}}{\eqn{r_E - r_C}}.
 #'
-#' @slot rate_control assumed response rate in control group
+#' @slot rate_control cf. parameter 'rate_control'
 #'
 #' @template DataDistributionTemplate
 #'
@@ -210,7 +210,7 @@ setClass("Binomial", representation(
 contains = "DataDistribution")
 
 
-#' @param rate_control cf. slot 'rate_control'
+#' @param rate_control assumed response rate in control group
 #' @param two_armed logical indicating if a two-armed trial is regarded
 #'
 #' @examples
