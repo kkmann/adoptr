@@ -182,11 +182,11 @@ setMethod("print", signature('Normal'), function(x, ...) {
 #' \ifelse{html}{\out{r<sub>C</sub>}}{\eqn{r_C}}, has to be specified by
 #' \code{rate_control}.
 #' The null hypothesis is:
-#' \ifelse{html}{\out{r<sub>E</sub> &le; r<sub>E</sub>}}{\eqn{r_E <= r_C}},
+#' \ifelse{html}{\out{r<sub>E</sub> &le; r<sub>C</sub>}}{\eqn{r_E <= r_C}},
 #' where \ifelse{html}{\out{r<sub>E</sub>}}{\eqn{r_E}} denotes the response rate
 #' in the invervention group.
 #' It is tested against the alternative
-#' \ifelse{html}{\out{r<sub>E</sub> > r<sub>E</sub>}}{\eqn{r_E > r_C}}.
+#' \ifelse{html}{\out{r<sub>E</sub> > r<sub>C</sub>}}{\eqn{r_E > r_C}}.
 #' The test statistic is given as
 #' \ifelse{html}{\out{X<sub>1</sub> = (r<sub>E</sub> - r<sub>C</sub>) / &radic;(2  r<sub>0</sub> (1-r<sub>0</sub>))}}{\eqn{X_1 = (r_E - r_C) / \sqrt{2 r_0 (1- r_0)}}},
 #' where \ifelse{html}{\out{r<sub>0</sub>}}{\eqn{r_0}} denotes the mean between
