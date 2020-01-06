@@ -1,8 +1,7 @@
 # adoptr 0.3.1
 
-* TODO
-
-
+* added support for binomial endpoint
+* initial design creation more convenient
 
 # adoptr 0.3.0
 
