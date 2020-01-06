@@ -2,6 +2,7 @@
 
 * added support for binomial endpoint
 * initial design creation more convenient
+* extended summary() function for two stage designs
 
 # adoptr 0.3.0
 
