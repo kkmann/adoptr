@@ -16,6 +16,7 @@ r_packages:
   - pkgdown
 
 script:
+  - set -e
   - R CMD build .
   - travis_wait 60 R CMD check --as-cran *tar.gz
   - export PKG_TARBALL="$(find *.tar.gz)"
