@@ -54,11 +54,11 @@ The reponse rate in the control group,
 rC, has to be specified by
 rate_control.
 The null hypothesis is:
-rE &amp;le; rE,
+rE &amp;le; rC,
 where rE denotes the response rate
 in the invervention group.
 It is tested against the alternative
-rE &gt; rE.
+rE &gt; rC.
 The test statistic is given as
 X1 = (rE - rC) / &amp;radic;(2  r0 (1-r0)),
 where r0 denotes the mean between
@@ -178,11 +178,11 @@ The reponse rate in the control group,
 r<sub>C</sub>, has to be specified by
 <code>rate_control</code>.
 The null hypothesis is:
-r<sub>E</sub> &le; r<sub>E</sub>,
+r<sub>E</sub> &le; r<sub>C</sub>,
 where r<sub>E</sub> denotes the response rate
 in the invervention group.
 It is tested against the alternative
-r<sub>E</sub> > r<sub>E</sub>.
+r<sub>E</sub> > r<sub>C</sub>.
 The test statistic is given as
 X<sub>1</sub> = (r<sub>E</sub> - r<sub>C</sub>) / &radic;(2  r<sub>0</sub> (1-r<sub>0</sub>)),
 where r<sub>0</sub> denotes the mean between
@@ -204,7 +204,7 @@ and r<sub>E</sub> in the one-armed case.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>rate_control</th>
-      <td><p>cf. slot 'rate_control'</p></td>
+      <td><p>assumed response rate in control group</p></td>
     </tr>
     <tr>
       <th>two_armed</th>
@@ -255,7 +255,7 @@ r<sub>E</sub> - r<sub>C</sub>.</p>
     
 
 <dl class='dl-horizontal'>
-<dt><code>rate_control</code></dt><dd><p>assumed response rate in control group</p></dd>
+<dt><code>rate_control</code></dt><dd><p>cf. parameter 'rate_control'</p></dd>
 
 </dl>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
