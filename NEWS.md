@@ -1,3 +1,7 @@
+# adoptr 0.3.2
+
+* bugfix for binomial pdf/cdf
+
 # adoptr 0.3.1
 
 * added support for binomial endpoint
