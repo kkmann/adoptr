@@ -123,6 +123,24 @@ test_that("score vs score inequalities", {
 
 
 
+test_that("output of constraints can be of different length", {
+    toer <- Power(Normal(), PointMassPrior(0, 1))
+
+    setClass("C2Difference", contains = "UnconditionalScore")
+    C2Difference <- function() new("C2Difference")
+    setMethod("evaluate",
+              signature("C2Difference", "TwoStageDesign"),
+              function(s, design, optimization = FALSE, ...)
+                  diff(c2(design, scaled_integration_pivots(design)))
+    )
+    c2d <- C2Difference()
+
+    cnstrs <- subject_to(toer <= .025, c2d <= 0)
+
+    expect_equal(length(evaluate(cnstrs, design)), length(design@c2_pivots))
+})
+
+
 test_that("show method", {
 
     cp <- ConditionalPower(Normal(two_armed = FALSE), PointMassPrior(.4, 1))

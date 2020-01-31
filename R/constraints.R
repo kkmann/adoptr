@@ -204,13 +204,13 @@ subject_to <- function(...) {
 setMethod("evaluate", signature("ConstraintsCollection", "TwoStageDesign"),
           function(s, design, optimization = FALSE, ...) {
               x1_cont <- scaled_integration_pivots(design)
-              unconditional <- as.numeric(sapply(
+              unconditional <- as.numeric(unlist(sapply(
                   s@unconditional_constraints,
                   function(cnstr) evaluate(cnstr, design, optimization, ...)
-              ))
-              conditional <- as.numeric(sapply(
+              )))
+              conditional <- as.numeric(unlist(sapply(
                   s@conditional_constraints,
                   function(cnstr) evaluate(cnstr, design, x1_cont, optimization, ...)
-              ))
+              )))
               return(c(unconditional, conditional))
           })
