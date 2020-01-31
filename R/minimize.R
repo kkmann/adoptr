@@ -123,7 +123,8 @@ print.adoptrOptimizationResult <- function(x, ...) {
 #' fixed design that fulfills constraints on type I error rate and power.
 #' Note that a situation-specific initial design may be much more efficient.
 #'
-#' @param theta the alternative effect size
+#' @param theta the alternative effect size in the normal case, the
+#' rate difference under the alternative in the binomial case
 #' @param alpha maximal type I error rate
 #' @param beta maximale type II error rate
 #' @param type is a two-stage, group-sequential, or one-stage design requried?
@@ -152,9 +153,8 @@ get_initial_design <- function(theta, alpha, beta,
     type <- match.arg(type)
     if (alpha <= 0 || alpha >= 1 || beta <= 0 || beta >= 1)
         stop("alpha and beta must be in (0, 1)!")
-    theta <- ifelse(dist@two_armed, theta / sqrt(2), theta)
     if (is(dist, "Binomial")) {
-        p_0   <- (theta + dist@rate_control + dist@rate_control) / 2
+        p_0   <- dist@rate_control + theta / 2
         theta <- theta / sqrt(p_0 * (1 - p_0))
     }
     c     <- quantile(dist, 1 - alpha, 1, 0)
