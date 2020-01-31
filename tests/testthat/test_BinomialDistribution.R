@@ -145,9 +145,6 @@ test_that("Approximation works in simulate", {
     iters  <- 1e6
     test_statistic_H0 <- simulate(object = dist, nsim = iters, n = n, theta = 0, seed = 42)
     test_statistic_H1 <- simulate(object = dist, nsim = iters, n = n, theta = r_diff, seed = 42)
-    mean(test_statistic_H1 > c)
-    mean(test_statistic_H0 > c)
-
 
     expect_equal(
         mean(test_statistic_H1 > c),
