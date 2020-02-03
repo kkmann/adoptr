@@ -141,6 +141,10 @@ test_that("multiple points prior", {
         post@mass[2],# good outcome should shift mass to higher pivot
         post@mass[1])
 
+    expect_true(is(posterior(Normal(), PointMassPrior(c(0, .5), c(.5, .5)), -.1, 84),
+                "PointMassPrior")) # rounding issue in computing posterior
+
+
 })
 
 

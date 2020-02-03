@@ -33,7 +33,7 @@ setClass("PointMassPrior", representation(
 #' @rdname PointMassPrior-class
 #' @export
 PointMassPrior <- function(theta, mass, label = NA_character_) {
-    if (sum(mass) != 1)
+    if (round(sum(mass), 10) != 1)
         stop("mass must sum to one")
     new("PointMassPrior", theta = theta[order(theta)], mass = mass[order(theta)],
         label = label)
