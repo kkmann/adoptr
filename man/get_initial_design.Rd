@@ -15,7 +15,8 @@ get_initial_design(
 )
 }
 \arguments{
-\item{theta}{the alternative effect size}
+\item{theta}{the alternative effect size in the normal case, the
+rate difference under the alternative in the binomial case}
 
 \item{alpha}{maximal type I error rate}
 
