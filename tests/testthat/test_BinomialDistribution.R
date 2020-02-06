@@ -73,6 +73,15 @@ test_that("quantile is defined correctly", {
 })
 
 
+test_that("vectorization works", {
+    dist  <- Binomial(.3)
+    prior <- PointMassPrior(c(.3, .4), c(.4, .6))
+    expect_equal(
+        predictive_pdf(dist, prior, c(0, 1), 10),
+        sapply(c(0, 1), function(x) predictive_pdf(dist, prior, x, 10))
+    )
+})
+
 
 # Let us check if the statistical tests are working correctly
 r_c    <- .4

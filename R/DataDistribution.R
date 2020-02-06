@@ -245,9 +245,9 @@ setMethod("probability_density_function", signature("Binomial", "numeric", "nume
               if (any(rate_intervention >= 1, rate_intervention <= 0))
                   stop("The response rate in the intervention group must be in (0,1)! Probably the combination of prior and control rate is ill-defined.")
 
-              sigma_A <- sqrt(sum(c(rate_intervention * (1 - rate_intervention),
-                                    ifelse(dist@two_armed, dist@rate_control * (1 - dist@rate_control), 0))))
-              p_0     <- mean(c(rate_intervention, ifelse(dist@two_armed, dist@rate_control, rate_intervention)))
+              sigma_A <- sqrt(rate_intervention * (1 - rate_intervention) +
+                                  ifelse(dist@two_armed, dist@rate_control * (1 - dist@rate_control), 0))
+              p_0     <- (rate_intervention + ifelse(dist@two_armed, dist@rate_control, rate_intervention)) / 2
               sigma_0 <- sqrt(2 * p_0 * (1 - p_0))
 
               return(stats::dnorm(x, mean = sqrt(n) * theta / sigma_0, sd = sigma_A / sigma_0))
@@ -271,9 +271,9 @@ setMethod("cumulative_distribution_function", signature("Binomial", "numeric", "
               if (any(rate_intervention >= 1, rate_intervention <= 0))
                   stop("The response rate in the intervention group must be in (0,1)! Probably the combination of prior and control rate is ill-defined.")
 
-              sigma_A <- sqrt(sum(c(rate_intervention * (1 - rate_intervention),
-                                    ifelse(dist@two_armed, dist@rate_control * (1 - dist@rate_control), 0))))
-              p_0     <- mean(c(rate_intervention, ifelse(dist@two_armed, dist@rate_control, rate_intervention)))
+              sigma_A <- sqrt(rate_intervention * (1 - rate_intervention) +
+                                  ifelse(dist@two_armed, dist@rate_control * (1 - dist@rate_control), 0))
+              p_0     <- (rate_intervention + ifelse(dist@two_armed, dist@rate_control, rate_intervention)) / 2
               sigma_0 <- sqrt(2 * p_0 * (1 - p_0))
 
               return(stats::pnorm(x, mean = sqrt(n) * theta / sigma_0, sd = sigma_A / sigma_0))
@@ -290,9 +290,9 @@ setMethod("quantile", signature("Binomial"),
               if (any(rate_intervention >= 1, rate_intervention <= 0))
                   stop("The response rate in the intervention group must be in (0,1)! Probably the combination of prior and control rate is ill-defined.")
 
-              sigma_A <- sqrt(sum(c(rate_intervention * (1 - rate_intervention),
-                                    ifelse(x@two_armed, x@rate_control * (1 - x@rate_control), 0))))
-              p_0     <- mean(c(rate_intervention, ifelse(x@two_armed, x@rate_control, rate_intervention)))
+              sigma_A <- sqrt(rate_intervention * (1 - rate_intervention) +
+                                  ifelse(x@two_armed, x@rate_control * (1 - x@rate_control), 0))
+              p_0     <- (rate_intervention + ifelse(x@two_armed, x@rate_control, rate_intervention)) / 2
               sigma_0 <- sqrt(2 * p_0 * (1 - p_0))
 
               return(stats::qnorm(probs, mean = sqrt(n) * theta / sigma_0, sd = sigma_A / sigma_0))
@@ -316,9 +316,9 @@ setMethod("simulate", signature("Binomial", "numeric"),
               if (any(rate_intervention >= 1, rate_intervention <= 0))
                   stop("The response rate in the intervention group must be in (0,1)! Probably the combination of prior and control rate is ill-defined.")
 
-              sigma_A <- sqrt(sum(c(rate_intervention * (1 - rate_intervention),
-                                    ifelse(object@two_armed, object@rate_control * (1 - object@rate_control), 0))))
-              p_0     <- mean(c(rate_intervention, ifelse(object@two_armed, object@rate_control, rate_intervention)))
+              sigma_A <- sqrt(rate_intervention * (1 - rate_intervention) +
+                                  ifelse(object@two_armed, object@rate_control * (1 - object@rate_control), 0))
+              p_0     <- (rate_intervention + ifelse(object@two_armed, object@rate_control, rate_intervention)) / 2
               sigma_0 <- sqrt(2 * p_0 * (1 - p_0))
 
               if (!is.null(seed)) set.seed(seed)
