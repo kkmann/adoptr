@@ -60,11 +60,13 @@ in the invervention group.
 It is tested against the alternative
 rE &gt; rC.
 The test statistic is given as
-X1 = (rE - rC) / &amp;radic;(2  r0 (1-r0)),
+X1 = &amp;radic;n (rE - rC) / &amp;radic;(2  r0 (1-r0)),
 where r0 denotes the mean between
 rE and
 rC in the two-armed case,
-and rE in the one-armed case." />
+and rE in the one-armed case.#'
+All priors have to be defined for the rate difference
+rE - rC." />
 <meta property="og:image" content="https://kkmann.github.io/adoptr/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -184,11 +186,13 @@ in the invervention group.
 It is tested against the alternative
 r<sub>E</sub> > r<sub>C</sub>.
 The test statistic is given as
-X<sub>1</sub> = (r<sub>E</sub> - r<sub>C</sub>) / &radic;(2  r<sub>0</sub> (1-r<sub>0</sub>)),
+X<sub>1</sub> = &radic;n (r<sub>E</sub> - r<sub>C</sub>) / &radic;(2  r<sub>0</sub> (1-r<sub>0</sub>)),
 where r<sub>0</sub> denotes the mean between
 r<sub>E</sub> and
 r<sub>C</sub> in the two-armed case,
-and r<sub>E</sub> in the one-armed case.</p>
+and r<sub>E</sub> in the one-armed case.#'
+All priors have to be defined for the rate difference
+r<sub>E</sub> - r<sub>C</sub>.</p>
     </div>
 
     <pre class="usage"><span class='fu'>Binomial</span>(<span class='no'>rate_control</span>, <span class='kw'>two_armed</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
@@ -246,9 +250,7 @@ and r<sub>E</sub> in the one-armed case.</p>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>All priors have to be defined for the rate difference
-r<sub>E</sub> - r<sub>C</sub>.</p>
-<p>Note that <code>simulate</code> for class <code>Binomial</code> simulates the
+    <p>Note that <code>simulate</code> for class <code>Binomial</code> simulates the
    normal approximation of the test statistic.</p>
     <h2 class="hasAnchor" id="slots"><a class="anchor" href="#slots"></a>Slots</h2>
 
