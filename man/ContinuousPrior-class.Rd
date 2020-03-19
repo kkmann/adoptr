@@ -9,7 +9,7 @@
 ContinuousPrior(
   pdf,
   support,
-  order = 10,
+  order = 20,
   label = NA_character_,
   tighten_support = FALSE,
   check_normalization = TRUE
