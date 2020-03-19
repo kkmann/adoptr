@@ -47,16 +47,15 @@ in the invervention group.
 It is tested against the alternative
 \ifelse{html}{\out{r<sub>E</sub> > r<sub>C</sub>}}{\eqn{r_E > r_C}}.
 The test statistic is given as
-\ifelse{html}{\out{X<sub>1</sub> = (r<sub>E</sub> - r<sub>C</sub>) / &radic;(2  r<sub>0</sub> (1-r<sub>0</sub>))}}{\eqn{X_1 = (r_E - r_C) / \sqrt{2 r_0 (1- r_0)}}},
+\ifelse{html}{\out{X<sub>1</sub> = &radic;n (r<sub>E</sub> - r<sub>C</sub>) / &radic;(2  r<sub>0</sub> (1-r<sub>0</sub>))}}{\eqn{X_1 = \sqrt{n}(r_E - r_C) / \sqrt{2 r_0 (1- r_0)}}},
 where \ifelse{html}{\out{r<sub>0</sub>}}{\eqn{r_0}} denotes the mean between
 \ifelse{html}{\out{r<sub>E</sub>}}{\eqn{r_E}} and
 \ifelse{html}{\out{r<sub>C</sub>}}{\eqn{r_C}} in the two-armed case,
-and \ifelse{html}{\out{r<sub>E</sub>}}{\eqn{r_E}} in the one-armed case.
-}
-\details{
+and \ifelse{html}{\out{r<sub>E</sub>}}{\eqn{r_E}} in the one-armed case.#'
 All priors have to be defined for the rate difference
 \ifelse{html}{\out{r<sub>E</sub> - r<sub>C</sub>}}{\eqn{r_E - r_C}}.
-
+}
+\details{
 Note that \code{simulate} for class \code{Binomial} simulates the
    normal approximation of the test statistic.
 }
