@@ -167,7 +167,7 @@ functions of a chosen design.</p>
     </div>
 
     <pre class="usage"><span class='co'># S4 method for TwoStageDesign</span>
-<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>x</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='kw'>rounded</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>100</span>)</pre>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>x</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='kw'>rounded</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>100</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -206,7 +206,7 @@ user-defined elements of the class <code><a href='Scores.html'>ConditionalScore<
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>design</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='TwoStageDesign-class.html'>TwoStageDesign</a></span>(<span class='fl'>50</span>, <span class='fl'>0</span>, <span class='fl'>2</span>, <span class='fl'>50</span>, <span class='fl'>2</span>, <span class='fl'>5</span>)
 <span class='no'>cp</span>     <span class='kw'>&lt;-</span> <span class='fu'><a href='ConditionalPower-class.html'>ConditionalPower</a></span>(<span class='kw'>dist</span> <span class='kw'>=</span> <span class='fu'><a href='NormalDataDistribution-class.html'>Normal</a></span>(), <span class='kw'>prior</span> <span class='kw'>=</span> <span class='fu'><a href='PointMassPrior-class.html'>PointMassPrior</a></span>(<span class='fl'>.4</span>, <span class='fl'>1</span>))
-<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>design</span>, <span class='st'>"Conditional Power"</span> <span class='kw'>=</span> <span class='no'>cp</span>, <span class='kw'>cex.axis</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='img'><img src='plot-TwoStageDesign-method-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>design</span>, <span class='st'>"Conditional Power"</span> <span class='kw'>=</span> <span class='no'>cp</span>, <span class='kw'>cex.axis</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='img'><img src='plot-TwoStageDesign-method-1.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
