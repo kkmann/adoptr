@@ -181,7 +181,7 @@
 <div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="no">opt_res</span>$<span class="no">nloptr_return</span>$<span class="no">iterations</span></pre></body></html></div>
 <p>iterations.</p>
 <p>We can plot the resulting optimized design may again be plotted together with its conditional power.</p>
-<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(
+<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(
   <span class="no">opt_res</span>$<span class="no">design</span>,
   <span class="st">"Conditional power"</span> <span class="kw">=</span> <span class="fu"><a href="../reference/ConditionalPower-class.html">ConditionalPower</a></span>(<span class="no">datadist</span>, <span class="no">H_1</span>)
 )</pre></body></html></div>
