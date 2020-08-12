@@ -8,6 +8,8 @@ navbar:
     href: index.html
   - text: Get started
     href: articles/adoptr.html
+  - text: Overview Paper
+    href: articles/adoptr_paper.pdf
   - text: Articles
     menu:
     - text: Working with Priors
