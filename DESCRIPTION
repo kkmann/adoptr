@@ -27,7 +27,8 @@ Suggests:
     pwr,
     dplyr,
     ggplot2,
-    tidyr
+    tidyr,
+    gridExtra
 Imports:
     nloptr,
     methods,
