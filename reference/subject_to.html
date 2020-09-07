@@ -168,10 +168,10 @@ constraints." />
 constraints.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>subject_to</span>(<span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>subject_to</span>(<span class='kw'>...</span>)
 
 <span class='co'># S4 method for ConstraintsCollection,TwoStageDesign</span>
-<span class='fu'><a href='Scores.html'>evaluate</a></span>(<span class='no'>s</span>, <span class='no'>design</span>, <span class='kw'>optimization</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
+<span class='fu'><a href='Scores.html'>evaluate</a></span>(<span class='kw'>s</span>, <span class='kw'>design</span>, optimization = <span class='fl'>FALSE</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -205,14 +205,15 @@ parameters of the underlying design; used for smooth optimization.</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># define type one error rate and power</span>
-<span class='no'>toer</span>  <span class='kw'>&lt;-</span> <span class='fu'><a href='ConditionalPower-class.html'>Power</a></span>(<span class='fu'><a href='NormalDataDistribution-class.html'>Normal</a></span>(), <span class='fu'><a href='PointMassPrior-class.html'>PointMassPrior</a></span>(<span class='fl'>0.0</span>, <span class='fl'>1</span>))
-<span class='no'>power</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ConditionalPower-class.html'>Power</a></span>(<span class='fu'><a href='NormalDataDistribution-class.html'>Normal</a></span>(), <span class='fu'><a href='PointMassPrior-class.html'>PointMassPrior</a></span>(<span class='fl'>0.4</span>, <span class='fl'>1</span>))
+<span class='kw'>toer</span>  <span class='op'>&lt;-</span> <span class='fu'><a href='ConditionalPower-class.html'>Power</a></span>(<span class='fu'><a href='Normal-class.html'>Normal</a></span>(), <span class='fu'><a href='PointMassPrior-class.html'>PointMassPrior</a></span>(<span class='fl'>0.0</span>, <span class='fl'>1</span>))
+<span class='kw'>power</span> <span class='op'>&lt;-</span> <span class='fu'><a href='ConditionalPower-class.html'>Power</a></span>(<span class='fu'><a href='Normal-class.html'>Normal</a></span>(), <span class='fu'><a href='PointMassPrior-class.html'>PointMassPrior</a></span>(<span class='fl'>0.4</span>, <span class='fl'>1</span>))
 
 <span class='co'># create constrain collection</span>
 <span class='fu'>subject_to</span>(
-  <span class='no'>toer</span>  <span class='kw'>&lt;=</span> <span class='fl'>0.025</span>,
-  <span class='no'>power</span> <span class='kw'>&gt;=</span> <span class='fl'>0.9</span>
-)</div><div class='output co'>#&gt; An object of class "ConstraintsCollection"
+  <span class='kw'>toer</span>  <span class='op'>&lt;=</span> <span class='fl'>0.025</span>,
+  <span class='kw'>power</span> <span class='op'>&gt;=</span> <span class='fl'>0.9</span>
+)
+</div><div class='output co'>#&gt; An object of class "ConstraintsCollection"
 #&gt; Slot "unconditional_constraints":
 #&gt; [[1]]
 #&gt; E[Pr[x2&gt;=c2(x1)]]&lt;Normal&lt;two-armed&gt;;PointMass&lt;0.00&gt;&gt; &lt;= 0.025 
@@ -240,7 +241,7 @@ parameters of the underlying design; used for smooth optimization.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

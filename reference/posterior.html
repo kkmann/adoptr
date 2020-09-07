@@ -164,13 +164,13 @@
     <p>Return posterior distribution given observing stage-one outcome.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>posterior</span>(<span class='no'>dist</span>, <span class='no'>prior</span>, <span class='no'>x1</span>, <span class='no'>n1</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>posterior</span>(<span class='kw'>dist</span>, <span class='kw'>prior</span>, <span class='kw'>x1</span>, <span class='kw'>n1</span>, <span class='kw'>...</span>)
 
 <span class='co'># S4 method for DataDistribution,PointMassPrior,numeric</span>
-<span class='fu'>posterior</span>(<span class='no'>dist</span>, <span class='no'>prior</span>, <span class='no'>x1</span>, <span class='no'>n1</span>, <span class='no'>...</span>)
+<span class='fu'>posterior</span>(<span class='kw'>dist</span>, <span class='kw'>prior</span>, <span class='kw'>x1</span>, <span class='kw'>n1</span>, <span class='kw'>...</span>)
 
 <span class='co'># S4 method for DataDistribution,ContinuousPrior,numeric</span>
-<span class='fu'>posterior</span>(<span class='no'>dist</span>, <span class='no'>prior</span>, <span class='no'>x1</span>, <span class='no'>n1</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>posterior</span>(<span class='kw'>dist</span>, <span class='kw'>prior</span>, <span class='kw'>x1</span>, <span class='kw'>n1</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -202,9 +202,11 @@
     <p>Object of class <code><a href='Prior-class.html'>Prior</a></code></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>posterior</span>(<span class='fu'><a href='NormalDataDistribution-class.html'>Normal</a></span>(), <span class='fu'><a href='PointMassPrior-class.html'>PointMassPrior</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>), <span class='fl'>2</span>, <span class='fl'>20</span>)</div><div class='output co'>#&gt; PointMass&lt;0.00&gt; </div><div class='input'>
-<span class='no'>tmp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ContinuousPrior-class.html'>ContinuousPrior</a></span>(<span class='kw'>function</span>(<span class='no'>x</span>) <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>dunif</a></span>(<span class='no'>x</span>, <span class='fl'>.2</span>, <span class='fl'>.4</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>.2</span>, <span class='fl'>.4</span>))
-<span class='fu'>posterior</span>(<span class='fu'><a href='NormalDataDistribution-class.html'>Normal</a></span>(), <span class='no'>tmp</span>, <span class='fl'>2</span>, <span class='fl'>20</span>)</div><div class='output co'>#&gt; ContinuousPrior&lt;[0.2,0.4]&gt; </div><div class='input'>
+    <pre class="examples"><div class='input'><span class='fu'>posterior</span>(<span class='fu'><a href='Normal-class.html'>Normal</a></span>(), <span class='fu'><a href='PointMassPrior-class.html'>PointMassPrior</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>), <span class='fl'>2</span>, <span class='fl'>20</span>)
+</div><div class='output co'>#&gt; PointMass&lt;0.00&gt; </div><div class='input'>
+<span class='kw'>tmp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='ContinuousPrior-class.html'>ContinuousPrior</a></span>(<span class='fu'>function</span>(<span class='kw'>x</span>) <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>dunif</a></span>(<span class='kw'>x</span>, <span class='fl'>.2</span>, <span class='fl'>.4</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>.2</span>, <span class='fl'>.4</span>))
+<span class='fu'>posterior</span>(<span class='fu'><a href='Normal-class.html'>Normal</a></span>(), <span class='kw'>tmp</span>, <span class='fl'>2</span>, <span class='fl'>20</span>)
+</div><div class='output co'>#&gt; ContinuousPrior&lt;[0.2,0.4]&gt; </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -221,7 +223,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

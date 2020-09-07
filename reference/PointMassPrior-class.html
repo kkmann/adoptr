@@ -168,7 +168,7 @@ representing a univariate prior over a discrete set of points with positive
 probability mass.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>PointMassPrior</span>(<span class='no'>theta</span>, <span class='no'>mass</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='fl'>NA_character_</span>)</pre>
+    <pre class="usage"><span class='fu'>PointMassPrior</span>(<span class='kw'>theta</span>, <span class='kw'>mass</span>, label = <span class='fl'>NA_character_</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -196,7 +196,7 @@ automatically sorted in ascending order</p>
 
     
 
-<dl'>
+<dl>
 <dt><code>theta</code></dt><dd><p>cf. parameter 'theta'</p></dd>
 
 <dt><code>mass</code></dt><dd><p>cf. parameter 'mass'</p></dd>
@@ -207,7 +207,8 @@ automatically sorted in ascending order</p>
     <div class='dont-index'><p>To represent continuous prior distributions use <code><a href='ContinuousPrior-class.html'>ContinuousPrior</a></code>.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>PointMassPrior</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>.5</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>.3</span>, <span class='fl'>.7</span>))</div><div class='output co'>#&gt; PointMass&lt;Pr[0.00]=0.30;Pr[0.50]=0.70&gt; </div><div class='input'>
+    <pre class="examples"><div class='input'><span class='fu'>PointMassPrior</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>.5</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>.3</span>, <span class='fl'>.7</span>))
+</div><div class='output co'>#&gt; PointMass&lt;Pr[0.00]=0.30;Pr[0.50]=0.70&gt; </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -224,7 +225,7 @@ automatically sorted in ascending order</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

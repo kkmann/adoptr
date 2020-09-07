@@ -173,13 +173,13 @@ c<sub>2</sub>(x<sub>1</sub>) = ifelse(x<sub>1</sub> < c, Inf, -Inf).
 No integration pivots etc are required (set to <code>NaN</code>).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>OneStageDesign</span>(<span class='no'>n</span>, <span class='no'>c</span>)
+    <pre class="usage"><span class='fu'>OneStageDesign</span>(<span class='kw'>n</span>, <span class='kw'>c</span>)
 
 <span class='co'># S4 method for OneStageDesign</span>
-<span class='fu'><a href='TwoStageDesign-class.html'>TwoStageDesign</a></span>(<span class='no'>n1</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='fl'>5L</span>, <span class='kw'>eps</span> <span class='kw'>=</span> <span class='fl'>0.01</span>, <span class='no'>...</span>)
+<span class='fu'><a href='TwoStageDesign-class.html'>TwoStageDesign</a></span>(<span class='kw'>n1</span>, order = <span class='fl'>5L</span>, eps = <span class='fl'>0.01</span>, <span class='kw'>...</span>)
 
 <span class='co'># S4 method for OneStageDesign</span>
-<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='no'>...</span>)</pre>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span>(<span class='kw'>x</span>, <span class='kw'>y</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -223,21 +223,23 @@ split in a continuation interval [c1f, c1e]; this is given by c +/- eps.</p></td
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Note that the default <code><a href='plot-TwoStageDesign-method.html'>plot,TwoStageDesign-method</a></code> method
+    <p>Note that the default <code><a href='plot,TwoStageDesign-method.html'>plot,TwoStageDesign-method</a></code> method
 is not supported for <code>OneStageDesign</code> objects.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='TwoStageDesign-class.html'>TwoStageDesign</a></code>, <code><a href='GroupSequentialDesign-class.html'>GroupSequentialDesign</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>design</span> <span class='kw'>&lt;-</span> <span class='fu'>OneStageDesign</span>(<span class='fl'>30</span>, <span class='fl'>1.96</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='no'>design</span>)</div><div class='output co'>#&gt; OneStageDesign: n1 =  30 
+    <pre class="examples"><div class='input'><span class='kw'>design</span> <span class='op'>&lt;-</span> <span class='fu'>OneStageDesign</span>(<span class='fl'>30</span>, <span class='fl'>1.96</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='kw'>design</span>)
+</div><div class='output co'>#&gt; OneStageDesign: n1 =  30 
 #&gt;           futility | continue | efficacy
 #&gt;       x1:     1.96 |   NaN |  1.96
 #&gt;   c2(x1):     +Inf |    NA |  -Inf
 #&gt;   n2(x1):        0 |     0 |     0
-#&gt; </div><div class='input'><span class='no'>design</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='TwoStageDesign-class.html'>TwoStageDesign</a></span>(<span class='no'>design</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='no'>design</span>)</div><div class='output co'>#&gt; TwoStageDesign: n1 =  30 
+#&gt; </div><div class='input'><span class='kw'>design</span> <span class='op'>&lt;-</span> <span class='fu'><a href='TwoStageDesign-class.html'>TwoStageDesign</a></span>(<span class='kw'>design</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='kw'>design</span>)
+</div><div class='output co'>#&gt; TwoStageDesign: n1 =  30 
 #&gt;           futility |            continue           | efficacy
 #&gt;       x1:     1.95 |  1.95  1.95  1.96  1.97  1.97 |  1.97
 #&gt;   c2(x1):     +Inf | +3.00 +3.00 +0.00 -3.00 -3.00 |  -Inf
@@ -259,7 +261,7 @@ is not supported for <code>OneStageDesign</code> objects.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

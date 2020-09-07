@@ -172,15 +172,15 @@ Consequently, score objects are either of class <code>ConditionalScore</code> or
 <code>UnconditionalScore</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>expected</span>(<span class='no'>s</span>, <span class='no'>data_distribution</span>, <span class='no'>prior</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>expected</span>(<span class='kw'>s</span>, <span class='kw'>data_distribution</span>, <span class='kw'>prior</span>, <span class='kw'>...</span>)
 
 <span class='co'># S4 method for ConditionalScore</span>
-<span class='fu'>expected</span>(<span class='no'>s</span>, <span class='no'>data_distribution</span>, <span class='no'>prior</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='fl'>NA_character_</span>, <span class='no'>...</span>)
+<span class='fu'>expected</span>(<span class='kw'>s</span>, <span class='kw'>data_distribution</span>, <span class='kw'>prior</span>, label = <span class='fl'>NA_character_</span>, <span class='kw'>...</span>)
 
-<span class='fu'>evaluate</span>(<span class='no'>s</span>, <span class='no'>design</span>, <span class='no'>...</span>)
+<span class='fu'>evaluate</span>(<span class='kw'>s</span>, <span class='kw'>design</span>, <span class='kw'>...</span>)
 
 <span class='co'># S4 method for IntegralScore,TwoStageDesign</span>
-<span class='fu'>evaluate</span>(<span class='no'>s</span>, <span class='no'>design</span>, <span class='kw'>optimization</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>subdivisions</span> <span class='kw'>=</span> <span class='fl'>10000L</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>evaluate</span>(<span class='kw'>s</span>, <span class='kw'>design</span>, optimization = <span class='fl'>FALSE</span>, subdivisions = <span class='fl'>10000L</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -235,22 +235,26 @@ The returned unconditional score is of class <code>IntegralScore</code>.</p>
 <code><a href='composite.html'>composite</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>design</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='TwoStageDesign-class.html'>TwoStageDesign</a></span>(
-  <span class='kw'>n1</span>    <span class='kw'>=</span> <span class='fl'>25</span>,
-  <span class='kw'>c1f</span>   <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='kw'>c1e</span>   <span class='kw'>=</span> <span class='fl'>2.5</span>,
-  <span class='kw'>n2</span>    <span class='kw'>=</span> <span class='fl'>50</span>,
-  <span class='kw'>c2</span>    <span class='kw'>=</span> <span class='fl'>1.96</span>,
-  <span class='kw'>order</span> <span class='kw'>=</span> <span class='fl'>7L</span>
+    <pre class="examples"><div class='input'><span class='kw'>design</span> <span class='op'>&lt;-</span> <span class='fu'><a href='TwoStageDesign-class.html'>TwoStageDesign</a></span>(
+  n1    = <span class='fl'>25</span>,
+  c1f   = <span class='fl'>0</span>,
+  c1e   = <span class='fl'>2.5</span>,
+  n2    = <span class='fl'>50</span>,
+  c2    = <span class='fl'>1.96</span>,
+  order = <span class='fl'>7L</span>
 )
-<span class='no'>prior</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='PointMassPrior-class.html'>PointMassPrior</a></span>(<span class='fl'>.3</span>, <span class='fl'>1</span>)
+<span class='kw'>prior</span> <span class='op'>&lt;-</span> <span class='fu'><a href='PointMassPrior-class.html'>PointMassPrior</a></span>(<span class='fl'>.3</span>, <span class='fl'>1</span>)
 
 <span class='co'># conditional</span>
-<span class='no'>cp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ConditionalPower-class.html'>ConditionalPower</a></span>(<span class='fu'><a href='NormalDataDistribution-class.html'>Normal</a></span>(), <span class='no'>prior</span>)
-<span class='fu'>expected</span>(<span class='no'>cp</span>, <span class='fu'><a href='NormalDataDistribution-class.html'>Normal</a></span>(), <span class='no'>prior</span>)</div><div class='output co'>#&gt; E[Pr[x2&gt;=c2(x1)|x1]&lt;Normal&lt;two-armed&gt;;PointMass&lt;0.30&gt;&gt;]&lt;Normal&lt;two-armed&gt;;PointMass&lt;0.30&gt;&gt; </div><div class='input'><span class='fu'>evaluate</span>(<span class='no'>cp</span>, <span class='no'>design</span>, <span class='kw'>x1</span> <span class='kw'>=</span> <span class='fl'>.5</span>)</div><div class='output co'>#&gt; [1] 0.3227581</div><div class='input'>
+<span class='kw'>cp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='ConditionalPower-class.html'>ConditionalPower</a></span>(<span class='fu'><a href='Normal-class.html'>Normal</a></span>(), <span class='kw'>prior</span>)
+<span class='fu'>expected</span>(<span class='kw'>cp</span>, <span class='fu'><a href='Normal-class.html'>Normal</a></span>(), <span class='kw'>prior</span>)
+</div><div class='output co'>#&gt; E[Pr[x2&gt;=c2(x1)|x1]&lt;Normal&lt;two-armed&gt;;PointMass&lt;0.30&gt;&gt;]&lt;Normal&lt;two-armed&gt;;PointMass&lt;0.30&gt;&gt; </div><div class='input'><span class='fu'>evaluate</span>(<span class='kw'>cp</span>, <span class='kw'>design</span>, x1 = <span class='fl'>.5</span>)
+</div><div class='output co'>#&gt; [1] 0.3227581</div><div class='input'>
 <span class='co'># unconditional</span>
-<span class='no'>power</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ConditionalPower-class.html'>Power</a></span>(<span class='fu'><a href='NormalDataDistribution-class.html'>Normal</a></span>(), <span class='no'>prior</span>)
-<span class='fu'>evaluate</span>(<span class='no'>power</span>, <span class='no'>design</span>)</div><div class='output co'>#&gt; [1] 0.3269562</div><div class='input'><span class='fu'>evaluate</span>(<span class='no'>power</span>, <span class='no'>design</span>, <span class='kw'>optimization</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) <span class='co'># use non-adaptive quadrature</span></div><div class='output co'>#&gt; [1] 0.3269562</div><div class='input'>
+<span class='kw'>power</span> <span class='op'>&lt;-</span> <span class='fu'><a href='ConditionalPower-class.html'>Power</a></span>(<span class='fu'><a href='Normal-class.html'>Normal</a></span>(), <span class='kw'>prior</span>)
+<span class='fu'>evaluate</span>(<span class='kw'>power</span>, <span class='kw'>design</span>)
+</div><div class='output co'>#&gt; [1] 0.3269562</div><div class='input'><span class='fu'>evaluate</span>(<span class='kw'>power</span>, <span class='kw'>design</span>, optimization = <span class='fl'>TRUE</span>) <span class='co'># use non-adaptive quadrature</span>
+</div><div class='output co'>#&gt; [1] 0.3269562</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -267,7 +271,7 @@ The returned unconditional score is of class <code>IntegralScore</code>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

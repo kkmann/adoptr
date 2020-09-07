@@ -195,8 +195,8 @@ single parameter value <code>theta</code>.</p>
     <p>This abstraction layer allows the representation of t-distributions
 (unknown variance), normal distribution (known variance), and normal
 approximation of a binary endpoint.
-Currently, the two implemented versions are <code><a href='NormalDataDistribution-class.html'>Normal-class</a></code> and
-<code><a href='BinomialDataDistribution-class.html'>Binomial-class</a></code>.</p>
+Currently, the two implemented versions are <code><a href='Normal-class.html'>Normal-class</a></code> and
+<code><a href='Binomial-class.html'>Binomial-class</a></code>.</p>
 <p>The logical option <code>two_armed</code> allows to decide whether a one-arm or
 a two-arm (the default) design should be computed. In the case of a two-arm
 design all sample sizes are per group.</p>
@@ -204,14 +204,16 @@ design all sample sizes are per group.</p>
 
     
 
-<dl'>
+<dl>
 <dt><code>two_armed</code></dt><dd><p>Logical that indicates if a two-arm design is assumed.</p></dd>
 
 </dl>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>normaldist</span>   <span class='kw'>&lt;-</span> <span class='fu'><a href='NormalDataDistribution-class.html'>Normal</a></span>(<span class='kw'>two_armed</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='no'>binomialdist</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='BinomialDataDistribution-class.html'>Binomial</a></span>(<span class='kw'>rate_control</span> <span class='kw'>=</span> <span class='fl'>.25</span>, <span class='kw'>two_armed</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div></pre>
+    <pre class="examples"><div class='input'><span class='kw'>normaldist</span>   <span class='op'>&lt;-</span> <span class='fu'><a href='Normal-class.html'>Normal</a></span>(two_armed = <span class='fl'>FALSE</span>)
+<span class='kw'>binomialdist</span> <span class='op'>&lt;-</span> <span class='fu'><a href='Binomial-class.html'>Binomial</a></span>(rate_control = <span class='fl'>.25</span>, two_armed = <span class='fl'>TRUE</span>)
+
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -227,7 +229,7 @@ design all sample sizes are per group.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

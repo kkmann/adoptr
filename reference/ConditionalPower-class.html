@@ -168,12 +168,12 @@ Note that the distribution of X<sub>2</sub> is the posterior predictive after
 observing X<sub>1</sub> = x<sub>1</sub>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ConditionalPower</span>(<span class='no'>dist</span>, <span class='no'>prior</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='st'>"Pr[x2&gt;=c2(x1)|x1]"</span>)
+    <pre class="usage"><span class='fu'>ConditionalPower</span>(<span class='kw'>dist</span>, <span class='kw'>prior</span>, label = <span class='st'>"Pr[x2&gt;=c2(x1)|x1]"</span>)
 
-<span class='fu'>Power</span>(<span class='no'>dist</span>, <span class='no'>prior</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='st'>"Pr[x2&gt;=c2(x1)]"</span>)
+<span class='fu'>Power</span>(<span class='kw'>dist</span>, <span class='kw'>prior</span>, label = <span class='st'>"Pr[x2&gt;=c2(x1)]"</span>)
 
 <span class='co'># S4 method for ConditionalPower,TwoStageDesign</span>
-<span class='fu'><a href='Scores.html'>evaluate</a></span>(<span class='no'>s</span>, <span class='no'>design</span>, <span class='no'>x1</span>, <span class='kw'>optimization</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
+<span class='fu'><a href='Scores.html'>evaluate</a></span>(<span class='kw'>s</span>, <span class='kw'>design</span>, <span class='kw'>x1</span>, optimization = <span class='fl'>FALSE</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -218,14 +218,17 @@ parameters of the underlying design; used for smooth optimization.</p></td>
     <div class='dont-index'><p><code><a href='Scores.html'>Scores</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>prior</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='PointMassPrior-class.html'>PointMassPrior</a></span>(<span class='fl'>.4</span>, <span class='fl'>1</span>)
-<span class='no'>cp</span> <span class='kw'>&lt;-</span> <span class='fu'>ConditionalPower</span>(<span class='fu'><a href='NormalDataDistribution-class.html'>Normal</a></span>(), <span class='no'>prior</span>)
+    <pre class="examples"><div class='input'><span class='kw'>prior</span> <span class='op'>&lt;-</span> <span class='fu'><a href='PointMassPrior-class.html'>PointMassPrior</a></span>(<span class='fl'>.4</span>, <span class='fl'>1</span>)
+<span class='kw'>cp</span> <span class='op'>&lt;-</span> <span class='fu'>ConditionalPower</span>(<span class='fu'><a href='Normal-class.html'>Normal</a></span>(), <span class='kw'>prior</span>)
 <span class='fu'><a href='Scores.html'>evaluate</a></span>(
-   <span class='no'>cp</span>,
-   <span class='fu'><a href='TwoStageDesign-class.html'>TwoStageDesign</a></span>(<span class='fl'>50</span>, <span class='fl'>.0</span>, <span class='fl'>2.0</span>, <span class='fl'>50</span>, <span class='fl'>2.0</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='fl'>5L</span>),
-   <span class='kw'>x1</span> <span class='kw'>=</span> <span class='fl'>1</span>
-)</div><div class='output co'>#&gt; [1] 0.5</div><div class='input'><span class='co'># these two are equivalent:</span>
-<span class='fu'><a href='Scores.html'>expected</a></span>(<span class='no'>cp</span>, <span class='fu'><a href='NormalDataDistribution-class.html'>Normal</a></span>(), <span class='no'>prior</span>)</div><div class='output co'>#&gt; E[Pr[x2&gt;=c2(x1)|x1]&lt;Normal&lt;two-armed&gt;;PointMass&lt;0.40&gt;&gt;]&lt;Normal&lt;two-armed&gt;;PointMass&lt;0.40&gt;&gt; </div><div class='input'><span class='fu'>Power</span>(<span class='fu'><a href='NormalDataDistribution-class.html'>Normal</a></span>(), <span class='no'>prior</span>)</div><div class='output co'>#&gt; E[Pr[x2&gt;=c2(x1)]]&lt;Normal&lt;two-armed&gt;;PointMass&lt;0.40&gt;&gt; </div><div class='input'>
+   <span class='kw'>cp</span>,
+   <span class='fu'><a href='TwoStageDesign-class.html'>TwoStageDesign</a></span>(<span class='fl'>50</span>, <span class='fl'>.0</span>, <span class='fl'>2.0</span>, <span class='fl'>50</span>, <span class='fl'>2.0</span>, order = <span class='fl'>5L</span>),
+   x1 = <span class='fl'>1</span>
+)
+</div><div class='output co'>#&gt; [1] 0.5</div><div class='input'><span class='co'># these two are equivalent:</span>
+<span class='fu'><a href='Scores.html'>expected</a></span>(<span class='kw'>cp</span>, <span class='fu'><a href='Normal-class.html'>Normal</a></span>(), <span class='kw'>prior</span>)
+</div><div class='output co'>#&gt; E[Pr[x2&gt;=c2(x1)|x1]&lt;Normal&lt;two-armed&gt;;PointMass&lt;0.40&gt;&gt;]&lt;Normal&lt;two-armed&gt;;PointMass&lt;0.40&gt;&gt; </div><div class='input'><span class='fu'>Power</span>(<span class='fu'><a href='Normal-class.html'>Normal</a></span>(), <span class='kw'>prior</span>)
+</div><div class='output co'>#&gt; E[Pr[x2&gt;=c2(x1)]]&lt;Normal&lt;two-armed&gt;;PointMass&lt;0.40&gt;&gt; </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -242,7 +245,7 @@ parameters of the underlying design; used for smooth optimization.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

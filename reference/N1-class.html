@@ -166,10 +166,10 @@ This can be used as a score in minimize." />
 This can be used as a score in <code><a href='minimize.html'>minimize</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>N1</span>(<span class='kw'>label</span> <span class='kw'>=</span> <span class='fl'>NA_character_</span>)
+    <pre class="usage"><span class='fu'>N1</span>(label = <span class='fl'>NA_character_</span>)
 
 <span class='co'># S4 method for N1,TwoStageDesign</span>
-<span class='fu'><a href='Scores.html'>evaluate</a></span>(<span class='no'>s</span>, <span class='no'>design</span>, <span class='kw'>optimization</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
+<span class='fu'><a href='Scores.html'>evaluate</a></span>(<span class='kw'>s</span>, <span class='kw'>design</span>, optimization = <span class='fl'>FALSE</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -206,12 +206,13 @@ parameters of the underlying design; used for smooth optimization.</p></td>
  the second-stage sample size.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>n1_score</span> <span class='kw'>&lt;-</span> <span class='fu'>N1</span>()
+    <pre class="examples"><div class='input'><span class='kw'>n1_score</span> <span class='op'>&lt;-</span> <span class='fu'>N1</span>()
 
 <span class='fu'><a href='Scores.html'>evaluate</a></span>(
    <span class='fu'>N1</span>(),
    <span class='fu'><a href='TwoStageDesign-class.html'>TwoStageDesign</a></span>(<span class='fl'>70</span>, <span class='fl'>0</span>, <span class='fl'>2</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>60</span>, <span class='fl'>6</span>), <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>1.7</span>, <span class='fl'>6</span>))
-) <span class='co'># 70</span></div><div class='output co'>#&gt; [1] 70</div><div class='input'>
+) <span class='co'># 70</span>
+</div><div class='output co'>#&gt; [1] 70</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -228,7 +229,7 @@ parameters of the underlying design; used for smooth optimization.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

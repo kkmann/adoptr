@@ -184,26 +184,26 @@ real representation and a rounded version (rounding to the next positive
 integer).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>n1</span>(<span class='no'>d</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>n1</span>(<span class='kw'>d</span>, <span class='kw'>...</span>)
 
 <span class='co'># S4 method for TwoStageDesign</span>
-<span class='fu'>n1</span>(<span class='no'>d</span>, <span class='kw'>round</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)
+<span class='fu'>n1</span>(<span class='kw'>d</span>, round = <span class='fl'>TRUE</span>, <span class='kw'>...</span>)
 
-<span class='fu'>n2</span>(<span class='no'>d</span>, <span class='no'>x1</span>, <span class='no'>...</span>)
-
-<span class='co'># S4 method for TwoStageDesign,numeric</span>
-<span class='fu'>n2</span>(<span class='no'>d</span>, <span class='no'>x1</span>, <span class='kw'>round</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)
-
-<span class='fu'>n</span>(<span class='no'>d</span>, <span class='no'>x1</span>, <span class='no'>...</span>)
+<span class='fu'>n2</span>(<span class='kw'>d</span>, <span class='kw'>x1</span>, <span class='kw'>...</span>)
 
 <span class='co'># S4 method for TwoStageDesign,numeric</span>
-<span class='fu'>n</span>(<span class='no'>d</span>, <span class='no'>x1</span>, <span class='kw'>round</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)
+<span class='fu'>n2</span>(<span class='kw'>d</span>, <span class='kw'>x1</span>, round = <span class='fl'>TRUE</span>, <span class='kw'>...</span>)
+
+<span class='fu'>n</span>(<span class='kw'>d</span>, <span class='kw'>x1</span>, <span class='kw'>...</span>)
+
+<span class='co'># S4 method for TwoStageDesign,numeric</span>
+<span class='fu'>n</span>(<span class='kw'>d</span>, <span class='kw'>x1</span>, round = <span class='fl'>TRUE</span>, <span class='kw'>...</span>)
 
 <span class='co'># S4 method for GroupSequentialDesign,numeric</span>
-<span class='fu'>n2</span>(<span class='no'>d</span>, <span class='no'>x1</span>, <span class='kw'>round</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)
+<span class='fu'>n2</span>(<span class='kw'>d</span>, <span class='kw'>x1</span>, round = <span class='fl'>TRUE</span>, <span class='kw'>...</span>)
 
 <span class='co'># S4 method for OneStageDesign,numeric</span>
-<span class='fu'>n2</span>(<span class='no'>d</span>, <span class='no'>x1</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>n2</span>(<span class='kw'>d</span>, <span class='kw'>x1</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -228,21 +228,24 @@ integer).</p>
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='TwoStageDesign-class.html'>TwoStageDesign</a></code>, see <code><a href='critical-values.html'>c2</a></code> for accessing
+    <div class='dont-index'><p><code><a href='TwoStageDesign-class.html'>TwoStageDesign</a></code>, see <code><a href='c2.html'>c2</a></code> for accessing
 the critical values</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>design</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='TwoStageDesign-class.html'>TwoStageDesign</a></span>(
-   <span class='kw'>n1</span>    <span class='kw'>=</span> <span class='fl'>25</span>,
-   <span class='kw'>c1f</span>   <span class='kw'>=</span> <span class='fl'>0</span>,
-   <span class='kw'>c1e</span>   <span class='kw'>=</span> <span class='fl'>2.5</span>,
-   <span class='kw'>n2</span>    <span class='kw'>=</span> <span class='fl'>50</span>,
-   <span class='kw'>c2</span>    <span class='kw'>=</span> <span class='fl'>1.96</span>,
-   <span class='kw'>order</span> <span class='kw'>=</span> <span class='fl'>7L</span>
+    <pre class="examples"><div class='input'><span class='kw'>design</span> <span class='op'>&lt;-</span> <span class='fu'><a href='TwoStageDesign-class.html'>TwoStageDesign</a></span>(
+   n1    = <span class='fl'>25</span>,
+   c1f   = <span class='fl'>0</span>,
+   c1e   = <span class='fl'>2.5</span>,
+   n2    = <span class='fl'>50</span>,
+   c2    = <span class='fl'>1.96</span>,
+   order = <span class='fl'>7L</span>
 )
 
-<span class='fu'>n1</span>(<span class='no'>design</span>) <span class='co'># 25</span></div><div class='output co'>#&gt; [1] 25</div><div class='input'><span class='no'>design</span>@<span class='kw'>n1</span> <span class='co'># 25</span></div><div class='output co'>#&gt; [1] 25</div><div class='input'>
-<span class='fu'>n</span>(<span class='no'>design</span>, <span class='kw'>x1</span> <span class='kw'>=</span> <span class='fl'>2.2</span>) <span class='co'># 75</span></div><div class='output co'>#&gt; [1] 75</div><div class='input'>
+<span class='fu'>n1</span>(<span class='kw'>design</span>) <span class='co'># 25</span>
+</div><div class='output co'>#&gt; [1] 25</div><div class='input'><span class='kw'>design</span><span class='op'>@</span>n1 <span class='co'># 25</span>
+</div><div class='output co'>#&gt; [1] 25</div><div class='input'>
+<span class='fu'>n</span>(<span class='kw'>design</span>, x1 = <span class='fl'>2.2</span>) <span class='co'># 75</span>
+</div><div class='output co'>#&gt; [1] 75</div><div class='input'>
 
 </div></pre>
   </div>
@@ -260,7 +263,7 @@ the critical values</p></div>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

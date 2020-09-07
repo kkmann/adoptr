@@ -244,18 +244,21 @@ parameters of the underlying design; used for smooth optimization.</p></td>
     <div class='dont-index'><p><code><a href='minimize.html'>minimize</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>design</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='OneStageDesign-class.html'>OneStageDesign</a></span>(<span class='fl'>50</span>, <span class='fl'>1.96</span>)
+    <pre class="examples"><div class='input'><span class='kw'>design</span> <span class='op'>&lt;-</span> <span class='fu'><a href='OneStageDesign-class.html'>OneStageDesign</a></span>(<span class='fl'>50</span>, <span class='fl'>1.96</span>)
 
-<span class='no'>cp</span>     <span class='kw'>&lt;-</span> <span class='fu'><a href='ConditionalPower-class.html'>ConditionalPower</a></span>(<span class='fu'><a href='NormalDataDistribution-class.html'>Normal</a></span>(), <span class='fu'><a href='PointMassPrior-class.html'>PointMassPrior</a></span>(<span class='fl'>0.4</span>, <span class='fl'>1</span>))
-<span class='no'>pow</span>    <span class='kw'>&lt;-</span> <span class='fu'><a href='ConditionalPower-class.html'>Power</a></span>(<span class='fu'><a href='NormalDataDistribution-class.html'>Normal</a></span>(), <span class='fu'><a href='PointMassPrior-class.html'>PointMassPrior</a></span>(<span class='fl'>0.4</span>, <span class='fl'>1</span>))
+<span class='kw'>cp</span>     <span class='op'>&lt;-</span> <span class='fu'><a href='ConditionalPower-class.html'>ConditionalPower</a></span>(<span class='fu'><a href='Normal-class.html'>Normal</a></span>(), <span class='fu'><a href='PointMassPrior-class.html'>PointMassPrior</a></span>(<span class='fl'>0.4</span>, <span class='fl'>1</span>))
+<span class='kw'>pow</span>    <span class='op'>&lt;-</span> <span class='fu'><a href='ConditionalPower-class.html'>Power</a></span>(<span class='fu'><a href='Normal-class.html'>Normal</a></span>(), <span class='fu'><a href='PointMassPrior-class.html'>PointMassPrior</a></span>(<span class='fl'>0.4</span>, <span class='fl'>1</span>))
 
 <span class='co'># unconditional power constraint</span>
-<span class='no'>constraint1</span> <span class='kw'>&lt;-</span> <span class='no'>pow</span> <span class='kw'>&gt;=</span> <span class='fl'>0.8</span>
-<span class='fu'><a href='Scores.html'>evaluate</a></span>(<span class='no'>constraint1</span>, <span class='no'>design</span>)</div><div class='output co'>#&gt; [1] 0.2840466</div><div class='input'>
+<span class='kw'>constraint1</span> <span class='op'>&lt;-</span> <span class='kw'>pow</span> <span class='op'>&gt;=</span> <span class='fl'>0.8</span>
+<span class='fu'><a href='Scores.html'>evaluate</a></span>(<span class='kw'>constraint1</span>, <span class='kw'>design</span>)
+</div><div class='output co'>#&gt; [1] 0.2840466</div><div class='input'>
 <span class='co'># conditional power constraint</span>
-<span class='no'>constraint2</span> <span class='kw'>&lt;-</span> <span class='no'>cp</span>  <span class='kw'>&gt;=</span> <span class='fl'>0.7</span>
-<span class='fu'><a href='Scores.html'>evaluate</a></span>(<span class='no'>constraint2</span>, <span class='no'>design</span>, <span class='fl'>.5</span>)</div><div class='output co'>#&gt; [1] 0.7</div><div class='input'><span class='no'>constraint3</span> <span class='kw'>&lt;-</span> <span class='fl'>0.7</span> <span class='kw'>&lt;=</span> <span class='no'>cp</span> <span class='co'># same as constraint2</span>
-<span class='fu'><a href='Scores.html'>evaluate</a></span>(<span class='no'>constraint3</span>, <span class='no'>design</span>, <span class='fl'>.5</span>)</div><div class='output co'>#&gt; [1] 0.7</div><div class='input'>
+<span class='kw'>constraint2</span> <span class='op'>&lt;-</span> <span class='kw'>cp</span>  <span class='op'>&gt;=</span> <span class='fl'>0.7</span>
+<span class='fu'><a href='Scores.html'>evaluate</a></span>(<span class='kw'>constraint2</span>, <span class='kw'>design</span>, <span class='fl'>.5</span>)
+</div><div class='output co'>#&gt; [1] 0.7</div><div class='input'><span class='kw'>constraint3</span> <span class='op'>&lt;-</span> <span class='fl'>0.7</span> <span class='op'>&lt;=</span> <span class='kw'>cp</span> <span class='co'># same as constraint2</span>
+<span class='fu'><a href='Scores.html'>evaluate</a></span>(<span class='kw'>constraint3</span>, <span class='kw'>design</span>, <span class='fl'>.5</span>)
+</div><div class='output co'>#&gt; [1] 0.7</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -272,7 +275,7 @@ parameters of the underlying design; used for smooth optimization.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

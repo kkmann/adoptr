@@ -170,13 +170,13 @@ statistic." />
 statistic.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>c2</span>(<span class='no'>d</span>, <span class='no'>x1</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>c2</span>(<span class='kw'>d</span>, <span class='kw'>x1</span>, <span class='kw'>...</span>)
 
 <span class='co'># S4 method for TwoStageDesign,numeric</span>
-<span class='fu'>c2</span>(<span class='no'>d</span>, <span class='no'>x1</span>, <span class='no'>...</span>)
+<span class='fu'>c2</span>(<span class='kw'>d</span>, <span class='kw'>x1</span>, <span class='kw'>...</span>)
 
 <span class='co'># S4 method for OneStageDesign,numeric</span>
-<span class='fu'>c2</span>(<span class='no'>d</span>, <span class='no'>x1</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>c2</span>(<span class='kw'>d</span>, <span class='kw'>x1</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -197,30 +197,36 @@ statistic.</p>
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='TwoStageDesign-class.html'>TwoStageDesign</a></code>, see <code><a href='n.html'>n</a></code> for accessing
+    <div class='dont-index'><p><code><a href='TwoStageDesign-class.html'>TwoStageDesign</a></code>, see <code><a href='n1.html'>n</a></code> for accessing
 the sample size of a design</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>design</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='TwoStageDesign-class.html'>TwoStageDesign</a></span>(
-  <span class='kw'>n1</span>    <span class='kw'>=</span> <span class='fl'>25</span>,
-  <span class='kw'>c1f</span>   <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='kw'>c1e</span>   <span class='kw'>=</span> <span class='fl'>2.5</span>,
-  <span class='kw'>n2</span>    <span class='kw'>=</span> <span class='fl'>50</span>,
-  <span class='kw'>c2</span>    <span class='kw'>=</span> <span class='fl'>1.96</span>,
-  <span class='kw'>order</span> <span class='kw'>=</span> <span class='fl'>7L</span>
+    <pre class="examples"><div class='input'><span class='kw'>design</span> <span class='op'>&lt;-</span> <span class='fu'><a href='TwoStageDesign-class.html'>TwoStageDesign</a></span>(
+  n1    = <span class='fl'>25</span>,
+  c1f   = <span class='fl'>0</span>,
+  c1e   = <span class='fl'>2.5</span>,
+  n2    = <span class='fl'>50</span>,
+  c2    = <span class='fl'>1.96</span>,
+  order = <span class='fl'>7L</span>
 )
 
-<span class='fu'>c2</span>(<span class='no'>design</span>, <span class='fl'>2.2</span>) <span class='co'># 1.96</span></div><div class='output co'>#&gt; [1] 1.96</div><div class='input'><span class='fu'>c2</span>(<span class='no'>design</span>, <span class='fl'>3.0</span>) <span class='co'># -Inf</span></div><div class='output co'>#&gt; [1] -Inf</div><div class='input'><span class='fu'>c2</span>(<span class='no'>design</span>, -<span class='fl'>1.0</span>) <span class='co'># Inf</span></div><div class='output co'>#&gt; [1] Inf</div><div class='input'>
-<span class='no'>design</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='TwoStageDesign-class.html'>TwoStageDesign</a></span>(
-   <span class='kw'>n1</span>    <span class='kw'>=</span> <span class='fl'>25</span>,
-   <span class='kw'>c1f</span>   <span class='kw'>=</span> <span class='fl'>0</span>,
-   <span class='kw'>c1e</span>   <span class='kw'>=</span> <span class='fl'>2.5</span>,
-   <span class='kw'>n2</span>    <span class='kw'>=</span> <span class='fl'>50</span>,
-   <span class='kw'>c2</span>    <span class='kw'>=</span> <span class='fl'>1.96</span>,
-   <span class='kw'>order</span> <span class='kw'>=</span> <span class='fl'>7L</span>
+<span class='fu'>c2</span>(<span class='kw'>design</span>, <span class='fl'>2.2</span>) <span class='co'># 1.96</span>
+</div><div class='output co'>#&gt; [1] 1.96</div><div class='input'><span class='fu'>c2</span>(<span class='kw'>design</span>, <span class='fl'>3.0</span>) <span class='co'># -Inf</span>
+</div><div class='output co'>#&gt; [1] -Inf</div><div class='input'><span class='fu'>c2</span>(<span class='kw'>design</span>, <span class='op'>-</span><span class='fl'>1.0</span>) <span class='co'># Inf</span>
+</div><div class='output co'>#&gt; [1] Inf</div><div class='input'>
+<span class='kw'>design</span> <span class='op'>&lt;-</span> <span class='fu'><a href='TwoStageDesign-class.html'>TwoStageDesign</a></span>(
+   n1    = <span class='fl'>25</span>,
+   c1f   = <span class='fl'>0</span>,
+   c1e   = <span class='fl'>2.5</span>,
+   n2    = <span class='fl'>50</span>,
+   c2    = <span class='fl'>1.96</span>,
+   order = <span class='fl'>7L</span>
 )
 
-<span class='fu'>c2</span>(<span class='no'>design</span>, <span class='fl'>2.2</span>) <span class='co'># 1.96</span></div><div class='output co'>#&gt; [1] 1.96</div><div class='input'><span class='fu'>c2</span>(<span class='no'>design</span>, <span class='fl'>3.0</span>) <span class='co'># -Inf</span></div><div class='output co'>#&gt; [1] -Inf</div><div class='input'><span class='fu'>c2</span>(<span class='no'>design</span>, -<span class='fl'>1.0</span>) <span class='co'># Inf</span></div><div class='output co'>#&gt; [1] Inf</div><div class='input'>
+<span class='fu'>c2</span>(<span class='kw'>design</span>, <span class='fl'>2.2</span>) <span class='co'># 1.96</span>
+</div><div class='output co'>#&gt; [1] 1.96</div><div class='input'><span class='fu'>c2</span>(<span class='kw'>design</span>, <span class='fl'>3.0</span>) <span class='co'># -Inf</span>
+</div><div class='output co'>#&gt; [1] -Inf</div><div class='input'><span class='fu'>c2</span>(<span class='kw'>design</span>, <span class='op'>-</span><span class='fl'>1.0</span>) <span class='co'># Inf</span>
+</div><div class='output co'>#&gt; [1] Inf</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -237,7 +243,7 @@ the sample size of a design</p></div>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

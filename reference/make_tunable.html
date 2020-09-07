@@ -172,15 +172,15 @@ Tunable parameters are optimized over, non-tunable ('fixed') parameters are
 considered given and not altered during optimization.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>make_tunable</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>make_tunable</span>(<span class='kw'>x</span>, <span class='kw'>...</span>)
 
 <span class='co'># S4 method for TwoStageDesign</span>
-<span class='fu'>make_tunable</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+<span class='fu'>make_tunable</span>(<span class='kw'>x</span>, <span class='kw'>...</span>)
 
-<span class='fu'>make_fixed</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+<span class='fu'>make_fixed</span>(<span class='kw'>x</span>, <span class='kw'>...</span>)
 
 <span class='co'># S4 method for TwoStageDesign</span>
-<span class='fu'>make_fixed</span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>make_fixed</span>(<span class='kw'>x</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -203,22 +203,25 @@ converting tunable parameters of a design object to a numeric vector (and back),
 and <code><a href='minimize.html'>minimize</a></code> for the actual minimzation procedure</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>design</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='TwoStageDesign-class.html'>TwoStageDesign</a></span>(<span class='fl'>25</span>, <span class='fl'>0</span>, <span class='fl'>2</span>, <span class='fl'>25</span>, <span class='fl'>2</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='fl'>5</span>)
+    <pre class="examples"><div class='input'><span class='kw'>design</span> <span class='op'>&lt;-</span> <span class='fu'><a href='TwoStageDesign-class.html'>TwoStageDesign</a></span>(<span class='fl'>25</span>, <span class='fl'>0</span>, <span class='fl'>2</span>, <span class='fl'>25</span>, <span class='fl'>2</span>, order = <span class='fl'>5</span>)
 <span class='co'># default: all parameters are tunable (except integration pivots,</span>
 <span class='co'># weights and tunability status itself)</span>
-<span class='no'>design</span>@<span class='kw'>tunable</span></div><div class='output co'>#&gt;             n1            c1f            c1e      n2_pivots      c2_pivots 
+<span class='kw'>design</span><span class='op'>@</span>tunable
+</div><div class='output co'>#&gt;             n1            c1f            c1e      n2_pivots      c2_pivots 
 #&gt;           TRUE           TRUE           TRUE           TRUE           TRUE 
 #&gt; x1_norm_pivots        weights        tunable 
 #&gt;          FALSE          FALSE          FALSE </div><div class='input'>
 <span class='co'># make n1 and the pivots of n2 fixed (not changed during optimization)</span>
-<span class='no'>design</span> <span class='kw'>&lt;-</span> <span class='fu'>make_fixed</span>(<span class='no'>design</span>, <span class='no'>n1</span>, <span class='no'>n2_pivots</span>)
-<span class='no'>design</span>@<span class='kw'>tunable</span></div><div class='output co'>#&gt;             n1            c1f            c1e      n2_pivots      c2_pivots 
+<span class='kw'>design</span> <span class='op'>&lt;-</span> <span class='fu'>make_fixed</span>(<span class='kw'>design</span>, <span class='kw'>n1</span>, <span class='kw'>n2_pivots</span>)
+<span class='kw'>design</span><span class='op'>@</span>tunable
+</div><div class='output co'>#&gt;             n1            c1f            c1e      n2_pivots      c2_pivots 
 #&gt;          FALSE           TRUE           TRUE          FALSE           TRUE 
 #&gt; x1_norm_pivots        weights        tunable 
 #&gt;          FALSE          FALSE          FALSE </div><div class='input'>
 <span class='co'># make them tunable again</span>
-<span class='no'>design</span> <span class='kw'>&lt;-</span> <span class='fu'>make_tunable</span>(<span class='no'>design</span>, <span class='no'>n1</span>, <span class='no'>n2_pivots</span>)
-<span class='no'>design</span>@<span class='kw'>tunable</span></div><div class='output co'>#&gt;             n1            c1f            c1e      n2_pivots      c2_pivots 
+<span class='kw'>design</span> <span class='op'>&lt;-</span> <span class='fu'>make_tunable</span>(<span class='kw'>design</span>, <span class='kw'>n1</span>, <span class='kw'>n2_pivots</span>)
+<span class='kw'>design</span><span class='op'>@</span>tunable
+</div><div class='output co'>#&gt;             n1            c1f            c1e      n2_pivots      c2_pivots 
 #&gt;           TRUE           TRUE           TRUE           TRUE           TRUE 
 #&gt; x1_norm_pivots        weights        tunable 
 #&gt;          FALSE          FALSE          FALSE </div><div class='input'>
@@ -238,7 +241,7 @@ and <code><a href='minimize.html'>minimize</a></code> for the actual minimzation
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

@@ -122,36 +122,46 @@
 <p>Internally, <strong>adoptr</strong> is built around the joint distribution of a test statistic and the unknown location parameter of interest given a sample size, i.e. <span class="math display">\[
 \mathcal{L}\big[(X_i, \theta)\,|\,n_i\big]
 \]</span> where <span class="math inline">\(X_i\)</span> is the stage-<span class="math inline">\(i\)</span> test statistic and <span class="math inline">\(n_i\)</span> the corresponding sample size. The distribution class for <span class="math inline">\(X_i\)</span> is defined by specifying a <code>DataDistribution</code> object, e.g., a normal distribution</p>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">adoptr</span>)
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/kkmann/adoptr">adoptr</a></span>)
 
-<span class="no">datadist</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/NormalDataDistribution-class.html">Normal</a></span>()</pre></body></html></div>
+<span class="kw">datadist</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Normal-class.html">Normal</a></span>()
+</pre></div>
 <p>To completely specify the marginal distribution of <span class="math inline">\(X_i\)</span>, the distribution of <span class="math inline">\(\theta\)</span> must also be specified. The classical case where <span class="math inline">\(\theta\)</span> is considered fixed, emerges as special case when a single parameter value has probability mass 1.</p>
 <div id="discrete-priors" class="section level3">
 <h3 class="hasAnchor">
 <a href="#discrete-priors" class="anchor"></a>Discrete priors</h3>
 <p>The simplest supported prior class are discrete <code>PointMassPrior</code> priors. To specify a discrete prior, one simply specifies the vector of pivot points with positive mass and the vector of corresponding probability masses. E.g., consider an example where the point <span class="math inline">\(\delta = 0.1\)</span> has probability mass <span class="math inline">\(0.4\)</span> and the point <span class="math inline">\(\delta = 0.25\)</span> has mass <span class="math inline">\(1 - 0.4 = 0.6\)</span>.</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="no">disc_prior</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/PointMassPrior-class.html">PointMassPrior</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.1</span>, <span class="fl">0.25</span>), <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.4</span>, <span class="fl">0.6</span>))</pre></body></html></div>
+<div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="kw">disc_prior</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PointMassPrior-class.html">PointMassPrior</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.1</span>, <span class="fl">0.25</span>), <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.4</span>, <span class="fl">0.6</span>))
+</pre></div>
 <p>For details on the provided methods, see <code>?DiscretePrior</code>.</p>
 </div>
 <div id="continuous-priors" class="section level3">
 <h3 class="hasAnchor">
 <a href="#continuous-priors" class="anchor"></a>Continuous priors</h3>
 <p><strong>adoptr</strong> also supports arbitrary continuous priors with support on compact intervals. For instance, we could consider a prior based on a truncated normal via:</p>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="no">cont_prior</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/ContinuousPrior-class.html">ContinuousPrior</a></span>(
-  <span class="kw">pdf</span>     <span class="kw">=</span> <span class="kw">function</span>(<span class="no">x</span>) <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">dnorm</a></span>(<span class="no">x</span>, <span class="kw">mean</span> <span class="kw">=</span> <span class="fl">0.3</span>, <span class="kw">sd</span> <span class="kw">=</span> <span class="fl">0.2</span>),
-  <span class="kw">support</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(-<span class="fl">2</span>, <span class="fl">3</span>)
-)</pre></body></html></div>
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="kw">cont_prior</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ContinuousPrior-class.html">ContinuousPrior</a></span>(
+  pdf     = <span class="fu">function</span>(<span class="kw">x</span>) <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">dnorm</a></span>(<span class="kw">x</span>, mean = <span class="fl">0.3</span>, sd = <span class="fl">0.2</span>), 
+  support = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="op">-</span><span class="fl">2</span>, <span class="fl">3</span>)
+)
+</pre></div>
 <p>For details on the provided methods, see <code><a href="../reference/ContinuousPrior-class.html">?ContinuousPrior</a></code>.</p>
 </div>
 <div id="conditioning" class="section level3">
 <h3 class="hasAnchor">
 <a href="#conditioning" class="anchor"></a>Conditioning</h3>
 <p>In practice, the most important operation will be conditioning. This is important to implement type one and type two error rate constraints. Consider, e.g., the case of power. Typically, a power constraint is imposed on a single point in the alternative, e.g. using the constraint</p>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="fu"><a href="../reference/ConditionalPower-class.html">Power</a></span>(<span class="fu"><a href="../reference/NormalDataDistribution-class.html">Normal</a></span>(), <span class="fu"><a href="../reference/PointMassPrior-class.html">PointMassPrior</a></span>(<span class="fl">.4</span>, <span class="fl">1</span>)) <span class="kw">&gt;=</span> <span class="fl">0.8</span>
-<span class="co">#&gt; -E[Pr[x2&gt;=c2(x1)]]&lt;Normal&lt;two-armed&gt;;PointMass&lt;0.40&gt;&gt;  &lt;= -0.8</span></pre></body></html></div>
+<div class="sourceCode" id="cb4"><pre class="downlit">
+<span class="fu"><a href="../reference/ConditionalPower-class.html">Power</a></span>(<span class="fu"><a href="../reference/Normal-class.html">Normal</a></span>(), <span class="fu"><a href="../reference/PointMassPrior-class.html">PointMassPrior</a></span>(<span class="fl">.4</span>, <span class="fl">1</span>)) <span class="op">&gt;=</span> <span class="fl">0.8</span>
+<span class="co">#&gt; -E[Pr[x2&gt;=c2(x1)]]&lt;Normal&lt;two-armed&gt;;PointMass&lt;0.40&gt;&gt;  &lt;= -0.8</span>
+</pre></div>
 <p>If uncertainty about the true response rate should be incorporated in the design, it makes sense to assume a continuous prior on <span class="math inline">\(\theta\)</span>. In this case, the prior should be conditioned for the power constraint to avoid integrating over the null hypothesis:</p>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="fu"><a href="../reference/ConditionalPower-class.html">Power</a></span>(<span class="fu"><a href="../reference/NormalDataDistribution-class.html">Normal</a></span>(), <span class="fu"><a href="../reference/condition.html">condition</a></span>(<span class="no">cont_prior</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>, <span class="fl">3</span>))) <span class="kw">&gt;=</span> <span class="fl">0.8</span>
-<span class="co">#&gt; -E[Pr[x2&gt;=c2(x1)]]&lt;Normal&lt;two-armed&gt;;ContinuousPrior&lt;[0,3]&gt;&gt;  &lt;= -0.8</span></pre></body></html></div>
+<div class="sourceCode" id="cb5"><pre class="downlit">
+<span class="fu"><a href="../reference/ConditionalPower-class.html">Power</a></span>(<span class="fu"><a href="../reference/Normal-class.html">Normal</a></span>(), <span class="fu"><a href="../reference/condition.html">condition</a></span>(<span class="kw">cont_prior</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>, <span class="fl">3</span>))) <span class="op">&gt;=</span> <span class="fl">0.8</span>
+<span class="co">#&gt; -E[Pr[x2&gt;=c2(x1)]]&lt;Normal&lt;two-armed&gt;;ContinuousPrior&lt;[0,3]&gt;&gt;  &lt;= -0.8</span>
+</pre></div>
 </div>
   </div>
 
@@ -168,7 +178,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

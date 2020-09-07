@@ -167,7 +167,7 @@ TwoStageDesign." />
     </div>
 
     <pre class="usage"><span class='co'># S4 method for TwoStageDesign,numeric</span>
-<span class='fu'><a href='https://rdrr.io/r/stats/simulate.html'>simulate</a></span>(<span class='no'>object</span>, <span class='no'>nsim</span>, <span class='no'>dist</span>, <span class='no'>theta</span>, <span class='kw'>seed</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+<span class='fu'><a href='https://rdrr.io/r/stats/simulate.html'>simulate</a></span>(<span class='kw'>object</span>, <span class='kw'>nsim</span>, <span class='kw'>dist</span>, <span class='kw'>theta</span>, seed = <span class='kw'>NULL</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -218,9 +218,10 @@ rows and for each row (each simulation run) the following columns</p><ul>
     <div class='dont-index'><p><code><a href='TwoStageDesign-class.html'>TwoStageDesign</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>design</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='TwoStageDesign-class.html'>TwoStageDesign</a></span>(<span class='fl'>25</span>, <span class='fl'>0</span>, <span class='fl'>2</span>, <span class='fl'>25</span>, <span class='fl'>2</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='fl'>5</span>)
+    <pre class="examples"><div class='input'><span class='kw'>design</span> <span class='op'>&lt;-</span> <span class='fu'><a href='TwoStageDesign-class.html'>TwoStageDesign</a></span>(<span class='fl'>25</span>, <span class='fl'>0</span>, <span class='fl'>2</span>, <span class='fl'>25</span>, <span class='fl'>2</span>, order = <span class='fl'>5</span>)
 <span class='co'># draw samples assuming two-armed design</span>
-<span class='fu'><a href='https://rdrr.io/r/stats/simulate.html'>simulate</a></span>(<span class='no'>design</span>, <span class='fl'>10</span>, <span class='fu'><a href='NormalDataDistribution-class.html'>Normal</a></span>(), <span class='fl'>.3</span>, <span class='fl'>42</span>)</div><div class='output co'>#&gt;    theta n1 c1f c1e        x1 n2   c2         x2 reject
+<span class='fu'><a href='https://rdrr.io/r/stats/simulate.html'>simulate</a></span>(<span class='kw'>design</span>, <span class='fl'>10</span>, <span class='fu'><a href='Normal-class.html'>Normal</a></span>(), <span class='fl'>.3</span>, <span class='fl'>42</span>)
+</div><div class='output co'>#&gt;    theta n1 c1f c1e        x1 n2   c2         x2 reject
 #&gt; 1    0.3 25   0   2 2.4316186  0 -Inf  1.3048697   TRUE
 #&gt; 2    0.3 25   0   2 0.4959620 25    2  3.3473056   TRUE
 #&gt; 3    0.3 25   0   2 1.4237886 25    2 -0.3282005  FALSE
@@ -247,7 +248,7 @@ rows and for each row (each simulation run) the following columns</p><ul>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>
