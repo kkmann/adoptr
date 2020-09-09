@@ -1,6 +1,3 @@
-%\VignetteIndexEntry{Detailed overview of adoptr}
-%\VignetteEngine{knitr::knitr}
-
 \documentclass[nojss]{jss}
 
 \usepackage[utf8]{inputenc}
@@ -87,8 +84,9 @@ validation process of the package.
 
 \begin{document}
 
-
-
+\SweaveOpts{engine=R,eps=FALSE}
+%\VignetteIndexEntry{Detailed overview of adoptr}
+%\VignettePackage{adoptr}
 
 <<setup, echo=FALSE, include=FALSE>>=
 library(adoptr)
@@ -117,6 +115,7 @@ setMethod("evaluate",
 mss <- MaximalSampleSize()
 @
 
+This manuscript was accepted for publication in the Journal of Statistical Software.
 
 
 \section{Background}
@@ -731,8 +730,9 @@ the stage-two critical value as functions of the first-stage test statistic $x_1
 The plot method also accepts additional \code{ConditionalScores} such as conditional power.
 Calling the plot method produces several plots with the interim test statistic
 $x_1$ on the $x$-axis and the respective function on the $y$-axis.
+\setkeys{Gin}{width=\textwidth}
 \begin{figure}
-<<plot1, fig.height=2.25*1.25, fig.width=6*1.25, out.height="2.25in", out.width="6in">>=
+<<plot1, fig=TRUE, height=2.8125, width=7.5>>=
 plot(opt1$design, `Conditional power` = cp)
 @
 \caption{\label{fig:standard-case}Optimal sample size, critical value, and conditional power plotted against the interim test statistic (built-in plot method).}
@@ -861,7 +861,7 @@ hard power constraint under a
 point prior (maximal sample size: \Sexpr{evaluate(mss, opt1$design)})
 or a continuous prior (maximal sample size: \Sexpr{evaluate(mss, opt2$design)}).
 \begin{figure}
-<<plot2, echo=FALSE, warning=FALSE, fig.height=2.25*1.25, fig.width=6*1.25, out.height="2.25in", out.width="6in">>=
+<<plot2, fig=TRUE, echo=FALSE, warning=FALSE, height=2.8125, width=7.5>>=
 x1    <- seq(0, 3, by = .01)
 theta <- seq(0, .4, by = .01)
 
@@ -1002,7 +1002,7 @@ more appealing conditional properties must be decided on a case by case basis.
 
 
 \begin{figure}
-<<plot3, echo=FALSE, warning=FALSE, fig.height=2.25*1.25, fig.width=6*1.25, out.height="2.25in", out.width="6in">>=
+<<plot3, fig=TRUE, echo=FALSE, warning=FALSE, height=2.8125, width=7.5>>=
    x1 <- seq(0, 3, by = .01)
 
 plot_data_2 <- tibble(
@@ -1110,7 +1110,7 @@ come at the price of slightly increased expected sample size
 \Sexpr{round(evaluate(ess, opt1$design), 1)} in the less restricted case).
 
 \begin{figure}
-<<plot4, echo=FALSE, warning=FALSE, fig.height=2.25*1.25, fig.width=6*1.25, out.height="2.25in", out.width="6in">>=
+<<plot4, fig=TRUE, echo=FALSE, warning=FALSE, height=2.8125, width=7.5>>=
 
     x1    <- seq(-.5, 3, by = .01)
 theta <- seq(-.2, .5, by = .01)
@@ -1338,9 +1338,7 @@ information for user-defined objective functions.
 
 \section{Acknowledgments}
 
-This manuscript was accepted for publication in the Journal of Statistical Software.
-
-The first two authors contributed equally to its completion.
+The first two authors contributed equally to the completion of this manuscript.
 
 This work was partly supported by the Deutsche
 Forschungsgemeinschaft under Grant number KI 708/4-1.
