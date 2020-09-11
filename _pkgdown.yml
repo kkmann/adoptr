@@ -9,7 +9,7 @@ navbar:
   - text: Get started
     href: articles/adoptr.html
   - text: Overview Paper
-    href: articles/adoptr_paper.pdf
+    href: articles/adoptr_jss.html
   - text: Articles
     menu:
     - text: Working with Priors
