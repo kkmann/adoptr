@@ -20,6 +20,9 @@ A good place to start learning about it can be found
 For a sample workflow and a quick demo of the capabilities, see
 \href{https://kkmann.github.io/adoptr/articles/adoptr.html}{here}.
 
+A more detailed description of the background and the usage of \pkg{adoptr}
+can be found \href{https://kkmann.github.io/adoptr/articles/adoptr_jss.html}{here}.
+
 A variety of examples is presented in the validation report hosted
 \href{https://kkmann.github.io/adoptr-validation-report/}{here}.
 }
