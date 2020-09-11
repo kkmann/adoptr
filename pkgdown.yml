@@ -2,7 +2,7 @@ pandoc: '2.2'
 pkgdown: 1.6.0
 pkgdown_sha: ~
 articles: []
-last_built: 2020-09-10T17:01Z
+last_built: 2020-09-11T14:33Z
 urls:
   reference: https://kkmann.github.io/adoptr/reference
   article: https://kkmann.github.io/adoptr/articles
