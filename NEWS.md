@@ -1,3 +1,7 @@
+# adopter 0.4.0
+
+* included JSS article as vignette
+
 # adoptr 0.3.2
 
 * bugfix for binomial pdf/cdf
