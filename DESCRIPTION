@@ -28,7 +28,8 @@ Suggests:
     dplyr,
     ggplot2,
     tidyr,
-    gridExtra
+    gridExtra,
+    bookdown
 Imports:
     nloptr,
     methods,
