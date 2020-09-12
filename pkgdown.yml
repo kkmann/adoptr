@@ -1,8 +1,14 @@
 pandoc: '2.2'
-pkgdown: 1.6.0
+pkgdown: 1.6.1
 pkgdown_sha: ~
-articles: []
-last_built: 2020-09-11T14:33Z
+articles:
+  adoptr: adoptr.html
+  adoptr_jss: adoptr_jss.html
+  composite-scores: composite-scores.html
+  conditional-scores: conditional-scores.html
+  defining-new-scores: defining-new-scores.html
+  working-with-priors: working-with-priors.html
+last_built: 2020-09-12T17:08Z
 urls:
   reference: https://kkmann.github.io/adoptr/reference
   article: https://kkmann.github.io/adoptr/articles
