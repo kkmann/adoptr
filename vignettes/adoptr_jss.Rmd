@@ -676,10 +676,10 @@ The objective function is the expected sample size under the prior
 ess <- ExpectedSampleSize(dist = datadist, prior = prior)
 ```
 and we replace power with expected power
-\begin{align}
+$$
 \boldsymbol{E} \Big[
 \boldsymbol{Pr}_\theta\big[X_2>c_2(X_1)\big] \, \Big| \, \theta \geq 0.1 \Big] (#eq:expected-power)
-\end{align}
+$$
 which is the expected power given a relevant effect (here we define the minimal
 relevant effect as $0.1$).
 This score can be defined in **adoptr** by first conditioning the prior.
