@@ -657,7 +657,7 @@ combination methods are slightly less efficient (cf. @variational for a more
 detailed discussion of this issue).
 
 
-## Optimization under uncertainty (#sec:uncertainty)
+## Optimization under uncertainty {#sec:uncertainty}
 **adoptr** is not limited to point priors but also supports arbitrary
 continuous prior distributions.
 Consider the same situation as before but now assume that the prior over
