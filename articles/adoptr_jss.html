@@ -293,10 +293,10 @@ Optimal sample size, critical value, and conditional power plotted against the i
 +    order   = 25)</code></pre>
 <p>The objective function is the expected sample size under the prior</p>
 <pre class="text"><code>R&gt; ess &lt;- ExpectedSampleSize(dist = datadist, prior = prior)</code></pre>
-<p>and we replace power with expected power <span class="math display">\[\begin{align}
+<p>and we replace power with expected power <span class="math display">\[
 \boldsymbol{E} \Big[
 \boldsymbol{Pr}_\theta\big[X_2&gt;c_2(X_1)\big] \, \Big| \, \theta \geq 0.1 \Big] (#eq:expected-power)
-\end{align}\]</span> which is the expected power given a relevant effect (here we define the minimal relevant effect as <span class="math inline">\(0.1\)</span>). This score can be defined in <strong>adoptr</strong> by first conditioning the prior.</p>
+\]</span> which is the expected power given a relevant effect (here we define the minimal relevant effect as <span class="math inline">\(0.1\)</span>). This score can be defined in <strong>adoptr</strong> by first conditioning the prior.</p>
 <pre class="text"><code>R&gt; epower &lt;- Power(dist = datadist, prior = condition(prior, c(.1, 1)))</code></pre>
 <p>The optimal design is then given by</p>
 <pre class="text"><code>R&gt; opt2 &lt;- minimize(ess, subject_to(epower &gt;= 0.9, toer &lt;= 0.025),
