@@ -223,9 +223,9 @@ choosing the early-stopping boundaries $c_1^f$ and $c_1^e$
 $c_2(\cdot)$ (@BK1994, @HO1985).
 Often, the inverse-normal combination test [@LW1999] is applied and
 $c_2(\cdot)$ is defined as a linear function of the stage-one test-statistic
-\begin{align} 
-  c_2(x_1) = \frac{c - w_1 x_1}{w_2} (\#eq:inverse-normal)
-\end{align}
+$$ 
+  c_2(x_1) = \frac{c - w_1 x_1}{w_2}‚
+$$
 for a critical value $c$ and predefined weights $w_1$ and $w_2$.
 Most commonly, the stage-wise test statistics are weighted in terms of
 their respective sample sizes, i.e., $w_1 = \sqrt{n_1 / (n_1+n_2)}$ and
@@ -264,9 +264,9 @@ Hence, conditional power is a conditional score given as the power conditioned
 on the first-stage outcome $X_1=x_1$.
 *Vice versa*, power can be seen as an unconditional score that is obtained by
 integrating conditional power over all possible stage-one outcomes, i.e.,
-\begin{align} 
-\operatorname{Power_\theta} = \boldsymbol{E}_\theta\big[\operatorname{CP}(X_1)\big]. (\#eq:power)
-\end{align}
+$$
+\operatorname{Power_\theta} = \boldsymbol{E}_\theta\big[\operatorname{CP}(X_1)\big].
+$$
 Intuitively, it makes sense to require a minimal conditional power upon
 continuation to the second stage since one might otherwise continue a trial
 with little prospect of still rejecting the null hypothesis.
@@ -275,10 +275,10 @@ Once the scoring criterion is selected, the design parameters may be chosen
 in order to optimize this objective.
 The first ones to address this problem were @JT2015
 who minimized the expected sample size
-\begin{align} 
+$$
 \text{ESS}_{\theta}(\mathcal{D}) := \boldsymbol{E}_{\theta} \big[n(X_1) \big] :=
-\boldsymbol{E}_{\theta} \big[n_1 + n_2(X_1) \big] (\#eq:ess)
-\end{align}
+\boldsymbol{E}_{\theta} \big[n_1 + n_2(X_1) \big]
+$$
 of a two-stage design for given $n_1,c_1^f, c_1^e$ with respect to $n_2(\cdot)$
 for given power and type one error rate constraints.
 The function $c_2(\cdot)$, however, was not optimized.
@@ -336,7 +336,7 @@ score over the continuation region, e.g.,
 \text{ESS}_{\theta}(\mathcal{D})  =
 \int n(x_1) f_{\theta} (x_1) \operatorname{d} x_1
 \approx n_1 + \sum_{i=1}^{k} \omega_i\, n_2\big(\widetilde{x}_1^{(i)}\big) f_{\theta}
-\big(\widetilde{x}_1^{(i)}\big), (\#eq:ess-gaussquad)
+\big(\widetilde{x}_1^{(i)}\big),
 \end{align}
 where $f_\theta$ is the probability density function of $X_1\,|\,\theta$ and
 $\omega_i$ are the corresponding weights of the integration rule.
@@ -356,8 +356,8 @@ Most commonly used unconditional performance scores
 $S(\mathcal{D})$ can be seen as expected values over conditional scores
 $S(\mathcal{D}|X_1)$ by
 $S(\mathcal{D}) = \boldsymbol{E}\big[S(\mathcal{D}|X_1)\big]$
-in a similar way as power (cf. Equation \@ref(eq:power)) and
-expected sample size (cf. Equation \@ref(eq:ess)).
+in a similar way as power and
+expected sample size.
 Any such 'integral score' can be computed quickly and reliably in **adoptr**
 via the choice of pivots outlined above.
 The correctness of numerically integrated scores is checked in the **adoptr**
@@ -436,7 +436,7 @@ community, **adoptr** also features an extensive test and validation suite
 
 In the following, we outline the key design principles for **adoptr**.
 
-1. **Interactivity: **
+1. **Interactivity:**
 A major advantage of the **R**-programming language is its
 powerful metaprogramming capabilities and flexible class
 system.
@@ -678,7 +678,7 @@ ess <- ExpectedSampleSize(dist = datadist, prior = prior)
 and we replace power with expected power
 $$
 \boldsymbol{E} \Big[
-\boldsymbol{Pr}_\theta\big[X_2>c_2(X_1)\big] \, \Big| \, \theta \geq 0.1 \Big] (#eq:expected-power)
+\boldsymbol{Pr}_\theta\big[X_2>c_2(X_1)\big] \, \Big| \, \theta \geq 0.1 \Big]
 $$
 which is the expected power given a relevant effect (here we define the minimal
 relevant effect as $0.1$).
@@ -709,7 +709,7 @@ amounts to a lower value of `r round(evaluate(ess, opt1$design), 1)`.
 ## Utility maximization and composite scores {#sec:utility_maximization}
 **adoptr** also supports composite scores.
 This can be used to derive utility maximizing designs by defining an objective
-function combining both expected power (cf. Equation \@ref(#eq:expected-power)) and
+function combining both expected power and
 expected sample size instead of imposing a hard constraint on expected power.
 For example, in the above situation one could be interested in a
 utility-maximizing design.
@@ -866,7 +866,7 @@ cp    <- ConditionalPower(dist = datadist, prior = prior)
 power <- expected(cp, data_distribution = datadist, prior = prior)
 ```
 Here, power is derived as expected score of the corresponding conditional
-power (cf. Equation \@ref(#eq:power)).
+power.
 A conditional power constraint is added in exactly the same way as
 unconditional constraints.
 ```{r}
