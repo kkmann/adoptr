@@ -283,9 +283,9 @@ Optimal sample size, critical value, and conditional power plotted against the i
 </div>
 <p>Note the slightly bent shape of the <span class="math inline">\(c_2(\cdot)\)</span> function (cf. Figure @ref(fig:standard-case), second plot). For two-stage designs based on the inverse-normal combination function, <span class="math inline">\(c_2(\cdot)\)</span> would be linear by definition (cf. Equation @ref(eq:inverse-normal)). Since the optimal shape of <span class="math inline">\(c_2(\cdot)\)</span> is not linear (but almost), inverse-normal combination methods are slightly less efficient (cf. <span class="citation">Pilz et al. (2019)</span> for a more detailed discussion of this issue).</p>
 </div>
-<div id="optimization-under-uncertainty-secuncertainty" class="section level2">
+<div id="sec:uncertainty" class="section level2">
 <h2 class="hasAnchor">
-<a href="#optimization-under-uncertainty-secuncertainty" class="anchor"></a>Optimization under uncertainty (#sec:uncertainty)</h2>
+<a href="#sec:uncertainty" class="anchor"></a>Optimization under uncertainty</h2>
 <p><strong>adoptr</strong> is not limited to point priors but also supports arbitrary continuous prior distributions. Consider the same situation as before but now assume that the prior over the effect size is given by a much more realistic truncated normal distribution with mean <span class="math inline">\(0.3\)</span> and standard deviation <span class="math inline">\(0.1\)</span>, i.e., <span class="math inline">\(\theta\sim\mathcal{N}_{[-1, 1]}(0.3, 0.1^2)\)</span>. The order of integration is set to 25 to obtain precise results.</p>
 <pre class="text"><code>R&gt; prior &lt;- ContinuousPrior(
 +    pdf     = function(theta) dnorm(theta, mean = .3, sd = .1),
