@@ -23,7 +23,13 @@ Suggests:
     testthat,
     covr,
     rpact,
-    vdiffr
+    vdiffr,
+    pwr,
+    dplyr,
+    ggplot2,
+    tidyr,
+    gridExtra,
+    bookdown
 Imports:
     nloptr,
     methods,
@@ -46,6 +52,6 @@ Collate:
     ConditionalSampleSize.R
     regularization.R
     CompositeScore.R
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.1
 BugReports: https://github.com/kkmann/adoptr/issues
 URL: https://github.com/kkmann/adoptr

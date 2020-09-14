@@ -108,7 +108,7 @@ test_that("Approximation works in cdf", {
     expect_equal(
         mean(1 - cumulative_distribution_function(dist, sqrt(n) * (p_e - p_c) / sigma_A, n, 0) <= alpha),
         0.807, # reference: M. Kieser (2018), Fallzahlberechnung in der medizinischen Forschung, Tab. 5.2
-        tolerance = 1e-3, scale = 1
+        tolerance = 1e-2, scale = 1
     )
 
     expect_equal(
