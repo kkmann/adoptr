@@ -319,7 +319,7 @@ even for a moderate number of pivots, to approximate any realistic stage-two
 sample size and critical value functions.
 Since the optimal functions are generally very smooth [@variational] they are
 well suited to spline interpolation.
-Within the **adoptr** validation report (cf. Section [7](#sec:validation))
+Within the **adoptr** validation report (cf. Section 7)
 we investigate empirically the shape of the approximated functions and that
 increasing the number of pivots above a value of 5 to 7 does not improve
 the optimization results.
