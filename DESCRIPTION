@@ -1,7 +1,7 @@
 Package: adoptr
 Type: Package
 Title: Adaptive Optimal Two-Stage Designs in R
-Version: 0.4.1
+Version: 0.4.2.9000
 Authors@R: c(
         person("Kevin", "Kunzmann", role = c("aut", "cre"), email = "kevin.kunzmann@mrc-bsu.cam.ac.uk"),
         person("Maximilian", "Pilz", role = c("aut"), email = "pilz@imbi.uni-heidelberg.de")
