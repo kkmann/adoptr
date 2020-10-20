@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">adoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1</span>
       </span>
     </div>
 
@@ -134,7 +134,7 @@
       University of Heidelberg<br><a class="author_email" href="mailto:#"></a><a href="mailto:meinhard.kieser@imbi.uni-heidelberg.de">meinhard.kieser@imbi.uni-heidelberg.de</a>
       </address>
                   
-            <h4 class="date">2020-10-19</h4>
+            <h4 class="date">2020-10-20</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/kkmann/adoptr/blob/master/vignettes/adoptr_jss.Rmd"><code>vignettes/adoptr_jss.Rmd</code></a></small>
       <div class="hidden name"><code>adoptr_jss.Rmd</code></div>
@@ -182,7 +182,7 @@
 <div id="direct-variational-perspective" class="section level1">
 <h1 class="hasAnchor">
 <a href="#direct-variational-perspective" class="anchor"></a>Direct variational perspective</h1>
-<p>In <strong>adoptr</strong>, a simpler solution strategy than solving the Euler-Lagrange equation locally is applied to the same problem class. We propose to embed the entire problem in a finite-dimensional parameter space and solve the corresponding problem over both stage-one and stage-two design parameters simultaneously using standard numerical libraries. I.e., we adopt a <em>direct</em> approach to solving the variational problem. This is done by defining a discrete set of pivot points <span class="math inline">\(\widetilde{x}_1^{(i)}\in(c_1^f, c_1^e), i=1,\ldots,k\)</span>, and interpolating <span class="math inline">\(c_2\)</span> and <span class="math inline">\(n_2\)</span> between these pivots. We use cubic Hermite splines <span class="citation">(Fritsch and Carlson 1980)</span> which are sufficiently flexible, even for a moderate number of pivots, to approximate any realistic stage-two sample size and critical value functions. Since the optimal functions are generally very smooth <span class="citation">(Pilz et al. 2019)</span> they are well suited to spline interpolation. Within the <strong>adoptr</strong> validation report (cf. Section <a href="#sec:validation">7</a>) we investigate empirically the shape of the approximated functions and that increasing the number of pivots above a value of 5 to 7 does not improve the optimization results. The latter implies that a relatively small number of pivot points appears to be sufficient to obtain valid spline approximations of the optimal functions. Note that the pivots are only needed in the continuation region since both functions are (piecewise) constant within the early stopping regions. In <strong>adoptr</strong>, the pivots are defined as nodes of a Gaussian quadrature rule of degree <span class="math inline">\(k\)</span>. This choice allows fast and precise numerical integration of any conditional score over the continuation region, e.g., <span class="math display">\[\begin{align} 
+<p>In <strong>adoptr</strong>, a simpler solution strategy than solving the Euler-Lagrange equation locally is applied to the same problem class. We propose to embed the entire problem in a finite-dimensional parameter space and solve the corresponding problem over both stage-one and stage-two design parameters simultaneously using standard numerical libraries. I.e., we adopt a <em>direct</em> approach to solving the variational problem. This is done by defining a discrete set of pivot points <span class="math inline">\(\widetilde{x}_1^{(i)}\in(c_1^f, c_1^e), i=1,\ldots,k\)</span>, and interpolating <span class="math inline">\(c_2\)</span> and <span class="math inline">\(n_2\)</span> between these pivots. We use cubic Hermite splines <span class="citation">(Fritsch and Carlson 1980)</span> which are sufficiently flexible, even for a moderate number of pivots, to approximate any realistic stage-two sample size and critical value functions. Since the optimal functions are generally very smooth <span class="citation">(Pilz et al. 2019)</span> they are well suited to spline interpolation. Within the <strong>adoptr</strong> validation report (cf. Section 7) we investigate empirically the shape of the approximated functions and that increasing the number of pivots above a value of 5 to 7 does not improve the optimization results. The latter implies that a relatively small number of pivot points appears to be sufficient to obtain valid spline approximations of the optimal functions. Note that the pivots are only needed in the continuation region since both functions are (piecewise) constant within the early stopping regions. In <strong>adoptr</strong>, the pivots are defined as nodes of a Gaussian quadrature rule of degree <span class="math inline">\(k\)</span>. This choice allows fast and precise numerical integration of any conditional score over the continuation region, e.g., <span class="math display">\[\begin{align} 
 \text{ESS}_{\theta}(\mathcal{D})  =
 \int n(x_1) f_{\theta} (x_1) \operatorname{d} x_1
 \approx n_1 + \sum_{i=1}^{k} \omega_i\, n_2\big(\widetilde{x}_1^{(i)}\big) f_{\theta}
@@ -410,7 +410,7 @@ Comparison of fully optimal design and optimal design with fixed first-stage sam
 <p>Bauer, P., F. Bretz, V. Dragalin, F. König, and G. Wassmer. 2015. “Twenty-Five Years of Confirmatory Adaptive Designs: Opportunities and Pitfalls.” <em>Statistics in Medicine</em> 35 (3): 325–47. <a href="https://doi.org/10.1002/sim.6472" class="uri">https://doi.org/10.1002/sim.6472</a>.</p>
 </div>
 <div id="ref-BK1994">
-<p>Bauer, P., and K. Köhne. 1994. “Evaluation of Experiments with Adaptive Interim Analyses.” <em>Biometrics</em> 50 (4): 1029–41. <a href="https://doi.org/10.2307/2533441" class="uri">https://doi.org/10.2307/2533441</a>.</p>
+<p>Bauer, P., and K. Köhne. 1994. “Evaluation of Experiments with Adaptive Interim Analyses.” <em>Biometrics</em> 50 (4): 1029–41.</p>
 </div>
 <div id="ref-Julia">
 <p>Bezanson, J., A. Edelman, S. Karpinski, and V. Shah. 2017. “Julia: A Fresh Approach to Numerical Computing.” <em>SIAM Review</em> 59 (1): 65–98. <a href="https://doi.org/10.1137/141000671" class="uri">https://doi.org/10.1137/141000671</a>.</p>
@@ -437,7 +437,7 @@ Comparison of fully optimal design and optimal design with fixed first-stage sam
 <p>Hack, N., W. Brannath, and M. Brueckner. 2019. <em>AGSDest: Estimation in Adaptive Group Sequential Trials</em>. <a href="https://CRAN.R-project.org/package=AGSDest" class="uri">https://CRAN.R-project.org/package=AGSDest</a>.</p>
 </div>
 <div id="ref-HO1985">
-<p>Hedges, L., and I. Olkin. 1985. <em>Statistical Methods in Meta-Analysis</em>. Academic Press. <a href="https://doi.org/10.2307/1164953" class="uri">https://doi.org/10.2307/1164953</a>.</p>
+<p>Hedges, L., and I. Olkin. 1985. <em>Statistical Methods in Meta-Analysis</em>. Academic Press.</p>
 </div>
 <div id="ref-covr">
 <p>Hester, Jim. 2019. <em>Covr: Test Coverage for Packages</em>. <a href="https://CRAN.R-project.org/package=covr" class="uri">https://CRAN.R-project.org/package=covr</a>.</p>
@@ -449,7 +449,7 @@ Comparison of fully optimal design and optimal design with fixed first-stage sam
 <p>Jennison, C., and B. W. Turnbull. 2015. “Adaptive Sample Size Modification in Clinical Trials: Start Small Then Ask for More?” <em>Statistics in Medicine</em> 34 (29): 3793–3810. <a href="https://doi.org/10.1002/sim.6575" class="uri">https://doi.org/10.1002/sim.6575</a>.</p>
 </div>
 <div id="ref-nlopt">
-<p>Johnson, S. G. 2018. <em>The Nlopt Nonlinear-Optimization Package</em>. <a href="http://ab-initio.mit.edu/nlopt" class="uri">http://ab-initio.mit.edu/nlopt</a>.</p>
+<p>Johnson, S. G. 2018. <em>The Nlopt Nonlinear-Optimization Package</em>. <a href="https://nlopt.readthedocs.io/en/latest/" class="uri">https://nlopt.readthedocs.io/en/latest/</a>.</p>
 </div>
 <div id="ref-Kunzmann2016">
 <p>Kunzmann, K., and M. Kieser. 2016. “Optimal Adaptive Two-Stage Designs for Single-Arm Trial with Binary Endpoint.” <em>arXiv</em>, 1605.00249.</p>
@@ -476,7 +476,7 @@ Comparison of fully optimal design and optimal design with fixed first-stage sam
 <p>NCSS. 2019. <em>PASS Sample Size 2019 <sup></sup></em>. <a href="https://www.ncss.com/software/pass/" class="uri">https://www.ncss.com/software/pass/</a>.</p>
 </div>
 <div id="ref-OBF">
-<p>O’Brien, P. C., and T. R. Fleming. 1979. “A Multiple Testing Procedure for Clinical Trials.” <em>Biometrics</em> 35 (3): 549–56. <a href="https://doi.org/10.2307/2530245" class="uri">https://doi.org/10.2307/2530245</a>.</p>
+<p>O’Brien, P. C., and T. R. Fleming. 1979. “A Multiple Testing Procedure for Clinical Trials.” <em>Biometrics</em> 35 (3): 549–56.</p>
 </div>
 <div id="ref-variational">
 <p>Pilz, M., K. Kunzmann, C. Herrmann, G. Rauch, and M. Kieser. 2019. “A Variational Approach to Optimal Two-Stage Designs.” <em>Statistics in Medicine</em> 38 (21): 4159–71. <a href="https://doi.org/10.1002/sim.8291" class="uri">https://doi.org/10.1002/sim.8291</a>.</p>
