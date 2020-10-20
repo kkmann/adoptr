@@ -54,7 +54,15 @@ library(dplyr)
 library(tidyr)
 library(ggplot2)
 
-knitr::opts_chunk$set(engine='R', highlight=FALSE, prompt=TRUE, tidy=FALSE)
+buildvignette <- as.logical(Sys.getenv("NOTCRAN", unset = FALSE))
+
+knitr::opts_chunk$set(
+    engine='R', 
+    highlight=FALSE, 
+    prompt=TRUE, 
+    tidy=FALSE,
+    eval=buildvignette
+)
 options(prompt = "R> ", continue = "+  ", width = 70, useFancyQuotes = FALSE)
 ```
 
@@ -700,10 +708,10 @@ In cases where the maximal number of iterations is exhausted, a warning is
 thrown.
 
 The expected sample size under the prior of the obtained optimal design equals
-`r round(evaluate(ess, opt2$design), 1)`.
+`r if (buildvignette) round(evaluate(ess, opt2$design), 1)`.
 This points out the increased uncertainty on $\theta$ since the expected sample
 size under the prior of the optimal design from Section [6.1](#sec:standard_case)
-amounts to a lower value of `r round(evaluate(ess, opt1$design), 1)`.
+amounts to a lower value of `r if (buildvignette) round(evaluate(ess, opt1$design), 1)`.
 
 
 ## Utility maximization and composite scores {#sec:utility_maximization}
@@ -763,10 +771,10 @@ $c_2(\cdot)$ as the constraint optimization.
 However, the sample sizes are lower due to the design's lower power which is
 only possible by allowing a trade-off between expected power and expected sample size.
 In particular, the maximal sample size of the utility-based design equals
-`r evaluate(mss, opt3$design)` and is distinctly smaller than in the case of a
+`r if (buildvignette) evaluate(mss, opt3$design)` and is distinctly smaller than in the case of a
 hard power constraint under a
-point prior (maximal sample size: `r evaluate(mss, opt1$design)`)
-or a continuous prior (maximal sample size: `r evaluate(mss, opt2$design)`).
+point prior (maximal sample size: `r if (buildvignette) evaluate(mss, opt1$design)`)
+or a continuous prior (maximal sample size: `r if (buildvignette) evaluate(mss, opt2$design)`).
 
 ```{r, comparison, echo=FALSE, warning=FALSE, fig.height=2.25*1.25, fig.width=6*1.25, out.width='100%', fig.cap="Comparison of optimal designs under a point prior, a continuous prior, and a utility maximization approach."}
 
@@ -881,8 +889,8 @@ regions where the conditional power would usually be below the given threshold
 (cf. Figure \@ref(fig:cp-constraint), first and third plot).
 Overall, the additional constraint reduces the feasible solution space and
 consequently increases the expected sample size
-(`r evaluate(ess, opt4$design) %>% round(1)` with conditional power constraint
-vs. `r evaluate(ess, opt1$design) %>% round(1)` without).
+(`r if (buildvignette) evaluate(ess, opt4$design) %>% round(1)` with conditional power constraint
+vs. `r if (buildvignette) evaluate(ess, opt1$design) %>% round(1)` without).
 This example demonstrates, that any additional binding conditional constraints
 do come at costs for global optimality.
 Whether or not the loss in unconditional performance is outweighed by
@@ -971,7 +979,7 @@ For instance, a sponsor might be subject to logistical constraints that render i
 necessary to design a trial with a specific stage one sample size.
 Returning to the standard case discussed in Section [6.1](#sec:standard_case),
 assume that a stage-one per-group sample size of exactly 80 individuals per group
-is required ($n_1 = 80$) instead of the optimal value of $n_1^* = `r round(opt1$design@n1)`$.
+is required ($n_1 = 80$) instead of the optimal value of $n_1^* = `r if (buildvignette) round(opt1$design@n1)`$.
 Furthermore, assume that the sponsor wants to stop early for futility if and only
 if there is a negative effect size at the interim analysis, i.e., $c_1^f = 0$.
 **adoptr** supports such considerations by allowing to fix specific values of
@@ -992,8 +1000,8 @@ Figure \@ref(fig:tunable) visually compares the original design with the new,
 more restricted design.
 The designs are qualitatively similar, but fixing $n_1$ and $c_1^f$ does
 come at the price of slightly increased expected sample size
-(`r round(evaluate(ess, opt5$design), 1)` compared to
-`r round(evaluate(ess, opt1$design), 1)` in the less restricted case).
+(`r if (buildvignette) round(evaluate(ess, opt5$design), 1)` compared to
+`r if (buildvignette) round(evaluate(ess, opt1$design), 1)` in the less restricted case).
 
 ```{r, tunable, echo=FALSE, warning=FALSE, fig.height=2.25*1.25, fig.width=6*1.25, out.width="100%", fig.cap="Comparison of fully optimal design and optimal design with fixed first-stage sample size."}
 
