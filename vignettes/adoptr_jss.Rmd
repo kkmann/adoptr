@@ -369,7 +369,7 @@ Integer-valued $n_1$ and $n_2$ would, however, lead to an NP-hard
 mixed-integer problem.
 In our experiments, we found that merely rounding both $n_1$ and $n_2$ after
 the optimization works fine.
-The extensive validation suite (cf. Section [7](sec:validation)) evaluates 
+The extensive validation suite (cf. Section 7) evaluates 
 by numerical integration and simulation whether the included constraints
 are fulfilled for optimal designs with rounded sample sizes.
 Up to now, neither the constraints were violated nor an efficiency loss with
@@ -432,7 +432,7 @@ and, e.g., a minimal conditional power (conditional score) simultaneously
 (cf. Section [6.3](#sec:utility_maximization)).
 To facilitate the adoption of these advanced trial designs in the clinical trials
 community, **adoptr** also features an extensive test and validation suite
-(cf. Section [7](#sec:validation)).
+(cf. Section 7).
 
 In the following, we outline the key design principles for **adoptr**.
 
@@ -457,7 +457,7 @@ require the ability to produce a validation report.
 This burden typically results in innovative software not being used at all -
 simply because the validation effort cannot be stemmed.
 We address this issue with an extensive unit test suite and a companion
-validation report (cf. Section [7](#sec:validation)).
+validation report (cf. Section 7).
 3. **Extensibility:**
 We do not want to impose a particular choice of scores or constraints or
 promote a particular notion of optimality for clinical trial designs.
