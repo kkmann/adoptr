@@ -3,7 +3,11 @@ Type: Package
 Title: Adaptive Optimal Two-Stage Designs in R
 Version: 0.4.2.9000
 Authors@R: c(
-        person("Kevin", "Kunzmann", role = c("aut", "cre"), email = "kevin.kunzmann@mrc-bsu.cam.ac.uk"),
+        person("Kevin", "Kunzmann", 
+                role = c("aut", "cre"), 
+                email = "kevin.kunzmann@mrc-bsu.cam.ac.uk"
+        	comment = c(ORCID = "0000-0002-1140-7143")
+        ),
         person("Maximilian", "Pilz", role = c("aut"), email = "pilz@imbi.uni-heidelberg.de")
     )
 Description: Optimize one or two-arm, two-stage designs for clinical trials with 
