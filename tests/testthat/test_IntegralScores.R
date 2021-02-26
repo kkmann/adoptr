@@ -84,7 +84,7 @@ test_that("Power is computed correctly for example design", {
 
     expect_equal(
         evaluate(pow, design_gs),
-        .8, ,
+        .8,
         tolerance = 1e-2, scale = 1)
 
     expect_equal(
@@ -94,7 +94,7 @@ test_that("Power is computed correctly for example design", {
 
     expect_equal(
         mean(sim_alt[, "reject"]),
-        .8, ,
+        .8,
         tolerance = 1e-2, scale = 1)
 
 }) # end 'power is computed correctly for example design'
