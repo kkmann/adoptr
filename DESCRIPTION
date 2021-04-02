@@ -5,10 +5,14 @@ Version: 0.4.2.9000
 Authors@R: c(
         person("Kevin", "Kunzmann", 
                 role = c("aut", "cre"), 
-                email = "kevin.kunzmann@mrc-bsu.cam.ac.uk"
-        	comment = c(ORCID = "0000-0002-1140-7143")
+                email = "kevin.kunzmann@mrc-bsu.cam.ac.uk",
+                comment = c(ORCID = "0000-0002-1140-7143")
         ),
-        person("Maximilian", "Pilz", role = c("aut"), email = "pilz@imbi.uni-heidelberg.de")
+        person("Maximilian", "Pilz", 
+                role = c("aut"), 
+                email = "pilz@imbi.uni-heidelberg.de",
+                comment = c(ORCID = "0000-0002-9685-1613")
+        )
     )
 Description: Optimize one or two-arm, two-stage designs for clinical trials with 
     respect to several pre-implemented objective criteria or implement custom 
@@ -56,6 +60,7 @@ Collate:
     ConditionalSampleSize.R
     regularization.R
     CompositeScore.R
+    MaximumSampleSize.R
 RoxygenNote: 7.1.1
 BugReports: https://github.com/kkmann/adoptr/issues
 URL: https://github.com/kkmann/adoptr
