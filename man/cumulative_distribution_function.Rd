@@ -47,6 +47,6 @@ cumulative_distribution_function(Binomial(.1, TRUE), 1, 50, .3)
 
 cumulative_distribution_function(Normal(), 1, 50, .3)
 
-cumulative_distribution_function(Student(.1, TRUE), .75, 50, .9)
+cumulative_distribution_function(Student(two_armed = FALSE), .75, 50, .9)
 
 }

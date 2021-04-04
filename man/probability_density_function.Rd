@@ -47,6 +47,6 @@ probability_density_function(Binomial(.2, FALSE), 1, 50, .3)
 
 probability_density_function(Normal(), 1, 50, .3)
 
-probability_density_function(Student(.4, TRUE), 1, 40, 1.1)
+probability_density_function(Student(TRUE), 1, 40, 1.1)
 
 }

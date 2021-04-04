@@ -30,7 +30,7 @@ Student <- function(two_armed = TRUE) {
 
 
 #' @examples
-#' probability_density_function(Student(.4, TRUE), 1, 40, 1.1)
+#' probability_density_function(Student(TRUE), 1, 40, 1.1)
 #'
 #' @rdname probability_density_function
 #' @export
@@ -41,7 +41,7 @@ setMethod("probability_density_function", signature("Student", "numeric", "numer
 
 
 #' @examples
-#' cumulative_distribution_function(Student(.1, TRUE), .75, 50, .9)
+#' cumulative_distribution_function(Student(two_armed = FALSE), .75, 50, .9)
 #'
 #' @rdname cumulative_distribution_function
 #' @export
