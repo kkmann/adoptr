@@ -148,6 +148,12 @@ test_that("show method", {
     # the problem with testing the 'show' methods is that covr and/or testthat
     # seems to inject code around the expressions we can only test whether the
     # correct string pops up somewhere (good enough)
+
+    tmp <- capture.output(show(cp >= 0.8))
+    for (x in tmp) {
+        cat("\n\r", print(x), "\n\r")
+    }
+
     expect_true(
         any(stringr::str_detect(
             capture.output(show(cp >= 0.8)),
