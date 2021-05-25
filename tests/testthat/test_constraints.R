@@ -139,21 +139,3 @@ test_that("output of constraints can be of different length", {
 
     expect_equal(length(evaluate(cnstrs, design)), length(design@c2_pivots))
 })
-
-
-test_that("show method", {
-
-    cp <- ConditionalPower(Normal(two_armed = FALSE), PointMassPrior(.4, 1))
-
-    tmp <- capture.output(show(cp >= 0.8))
-
-    print("\n\r")
-    print(tmp)
-    print("\n\r")
-
-    expect_equal(
-        capture.output(show(cp >= 0.8)),
-        "-Pr[x2>=c2(x1)|x1] (x1) <= -0.8 for x1 in [c1f,c1e] "
-    )
-
-})
