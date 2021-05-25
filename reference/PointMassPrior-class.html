@@ -96,7 +96,7 @@ probability mass." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -137,7 +137,7 @@ probability mass." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/kkmann/adoptr">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -171,7 +171,7 @@ representing a univariate prior over a discrete set of points with positive
 probability mass.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>PointMassPrior</span>(<span class='kw'>theta</span>, <span class='kw'>mass</span>, label = <span class='fl'>NA_character_</span>)</pre>
+    <pre class="usage"><span class='fu'>PointMassPrior</span><span class='op'>(</span><span class='va'>theta</span>, <span class='va'>mass</span>, label <span class='op'>=</span> <span class='cn'>NA_character_</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -210,7 +210,7 @@ automatically sorted in ascending order</p>
     <div class='dont-index'><p>To represent continuous prior distributions use <code><a href='ContinuousPrior-class.html'>ContinuousPrior</a></code>.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>PointMassPrior</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>.5</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>.3</span>, <span class='fl'>.7</span>))
+    <pre class="examples"><div class='input'><span class='fu'>PointMassPrior</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>.5</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>.3</span>, <span class='fl'>.7</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; PointMass&lt;Pr[0.00]=0.30;Pr[0.50]=0.70&gt; </div><div class='input'>
 </div></pre>
   </div>

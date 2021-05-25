@@ -98,7 +98,7 @@ TwoStageDesign (see examples section)." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -139,7 +139,7 @@ TwoStageDesign (see examples section)." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/kkmann/adoptr">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -175,10 +175,10 @@ Any group-sequential design can be converted to a fully flexible
 <code>TwoStageDesign</code> (see examples section).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>GroupSequentialDesign</span>(<span class='kw'>n1</span>, <span class='kw'>c1f</span>, <span class='kw'>c1e</span>, <span class='kw'>n2_pivots</span>, <span class='kw'>c2_pivots</span>, order = <span class='kw'>NULL</span>, <span class='kw'>...</span>)
+    <pre class="usage"><span class='fu'>GroupSequentialDesign</span><span class='op'>(</span><span class='va'>n1</span>, <span class='va'>c1f</span>, <span class='va'>c1e</span>, <span class='va'>n2_pivots</span>, <span class='va'>c2_pivots</span>, order <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S4 method for GroupSequentialDesign</span>
-<span class='fu'><a href='TwoStageDesign-class.html'>TwoStageDesign</a></span>(<span class='kw'>n1</span>, <span class='kw'>...</span>)</pre>
+<span class='fu'><a href='TwoStageDesign-class.html'>TwoStageDesign</a></span><span class='op'>(</span><span class='va'>n1</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -222,15 +222,15 @@ length(c2_pivots) if NULL, otherwise first value of c2_pivots is repeated
     <div class='dont-index'><p><code><a href='TwoStageDesign-class.html'>TwoStageDesign</a></code> for superclass and inherited methods</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>design</span> <span class='op'>&lt;-</span> <span class='fu'>GroupSequentialDesign</span>(<span class='fl'>25</span>, <span class='fl'>0</span>, <span class='fl'>2</span>, <span class='fl'>25</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>1.5</span>, <span class='fl'>2.5</span>))
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='kw'>design</span>)
+    <pre class="examples"><div class='input'><span class='va'>design</span> <span class='op'>&lt;-</span> <span class='fu'>GroupSequentialDesign</span><span class='op'>(</span><span class='fl'>25</span>, <span class='fl'>0</span>, <span class='fl'>2</span>, <span class='fl'>25</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>1.5</span>, <span class='fl'>2.5</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>design</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; GroupSequentialDesign: n1 =  25 
 #&gt;           futility |      continue     | efficacy
 #&gt;       x1:    -0.00 |  0.23  1.00  1.77 |  2.00
 #&gt;   c2(x1):     +Inf | +1.00 +1.50 +2.50 |  -Inf
 #&gt;   n2(x1):        0 |    25    25    25 |     0
 #&gt; </div><div class='input'>
-<span class='fu'><a href='TwoStageDesign-class.html'>TwoStageDesign</a></span>(<span class='kw'>design</span>)
+<span class='fu'><a href='TwoStageDesign-class.html'>TwoStageDesign</a></span><span class='op'>(</span><span class='va'>design</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; TwoStageDesign&lt;n1=25;0.0&lt;=x1&lt;=2.0:n2=25&gt; </div><div class='input'>
 </div></pre>
   </div>

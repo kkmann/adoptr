@@ -48,7 +48,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -89,7 +89,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/kkmann/adoptr">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -109,8 +109,7 @@
 
       
 
-      </header><link href="conditional-scores_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
-<script src="conditional-scores_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
+      </header><script src="conditional-scores_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Conditional Scores and Constraints</h1>
@@ -123,89 +122,80 @@
 
     
     
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/kkmann/adoptr">adoptr</a></span>)
-</pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/kkmann/adoptr">adoptr</a></span><span class="op">)</span></code></pre></div>
 <div id="unconditional-scores-in-adoptr" class="section level2">
 <h2 class="hasAnchor">
 <a href="#unconditional-scores-in-adoptr" class="anchor"></a>(Un)conditional Scores in <strong>adoptr</strong>
 </h2>
 <p>There are two fundamental ways of scoring a two-stage design: First, one may assess the performance before observing any data, i.e., at the planning stage. Classical examples for such scores would be power, type-one-error rate, or expected sample size. There is, however, a second perspective. After observing the stage-one outcome, one might be inclined to consider conditional properties of a design. The most prominent example being conditional power (probability to reject the null under the alternative given stage-one outcome). We consider the following example design</p>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="kw">design</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/TwoStageDesign-class.html">TwoStageDesign</a></span>(
-    n1        = <span class="fl">100</span>,
-    c1f       = <span class="fl">.0</span>,
-    c1e       = <span class="fl">2.0</span>,
-    n2_pivots = <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="fl">150</span>, <span class="fl">5</span>),
-    c2_pivots = <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span>(<span class="fl">1</span> <span class="op">+</span> <span class="kw">adoptr</span>:::<span class="fu">GaussLegendreRule</span>(<span class="fl">5</span>)<span class="op">$</span><span class="kw">nodes</span>, <span class="fu">function</span>(<span class="kw">x</span>) <span class="op">-</span><span class="kw">x</span> <span class="op">+</span> <span class="fl">2</span>)
-)
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="kw">design</span>)
-</pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">design</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/TwoStageDesign-class.html">TwoStageDesign</a></span><span class="op">(</span>
+    n1        <span class="op">=</span> <span class="fl">100</span>,
+    c1f       <span class="op">=</span> <span class="fl">.0</span>,
+    c1e       <span class="op">=</span> <span class="fl">2.0</span>,
+    n2_pivots <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">150</span>, <span class="fl">5</span><span class="op">)</span>,
+    c2_pivots <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fu">adoptr</span><span class="fu">:::</span><span class="fu">GaussLegendreRule</span><span class="op">(</span><span class="fl">5</span><span class="op">)</span><span class="op">$</span><span class="va">nodes</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">-</span><span class="va">x</span> <span class="op">+</span> <span class="fl">2</span><span class="op">)</span>
+<span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">design</span><span class="op">)</span></code></pre></div>
 <p><img src="conditional-scores_files/figure-html/define-design-1.png" width="672"></p>
 <p>In adoptr, scores are instances of their respective score class. The most important ones are: <code>ConditionalScore</code>, <code>UnconditionalScore</code>, and <code>IntegralScore</code>. An object of class <code>ConditionalScore</code> can evaluate a design for a particular stage-one outcome. A <code>ConditionalScore</code> is a function <span class="math inline">\(s(\mathcal{D}, x_1)\)</span> evaluating a design <span class="math inline">\(\mathcal{D}\)</span> at a stage-one outcome <span class="math inline">\(X_1 = x_1\)</span>. Some conditional scores might depend on the data distribution (conditional power) others do not (conditional sample size). Conditional score evaluation is completely vectorized:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="kw">uniform_prior</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ContinuousPrior-class.html">ContinuousPrior</a></span>(
-  <span class="fu">function</span>(<span class="kw">x</span>) <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">numeric</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span>(<span class="kw">x</span>)) <span class="op">+</span> <span class="fl">1</span><span class="op">/</span><span class="fl">.2</span>,
-  support = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">.3</span>, <span class="fl">.5</span>)
-)
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">uniform_prior</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ContinuousPrior-class.html">ContinuousPrior</a></span><span class="op">(</span>
+  <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fl">1</span><span class="op">/</span><span class="fl">.2</span>,
+  support <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">.3</span>, <span class="fl">.5</span><span class="op">)</span>
+<span class="op">)</span>
 
-<span class="kw">cp</span>  <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ConditionalPower-class.html">ConditionalPower</a></span>(<span class="fu"><a href="../reference/Normal-class.html">Normal</a></span>(), <span class="kw">uniform_prior</span>)
-<span class="kw">css</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ConditionalSampleSize-class.html">ConditionalSampleSize</a></span>()
+<span class="va">cp</span>  <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ConditionalPower-class.html">ConditionalPower</a></span><span class="op">(</span><span class="fu"><a href="../reference/Normal-class.html">Normal</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">uniform_prior</span><span class="op">)</span>
+<span class="va">css</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ConditionalSampleSize-class.html">ConditionalSampleSize</a></span><span class="op">(</span><span class="op">)</span>
 
-<span class="kw">x1</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>, <span class="fl">.5</span>, <span class="fl">1</span>)
-<span class="fu"><a href="../reference/Scores.html">evaluate</a></span>(<span class="kw">cp</span>, <span class="kw">design</span>, <span class="kw">x1</span>)
+<span class="va">x1</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">.5</span>, <span class="fl">1</span><span class="op">)</span>
+<span class="fu"><a href="../reference/Scores.html">evaluate</a></span><span class="op">(</span><span class="va">cp</span>, <span class="va">design</span>, <span class="va">x1</span><span class="op">)</span>
 <span class="co">#&gt; [1] 0.8312538 0.9303985 0.9772962</span>
-<span class="fu"><a href="../reference/Scores.html">evaluate</a></span>(<span class="kw">css</span>, <span class="kw">design</span>, <span class="kw">x1</span>)
-<span class="co">#&gt; [1] 250 250 250</span>
-</pre></div>
+<span class="fu"><a href="../reference/Scores.html">evaluate</a></span><span class="op">(</span><span class="va">css</span>, <span class="va">design</span>, <span class="va">x1</span><span class="op">)</span>
+<span class="co">#&gt; [1] 250 250 250</span></code></pre></div>
 <p>Conditional scores can also be plotted directly for a given design by including them in the <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> call.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="kw">design</span>, <span class="st">"Conditional Power"</span> = <span class="kw">cp</span>)
-</pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">design</span>, <span class="st">"Conditional Power"</span> <span class="op">=</span> <span class="va">cp</span><span class="op">)</span></code></pre></div>
 <p><img src="conditional-scores_files/figure-html/unnamed-chunk-3-1.png" width="672"></p>
 <p>Any conditional score can be integrated with respect to a prior and data distribution to obtain an unconditional score. Note that for conditional scores which depend on a specification of these distributions (e.g., conditional power) these arguments must be consistent! The resulting score is of class <code>IntegralScore</code>, a specific subclass of <code>UnconditionalScore</code> and evaluates designs independent of a particular <span class="math inline">\(x_1\)</span>, i.e., unconditionally</p>
-<div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="kw">ep</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Scores.html">expected</a></span>(<span class="kw">cp</span>, <span class="fu"><a href="../reference/Normal-class.html">Normal</a></span>(), <span class="kw">uniform_prior</span>)
-<span class="fu"><a href="../reference/Scores.html">evaluate</a></span>(<span class="kw">ep</span>, <span class="kw">design</span>)
-<span class="co">#&gt; [1] 0.989392</span>
-</pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">ep</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Scores.html">expected</a></span><span class="op">(</span><span class="va">cp</span>, <span class="fu"><a href="../reference/Normal-class.html">Normal</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">uniform_prior</span><span class="op">)</span>
+<span class="fu"><a href="../reference/Scores.html">evaluate</a></span><span class="op">(</span><span class="va">ep</span>, <span class="va">design</span><span class="op">)</span>
+<span class="co">#&gt; [1] 0.989392</span></code></pre></div>
 <p>Power at a point alternative can be obtained by forming the expected value with respect to a point prior. For convenience, we include a constructor for power directly, e.g., both variants are equivalent and give power at <span class="math inline">\(0.4\)</span>.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="kw">power1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Scores.html">expected</a></span>(
-  <span class="fu"><a href="../reference/ConditionalPower-class.html">ConditionalPower</a></span>(<span class="fu"><a href="../reference/Normal-class.html">Normal</a></span>(), <span class="fu"><a href="../reference/PointMassPrior-class.html">PointMassPrior</a></span>(<span class="fl">.4</span>, <span class="fl">1.0</span>)),
-  <span class="fu"><a href="../reference/Normal-class.html">Normal</a></span>(), <span class="fu"><a href="../reference/PointMassPrior-class.html">PointMassPrior</a></span>(<span class="fl">.4</span>, <span class="fl">1.0</span>)
-)
-<span class="kw">power2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ConditionalPower-class.html">Power</a></span>(<span class="fu"><a href="../reference/Normal-class.html">Normal</a></span>(), <span class="fu"><a href="../reference/PointMassPrior-class.html">PointMassPrior</a></span>(<span class="fl">.4</span>, <span class="fl">1.0</span>))
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">power1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Scores.html">expected</a></span><span class="op">(</span>
+  <span class="fu"><a href="../reference/ConditionalPower-class.html">ConditionalPower</a></span><span class="op">(</span><span class="fu"><a href="../reference/Normal-class.html">Normal</a></span><span class="op">(</span><span class="op">)</span>, <span class="fu"><a href="../reference/PointMassPrior-class.html">PointMassPrior</a></span><span class="op">(</span><span class="fl">.4</span>, <span class="fl">1.0</span><span class="op">)</span><span class="op">)</span>,
+  <span class="fu"><a href="../reference/Normal-class.html">Normal</a></span><span class="op">(</span><span class="op">)</span>, <span class="fu"><a href="../reference/PointMassPrior-class.html">PointMassPrior</a></span><span class="op">(</span><span class="fl">.4</span>, <span class="fl">1.0</span><span class="op">)</span>
+<span class="op">)</span>
+<span class="va">power2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ConditionalPower-class.html">Power</a></span><span class="op">(</span><span class="fu"><a href="../reference/Normal-class.html">Normal</a></span><span class="op">(</span><span class="op">)</span>, <span class="fu"><a href="../reference/PointMassPrior-class.html">PointMassPrior</a></span><span class="op">(</span><span class="fl">.4</span>, <span class="fl">1.0</span><span class="op">)</span><span class="op">)</span>
 
-<span class="fu"><a href="../reference/Scores.html">evaluate</a></span>(<span class="kw">power1</span>, <span class="kw">design</span>)
+<span class="fu"><a href="../reference/Scores.html">evaluate</a></span><span class="op">(</span><span class="va">power1</span>, <span class="va">design</span><span class="op">)</span>
 <span class="co">#&gt; [1] 0.9967857</span>
-<span class="fu"><a href="../reference/Scores.html">evaluate</a></span>(<span class="kw">power2</span>, <span class="kw">design</span>)
-<span class="co">#&gt; [1] 0.9967857</span>
-</pre></div>
+<span class="fu"><a href="../reference/Scores.html">evaluate</a></span><span class="op">(</span><span class="va">power2</span>, <span class="va">design</span><span class="op">)</span>
+<span class="co">#&gt; [1] 0.9967857</span></code></pre></div>
 <p>Similarly, <code>ExpectedSampleSize</code> is a shorthand constructor for expected conditional sample size, i.e., the overall expected sample size:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit">
-<span class="kw">ess1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Scores.html">expected</a></span>(<span class="fu"><a href="../reference/ConditionalSampleSize-class.html">ConditionalSampleSize</a></span>(), <span class="fu"><a href="../reference/Normal-class.html">Normal</a></span>(), <span class="kw">uniform_prior</span>)
-<span class="kw">ess2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ConditionalSampleSize-class.html">ExpectedSampleSize</a></span>(<span class="fu"><a href="../reference/Normal-class.html">Normal</a></span>(), <span class="kw">uniform_prior</span>)
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">ess1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Scores.html">expected</a></span><span class="op">(</span><span class="fu"><a href="../reference/ConditionalSampleSize-class.html">ConditionalSampleSize</a></span><span class="op">(</span><span class="op">)</span>, <span class="fu"><a href="../reference/Normal-class.html">Normal</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">uniform_prior</span><span class="op">)</span>
+<span class="va">ess2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ConditionalSampleSize-class.html">ExpectedSampleSize</a></span><span class="op">(</span><span class="fu"><a href="../reference/Normal-class.html">Normal</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">uniform_prior</span><span class="op">)</span>
 
-<span class="fu"><a href="../reference/Scores.html">evaluate</a></span>(<span class="kw">ess1</span>, <span class="kw">design</span>)
+<span class="fu"><a href="../reference/Scores.html">evaluate</a></span><span class="op">(</span><span class="va">ess1</span>, <span class="va">design</span><span class="op">)</span>
 <span class="co">#&gt; [1] 134.9135</span>
-<span class="fu"><a href="../reference/Scores.html">evaluate</a></span>(<span class="kw">ess2</span>, <span class="kw">design</span>)
-<span class="co">#&gt; [1] 134.9135</span>
-</pre></div>
+<span class="fu"><a href="../reference/Scores.html">evaluate</a></span><span class="op">(</span><span class="va">ess2</span>, <span class="va">design</span><span class="op">)</span>
+<span class="co">#&gt; [1] 134.9135</span></code></pre></div>
 </div>
 <div id="conditional-constraints" class="section level2">
 <h2 class="hasAnchor">
 <a href="#conditional-constraints" class="anchor"></a>Conditional Constraints</h2>
 <p>The same syntax for constraint specification as for unconditional constraints (power etc.) can be used for conditional scores (e.g. conditional power) as well. Currently, these constraints apply to the continuation area only. E.g.,</p>
-<div class="sourceCode" id="cb8"><pre class="downlit">
-<span class="kw">cp</span> <span class="op">&gt;=</span> <span class="fl">0.7</span>
-<span class="co">#&gt; -Pr[x2&gt;=c2(x1)|x1]&lt;Normal&lt;two-armed&gt;;ContinuousPrior&lt;[0.3,0.5]&gt;&gt; (x1) &lt;= -0.7 for x1 in [c1f,c1e]</span>
-</pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">cp</span> <span class="op">&gt;=</span> <span class="fl">0.7</span>
+<span class="co">#&gt; -Pr[x2&gt;=c2(x1)|x1] (x1) &lt;= -0.7 for x1 in [c1f,c1e]</span></code></pre></div>
 <p>imposes a constraint on the minimal conditional power upon continuation. Inter-score comparisons are also supported, e.g.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit">
-<span class="kw">cp</span> <span class="op">&gt;=</span> <span class="fu"><a href="../reference/ConditionalPower-class.html">ConditionalPower</a></span>(<span class="fu"><a href="../reference/Normal-class.html">Normal</a></span>(), <span class="fu"><a href="../reference/PointMassPrior-class.html">PointMassPrior</a></span>(<span class="fl">0</span>, <span class="fl">1</span>))
-<span class="co">#&gt; Pr[x2&gt;=c2(x1)|x1]&lt;Normal&lt;two-armed&gt;;PointMass&lt;0.00&gt;&gt;  - Pr[x2&gt;=c2(x1)|x1]&lt;Normal&lt;two-armed&gt;;ContinuousPrior&lt;[0.3,0.5]&gt;&gt; (x1) &lt;= 0 for x1 in [c1f,c1e]</span>
-</pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">cp</span> <span class="op">&gt;=</span> <span class="fu"><a href="../reference/ConditionalPower-class.html">ConditionalPower</a></span><span class="op">(</span><span class="fu"><a href="../reference/Normal-class.html">Normal</a></span><span class="op">(</span><span class="op">)</span>, <span class="fu"><a href="../reference/PointMassPrior-class.html">PointMassPrior</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; Pr[x2&gt;=c2(x1)|x1]  - Pr[x2&gt;=c2(x1)|x1] (x1) &lt;= 0 for x1 in [c1f,c1e]</span></code></pre></div>
 <p>Would enforce that conditional power is always larger than conditional error.</p>
 </div>
   </div>

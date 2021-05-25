@@ -48,7 +48,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -89,7 +89,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/kkmann/adoptr">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -109,13 +109,12 @@
 
       
 
-      </header><link href="adoptr_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
-<script src="adoptr_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
+      </header><script src="adoptr_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Get started with adoptr</h1>
             
-            <h4 class="date">2020-11-11</h4>
+            <h4 class="date">2021-05-25</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/kkmann/adoptr/blob/master/vignettes/adoptr.Rmd"><code>vignettes/adoptr.Rmd</code></a></small>
       <div class="hidden name"><code>adoptr.Rmd</code></div>
@@ -127,10 +126,10 @@
 <div id="two-stage-designs-for-clinical-trials" class="section level2">
 <h2 class="hasAnchor">
 <a href="#two-stage-designs-for-clinical-trials" class="anchor"></a>Two-stage designs for clinical trials</h2>
-<p>In prospectively planned confirmatory clinical trials there has been a long-standing debate about the merits of allowing pre-planned interim analyses to stop or modify an ongoing trial, cf. <a href="https://onlinelibrary.wiley.com/doi/pdf/10.1002/sim.6472">BAUER <em>et al.</em>, 2016</a>. It is common consensus that such two-stage designs should still maintain strict control of the maximal type one error rate despite the data dependent decision at the interim analysis. Most authors use combination function approaches to combine either the independent p values or test statistics from the respective stages. Doing so with pre-specified weights maintains the type one error rate control.</p>
+<p>In prospectively planned confirmatory clinical trials there has been a long-standing debate about the merits of allowing pre-planned interim analyses to stop or modify an ongoing trial, cf.  <a href="https://onlinelibrary.wiley.com/doi/pdf/10.1002/sim.6472">BAUER <em>et al.</em>, 2016</a>. It is common consensus that such two-stage designs should still maintain strict control of the maximal type one error rate despite the data dependent decision at the interim analysis. Most authors use combination function approaches to combine either the independent p values or test statistics from the respective stages. Doing so with pre-specified weights maintains the type one error rate control.</p>
 <p>With <strong>adoptr</strong> we provide tools to explore optimal two-stage designs for one or two-arm clinical trials with (asymptotically) normally distributed and stage-wise independent test statistics. In <a href="https://doi.org/10.1002/sim.8291">Pilz <em>et al.</em>, 2019</a>, it was argued that such techniques are not necessary, in fact, that they are counter-productive, since the pre-specified weights might be sub-optimal. Instead, one may see the problem of defining an optimal two-stage designs as a variational problem to find the optimal configuration <span class="math display">\[
 \mathcal{D}:=\big(n_1, c_1^e, c_1^f, n_2(\cdot), c_2(\cdot)\big)
-\]</span> directly for a given objective function and potentially a set of constraints. The relaxation of this mixed-integer problem to the real numbers can then be solved with standard methods from analysis. E.g., one could construct an implicit solution by solving the corresponding Euler-Lagrange equation for given first-stage and then find an optimal first-stage configuration, cf. <a href="https://doi.org/10.1002/sim.8291">Pilz <em>et al.</em>, 2019</a>. Instead, the <strong>adoptr</strong> package implements a direct numerical solution algorithm by embedding the variation problem via a set of pivot points in the <span class="math inline">\(\mathbb{R}^k\)</span> and solving the corresponding finite-dimensional problem using gradient-free numerical optimization procedures (COBYLA / nloptr).</p>
+\]</span> directly for a given objective function and potentially a set of constraints. The relaxation of this mixed-integer problem to the real numbers can then be solved with standard methods from analysis. E.g., one could construct an implicit solution by solving the corresponding Euler-Lagrange equation for given first-stage and then find an optimal first-stage configuration, cf. <a href="https://doi.org/10.1002/sim.8291">Pilz <em>et al.</em>, 2019</a>. Instead, the <strong>adoptr</strong> package implements a direct numerical solution algorithm by embedding the variation problem via a set of pivot points in the <span class="math inline">\(\mathbb{R}^k\)</span> and solving the corresponding finite-dimensional problem using gradient-free numerical optimization procedures (COBYLA / nloptr).</p>
 </div>
 <div id="example" class="section level1">
 <h1 class="hasAnchor">
@@ -140,115 +139,101 @@
 <div id="define-hypotheses-and-data-generating-mechanism" class="section level2">
 <h2 class="hasAnchor">
 <a href="#define-hypotheses-and-data-generating-mechanism" class="anchor"></a>Define hypotheses and data-generating mechanism</h2>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/kkmann/adoptr">adoptr</a></span>)
-</pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/kkmann/adoptr">adoptr</a></span><span class="op">)</span></code></pre></div>
 <p>First, we define the null and alternative hypotheses as prior distributions over the unknown parameter <span class="math inline">\(\delta\)</span>.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="kw">H_0</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PointMassPrior-class.html">PointMassPrior</a></span>(<span class="fl">.0</span>, <span class="fl">1</span>)
-<span class="kw">H_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PointMassPrior-class.html">PointMassPrior</a></span>(<span class="fl">.4</span>, <span class="fl">1</span>)
-</pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">H_0</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PointMassPrior-class.html">PointMassPrior</a></span><span class="op">(</span><span class="fl">.0</span>, <span class="fl">1</span><span class="op">)</span>
+<span class="va">H_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PointMassPrior-class.html">PointMassPrior</a></span><span class="op">(</span><span class="fl">.4</span>, <span class="fl">1</span><span class="op">)</span></code></pre></div>
 <p>Next, we define the data-generating mechanism (data distribution). Currently, normally distributed test statistics with known variance, and the normal approximation of binary endpoints are supported. In this example, we choose a normal distribution, i.e., assume a continuous outcome. For an example with binomial data distribution, cf. the vignette <a href="https://kkmann.github.io/adoptr/articles/composite-scores.html">composite scores</a>.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="kw">datadist</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Normal-class.html">Normal</a></span>(two_armed = <span class="fl">FALSE</span>)
-</pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">datadist</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Normal-class.html">Normal</a></span><span class="op">(</span>two_armed <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="specify-optimization-problem" class="section level2">
 <h2 class="hasAnchor">
 <a href="#specify-optimization-problem" class="anchor"></a>Specify optimization problem</h2>
 <p>We begin by defining the expected sample size under the alternative hypothesis:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="kw">ess</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ConditionalSampleSize-class.html">ExpectedSampleSize</a></span>(<span class="kw">datadist</span>, <span class="kw">H_1</span>)
-</pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">ess</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ConditionalSampleSize-class.html">ExpectedSampleSize</a></span><span class="op">(</span><span class="va">datadist</span>, <span class="va">H_1</span><span class="op">)</span></code></pre></div>
 <p>Similarly, we can define the power and the type-one-error rate by integrating conditional power with respect to the alternative or null hypothesis respectively:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="kw">power</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ConditionalPower-class.html">Power</a></span>(<span class="kw">datadist</span>, <span class="kw">H_1</span>)
-<span class="kw">toer</span>  <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ConditionalPower-class.html">Power</a></span>(<span class="kw">datadist</span>, <span class="kw">H_0</span>)
-</pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">power</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ConditionalPower-class.html">Power</a></span><span class="op">(</span><span class="va">datadist</span>, <span class="va">H_1</span><span class="op">)</span>
+<span class="va">toer</span>  <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ConditionalPower-class.html">Power</a></span><span class="op">(</span><span class="va">datadist</span>, <span class="va">H_0</span><span class="op">)</span></code></pre></div>
 <p>To complete the problem specification, we only need to provide an initial design and an integration order for the Gaussian quadrature rule to be used for the numerical integration of the variational objective between <span class="math inline">\(c_1^f\)</span> and <span class="math inline">\(c_1^e\)</span>. <strong>adoptr</strong> provides a heuristic method to obtain an initial design. It is based on a one-stage design under specific constraints on type one error rate and power. However, it may be more efficient to use a situation-specific initial design.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="kw">initial_design</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_initial_design.html">get_initial_design</a></span>(
-  theta = <span class="fl">.4</span>,
-  alpha = <span class="fl">.025</span>,
-  beta  = <span class="fl">.2</span>,
-  type  = <span class="st">"two-stage"</span>,
-  dist  = <span class="kw">datadist</span>,
-  order = <span class="fl">7L</span>
-)
-</pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">initial_design</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_initial_design.html">get_initial_design</a></span><span class="op">(</span>
+  theta <span class="op">=</span> <span class="fl">.4</span>,
+  alpha <span class="op">=</span> <span class="fl">.025</span>,
+  beta  <span class="op">=</span> <span class="fl">.2</span>,
+  type  <span class="op">=</span> <span class="st">"two-stage"</span>,
+  dist  <span class="op">=</span> <span class="va">datadist</span>,
+  order <span class="op">=</span> <span class="fl">7L</span>
+<span class="op">)</span></code></pre></div>
 <p>The decision boundaries are heuristically picked in concordance with those of the single-stage design. We can then check whether the initial design fulfills the constraints on the operating characteristics:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit">
-<span class="fu"><a href="../reference/Scores.html">evaluate</a></span>(<span class="kw">power</span>, <span class="kw">initial_design</span>)
-<span class="co">#&gt; [1] 0.9401854</span>
-</pre></div>
-<div class="sourceCode" id="cb8"><pre class="downlit">
-<span class="fu"><a href="../reference/Scores.html">evaluate</a></span>(<span class="kw">toer</span>, <span class="kw">initial_design</span>)
-<span class="co">#&gt; [1] 0.0246875</span>
-</pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/Scores.html">evaluate</a></span><span class="op">(</span><span class="va">power</span>, <span class="va">initial_design</span><span class="op">)</span>
+<span class="co">#&gt; [1] 0.9401854</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/Scores.html">evaluate</a></span><span class="op">(</span><span class="va">toer</span>, <span class="va">initial_design</span><span class="op">)</span>
+<span class="co">#&gt; [1] 0.0246875</span></code></pre></div>
 <p>We can now proceed with defining and solving the optimization problem:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit">
-<span class="kw">opt_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/minimize.html">minimize</a></span>(
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">opt_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/minimize.html">minimize</a></span><span class="op">(</span>
   
-  <span class="kw">ess</span>,
+  <span class="va">ess</span>,
   
-  <span class="fu"><a href="../reference/subject_to.html">subject_to</a></span>(
-    <span class="kw">power</span> <span class="op">&gt;=</span> <span class="fl">0.8</span>,
-    <span class="kw">toer</span>  <span class="op">&lt;=</span> <span class="fl">.025</span>
-  ),
+  <span class="fu"><a href="../reference/subject_to.html">subject_to</a></span><span class="op">(</span>
+    <span class="va">power</span> <span class="op">&gt;=</span> <span class="fl">0.8</span>,
+    <span class="va">toer</span>  <span class="op">&lt;=</span> <span class="fl">.025</span>
+  <span class="op">)</span>,
   
-  <span class="kw">initial_design</span>
-)
-</pre></div>
+  <span class="va">initial_design</span>
+<span class="op">)</span></code></pre></div>
 <p>Here, the default setting for the optimizer and box constraints seem to have worked out. The numerical procedure converged after</p>
-<div class="sourceCode" id="cb10"><pre class="downlit">
-<span class="kw">opt_res</span><span class="op">$</span><span class="kw">nloptr_return</span><span class="op">$</span><span class="kw">iterations</span>
-</pre></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">opt_res</span><span class="op">$</span><span class="va">nloptr_return</span><span class="op">$</span><span class="va">iterations</span></code></pre></div>
 <p>iterations.</p>
 <p>We can plot the resulting optimized design may again be plotted together with its conditional power.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(
-  <span class="kw">opt_res</span><span class="op">$</span><span class="kw">design</span>, 
-  <span class="st">"Conditional power"</span> = <span class="fu"><a href="../reference/ConditionalPower-class.html">ConditionalPower</a></span>(<span class="kw">datadist</span>, <span class="kw">H_1</span>)
-)
-</pre></div>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span>
+  <span class="va">opt_res</span><span class="op">$</span><span class="va">design</span>, 
+  <span class="st">"Conditional power"</span> <span class="op">=</span> <span class="fu"><a href="../reference/ConditionalPower-class.html">ConditionalPower</a></span><span class="op">(</span><span class="va">datadist</span>, <span class="va">H_1</span><span class="op">)</span>
+<span class="op">)</span></code></pre></div>
 <p><img src="adoptr_files/figure-html/plot-optimal-design-1.png" width="672"></p>
 <p>Numerical integration yields an expected sample size of</p>
-<div class="sourceCode" id="cb12"><pre class="downlit">
-<span class="fu"><a href="../reference/Scores.html">evaluate</a></span>(<span class="kw">ess</span>, <span class="kw">opt_res</span><span class="op">$</span><span class="kw">design</span>)
-<span class="co">#&gt; [1] 39.85583</span>
-</pre></div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/Scores.html">evaluate</a></span><span class="op">(</span><span class="va">ess</span>, <span class="va">opt_res</span><span class="op">$</span><span class="va">design</span><span class="op">)</span>
+<span class="co">#&gt; [1] 39.85574</span></code></pre></div>
 <p>which is way below the single-stage 51. We can check this results against simulated values</p>
-<div class="sourceCode" id="cb13"><pre class="downlit">
-<span class="kw">df_sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/simulate.html">simulate</a></span>(
-  <span class="kw">opt_res</span><span class="op">$</span><span class="kw">design</span>, 
-  nsim = <span class="fl">10</span><span class="op">^</span><span class="fl">6</span>, 
-  dist = <span class="kw">datadist</span>, 
-  theta = <span class="fl">.4</span>, 
-  seed = <span class="fl">42</span>
-)
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">df_sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/simulate.html">simulate</a></span><span class="op">(</span>
+  <span class="va">opt_res</span><span class="op">$</span><span class="va">design</span>, 
+  nsim <span class="op">=</span> <span class="fl">10</span><span class="op">^</span><span class="fl">6</span>, 
+  dist <span class="op">=</span> <span class="va">datadist</span>, 
+  theta <span class="op">=</span> <span class="fl">.4</span>, 
+  seed <span class="op">=</span> <span class="fl">42</span>
+<span class="op">)</span>
 
-<span class="kw">n</span> <span class="op">&lt;-</span> <span class="kw">df_sim</span><span class="op">$</span><span class="kw">n1</span> <span class="op">+</span> <span class="kw">df_sim</span><span class="op">$</span><span class="kw">n2</span>
-<span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(<span class="kw">n</span>)
-<span class="co">#&gt; [1] 39.83997</span>
-<span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span>(<span class="kw">n</span>) <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span>(<span class="kw">n</span>))
-<span class="co">#&gt; [1] 0.01372659</span>
-</pre></div>
+<span class="va">n</span> <span class="op">&lt;-</span> <span class="va">df_sim</span><span class="op">$</span><span class="va">n1</span> <span class="op">+</span> <span class="va">df_sim</span><span class="op">$</span><span class="va">n2</span>
+<span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span>
+<span class="co">#&gt; [1] 39.83999</span>
+<span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; [1] 0.01372659</span></code></pre></div>
 <p>The values from simulation and numerical integration are almost identical and the constraints are also met almost perfectly:</p>
-<div class="sourceCode" id="cb14"><pre class="downlit">
-<span class="fu"><a href="../reference/Scores.html">evaluate</a></span>(<span class="kw">toer</span>, <span class="kw">opt_res</span><span class="op">$</span><span class="kw">design</span>)
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/Scores.html">evaluate</a></span><span class="op">(</span><span class="va">toer</span>, <span class="va">opt_res</span><span class="op">$</span><span class="va">design</span><span class="op">)</span>
 <span class="co">#&gt; [1] 0.02500571</span>
-<span class="fu"><a href="../reference/Scores.html">evaluate</a></span>(<span class="kw">power</span>, <span class="kw">opt_res</span><span class="op">$</span><span class="kw">design</span>)
-<span class="co">#&gt; [1] 0.7985318</span>
-</pre></div>
+<span class="fu"><a href="../reference/Scores.html">evaluate</a></span><span class="op">(</span><span class="va">power</span>, <span class="va">opt_res</span><span class="op">$</span><span class="va">design</span><span class="op">)</span>
+<span class="co">#&gt; [1] 0.7985302</span></code></pre></div>
 </div>
 <div id="variations" class="section level2">
 <h2 class="hasAnchor">
 <a href="#variations" class="anchor"></a>Variations</h2>
 <p>The purpose of <strong>adoptr</strong> is to provide a high-level interface for exploring and comparing different designs and to experiment with different combinations of objective functions and constraints. In particular, <strong>adoptr</strong> supports:</p>
 <ul>
-<li><p>Important predefined scores as (conditional) power or sample size functions as well as a framework for constraints on scores (cf. <a href="https://kkmann.github.io/adoptr/articles/conditional-scores.html">conditional scores</a>).</p></li>
+<li><p>Important predefined scores as (conditional) power or sample size functions as well as a framework for constraints on scores (cf. <a href="https://kkmann.github.io/adoptr/articles/conditional-scores.html">conditional scores</a>).</p></li>
 <li><p>Arbitrary continuous or discrete <a href="https://kkmann.github.io/adoptr/articles/working-with-priors.html">prior distributions</a> for the single location parameter <span class="math inline">\(\theta\)</span> of the test statistic.</p></li>
-<li><p>Support for simple arithmetic operations on scores to quickly define weighted sums etc. (cf. <a href="https://kkmann.github.io/adoptr/articles/composite-scores.html">composite scores</a>).</p></li>
+<li><p>Support for simple arithmetic operations on scores to quickly define weighted sums etc. (cf. <a href="https://kkmann.github.io/adoptr/articles/composite-scores.html">composite scores</a>).</p></li>
 <li><p>Relatively flexible framework for <a href="https://kkmann.github.io/adoptr/articles/defining-new-scores.html">defining new scores</a>.</p></li>
 </ul>
 </div>

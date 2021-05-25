@@ -95,7 +95,7 @@ function of a specific distribution dist at a point x." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -136,7 +136,7 @@ function of a specific distribution dist at a point x." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/kkmann/adoptr">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -169,13 +169,13 @@ function of a specific distribution dist at a point x." />
 function of a specific distribution <code>dist</code> at a point <code>x</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>probability_density_function</span>(<span class='kw'>dist</span>, <span class='kw'>x</span>, <span class='kw'>n</span>, <span class='kw'>theta</span>, <span class='kw'>...</span>)
+    <pre class="usage"><span class='fu'>probability_density_function</span><span class='op'>(</span><span class='va'>dist</span>, <span class='va'>x</span>, <span class='va'>n</span>, <span class='va'>theta</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S4 method for Normal,numeric,numeric,numeric</span>
-<span class='fu'>probability_density_function</span>(<span class='kw'>dist</span>, <span class='kw'>x</span>, <span class='kw'>n</span>, <span class='kw'>theta</span>, <span class='kw'>...</span>)
+<span class='fu'>probability_density_function</span><span class='op'>(</span><span class='va'>dist</span>, <span class='va'>x</span>, <span class='va'>n</span>, <span class='va'>theta</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S4 method for Binomial,numeric,numeric,numeric</span>
-<span class='fu'>probability_density_function</span>(<span class='kw'>dist</span>, <span class='kw'>x</span>, <span class='kw'>n</span>, <span class='kw'>theta</span>, <span class='kw'>...</span>)</pre>
+<span class='fu'>probability_density_function</span><span class='op'>(</span><span class='va'>dist</span>, <span class='va'>x</span>, <span class='va'>n</span>, <span class='va'>theta</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -214,9 +214,9 @@ function of a specific distribution <code>dist</code> at a point <code>x</code>.
   &radic; n  theta.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>probability_density_function</span>(<span class='fu'><a href='Normal-class.html'>Normal</a></span>(), <span class='fl'>1</span>, <span class='fl'>50</span>, <span class='fl'>.3</span>)
+    <pre class="examples"><div class='input'><span class='fu'>probability_density_function</span><span class='op'>(</span><span class='fu'><a href='Normal-class.html'>Normal</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='fl'>1</span>, <span class='fl'>50</span>, <span class='fl'>.3</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] 0.3520653</div><div class='input'>
-<span class='fu'>probability_density_function</span>(<span class='fu'><a href='Binomial-class.html'>Binomial</a></span>(<span class='fl'>.2</span>, <span class='fl'>FALSE</span>), <span class='fl'>1</span>, <span class='fl'>50</span>, <span class='fl'>.3</span>)
+<span class='fu'>probability_density_function</span><span class='op'>(</span><span class='fu'><a href='Binomial-class.html'>Binomial</a></span><span class='op'>(</span><span class='fl'>.2</span>, <span class='cn'>FALSE</span><span class='op'>)</span>, <span class='fl'>1</span>, <span class='fl'>50</span>, <span class='fl'>.3</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] 0.01033349</div><div class='input'>
 </div></pre>
   </div>

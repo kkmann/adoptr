@@ -97,7 +97,7 @@ statistic." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -138,7 +138,7 @@ statistic." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/kkmann/adoptr">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -173,13 +173,13 @@ statistic." />
 statistic.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>c2</span>(<span class='kw'>d</span>, <span class='kw'>x1</span>, <span class='kw'>...</span>)
+    <pre class="usage"><span class='fu'>c2</span><span class='op'>(</span><span class='va'>d</span>, <span class='va'>x1</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S4 method for TwoStageDesign,numeric</span>
-<span class='fu'>c2</span>(<span class='kw'>d</span>, <span class='kw'>x1</span>, <span class='kw'>...</span>)
+<span class='fu'>c2</span><span class='op'>(</span><span class='va'>d</span>, <span class='va'>x1</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S4 method for OneStageDesign,numeric</span>
-<span class='fu'>c2</span>(<span class='kw'>d</span>, <span class='kw'>x1</span>, <span class='kw'>...</span>)</pre>
+<span class='fu'>c2</span><span class='op'>(</span><span class='va'>d</span>, <span class='va'>x1</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -204,31 +204,31 @@ statistic.</p>
 the sample size of a design</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>design</span> <span class='op'>&lt;-</span> <span class='fu'><a href='TwoStageDesign-class.html'>TwoStageDesign</a></span>(
-  n1    = <span class='fl'>25</span>,
-  c1f   = <span class='fl'>0</span>,
-  c1e   = <span class='fl'>2.5</span>,
-  n2    = <span class='fl'>50</span>,
-  c2    = <span class='fl'>1.96</span>,
-  order = <span class='fl'>7L</span>
-)
+    <pre class="examples"><div class='input'><span class='va'>design</span> <span class='op'>&lt;-</span> <span class='fu'><a href='TwoStageDesign-class.html'>TwoStageDesign</a></span><span class='op'>(</span>
+  n1    <span class='op'>=</span> <span class='fl'>25</span>,
+  c1f   <span class='op'>=</span> <span class='fl'>0</span>,
+  c1e   <span class='op'>=</span> <span class='fl'>2.5</span>,
+  n2    <span class='op'>=</span> <span class='fl'>50</span>,
+  c2    <span class='op'>=</span> <span class='fl'>1.96</span>,
+  order <span class='op'>=</span> <span class='fl'>7L</span>
+<span class='op'>)</span>
 
-<span class='fu'>c2</span>(<span class='kw'>design</span>, <span class='fl'>2.2</span>) <span class='co'># 1.96</span>
-</div><div class='output co'>#&gt; [1] 1.96</div><div class='input'><span class='fu'>c2</span>(<span class='kw'>design</span>, <span class='fl'>3.0</span>) <span class='co'># -Inf</span>
-</div><div class='output co'>#&gt; [1] -Inf</div><div class='input'><span class='fu'>c2</span>(<span class='kw'>design</span>, <span class='op'>-</span><span class='fl'>1.0</span>) <span class='co'># Inf</span>
+<span class='fu'>c2</span><span class='op'>(</span><span class='va'>design</span>, <span class='fl'>2.2</span><span class='op'>)</span> <span class='co'># 1.96</span>
+</div><div class='output co'>#&gt; [1] 1.96</div><div class='input'><span class='fu'>c2</span><span class='op'>(</span><span class='va'>design</span>, <span class='fl'>3.0</span><span class='op'>)</span> <span class='co'># -Inf</span>
+</div><div class='output co'>#&gt; [1] -Inf</div><div class='input'><span class='fu'>c2</span><span class='op'>(</span><span class='va'>design</span>, <span class='op'>-</span><span class='fl'>1.0</span><span class='op'>)</span> <span class='co'># Inf</span>
 </div><div class='output co'>#&gt; [1] Inf</div><div class='input'>
-<span class='kw'>design</span> <span class='op'>&lt;-</span> <span class='fu'><a href='TwoStageDesign-class.html'>TwoStageDesign</a></span>(
-   n1    = <span class='fl'>25</span>,
-   c1f   = <span class='fl'>0</span>,
-   c1e   = <span class='fl'>2.5</span>,
-   n2    = <span class='fl'>50</span>,
-   c2    = <span class='fl'>1.96</span>,
-   order = <span class='fl'>7L</span>
-)
+<span class='va'>design</span> <span class='op'>&lt;-</span> <span class='fu'><a href='TwoStageDesign-class.html'>TwoStageDesign</a></span><span class='op'>(</span>
+   n1    <span class='op'>=</span> <span class='fl'>25</span>,
+   c1f   <span class='op'>=</span> <span class='fl'>0</span>,
+   c1e   <span class='op'>=</span> <span class='fl'>2.5</span>,
+   n2    <span class='op'>=</span> <span class='fl'>50</span>,
+   c2    <span class='op'>=</span> <span class='fl'>1.96</span>,
+   order <span class='op'>=</span> <span class='fl'>7L</span>
+<span class='op'>)</span>
 
-<span class='fu'>c2</span>(<span class='kw'>design</span>, <span class='fl'>2.2</span>) <span class='co'># 1.96</span>
-</div><div class='output co'>#&gt; [1] 1.96</div><div class='input'><span class='fu'>c2</span>(<span class='kw'>design</span>, <span class='fl'>3.0</span>) <span class='co'># -Inf</span>
-</div><div class='output co'>#&gt; [1] -Inf</div><div class='input'><span class='fu'>c2</span>(<span class='kw'>design</span>, <span class='op'>-</span><span class='fl'>1.0</span>) <span class='co'># Inf</span>
+<span class='fu'>c2</span><span class='op'>(</span><span class='va'>design</span>, <span class='fl'>2.2</span><span class='op'>)</span> <span class='co'># 1.96</span>
+</div><div class='output co'>#&gt; [1] 1.96</div><div class='input'><span class='fu'>c2</span><span class='op'>(</span><span class='va'>design</span>, <span class='fl'>3.0</span><span class='op'>)</span> <span class='co'># -Inf</span>
+</div><div class='output co'>#&gt; [1] -Inf</div><div class='input'><span class='fu'>c2</span><span class='op'>(</span><span class='va'>design</span>, <span class='op'>-</span><span class='fl'>1.0</span><span class='op'>)</span> <span class='co'># Inf</span>
 </div><div class='output co'>#&gt; [1] Inf</div><div class='input'>
 </div></pre>
   </div>

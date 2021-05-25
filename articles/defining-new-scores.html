@@ -48,7 +48,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -89,7 +89,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/kkmann/adoptr">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -109,8 +109,7 @@
 
       
 
-      </header><link href="defining-new-scores_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
-<script src="defining-new-scores_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
+      </header><script src="defining-new-scores_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Defining New Scores</h1>
@@ -123,54 +122,47 @@
 
     
     
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/kkmann/adoptr">adoptr</a></span>)
-</pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/kkmann/adoptr">adoptr</a></span><span class="op">)</span></code></pre></div>
 <p>In addition to the already existing ones, <code>adoptr</code> allows the user to implement custom scores. Usually, this will be done by defining a new sub-class of <code>ConditionalScore</code>. Assume that one would be interested in the probability of early stopping for futility. First we create a new class as subclass of <code>ConditionalScore</code></p>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="fu">setClass</span>(<span class="st">"FutilityStopping"</span>, contains = <span class="st">"ConditionalScore"</span>)
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw">setClass</span><span class="op">(</span><span class="st">"FutilityStopping"</span>, contains <span class="op">=</span> <span class="st">"ConditionalScore"</span><span class="op">)</span>
 
 <span class="co"># constructor</span>
-<span class="kw">FutilityStopping</span> <span class="op">&lt;-</span> <span class="fu">function</span>() <span class="fu">new</span>(<span class="st">"FutilityStopping"</span>)
-</pre></div>
+<span class="va">FutilityStopping</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu">new</span><span class="op">(</span><span class="st">"FutilityStopping"</span><span class="op">)</span></code></pre></div>
 <p>We only need to implement a method <code><a href="../reference/Scores.html">evaluate()</a></code>, all other methods are inherited from the abstract class <code>ConditionalScore</code>.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="fu">setMethod</span>(<span class="st">"evaluate"</span>, <span class="fu">signature</span>(<span class="st">"FutilityStopping"</span>, <span class="st">"TwoStageDesign"</span>),
-          <span class="fu">function</span>(<span class="kw">s</span>, <span class="kw">design</span>, <span class="kw">x1</span>, <span class="kw">optimization</span> = <span class="fl">FALSE</span>, <span class="kw">...</span>) 
-              <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(<span class="kw">x1</span> <span class="op">&lt;</span> <span class="kw">design</span><span class="op">@</span>c1f, <span class="fl">1</span>, <span class="fl">0</span>)
-)
-</pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw">setMethod</span><span class="op">(</span><span class="st">"evaluate"</span>, <span class="fu">signature</span><span class="op">(</span><span class="st">"FutilityStopping"</span>, <span class="st">"TwoStageDesign"</span><span class="op">)</span>,
+          <span class="kw">function</span><span class="op">(</span><span class="va">s</span>, <span class="va">design</span>, <span class="va">x1</span>, <span class="va">optimization</span> <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span> 
+              <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">x1</span> <span class="op">&lt;</span> <span class="va">design</span><span class="op">@</span><span class="va">c1f</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span>
+<span class="op">)</span></code></pre></div>
 <p>The <code>optimization</code> flag here allows to compute scores differently during the optimization procedure. This is, e.g., used for the evaluation of conditional power which uses adaptive Gaussian Quadrature for maximal precision by default but non adaptive Gaussian Quadrature with the pre-defined integration rule of the design object during optimization for speed.</p>
 <p>The score can now be integrated using the <code>expected</code> method for conditional scores</p>
-<div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="kw">pr_early_futility</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Scores.html">expected</a></span>(
-  <span class="fu">FutilityStopping</span>(), 
-  <span class="fu"><a href="../reference/Normal-class.html">Normal</a></span>(), <span class="fu"><a href="../reference/PointMassPrior-class.html">PointMassPrior</a></span>(<span class="fl">.0</span>, <span class="fl">1</span>)
-)
-</pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">pr_early_futility</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Scores.html">expected</a></span><span class="op">(</span>
+  <span class="fu">FutilityStopping</span><span class="op">(</span><span class="op">)</span>, 
+  <span class="fu"><a href="../reference/Normal-class.html">Normal</a></span><span class="op">(</span><span class="op">)</span>, <span class="fu"><a href="../reference/PointMassPrior-class.html">PointMassPrior</a></span><span class="op">(</span><span class="fl">.0</span>, <span class="fl">1</span><span class="op">)</span>
+<span class="op">)</span></code></pre></div>
 <p>and the resulting integral score can be evaluated as usual. Consider again, the design</p>
-<div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="kw">design</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/TwoStageDesign-class.html">TwoStageDesign</a></span>(
-    n1  = <span class="fl">100</span>,
-    c1f = <span class="fl">.0</span>,
-    c1e = <span class="fl">2.0</span>,
-    n2_pivots = <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="fl">150</span>, <span class="fl">5</span>),
-    c2_pivots = <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span>(<span class="fl">1</span> <span class="op">+</span> <span class="kw">adoptr</span>:::<span class="fu">GaussLegendreRule</span>(<span class="fl">5</span>)<span class="op">$</span><span class="kw">nodes</span>, <span class="fu">function</span>(<span class="kw">x</span>) <span class="op">-</span><span class="kw">x</span> <span class="op">+</span> <span class="fl">2</span>)
-)
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">design</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/TwoStageDesign-class.html">TwoStageDesign</a></span><span class="op">(</span>
+    n1  <span class="op">=</span> <span class="fl">100</span>,
+    c1f <span class="op">=</span> <span class="fl">.0</span>,
+    c1e <span class="op">=</span> <span class="fl">2.0</span>,
+    n2_pivots <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">150</span>, <span class="fl">5</span><span class="op">)</span>,
+    c2_pivots <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fu">adoptr</span><span class="fu">:::</span><span class="fu">GaussLegendreRule</span><span class="op">(</span><span class="fl">5</span><span class="op">)</span><span class="op">$</span><span class="va">nodes</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">-</span><span class="va">x</span> <span class="op">+</span> <span class="fl">2</span><span class="op">)</span>
+<span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="kw">design</span>)
-</pre></div>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">design</span><span class="op">)</span></code></pre></div>
 <p><img src="defining-new-scores_files/figure-html/define-design-1.png" width="672"></p>
 <p>Then the value of the expected score is given by</p>
-<div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="fu"><a href="../reference/Scores.html">evaluate</a></span>(<span class="kw">pr_early_futility</span>, <span class="kw">design</span>)
-<span class="co">#&gt; [1] 0.5</span>
-</pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/Scores.html">evaluate</a></span><span class="op">(</span><span class="va">pr_early_futility</span>, <span class="va">design</span><span class="op">)</span>
+<span class="co">#&gt; [1] 0.5</span></code></pre></div>
 <p>The value is correct since it needs to conform with</p>
-<div class="sourceCode" id="cb7"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">pnorm</a></span>(<span class="kw">design</span><span class="op">@</span>c1f)
-<span class="co">#&gt; [1] 0.5</span>
-</pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">pnorm</a></span><span class="op">(</span><span class="va">design</span><span class="op">@</span><span class="va">c1f</span><span class="op">)</span>
+<span class="co">#&gt; [1] 0.5</span></code></pre></div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

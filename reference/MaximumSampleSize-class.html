@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create a collection of constraints — subject_to • adoptr</title>
+<title>Maximum Sample Size of a Design — MaximumSampleSize-class • adoptr</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -52,10 +52,8 @@
 
 
 
-<meta property="og:title" content="Create a collection of constraints — subject_to" />
-<meta property="og:description" content="subject_to(...) can be used to generate an object of class
-ConstraintsCollection from an arbitrary number of (un)conditional
-constraints." />
+<meta property="og:title" content="Maximum Sample Size of a Design — MaximumSampleSize-class" />
+<meta property="og:description" content="This score evaluates max(n(d)) for a design d." />
 <meta property="og:image" content="https://kkmann.github.io/adoptr/logo.png" />
 
 
@@ -160,32 +158,30 @@ constraints." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create a collection of constraints</h1>
-    <small class="dont-index">Source: <a href='https://github.com/kkmann/adoptr/blob/master/R/constraints.R'><code>R/constraints.R</code></a></small>
-    <div class="hidden name"><code>subject_to.Rd</code></div>
+    <h1>Maximum Sample Size of a Design</h1>
+    <small class="dont-index">Source: <a href='https://github.com/kkmann/adoptr/blob/master/R/MaximumSampleSize.R'><code>R/MaximumSampleSize.R</code></a></small>
+    <div class="hidden name"><code>MaximumSampleSize-class.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>subject_to(...)</code> can be used to generate an object of class
-<code>ConstraintsCollection</code> from an arbitrary number of (un)conditional
-constraints.</p>
+    <p>This score evaluates <code><a href='https://rdrr.io/r/base/Extremes.html'>max(n(d))</a></code> for a design <code>d</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>subject_to</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span>
+    <pre class="usage"><span class='fu'>MaximumSampleSize</span><span class='op'>(</span>label <span class='op'>=</span> <span class='st'>"max(n(x1))"</span><span class='op'>)</span>
 
-<span class='co'># S4 method for ConstraintsCollection,TwoStageDesign</span>
+<span class='co'># S4 method for MaximumSampleSize,TwoStageDesign</span>
 <span class='fu'><a href='Scores.html'>evaluate</a></span><span class='op'>(</span><span class='va'>s</span>, <span class='va'>design</span>, optimization <span class='op'>=</span> <span class='cn'>FALSE</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>...</th>
-      <td><p>either constraint objects (for <code>subject_to</code> or optional arguments passed to <code>evaluate</code>)</p></td>
+      <th>label</th>
+      <td><p>object label (string)</p></td>
     </tr>
     <tr>
       <th>s</th>
-      <td><p>object of class <code>ConstraintCollection</code></p></td>
+      <td><p><code><a href='Scores.html'>Score</a></code> object</p></td>
     </tr>
     <tr>
       <th>design</th>
@@ -196,38 +192,22 @@ constraints.</p>
       <td><p>logical, if <code>TRUE</code> uses a relaxation to real
 parameters of the underlying design; used for smooth optimization.</p></td>
     </tr>
+    <tr>
+      <th>...</th>
+      <td><p>further optional arguments</p></td>
+    </tr>
     </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>an object of class <code>ConstraintsCollection</code></p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code>subject_to</code> is intended to be used for constraint
-  specification the constraints in <code><a href='minimize.html'>minimize</a></code>.</p></div>
+    <div class='dont-index'><p><a href='Scores.html'>Scores</a> for general scores and <a href='ConditionalSampleSize-class.html'>ConditionalSampleSize</a>
+ for evaluating the sample size point-wise.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># define type one error rate and power</span>
-<span class='va'>toer</span>  <span class='op'>&lt;-</span> <span class='fu'><a href='ConditionalPower-class.html'>Power</a></span><span class='op'>(</span><span class='fu'><a href='Normal-class.html'>Normal</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='fu'><a href='PointMassPrior-class.html'>PointMassPrior</a></span><span class='op'>(</span><span class='fl'>0.0</span>, <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>power</span> <span class='op'>&lt;-</span> <span class='fu'><a href='ConditionalPower-class.html'>Power</a></span><span class='op'>(</span><span class='fu'><a href='Normal-class.html'>Normal</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='fu'><a href='PointMassPrior-class.html'>PointMassPrior</a></span><span class='op'>(</span><span class='fl'>0.4</span>, <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>
-
-<span class='co'># create constrain collection</span>
-<span class='fu'>subject_to</span><span class='op'>(</span>
-  <span class='va'>toer</span>  <span class='op'>&lt;=</span> <span class='fl'>0.025</span>,
-  <span class='va'>power</span> <span class='op'>&gt;=</span> <span class='fl'>0.9</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt; An object of class "ConstraintsCollection"
-#&gt; Slot "unconditional_constraints":
-#&gt; [[1]]
-#&gt; Pr[x2&gt;=c2(x1)] &lt;= 0.025 
-#&gt; 
-#&gt; [[2]]
-#&gt; -Pr[x2&gt;=c2(x1)]  &lt;= -0.9 
-#&gt; 
-#&gt; 
-#&gt; Slot "conditional_constraints":
-#&gt; list()
-#&gt; </div><div class='input'>
+    <pre class="examples"><div class='input'><span class='va'>design</span> <span class='op'>&lt;-</span> <span class='fu'><a href='TwoStageDesign-class.html'>TwoStageDesign</a></span><span class='op'>(</span><span class='fl'>50</span>, <span class='fl'>.0</span>, <span class='fl'>2.0</span>, <span class='fl'>50</span>, <span class='fl'>2.0</span>, order <span class='op'>=</span> <span class='fl'>5L</span><span class='op'>)</span>
+<span class='va'>mss</span>    <span class='op'>&lt;-</span> <span class='fu'>MaximumSampleSize</span><span class='op'>(</span><span class='op'>)</span>
+<span class='fu'><a href='Scores.html'>evaluate</a></span><span class='op'>(</span><span class='va'>mss</span>, <span class='va'>design</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 100</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

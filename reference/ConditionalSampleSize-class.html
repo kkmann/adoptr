@@ -96,7 +96,7 @@ The data distribution and prior are only relevant when it is integrated." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -137,7 +137,7 @@ The data distribution and prior are only relevant when it is integrated." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/kkmann/adoptr">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -171,12 +171,12 @@ first-stage outcome <code>x1</code>.
 The data distribution and prior are only relevant when it is integrated.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ConditionalSampleSize</span>(label = <span class='st'>"n(x1)"</span>)
+    <pre class="usage"><span class='fu'>ConditionalSampleSize</span><span class='op'>(</span>label <span class='op'>=</span> <span class='st'>"n(x1)"</span><span class='op'>)</span>
 
-<span class='fu'>ExpectedSampleSize</span>(<span class='kw'>dist</span>, <span class='kw'>prior</span>, label = <span class='st'>"E[n(x1)]"</span>)
+<span class='fu'>ExpectedSampleSize</span><span class='op'>(</span><span class='va'>dist</span>, <span class='va'>prior</span>, label <span class='op'>=</span> <span class='st'>"E[n(x1)]"</span><span class='op'>)</span>
 
 <span class='co'># S4 method for ConditionalSampleSize,TwoStageDesign</span>
-<span class='fu'><a href='Scores.html'>evaluate</a></span>(<span class='kw'>s</span>, <span class='kw'>design</span>, <span class='kw'>x1</span>, optimization = <span class='fl'>FALSE</span>, <span class='kw'>...</span>)</pre>
+<span class='fu'><a href='Scores.html'>evaluate</a></span><span class='op'>(</span><span class='va'>s</span>, <span class='va'>design</span>, <span class='va'>x1</span>, optimization <span class='op'>=</span> <span class='cn'>FALSE</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -221,17 +221,17 @@ parameters of the underlying design; used for smooth optimization.</p></td>
     <div class='dont-index'><p><a href='Scores.html'>Scores</a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>design</span> <span class='op'>&lt;-</span> <span class='fu'><a href='TwoStageDesign-class.html'>TwoStageDesign</a></span>(<span class='fl'>50</span>, <span class='fl'>.0</span>, <span class='fl'>2.0</span>, <span class='fl'>50</span>, <span class='fl'>2.0</span>, order = <span class='fl'>5L</span>)
-<span class='kw'>prior</span>  <span class='op'>&lt;-</span> <span class='fu'><a href='PointMassPrior-class.html'>PointMassPrior</a></span>(<span class='fl'>.4</span>, <span class='fl'>1</span>)
+    <pre class="examples"><div class='input'><span class='va'>design</span> <span class='op'>&lt;-</span> <span class='fu'><a href='TwoStageDesign-class.html'>TwoStageDesign</a></span><span class='op'>(</span><span class='fl'>50</span>, <span class='fl'>.0</span>, <span class='fl'>2.0</span>, <span class='fl'>50</span>, <span class='fl'>2.0</span>, order <span class='op'>=</span> <span class='fl'>5L</span><span class='op'>)</span>
+<span class='va'>prior</span>  <span class='op'>&lt;-</span> <span class='fu'><a href='PointMassPrior-class.html'>PointMassPrior</a></span><span class='op'>(</span><span class='fl'>.4</span>, <span class='fl'>1</span><span class='op'>)</span>
 
-<span class='kw'>css</span>   <span class='op'>&lt;-</span> <span class='fu'>ConditionalSampleSize</span>()
-<span class='fu'><a href='Scores.html'>evaluate</a></span>(<span class='kw'>css</span>, <span class='kw'>design</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>.5</span>, <span class='fl'>3</span>))
+<span class='va'>css</span>   <span class='op'>&lt;-</span> <span class='fu'>ConditionalSampleSize</span><span class='op'>(</span><span class='op'>)</span>
+<span class='fu'><a href='Scores.html'>evaluate</a></span><span class='op'>(</span><span class='va'>css</span>, <span class='va'>design</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>.5</span>, <span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] 100 100  50</div><div class='input'>
-<span class='kw'>ess</span>   <span class='op'>&lt;-</span> <span class='fu'>ExpectedSampleSize</span>(<span class='fu'><a href='Normal-class.html'>Normal</a></span>(), <span class='kw'>prior</span>)
+<span class='va'>ess</span>   <span class='op'>&lt;-</span> <span class='fu'>ExpectedSampleSize</span><span class='op'>(</span><span class='fu'><a href='Normal-class.html'>Normal</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='va'>prior</span><span class='op'>)</span>
 
 <span class='co'># those two are equivalent</span>
-<span class='fu'><a href='Scores.html'>evaluate</a></span>(<span class='kw'>ess</span>, <span class='kw'>design</span>)
-</div><div class='output co'>#&gt; [1] 73.86249</div><div class='input'><span class='fu'><a href='Scores.html'>evaluate</a></span>(<span class='fu'><a href='Scores.html'>expected</a></span>(<span class='kw'>css</span>, <span class='fu'><a href='Normal-class.html'>Normal</a></span>(), <span class='kw'>prior</span>), <span class='kw'>design</span>)
+<span class='fu'><a href='Scores.html'>evaluate</a></span><span class='op'>(</span><span class='va'>ess</span>, <span class='va'>design</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 73.86249</div><div class='input'><span class='fu'><a href='Scores.html'>evaluate</a></span><span class='op'>(</span><span class='fu'><a href='Scores.html'>expected</a></span><span class='op'>(</span><span class='va'>css</span>, <span class='fu'><a href='Normal-class.html'>Normal</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='va'>prior</span><span class='op'>)</span>, <span class='va'>design</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] 73.86249</div><div class='input'>
 </div></pre>
   </div>

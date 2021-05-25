@@ -110,7 +110,7 @@ For available methods, see the 'See Also' section at the end of this page." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -151,7 +151,7 @@ For available methods, see the 'See Also' section at the end of this page." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/kkmann/adoptr">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -199,13 +199,13 @@ read <a href='https://kkmann.github.io/adoptr/articles/adoptr.html'>here</a>.
 For available methods, see the 'See Also' section at the end of this page.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>TwoStageDesign</span>(<span class='kw'>n1</span>, <span class='kw'>...</span>)
+    <pre class="usage"><span class='fu'>TwoStageDesign</span><span class='op'>(</span><span class='va'>n1</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S4 method for numeric</span>
-<span class='fu'>TwoStageDesign</span>(<span class='kw'>n1</span>, <span class='kw'>c1f</span>, <span class='kw'>c1e</span>, <span class='kw'>n2_pivots</span>, <span class='kw'>c2_pivots</span>, order = <span class='kw'>NULL</span>, <span class='kw'>...</span>)
+<span class='fu'>TwoStageDesign</span><span class='op'>(</span><span class='va'>n1</span>, <span class='va'>c1f</span>, <span class='va'>c1e</span>, <span class='va'>n2_pivots</span>, <span class='va'>c2_pivots</span>, order <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S4 method for TwoStageDesign</span>
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='kw'>object</span>, <span class='kw'>...</span>, rounded = <span class='fl'>TRUE</span>)</pre>
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>...</span>, rounded <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -305,9 +305,9 @@ Both <a href='GroupSequentialDesign-class.html'>group-sequential</a> and
 <code>TwoStageDesign</code>.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>design</span> <span class='op'>&lt;-</span> <span class='fu'>TwoStageDesign</span>(<span class='fl'>50</span>, <span class='fl'>0</span>, <span class='fl'>2</span>, <span class='fl'>50.0</span>, <span class='fl'>2.0</span>, <span class='fl'>5</span>)
-<span class='kw'>pow</span>    <span class='op'>&lt;-</span> <span class='fu'><a href='ConditionalPower-class.html'>Power</a></span>(<span class='fu'><a href='Normal-class.html'>Normal</a></span>(), <span class='fu'><a href='PointMassPrior-class.html'>PointMassPrior</a></span>(<span class='fl'>.4</span>, <span class='fl'>1</span>))
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='kw'>design</span>, <span class='st'>"Power"</span> = <span class='kw'>pow</span>)
+    <pre class="examples"><div class='input'><span class='va'>design</span> <span class='op'>&lt;-</span> <span class='fu'>TwoStageDesign</span><span class='op'>(</span><span class='fl'>50</span>, <span class='fl'>0</span>, <span class='fl'>2</span>, <span class='fl'>50.0</span>, <span class='fl'>2.0</span>, <span class='fl'>5</span><span class='op'>)</span>
+<span class='va'>pow</span>    <span class='op'>&lt;-</span> <span class='fu'><a href='ConditionalPower-class.html'>Power</a></span><span class='op'>(</span><span class='fu'><a href='Normal-class.html'>Normal</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='fu'><a href='PointMassPrior-class.html'>PointMassPrior</a></span><span class='op'>(</span><span class='fl'>.4</span>, <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>design</span>, <span class='st'>"Power"</span> <span class='op'>=</span> <span class='va'>pow</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; TwoStageDesign: n1 =  50 
 #&gt;           futility |            continue           | efficacy
 #&gt;       x1:    -0.00 |  0.09  0.46  1.00  1.54  1.91 |  2.00
