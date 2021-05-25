@@ -61,7 +61,7 @@ parameters of the underlying design; used for smooth optimization.}
 Conceptually, constraints work very similar to scores (any score can be put in
 a constraint).
 Currently,  constraints of the form 'score <=/>= x',
-'x <=/>= score' and 'score <=/>= score' are admissable.
+'x <=/>= score' and 'score <=/>= score' are admissible.
 }
 \examples{
 design <- OneStageDesign(50, 1.96)

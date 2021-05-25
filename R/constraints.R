@@ -3,7 +3,7 @@
 #' Conceptually, constraints work very similar to scores (any score can be put in
 #' a constraint).
 #' Currently,  constraints of the form 'score <=/>= x',
-#' 'x <=/>= score' and 'score <=/>= score' are admissable.
+#' 'x <=/>= score' and 'score <=/>= score' are admissible.
 #'
 #' @template s
 #' @template design
@@ -60,11 +60,11 @@ setMethod("evaluate", signature("Constraint", "TwoStageDesign"),
           })
 
 setMethod("print", signature('UnconditionalConstraint'), function(x, ...) {
-    glue::glue("{print(x@score)} <= {x@rhs}")
+    glue::glue("{as_character(x@score)} <= {x@rhs}")
 })
 
 setMethod("print", signature('ConditionalConstraint'), function(x, ...) {
-    glue::glue("{print(x@score)}(x1) <= {x@rhs} for x1 in [c1f,c1e]")
+    glue::glue("{as_character(x@score)}(x1) <= {x@rhs} for x1 in [c1f,c1e]")
 })
 
 setMethod("show", signature(object = "Constraint"), function(object) {

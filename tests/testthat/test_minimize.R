@@ -320,7 +320,7 @@ test_that("conditional constraints work", {
 
     expect_equal(
         capture.output(print(opt_os)),
-        "OneStageDesign<optimized;n=39;c=1.64>"
+        "OneStageDesign<optimized;n=39;c=1.64> "
     )
 
 

@@ -16,7 +16,7 @@ setClass("CompositeConditionalScore",
 )
 
 
-setMethod("print", signature("CompositeScore"), function(x, ...) {
+setMethod("as_character", signature("CompositeScore"), function(x, ...) {
     labels <- lapply(x@scores, function(x) utils::capture.output(show((x))))
     str <- as.character(x@expr)
     for (i in 2:length(str)) {
@@ -26,7 +26,7 @@ setMethod("print", signature("CompositeScore"), function(x, ...) {
             str[i] <- sub(names(labels)[j], sprintf("{%s}", names(labels)[j]), str[i])
         }
     }
-    glue::glue(paste0(str[-1], collapse = "; "), .envir = c(labels, x@non_scores))
+    as.character(glue::glue(paste0(str[-1], collapse = "; "), .envir = c(labels, x@non_scores)))
 })
 
 
