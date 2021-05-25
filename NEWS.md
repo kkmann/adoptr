@@ -1,4 +1,10 @@
-# adopter 0.4.0
+# adoptr 4.1.0
+
+* minor bug/print fixes
+* Student-t data distribution
+* switched to GitHub Actions for CI/CD
+
+# adoptr 0.4.0
 
 * included JSS article as vignette
 
