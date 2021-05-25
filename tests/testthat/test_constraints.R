@@ -145,9 +145,14 @@ test_that("show method", {
 
     cp <- ConditionalPower(Normal(two_armed = FALSE), PointMassPrior(.4, 1))
 
-    expect_equal(
-        paste0(capture.output(show(cp >= 0.8)), collapse = "\n\r"),
-        "-Pr[x2>=c2(x1)|x1]<Normal<single-armed>;PointMass<0.40>> (x1) <= -0.8 for x1 in [c1f,c1e] "
+    # the problem with testing the 'show' methods is that covr and/or testthat
+    # seems to inject code around the expressions we can only test whether the
+    # correct string pops up somewhere (good enough)
+    expect_true(
+        any(stringr::str_detect(
+            capture.output(show(cp >= 0.8)),
+            "-Pr\\[x2>=c2\\(x1\\)\\|x1\\]<Normal<single-armed>;PointMass<0\\.40>> \\(x1\\) <= -0.8 for x1 in \\[c1f,c1e\\]"
+        ))
     )
 
 })
