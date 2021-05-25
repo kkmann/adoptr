@@ -1,4 +1,4 @@
-# adoptr 0.4.1
+# adoptr 0.4.2
 
 * minor bug/print fixes
 * Student-t data distribution
