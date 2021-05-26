@@ -52,5 +52,5 @@ jobs:
         shell: Rscript {0}
 
       - name: Test coverage
-        run: covr::codecov(function_exclusions = "show")
+        run: covr::codecov(function_exclusions = c("print", "show", "as_character"))
         shell: Rscript {0}

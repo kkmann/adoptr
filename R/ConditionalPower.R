@@ -45,13 +45,6 @@ ConditionalPower <- function(dist, prior, label = "Pr[x2>=c2(x1)|x1]") {
 
 
 
-setMethod("print", signature('ConditionalPower'), function(x, ...) {
-    name <- if (!is.na(x@label)) x@label else class(x)[1]
-    return(sprintf("%s<%s;%s>", name, print(x@distribution), print(x@prior)))
-})
-
-
-
 #' @rdname ConditionalPower-class
 #' @export
 Power <- function(dist, prior, label = "Pr[x2>=c2(x1)]") {

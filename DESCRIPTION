@@ -48,6 +48,9 @@ Collate:
     adoptr.R
     util.R
     DataDistribution.R
+    BinomialDistribution.R
+    NormalDistribution.R
+    StudentDistribution.R             
     Prior.R
     PointMassPrior.R
     ContinuousPrior.R
