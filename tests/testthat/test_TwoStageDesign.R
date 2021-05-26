@@ -88,22 +88,13 @@ test_that("plot produces correct number of columns", {
 
 
 
-test_that("show and summary method", {
+test_that("show method", {
 
     expect_equal(
         paste0(capture.output(show(design)), collapse = "\n\r"),
         "TwoStageDesign<n1=50;0.7<=x1<=2.5:n2=50> "
     )
 
-    short_design <- TwoStageDesign(50, 0, 2, c(50, 50), c(2, 2))
-    expect_equal(
-        gsub(" ", "", capture.output(summary(short_design))),
-        c("TwoStageDesign:n1=50",
-          "\rfutility|continue|efficacy",
-          "\rx1:-0.00|0.421.58|2.00",
-          "\rc2(x1):+Inf|+2.00+2.00|-Inf",
-          "\rn2(x1):0|5050|0",
-          "\r"))
 })
 
 

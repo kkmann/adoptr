@@ -39,6 +39,12 @@ test_that("UnconditionalConstraints", {
     expect_true(
         evaluate(subject_to(.05 >= toer), design) == evaluate(subject_to(toer <= .05), design))
 
+    # Print method
+    expect_equal(
+        capture.output(print(cnstr)),
+        "-E[Pr[x2>=c2(x1)]]<Normal<single-armed>;PointMass<0.40>>  <= -0.8 "
+    )
+
 })
 
 
@@ -61,6 +67,13 @@ test_that("ConditionalConstraints", {
         evaluate(ctoer <= .05, design, .8),
         -.0250,
         tolerance = 1e-3, scale = 1)
+
+
+    # print method
+    expect_equal(
+        capture.output(print(cnstr)),
+        "-Pr[x2>=c2(x1)|x1]<Normal<single-armed>;PointMass<0.40>> (x1) <= -0.8 for x1 in [c1f,c1e] "
+    )
 
 })
 
