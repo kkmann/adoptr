@@ -70,9 +70,17 @@ test_that("Conditional power has correct values outside continuation region",{
         evaluate(cp, design1, -1),
         0.0,
         tolerance = 1e-4, scale = 1)
+    expect_equal(
+        evaluate(cp, design1, -1, optimization = TRUE),
+        0.0,
+        tolerance = 1e-4, scale = 1)
 
     expect_equal(
         evaluate(cp, design1, 3),
+        1.0,
+        tolerance = 1e-4, scale = 1)
+    expect_equal(
+        evaluate(cp, design1, 3, optimization = TRUE),
         1.0,
         tolerance = 1e-4, scale = 1)
 

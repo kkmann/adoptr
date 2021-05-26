@@ -69,21 +69,21 @@ setClass("IntegralScore", representation(
 
 
 
-setMethod("show", signature(object = "Score"), function(object) {
+setMethod("show", signature(object = "Score"), function(object) { # nocov start
     cat(as_character(object), "\n")
-})
+}) # nocov end
 
-setMethod("as_character", signature('Score'), function(x, ...) {
+setMethod("as_character", signature('Score'), function(x, ...) { # nocov start
     if (!is.na(x@label)) x@label else paste0(class(x)[1], "<>")
-})
+}) # nocov end
 
-setMethod("as_character", signature('IntegralScore'), function(x, ...) {
+setMethod("as_character", signature('IntegralScore'), function(x, ...) { # nocov start
     if (is.na(x@label)) {
         sprintf("E[%s]<%s;%s>", as_character(x@cs), print(x@data_distribution), print(x@prior))
     } else {
         x@label
     }
-})
+}) # nocov end
 
 
 

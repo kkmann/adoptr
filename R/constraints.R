@@ -59,17 +59,17 @@ setMethod("evaluate", signature("Constraint", "TwoStageDesign"),
               evaluate(s@score, design, optimization, ...) - s@rhs
           })
 
-setMethod("print", signature('UnconditionalConstraint'), function(x, ...) {
+setMethod("print", signature('UnconditionalConstraint'), function(x, ...) { # nocov start
     glue::glue("{as_character(x@score)} <= {x@rhs}")
-})
+}) # nocov end
 
-setMethod("print", signature('ConditionalConstraint'), function(x, ...) {
+setMethod("print", signature('ConditionalConstraint'), function(x, ...) { # nocov start
     glue::glue("{as_character(x@score)}(x1) <= {x@rhs} for x1 in [c1f,c1e]")
-})
+}) # nocov end
 
-setMethod("show", signature(object = "Constraint"), function(object) {
+setMethod("show", signature(object = "Constraint"), function(object) { # nocov start
     cat(print(object), "\n")
-})
+}) # nocov end
 
 
 

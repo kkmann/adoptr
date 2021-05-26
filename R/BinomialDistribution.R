@@ -65,8 +65,9 @@ Binomial <- function(rate_control, two_armed = TRUE) {
 setMethod("probability_density_function", signature("Binomial", "numeric", "numeric", "numeric"),
           function(dist, x, n, theta, ...) {
               rate_intervention <- theta + dist@rate_control
-              if (any(rate_intervention >= 1, rate_intervention <= 0))
+              if (any(rate_intervention >= 1, rate_intervention <= 0)) # nocov start
                   stop("The response rate in the intervention group must be in (0,1)! Probably the combination of prior and control rate is ill-defined.")
+              # nocov end
 
               sigma_A <- sqrt(rate_intervention * (1 - rate_intervention) +
                                   ifelse(dist@two_armed, dist@rate_control * (1 - dist@rate_control), 0))
@@ -91,9 +92,9 @@ setMethod("probability_density_function", signature("Binomial", "numeric", "nume
 setMethod("cumulative_distribution_function", signature("Binomial", "numeric", "numeric", "numeric"),
           function(dist, x, n, theta, ...) {
               rate_intervention <- theta + dist@rate_control
-              if (any(rate_intervention >= 1, rate_intervention <= 0))
+              if (any(rate_intervention >= 1, rate_intervention <= 0)) # nocov start
                   stop("The response rate in the intervention group must be in (0,1)! Probably the combination of prior and control rate is ill-defined.")
-
+              # nocov end
               sigma_A <- sqrt(rate_intervention * (1 - rate_intervention) +
                                   ifelse(dist@two_armed, dist@rate_control * (1 - dist@rate_control), 0))
               p_0     <- (rate_intervention + ifelse(dist@two_armed, dist@rate_control, rate_intervention)) / 2
@@ -110,9 +111,9 @@ setMethod("cumulative_distribution_function", signature("Binomial", "numeric", "
 setMethod("quantile", signature("Binomial"),
           function(x, probs, n, theta, ...) { # must be x to conform with generic
               rate_intervention <- theta + x@rate_control
-              if (any(rate_intervention >= 1, rate_intervention <= 0))
+              if (any(rate_intervention >= 1, rate_intervention <= 0)) # nocov start
                   stop("The response rate in the intervention group must be in (0,1)! Probably the combination of prior and control rate is ill-defined.")
-
+              # nocov end
               sigma_A <- sqrt(rate_intervention * (1 - rate_intervention) +
                                   ifelse(x@two_armed, x@rate_control * (1 - x@rate_control), 0))
               p_0     <- (rate_intervention + ifelse(x@two_armed, x@rate_control, rate_intervention)) / 2
@@ -136,9 +137,9 @@ setMethod("quantile", signature("Binomial"),
 setMethod("simulate", signature("Binomial", "numeric"),
           function(object, nsim, n, theta, seed = NULL, ...) {
               rate_intervention <- theta + object@rate_control
-              if (any(rate_intervention >= 1, rate_intervention <= 0))
+              if (any(rate_intervention >= 1, rate_intervention <= 0)) # nocov start
                   stop("The response rate in the intervention group must be in (0,1)! Probably the combination of prior and control rate is ill-defined.")
-
+              # nocov end
               sigma_A <- sqrt(rate_intervention * (1 - rate_intervention) +
                                   ifelse(object@two_armed, object@rate_control * (1 - object@rate_control), 0))
               p_0     <- (rate_intervention + ifelse(object@two_armed, object@rate_control, rate_intervention)) / 2
