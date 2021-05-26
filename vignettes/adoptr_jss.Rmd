@@ -1125,10 +1125,9 @@ new errors early during development and localizing them quickly.
 Together with continuous integration (cf. below), this helps to improve quality
 and speeds up the development process.
 4. *Continuous Integration / Continuous Deployment:* **adoptr** makes extensive
-use of the continuous integration and deployment services of
-Travis-CI [@travis].
+use of the continuous integration and deployment services GitHub Actions [@ghactions].
 Each new commit on the public GitHub.com repository is immediately run through
-the automated testing pipeline using the Travis-CI build service.
+the automated testing pipeline.
 Merges to the master branch are only possible after tests were
 passed successfully and a contributor reviewed and approved the changes
 ('branch protection system').
