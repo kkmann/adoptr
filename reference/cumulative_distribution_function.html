@@ -160,7 +160,7 @@ function of a specific distribution dist at a point x." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Cumulative distribution function</h1>
-    <small class="dont-index">Source: <a href='https://github.com/kkmann/adoptr/blob/master/R/DataDistribution.R'><code>R/DataDistribution.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/kkmann/adoptr/blob/master/R/DataDistribution.R'><code>R/DataDistribution.R</code></a>, <a href='https://github.com/kkmann/adoptr/blob/master/R/BinomialDistribution.R'><code>R/BinomialDistribution.R</code></a>, <a href='https://github.com/kkmann/adoptr/blob/master/R/NormalDistribution.R'><code>R/NormalDistribution.R</code></a>, and 1 more</small>
     <div class="hidden name"><code>cumulative_distribution_function.Rd</code></div>
     </div>
 
@@ -171,10 +171,13 @@ function of a specific distribution <code>dist</code> at a point <code>x</code>.
 
     <pre class="usage"><span class='fu'>cumulative_distribution_function</span><span class='op'>(</span><span class='va'>dist</span>, <span class='va'>x</span>, <span class='va'>n</span>, <span class='va'>theta</span>, <span class='va'>...</span><span class='op'>)</span>
 
+<span class='co'># S4 method for Binomial,numeric,numeric,numeric</span>
+<span class='fu'>cumulative_distribution_function</span><span class='op'>(</span><span class='va'>dist</span>, <span class='va'>x</span>, <span class='va'>n</span>, <span class='va'>theta</span>, <span class='va'>...</span><span class='op'>)</span>
+
 <span class='co'># S4 method for Normal,numeric,numeric,numeric</span>
 <span class='fu'>cumulative_distribution_function</span><span class='op'>(</span><span class='va'>dist</span>, <span class='va'>x</span>, <span class='va'>n</span>, <span class='va'>theta</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='co'># S4 method for Binomial,numeric,numeric,numeric</span>
+<span class='co'># S4 method for Student,numeric,numeric,numeric</span>
 <span class='fu'>cumulative_distribution_function</span><span class='op'>(</span><span class='va'>dist</span>, <span class='va'>x</span>, <span class='va'>n</span>, <span class='va'>theta</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -204,20 +207,22 @@ function of a specific distribution <code>dist</code> at a point <code>x</code>.
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>If the distribution is <code><a href='Normal-class.html'>Normal</a></code>, then
-  the mean is assumed to be
-  &radic; n  theta.</p>
-<p>If the distribution is <code><a href='Binomial-class.html'>Binomial</a></code>,
+    <p>If the distribution is <code><a href='Binomial-class.html'>Binomial</a></code>,
   theta denotes the rate difference between
   intervention and control group.
   Then, the mean is assumed to be
   &radic; n  theta.</p>
+<p>If the distribution is <code><a href='Normal-class.html'>Normal</a></code>, then
+  the mean is assumed to be
+  &radic; n  theta.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>cumulative_distribution_function</span><span class='op'>(</span><span class='fu'><a href='Normal-class.html'>Normal</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='fl'>1</span>, <span class='fl'>50</span>, <span class='fl'>.3</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 0.3085375</div><div class='input'>
-<span class='fu'>cumulative_distribution_function</span><span class='op'>(</span><span class='fu'><a href='Binomial-class.html'>Binomial</a></span><span class='op'>(</span><span class='fl'>.1</span>, <span class='cn'>TRUE</span><span class='op'>)</span>, <span class='fl'>1</span>, <span class='fl'>50</span>, <span class='fl'>.3</span><span class='op'>)</span>
+    <pre class="examples"><div class='input'><span class='fu'>cumulative_distribution_function</span><span class='op'>(</span><span class='fu'><a href='Binomial-class.html'>Binomial</a></span><span class='op'>(</span><span class='fl'>.1</span>, <span class='cn'>TRUE</span><span class='op'>)</span>, <span class='fl'>1</span>, <span class='fl'>50</span>, <span class='fl'>.3</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] 0.004310344</div><div class='input'>
+<span class='fu'>cumulative_distribution_function</span><span class='op'>(</span><span class='fu'><a href='Normal-class.html'>Normal</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='fl'>1</span>, <span class='fl'>50</span>, <span class='fl'>.3</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 0.3085375</div><div class='input'>
+<span class='fu'>cumulative_distribution_function</span><span class='op'>(</span><span class='fu'><a href='Student-class.html'>Student</a></span><span class='op'>(</span>two_armed <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>, <span class='fl'>.75</span>, <span class='fl'>50</span>, <span class='fl'>.9</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 1.062003e-08</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

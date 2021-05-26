@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Normal data distribution — Normal-class • adoptr</title>
+<title>Student's t data distribution — Student-class • adoptr</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -52,13 +52,8 @@
 
 
 
-<meta property="og:title" content="Normal data distribution — Normal-class" />
-<meta property="og:description" content="Implements a normal data distribution for z-values given an observed z-value
-and stage size.
-Standard deviation is 1 and mean &amp;theta; &amp;radic;n where
-&amp;theta; is the standardized effect size.
-The option two_armed can be set to decide whether a one-arm or a
-two-arm design should be computed." />
+<meta property="og:title" content="Student's t data distribution — Student-class" />
+<meta property="og:description" content="Implements exact t-distributions instead of a normal approximation" />
 <meta property="og:image" content="https://kkmann.github.io/adoptr/logo.png" />
 
 
@@ -163,26 +158,21 @@ two-arm design should be computed." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Normal data distribution</h1>
-    <small class="dont-index">Source: <a href='https://github.com/kkmann/adoptr/blob/master/R/NormalDistribution.R'><code>R/NormalDistribution.R</code></a></small>
-    <div class="hidden name"><code>NormalDataDistribution-class.Rd</code></div>
+    <h1>Student's t data distribution</h1>
+    <small class="dont-index">Source: <a href='https://github.com/kkmann/adoptr/blob/master/R/StudentDistribution.R'><code>R/StudentDistribution.R</code></a></small>
+    <div class="hidden name"><code>StudentDataDistribution-class.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Implements a normal data distribution for z-values given an observed z-value
-and stage size.
-Standard deviation is 1 and mean &theta; &radic;n where
-&theta; is the standardized effect size.
-The option <code>two_armed</code> can be set to decide whether a one-arm or a
-two-arm design should be computed.</p>
+    <p>Implements exact t-distributions instead of a normal approximation</p>
     </div>
 
-    <pre class="usage"><span class='fu'>Normal</span><span class='op'>(</span>two_armed <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+    <pre class="usage"><span class='fu'>Student</span><span class='op'>(</span>two_armed <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 
-<span class='co'># S4 method for Normal</span>
+<span class='co'># S4 method for Student</span>
 <span class='fu'><a href='https://rdrr.io/r/stats/quantile.html'>quantile</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>probs</span>, <span class='va'>n</span>, <span class='va'>theta</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='co'># S4 method for Normal,numeric</span>
+<span class='co'># S4 method for Student,numeric</span>
 <span class='fu'><a href='https://rdrr.io/r/stats/simulate.html'>simulate</a></span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>nsim</span>, <span class='va'>n</span>, <span class='va'>theta</span>, seed <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -214,7 +204,7 @@ two-arm design should be computed.</p>
     </tr>
     <tr>
       <th>object</th>
-      <td><p>object of class <code>Normal</code></p></td>
+      <td><p>object of class <code>Student</code></p></td>
     </tr>
     <tr>
       <th>nsim</th>
@@ -226,9 +216,6 @@ two-arm design should be computed.</p>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>See <code><a href='DataDistribution-class.html'>DataDistribution-class</a></code> for more details.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>see <code><a href='probability_density_function.html'>probability_density_function</a></code> and
@@ -236,7 +223,7 @@ two-arm design should be computed.</p>
    and the cdf, respectively.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>datadist</span> <span class='op'>&lt;-</span> <span class='fu'>Normal</span><span class='op'>(</span>two_armed <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+    <pre class="examples"><div class='input'><span class='va'>datadist</span> <span class='op'>&lt;-</span> <span class='fu'>Student</span><span class='op'>(</span>two_armed <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 
 </div></pre>
   </div>
