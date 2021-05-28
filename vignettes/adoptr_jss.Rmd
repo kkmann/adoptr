@@ -483,9 +483,10 @@ The two most widely used conditional scores are pre-implemented as
 `ConditionalPower` and `ConditionalSampleSize`.
 Their unconditional counterparts are `Power` and 
 `ExpectedSampleSize`.
-Further predefined unconditional scores are `AverageN2`, evaluating the average
-of the stage-two sample size (improper prior) and 
-`N1` measuring the first-stage sample size.
+Further predefined unconditional scores are `MaximumSampleSize`, 
+evaluating the maximum sample size, `N1`, measuring the
+first-stage sample size, and `AverageN2`, evaluating the average
+of the stage-two sample size (improper prior).
 These scores may be used for regularization if variable stage-two sample sizes
 or a high stage-one sample size are to be penalized.
 Users are free to define their own `Score`s
@@ -517,7 +518,7 @@ using the methods `make_fixed` (cf. Section [6.5](#sec:make_fixed)).
 The joint data distribution in **adoptr** consists of two elements.
 The distribution of the test statistic is specified by an object of class
 `DataDistribution`.
-Currently, the two options `Normal` and `Binomial` are implemented.
+Currently, the three options `Normal`, `Binomial`, and `Student` are implemented.
 The logical variable `two_armed` allows the differentiation between 
 one- and two-armed trials.
 Furthermore, **adoptr** supports prior distributions on the effect size.
