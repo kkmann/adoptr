@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">adoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2</span>
       </span>
     </div>
 
@@ -211,6 +211,11 @@
 <h1 class="hasAnchor">
 <a href="#sec:structure" class="anchor"></a>Adoptr’s structure</h1>
 <p>The package <strong>adoptr</strong> is based on <strong>R</strong>’s S4 class system. This allows to use multiple dispatch on the classes of multiple arguments to a method. In this section, the central components of <strong>adoptr</strong> are described briefly. Figure @ref(fig:class-diagram) gives a structural overview of the main classes in <strong>adoptr</strong>.</p>
+<div class="figure">
+<img src="structure.png" alt="Overview of the most important classes and methods (in italic) in the R-package adoptr. A subclassing relationship is indicated by a connecting line to the  corresponding super class above it. The most important methods for each class are listed under the respective class name in italic font." width="100%"><p class="caption">
+Overview of the most important classes and methods (in italic) in the R-package adoptr. A subclassing relationship is indicated by a connecting line to the corresponding super class above it. The most important methods for each class are listed under the respective class name in italic font.
+</p>
+</div>
 <p>To compute optimal designs, an object of class <code>UnconditionalScore</code> must be defined as objective criterion. <strong>adoptr</strong> distinguishes between <code>ConditionalScore</code>s and <code>UnconditionalScore</code>s (cf. Section <a href="#sec:setting">2</a>). All <code>Score</code>s can be evaluated using the method <code>evaluate</code>. For unconditional scores, this method only requires a <code>Score</code> object and a <code>TwoStageDesign</code> object, for conditional scores (like conditional power), it also requires the interim outcome <span class="math inline">\(x_1\)</span>. Note that any <code>ConditionalScore</code> <span class="math inline">\(S(\mathcal{D}|X_1=x_1)\)</span> can be converted to an <code>UnconditionalScore</code> <span class="math inline">\(S(\mathcal{D}) = \boldsymbol{E}\big[S(\mathcal{D}|X_1)\big]\)</span> using the method <code>expected</code>. The two most widely used conditional scores are pre-implemented as <code>ConditionalPower</code> and <code>ConditionalSampleSize</code>. Their unconditional counterparts are <code>Power</code> and <code>ExpectedSampleSize</code>. Further predefined unconditional scores are <code>MaximumSampleSize</code>, evaluating the maximum sample size, <code>N1</code>, measuring the first-stage sample size, and <code>AverageN2</code>, evaluating the average of the stage-two sample size (improper prior). These scores may be used for regularization if variable stage-two sample sizes or a high stage-one sample size are to be penalized. Users are free to define their own <code>Score</code>s (cf. the vignette ‘Defining New Scores’ <span class="citation">(Kunzmann and Pilz 2020)</span>). Moreover, different <code>Score</code>s can be composed to a single one by the function <code>composite</code> (cf. Section <a href="#sec:utility_maximization">6.3</a>). Both conditional and unconditional scores can also be used to define constraints - the most common case being constraints for power and maximal type one error rate. The function <code>minimize</code> takes an unconditional score as objective and a set of constraints and optimizes the design parameters.</p>
 <p>In <strong>adoptr</strong>, different kinds of designs are implemented. The most frequently applied case is a <code>TwoStageDesign</code>, i.e., a design with one interim analysis and a sample size function that varies with the interim test statistic. Another option is the subclass <code>GroupSequentialDesign</code> which restricts the sample size function on the continuation region to a single number, i.e., <span class="math inline">\({n_2(x_1) = n_2\ \forall x_1\in[\,c_1^f, c_1^e\,]}\)</span>. Additionally, <strong>adoptr</strong> supports the computation of optimal <code>OneStageDesign</code>s, i.e., designs without an interim analysis. Technically, one-stage designs are implemented as subclasses of <code>TwoStageDesign</code> since they can be viewed as the limiting case for <span class="math inline">\(n_2\equiv0\)</span> and <span class="math inline">\(c_1^f=c_1^e\)</span>. Hence, all methods that are implemented for <code>TwoStageDesign</code>s also work for <code>GroupSequentialDesign</code>s and <code>OneStageDesign</code>s. Users can chose to keep some elements of a design fixed during optimization using the methods <code>make_fixed</code> (cf. Section <a href="#sec:make_fixed">6.5</a>).</p>
 <p>The joint data distribution in <strong>adoptr</strong> consists of two elements. The distribution of the test statistic is specified by an object of class <code>DataDistribution</code>. Currently, the three options <code>Normal</code>, <code>Binomial</code>, and <code>Student</code> are implemented. The logical variable <code>two_armed</code> allows the differentiation between one- and two-armed trials. Furthermore, <strong>adoptr</strong> supports prior distributions on the effect size. These can be <code>PointMassPrior</code>s (cf. Section <a href="#sec:standard_case">6.1</a>) as well as <code>ContinuousPrior</code>s (cf. Section <a href="#sec:uncertainty">6.2</a>).</p>
@@ -238,11 +243,15 @@ R&gt; mss         &lt;- MaximumSampleSize()</code></pre>
 +                                       beta = 0.1, type = "two-stage",
 +                                       dist = datadist, order = 7)</code></pre>
 <p>It is easy to check that the initial design does not fulfill any of the constraints (minimal power of 90% and maximal type one error rate of 2.5%) with equality by evaluating the respective scores:</p>
-<pre class="text"><code>R&gt; evaluate(toer, initial_design)
-R&gt; evaluate(power, initial_design)</code></pre>
+<pre class="text"><code>R&gt; evaluate(toer, initial_design)</code></pre>
+<pre><code>## [1] 0.0246875</code></pre>
+<pre class="text"><code>R&gt; evaluate(power, initial_design)</code></pre>
+<pre><code>## [1] 0.8130973</code></pre>
 <p>Alternatively, one might also <code>evaluate</code> a constraint object directly via</p>
-<pre class="text"><code>R&gt; evaluate(toer  &lt;= .025, initial_design)
-R&gt; evaluate(power &gt;= .9, initial_design)</code></pre>
+<pre class="text"><code>R&gt; evaluate(toer  &lt;= .025, initial_design)</code></pre>
+<pre><code>## [1] -0.0003125</code></pre>
+<pre class="text"><code>R&gt; evaluate(power &gt;= .9, initial_design)</code></pre>
+<pre><code>## [1] 0.08690272</code></pre>
 <p>All constraint objects are normalized to the form <span class="math inline">\(h(\mathcal{D}) \leq 0\)</span> (unconditional) or <span class="math inline">\(h(\mathcal{D}, x_1) \leq 0\)</span> (conditional on <span class="math inline">\(X_1=x_1\)</span>). Calling <code>evaluate</code> on a constraint object then simply returns the left-hand side of the inequality. The actual optimization is started by invoking <code>minimize</code></p>
 <pre class="text"><code>R&gt; opt1 &lt;- minimize(ess, subject_to(power &gt;= 0.9, toer  &lt;= 0.025),
 +                   initial_design)</code></pre>
@@ -250,8 +259,29 @@ R&gt; evaluate(power &gt;= .9, initial_design)</code></pre>
 <p>A <code>summary</code> method for objects of the class <code>TwoStageDesign</code> is available to quickly evaluate a set of <code>ConditionalScores</code> such as conditional power as well as <code>UnconditionalScores</code> such as power and expected sample size.</p>
 <pre class="text"><code>R&gt; cp &lt;- ConditionalPower(dist = datadist, prior = alternative)
 R&gt; summary(opt1$design, "Power" = power, "ESS" = ess, "CP" = cp)</code></pre>
+<pre><code>## TwoStageDesign: n1 = 120 
+## 
+          futility |                  continue                 | efficacy
+## 
+      x1:     0.28 |  0.33  0.54  0.87  1.27  1.68  2.01  2.22 |  2.27
+## 
+  c2(x1):     +Inf | +2.70 +2.53 +2.23 +1.82 +1.31 +0.74 +0.19 |  -Inf
+## 
+  n2(x1):        0 |   229   214   188   154   116    79    51 |     0
+## 
+  CP(x1):     0.00 |  0.69  0.72  0.75  0.79  0.83  0.87  0.91 |  1.00
+## 
+   Power:      0.899
+## 
+     ESS:    176.126
+## </code></pre>
 <p><strong>adoptr</strong> also implements a default plot method for the overall sample size and the stage-two critical value as functions of the first-stage test statistic <span class="math inline">\(x_1\)</span>. The plot method also accepts additional <code>ConditionalScores</code> such as conditional power. Calling the plot method produces several plots with the interim test statistic <span class="math inline">\(x_1\)</span> on the <span class="math inline">\(x\)</span>-axis and the respective function on the <span class="math inline">\(y\)</span>-axis.</p>
 <pre class="text"><code>R&gt; plot(opt1$design, `Conditional power` = cp)</code></pre>
+<div class="figure">
+<img src="adoptr_jss_files/figure-html/standard-case-1.png" alt="Optimal sample size, critical value, and conditional power plotted against the interim test statistic (built-in plot method)." width="100%"><p class="caption">
+Optimal sample size, critical value, and conditional power plotted against the interim test statistic (built-in plot method).
+</p>
+</div>
 <p>Note the slightly bent shape of the <span class="math inline">\(c_2(\cdot)\)</span> function (cf. Figure @ref(fig:standard-case), second plot). For two-stage designs based on the inverse-normal combination function, <span class="math inline">\(c_2(\cdot)\)</span> would be linear by definition (cf. Equation @ref(eq:inverse-normal)). Since the optimal shape of <span class="math inline">\(c_2(\cdot)\)</span> is not linear (but almost), inverse-normal combination methods are slightly less efficient (cf. <span class="citation">Pilz et al. (2019)</span> for a more detailed discussion of this issue).</p>
 </div>
 <div id="sec:uncertainty" class="section level2">
@@ -271,13 +301,14 @@ R&gt; summary(opt1$design, "Power" = power, "ESS" = ess, "CP" = cp)</code></pre>
 <pre class="text"><code>R&gt; epower &lt;- Power(dist = datadist, prior = condition(prior, c(.1, 1)))</code></pre>
 <p>The optimal design under the point prior only achieves an expected power of</p>
 <pre class="text"><code>R&gt; evaluate(epower, opt1$design)</code></pre>
+<pre><code>## [1] 0.8143914</code></pre>
 <p>The optimal design under the truncated normal prior fulfilling the expected power constraint is then given by</p>
 <pre class="text"><code>R&gt; opt2 &lt;- minimize(ess, subject_to(epower &gt;= 0.9, toer &lt;= 0.025),
 +                   initial_design,
 +                   opts = list(algorithm = "NLOPT_LN_COBYLA",
 +                               xtol_rel = 1e-5, maxeval = 20000))</code></pre>
 <p>Note that the increased complexity of the problem requires a larger maximal number of iterations for the underlying optimization procedure. <strong>adoptr</strong> exposes the <strong>nloptr</strong> options via the argument <code>opts</code>. In cases where the maximal number of iterations is exhausted, a warning is thrown.</p>
-<p>The expected sample size under the prior of the obtained optimal design equals . This shows that an increased uncertainty on <span class="math inline">\(\theta\)</span> requires larger sample sizes to fulfill the expected power constraint since the expected sample size under the continuous prior considered in this section of the optimal design derived under a point alternative (see Section <a href="#sec:standard_case">6.1</a>) is only .</p>
+<p>The expected sample size under the prior of the obtained optimal design equals 236.2. This shows that an increased uncertainty on <span class="math inline">\(\theta\)</span> requires larger sample sizes to fulfill the expected power constraint since the expected sample size under the continuous prior considered in this section of the optimal design derived under a point alternative (see Section <a href="#sec:standard_case">6.1</a>) is only 176.4.</p>
 </div>
 <div id="sec:utility_maximization" class="section level2">
 <h2 class="hasAnchor">
@@ -296,7 +327,13 @@ R&gt; `E[n(X_1)^2]` &lt;- expected(composite({`n(X_1)`^2}),
 +                   subject_to(toer &lt;= 0.025), initial_design)</code></pre>
 <p>The expected power of the design is</p>
 <pre class="text"><code>R&gt; evaluate(epower, opt3$design)</code></pre>
-<p>The three optimal designs which have been computed so far are depicted in a joint plot (cf. Figure @ref(fig:comparison)). The design using the continuous prior requires higher sample sizes due to the higher uncertainty about <span class="math inline">\(\theta\)</span>. The utility maximization approach results in similar shapes of <span class="math inline">\(n(\cdot)\)</span> and <span class="math inline">\(c_2(\cdot)\)</span> as the constraint optimization. However, the sample sizes are lower due to the design’s lower power which is only possible by allowing a trade-off between expected power and expected sample size. In particular, the maximal sample size of the utility-based design equals and is distinctly smaller than in the case of a hard power constraint under a point prior (maximal sample size: ) or a continuous prior (maximal sample size: ).</p>
+<pre><code>## [1] 0.796554</code></pre>
+<p>The three optimal designs which have been computed so far are depicted in a joint plot (cf. Figure @ref(fig:comparison)). The design using the continuous prior requires higher sample sizes due to the higher uncertainty about <span class="math inline">\(\theta\)</span>. The utility maximization approach results in similar shapes of <span class="math inline">\(n(\cdot)\)</span> and <span class="math inline">\(c_2(\cdot)\)</span> as the constraint optimization. However, the sample sizes are lower due to the design’s lower power which is only possible by allowing a trade-off between expected power and expected sample size. In particular, the maximal sample size of the utility-based design equals 256 and is distinctly smaller than in the case of a hard power constraint under a point prior (maximal sample size: 352) or a continuous prior (maximal sample size: 527).</p>
+<div class="figure">
+<img src="adoptr_jss_files/figure-html/comparison-1.png" alt="Comparison of optimal designs under a point prior, a continuous prior, and a utility maximization approach." width="100%"><p class="caption">
+Comparison of optimal designs under a point prior, a continuous prior, and a utility maximization approach.
+</p>
+</div>
 </div>
 <div id="sec:CP_constraint" class="section level2">
 <h2 class="hasAnchor">
@@ -309,19 +346,29 @@ R&gt; power &lt;- expected(cp, data_distribution = datadist, prior = prior)</cod
 <p>Here, power is derived as expected score of the corresponding conditional power. A conditional power constraint is added in exactly the same way as unconditional constraints.</p>
 <pre class="text"><code>R&gt; opt4 &lt;- minimize(ess, subject_to(toer &lt;= 0.025, power &gt;= 0.9, cp &gt;= 0.8),
 +                   initial_design)</code></pre>
-<p>Comparing the optimal design that has been computed here with the same constraints but without a conditional power constraint (cf. beginning of this chapter), the optimal design with the additional constraint requires larger sample sizes in regions where the conditional power would usually be below the given threshold (cf. Figure @ref(fig:cp-constraint), first and third plot). Overall, the additional constraint reduces the feasible solution space and consequently increases the expected sample size ( with conditional power constraint vs. without). This example demonstrates, that any additional binding conditional constraints do come at costs for global optimality. Whether or not the loss in unconditional performance is outweighed by more appealing conditional properties must be decided on a case by case basis.</p>
+<p>Comparing the optimal design that has been computed here with the same constraints but without a conditional power constraint (cf. beginning of this chapter), the optimal design with the additional constraint requires larger sample sizes in regions where the conditional power would usually be below the given threshold (cf. Figure @ref(fig:cp-constraint), first and third plot). Overall, the additional constraint reduces the feasible solution space and consequently increases the expected sample size (176.6 with conditional power constraint vs. 176.1 without). This example demonstrates, that any additional binding conditional constraints do come at costs for global optimality. Whether or not the loss in unconditional performance is outweighed by more appealing conditional properties must be decided on a case by case basis.</p>
+<div class="figure">
+<img src="adoptr_jss_files/figure-html/cp-constraint-1.png" alt="Optimal designs with and without conditional power constraint." width="100%"><p class="caption">
+Optimal designs with and without conditional power constraint.
+</p>
+</div>
 </div>
 <div id="sec:make_fixed" class="section level2">
 <h2 class="hasAnchor">
 <a href="#sec:make_fixed" class="anchor"></a>Keeping design parameters fixed</h2>
-<p>In clinical practice, non-statistical considerations may impose direct constraints on design parameters. For instance, a sponsor might be subject to logistical constraints that render it necessary to design a trial with a specific stage one sample size. Returning to the standard case discussed in Section <a href="#sec:standard_case">6.1</a>, assume that a stage-one per-group sample size of exactly 80 individuals per group is required (<span class="math inline">\(n_1 = 80\)</span>) instead of the optimal value of $n_1^* = $. Furthermore, assume that the sponsor wants to stop early for futility if and only if there is a negative effect size at the interim analysis, i.e., <span class="math inline">\(c_1^f = 0\)</span>. <strong>adoptr</strong> supports such considerations by allowing to fix specific values of a design:</p>
+<p>In clinical practice, non-statistical considerations may impose direct constraints on design parameters. For instance, a sponsor might be subject to logistical constraints that render it necessary to design a trial with a specific stage one sample size. Returning to the standard case discussed in Section <a href="#sec:standard_case">6.1</a>, assume that a stage-one per-group sample size of exactly 80 individuals per group is required (<span class="math inline">\(n_1 = 80\)</span>) instead of the optimal value of <span class="math inline">\(n_1^* = 120\)</span>. Furthermore, assume that the sponsor wants to stop early for futility if and only if there is a negative effect size at the interim analysis, i.e., <span class="math inline">\(c_1^f = 0\)</span>. <strong>adoptr</strong> supports such considerations by allowing to fix specific values of a design:</p>
 <pre class="text"><code>R&gt; initial_design@n1  &lt;- 80
 R&gt; initial_design@c1f &lt;- 0
 R&gt; initial_design     &lt;- make_fixed(initial_design, n1, c1f)</code></pre>
 <p>Any ‘fixed’ parameter will be kept constant during optimization. Note that it is also possible to ‘un-fix’ parameters again using the <code>make_tunable</code> function.</p>
 <pre class="text"><code>R&gt; opt5 &lt;- minimize(ess, subject_to(toer &lt;= 0.025, power &gt;= 0.9),
 +                   initial_design)</code></pre>
-<p>Figure @ref(fig:tunable) visually compares the original design with the new, more restricted design. The designs are qualitatively similar, but fixing <span class="math inline">\(n_1\)</span> and <span class="math inline">\(c_1^f\)</span> does come at the price of slightly increased expected sample size ( compared to in the less restricted case).</p>
+<p>Figure @ref(fig:tunable) visually compares the original design with the new, more restricted design. The designs are qualitatively similar, but fixing <span class="math inline">\(n_1\)</span> and <span class="math inline">\(c_1^f\)</span> does come at the price of slightly increased expected sample size (187.7 compared to 176.1 in the less restricted case).</p>
+<div class="figure">
+<img src="adoptr_jss_files/figure-html/tunable-1.png" alt="Comparison of fully optimal design and optimal design with fixed first-stage sample size." width="100%"><p class="caption">
+Comparison of fully optimal design and optimal design with fixed first-stage sample size.
+</p>
+</div>
 </div>
 </div>
 <div id="sec:validation" class="section level1">
