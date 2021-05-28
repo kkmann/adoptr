@@ -674,7 +674,13 @@ This score can be defined in **adoptr** by first conditioning the prior.
 ```{r case-2-pwr-mcr}
 epower <- Power(dist = datadist, prior = condition(prior, c(.1, 1)))
 ```
-The optimal design is then given by
+The optimal design under the point prior only achieves an expected
+power of
+```{r case-2-evaluate-epwr-opt1}
+evaluate(epower, opt1$design)
+```
+The optimal design under the truncated normal prior fulfilling
+the expected power constraint is then given by
 ```{r case-2-optimization, warning=FALSE}
 opt2 <- minimize(ess, subject_to(epower >= 0.9, toer <= 0.025),
                  initial_design,
@@ -689,9 +695,12 @@ thrown.
 
 The expected sample size under the prior of the obtained optimal design equals
 `r if (buildvignette) round(evaluate(ess, opt2$design), 1)`.
-This points out the increased uncertainty on $\theta$ since the expected sample
-size under the prior of the optimal design from Section [6.1](#sec:standard_case)
-amounts to a lower value of `r if (buildvignette) round(evaluate(ess, opt1$design), 1)`.
+This shows that an increased uncertainty on $\theta$ 
+requires larger sample sizes to fulfill the expected power constraint 
+since the expected sample size under the continuous prior considered in 
+this section of the optimal design derived under a point alternative 
+(see Section [6.1](#sec:standard_case)) is only
+`r if (buildvignette) round(evaluate(ess, opt1$design), 1)`.
 
 
 ## Utility maximization and composite scores {#sec:utility_maximization}
