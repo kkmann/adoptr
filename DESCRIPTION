@@ -24,7 +24,6 @@ Description: Optimize one or two-arm, two-stage designs for clinical trials with
     <doi:10.1002/sim.8291> for details.
 License: MIT + file LICENSE
 Encoding: UTF-8
-LazyData: true
 Suggests: 
     knitr,
     rmarkdown,
