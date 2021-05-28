@@ -66,27 +66,6 @@ knitr::opts_chunk$set(
 options(prompt = "R> ", continue = "+  ", width = 70, useFancyQuotes = FALSE)
 ```
 
-```{r maximal-sample-size, cache=FALSE, include=FALSE}
-setClass("MaximalSampleSize", contains = "UnconditionalScore")
-
-# Define constructor
-MaximalSampleSize <- function() 
-  new("MaximalSampleSize")
-
-# Define corresponding evaluate method
-setMethod("evaluate", 
-          signature("MaximalSampleSize", "TwoStageDesign"),
-          function(s, design, optimization = FALSE, ...) {
-              x1 <- seq(design@c1f, design@c1e, length.out = 1000)
-              ss <- sapply(x1, function(z) adoptr:::n(design, z, round = !optimization))
-              return(max(ss))
-          }
-)
-
-mss <- MaximalSampleSize()
-```
-
-
 ```{r plot-opts, include=FALSE}
 add_opts <- function(p) {
   p + theme_bw() +
@@ -504,9 +483,10 @@ The two most widely used conditional scores are pre-implemented as
 `ConditionalPower` and `ConditionalSampleSize`.
 Their unconditional counterparts are `Power` and 
 `ExpectedSampleSize`.
-Further predefined unconditional scores are `AverageN2`, evaluating the average
-of the stage-two sample size (improper prior) and 
-`N1` measuring the first-stage sample size.
+Further predefined unconditional scores are `MaximumSampleSize`, 
+evaluating the maximum sample size, `N1`, measuring the
+first-stage sample size, and `AverageN2`, evaluating the average
+of the stage-two sample size (improper prior).
 These scores may be used for regularization if variable stage-two sample sizes
 or a high stage-one sample size are to be penalized.
 Users are free to define their own `Score`s
@@ -538,7 +518,7 @@ using the methods `make_fixed` (cf. Section [6.5](#sec:make_fixed)).
 The joint data distribution in **adoptr** consists of two elements.
 The distribution of the test statistic is specified by an object of class
 `DataDistribution`.
-Currently, the two options `Normal` and `Binomial` are implemented.
+Currently, the three options `Normal`, `Binomial`, and `Student` are implemented.
 The logical variable `two_armed` allows the differentiation between 
 one- and two-armed trials.
 Furthermore, **adoptr** supports prior distributions on the effect size.
@@ -583,6 +563,7 @@ null        <- PointMassPrior(theta = .0, mass = 1.0)
 alternative <- PointMassPrior(theta = .3, mass = 1.0)
 power       <- Power(dist = datadist, prior = alternative)
 toer        <- Power(dist = datadist, prior = null)
+mss         <- MaximumSampleSize()
 ```
 A `Power` score requires the data distribution and the prior
 to be specified.
@@ -694,7 +675,13 @@ This score can be defined in **adoptr** by first conditioning the prior.
 ```{r case-2-pwr-mcr}
 epower <- Power(dist = datadist, prior = condition(prior, c(.1, 1)))
 ```
-The optimal design is then given by
+The optimal design under the point prior only achieves an expected
+power of
+```{r case-2-evaluate-epwr-opt1}
+evaluate(epower, opt1$design)
+```
+The optimal design under the truncated normal prior fulfilling
+the expected power constraint is then given by
 ```{r case-2-optimization, warning=FALSE}
 opt2 <- minimize(ess, subject_to(epower >= 0.9, toer <= 0.025),
                  initial_design,
@@ -709,9 +696,12 @@ thrown.
 
 The expected sample size under the prior of the obtained optimal design equals
 `r if (buildvignette) round(evaluate(ess, opt2$design), 1)`.
-This points out the increased uncertainty on $\theta$ since the expected sample
-size under the prior of the optimal design from Section [6.1](#sec:standard_case)
-amounts to a lower value of `r if (buildvignette) round(evaluate(ess, opt1$design), 1)`.
+This shows that an increased uncertainty on $\theta$ 
+requires larger sample sizes to fulfill the expected power constraint 
+since the expected sample size under the continuous prior considered in 
+this section of the optimal design derived under a point alternative 
+(see Section [6.1](#sec:standard_case)) is only
+`r if (buildvignette) round(evaluate(ess, opt1$design), 1)`.
 
 
 ## Utility maximization and composite scores {#sec:utility_maximization}
@@ -1125,10 +1115,9 @@ new errors early during development and localizing them quickly.
 Together with continuous integration (cf. below), this helps to improve quality
 and speeds up the development process.
 4. *Continuous Integration / Continuous Deployment:* **adoptr** makes extensive
-use of the continuous integration and deployment services of
-Travis-CI [@travis].
+use of the continuous integration and deployment services GitHub Actions [@ghactions].
 Each new commit on the public GitHub.com repository is immediately run through
-the automated testing pipeline using the Travis-CI build service.
+the automated testing pipeline.
 Merges to the master branch are only possible after tests were
 passed successfully and a contributor reviewed and approved the changes
 ('branch protection system').
