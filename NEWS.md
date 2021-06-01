@@ -1,3 +1,7 @@
+# adoptr 0.4.3
+
+* corrected class diagram in vignette
+
 # adoptr 0.4.2
 
 * minor bug/print fixes
