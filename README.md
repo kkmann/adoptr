@@ -1,6 +1,5 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.2616951.svg)](https://doi.org/10.5281/zenodo.2616951)
 
-[![Join the chat at https://gitter.im/adoptr/community](https://badges.gitter.im/adoptr/community.svg)](https://gitter.im/adoptr/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![R-CMD-check](https://github.com/kkmann/adoptr/actions/workflows/check-package.yaml/badge.svg)](https://github.com/kkmann/adoptr/actions/workflows/check-package.yaml)
 [![Codecov test coverage](https://codecov.io/gh/kkmann/adoptr/branch/master/graph/badge.svg)](https://codecov.io/gh/kkmann/adoptr?branch=master)
 [![CRAN status](https://www.r-pkg.org/badges/version/adoptr)](https://cran.r-project.org/package=adoptr)
