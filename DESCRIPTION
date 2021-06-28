@@ -38,8 +38,7 @@ Suggests:
 Imports:
     nloptr,
     methods,
-    glue,
-    stringr
+    glue
 VignetteBuilder: knitr
 Collate: 
     adoptr.R
