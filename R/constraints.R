@@ -39,6 +39,7 @@ setClass("Constraint", representation(label = "character"),
          prototype(label = NA_character_))
 setClass("ConditionalConstraint", representation(
         score = "ConditionalScore",
+        evaluation_points = "numeric",
         rhs   = "numeric"
     ),
     contains = "Constraint")
@@ -64,7 +65,11 @@ setMethod("print", signature('UnconditionalConstraint'), function(x, ...) { # no
 }) # nocov end
 
 setMethod("print", signature('ConditionalConstraint'), function(x, ...) { # nocov start
-    glue::glue("{as_character(x@score)}(x1) <= {x@rhs} for x1 in [c1f,c1e]")
+    if (length(x@evaluation_points) == 0) {
+        glue::glue("{as_character(x@score)}(x1) <= {x@rhs} for x1 in [c1f,c1e]")
+    } else {
+        warning("not implemented")
+    }
 }) # nocov end
 
 setMethod("show", signature(object = "Constraint"), function(object) { # nocov start
@@ -175,7 +180,7 @@ setClass("ConstraintsCollection", representation(
 #'   power >= 0.9
 #' )
 #'
-#' @aliases ConstraintCollection
+#' @aliases ConstraintsCollection
 #' @export
 subject_to <- function(...) {
     args <- list(...)
@@ -203,14 +208,23 @@ subject_to <- function(...) {
 #' @export
 setMethod("evaluate", signature("ConstraintsCollection", "TwoStageDesign"),
           function(s, design, optimization = FALSE, ...) {
-              x1_cont <- scaled_integration_pivots(design)
               unconditional <- as.numeric(unlist(sapply(
                   s@unconditional_constraints,
                   function(cnstr) evaluate(cnstr, design, optimization, ...)
               )))
+              x1_cont <- scaled_integration_pivots(design)
+              eval_cond_constraint <- function(cnstr, design, optimization, ...) {
+                  if (length(cnstr@evaluation_points) == 0) {
+                      evaluation_points <- x1_cont
+                  } else {
+                      evaluation_points <- cnstr@evaluation_points
+                  }
+                  evaluate(cnstr, design, evaluation_points, optimization, ...)
+              }
+
               conditional <- as.numeric(unlist(sapply(
                   s@conditional_constraints,
-                  function(cnstr) evaluate(cnstr, design, x1_cont, optimization, ...)
+                  function(cnstr) eval_cond_constraint(cnstr, design, optimization, ...)
               )))
               return(c(unconditional, conditional))
           })

@@ -110,6 +110,34 @@ test_that("Optimal group-sequential design is computable", {
         initial_design_gs
     )
 
+    # lb_design <- get_lower_boundary_design(make_fixed(initial_design_gs, n1))
+    # lb_design@c1f <- opt_gs$design@c1f
+    # lb_design@c1e <- opt_gs$design@c1e
+    # alternative2 <- PointMassPrior(.2, 1)
+    # ess2 <- ExpectedSampleSize(datadist, alternative2)
+    # ce  <- ConditionalPower(datadist, null)
+    # pow2 <- expected(cp, datadist, alternative2)
+    # cond_err_cnstr <- ce <= evaluate(ce, opt_gs$design, x1 = 1.5)
+    # cond_err_cnstr@evaluation_points <- 1.5
+    # starting_design <- make_fixed(opt_gs$design, n1)
+    # opt_gs2 <- minimize(
+    #     ess2,
+    #     subject_to(
+    #         pow2  >= 1 - beta,
+    #         toer <= alpha,
+    #         cond_err_cnstr
+    #     ),
+    #     lower_boundary_design = lb_design,
+    #     starting_design,
+    #     opts = list(
+    #         algorithm   = "NLOPT_LN_COBYLA",
+    #         xtol_rel    = 1e-6,
+    #         maxeval     = 100000
+    #     )
+    # )
+    # opt_gs
+    # opt_gs2
+
     expect_equal(
         round(evaluate(pow, opt_gs$design), 1),
         0.8,
