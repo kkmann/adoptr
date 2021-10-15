@@ -53,7 +53,6 @@
 #' \code{\link{ConditionalSampleSize}}, \code{\link{Power}}, and
 #' \code{\link{ExpectedSampleSize}}..
 #'
-#'
 #' @import methods
 #' @docType package
 #' @name adoptr
