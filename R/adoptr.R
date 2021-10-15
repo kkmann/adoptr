@@ -54,7 +54,6 @@
 #' \code{\link{ExpectedSampleSize}}..
 #'
 #'
-#'
 #' @import methods
 #' @docType package
 #' @name adoptr
