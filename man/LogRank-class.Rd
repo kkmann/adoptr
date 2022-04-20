@@ -31,7 +31,7 @@ Survival(event_rate, two_armed = TRUE)
 Implements the normal approximation of the log-rank test statistic.
 }
 \examples{
-datadist <- Survival(event_rate=0.6, two-armed=TRUE)
+datadist <- Survival(event_rate=0.6, two_armed=TRUE)
 
 }
 \seealso{

@@ -1,3 +1,5 @@
+#' @include TwoStageDesign.R
+
 #' One-stage designs
 #'
 #' \code{OneStageDesign} implements a one-stage design as special case of
