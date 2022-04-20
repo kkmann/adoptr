@@ -4,15 +4,15 @@
 \name{Survival-class}
 \alias{Survival-class}
 \alias{Survival}
-\alias{probability_density_function,Survival,numeric,numeric,numeric-method}
-\alias{cumulative_distribution_function,Survival,numeric,numeric,numeric-method}
+\alias{quantile,Survival-method}
+\alias{simulate,Survival,numeric-method}
 \title{Log-rank test}
 \usage{
 Survival(event_rate, two_armed = TRUE)
 
-\S4method{probability_density_function}{Survival,numeric,numeric,numeric}(dist, x, n, theta, ...)
+\S4method{quantile}{Survival}(x, probs, n, theta, ...)
 
-\S4method{cumulative_distribution_function}{Survival,numeric,numeric,numeric}(dist, x, n, theta, ...)
+\S4method{simulate}{Survival,numeric}(object, nsim, n, theta, seed = NULL, ...)
 }
 \arguments{
 \item{event_rate}{probability that a subject will eventually have an event}
@@ -21,15 +21,29 @@ Survival(event_rate, two_armed = TRUE)
 
 \item{x}{outcome}
 
+\item{probs}{vector of probabilities}
+
 \item{n}{sample size}
 
 \item{theta}{distribution parameter}
 
 \item{...}{further optional arguments}
+
+\item{object}{object of class \code{Binomial}}
+
+\item{nsim}{number of simulation runs}
+
+\item{seed}{random seed}
 }
 \description{
 Implements the normal approximation of the log-rank test statistic.
 }
+\section{Slots}{
+
+\describe{
+\item{\code{event_rate}}{cf. parameter 'event_rate'}
+}}
+
 \examples{
 datadist <- Survival(event_rate=0.6, two_armed=TRUE)
 

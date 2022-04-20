@@ -1,5 +1,3 @@
-#' @include TwoStageDesign.R
-
 #' One-stage designs
 #'
 #' \code{OneStageDesign} implements a one-stage design as special case of
@@ -25,6 +23,8 @@ setClass("OneStageDesign",  contains = "TwoStageDesign")
 #' summary(design)
 #' design <- TwoStageDesign(design)
 #' summary(design)
+#'
+#' @include TwoStageDesign.R
 #'
 #' @rdname OneStageDesign-class
 #' @export
