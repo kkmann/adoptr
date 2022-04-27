@@ -24,6 +24,8 @@ setClass("OneStageDesign",  contains = "TwoStageDesign")
 #' design <- TwoStageDesign(design)
 #' summary(design)
 #'
+#' @include TwoStageDesign.R
+#'
 #' @rdname OneStageDesign-class
 #' @export
 OneStageDesign <- function(n, c) {
