@@ -72,6 +72,7 @@ setMethod("quantile", signature("Survival"),
 #' @export
 setMethod("simulate", signature("Survival", "numeric"),
           function(object, nsim, n, theta, seed = NULL, ...) {
+              if(object@two_armed) n <- n/2
               if (!is.null(seed)) set.seed(seed)
               return(stats::rnorm(nsim, mean=sqrt(n*object@event_rate)*log(theta), sd = 1))
           })
