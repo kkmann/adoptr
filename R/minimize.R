@@ -92,7 +92,6 @@ minimize <- function(
         opts        = opts,
         ...
     )
-
     if (res$status == 5 | res$status == 6)
         warning(res$message)
 
