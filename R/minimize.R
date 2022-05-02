@@ -62,7 +62,6 @@ minimize <- function(
     ),
     ...
 ) {
-
     args <- c(as.list(environment()), list(...))
 
     f_obj <- function(params) {

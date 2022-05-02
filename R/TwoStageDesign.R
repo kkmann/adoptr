@@ -55,7 +55,8 @@ setClass("TwoStageDesign", representation(
         c2_pivots = "numeric",
         x1_norm_pivots = "numeric",
         weights   = "numeric",
-        tunable   = "logical"
+        tunable   = "logical",
+        event_rate = "numeric"
     ))
 
 #' @param n1 stage-one sample size
@@ -76,7 +77,7 @@ setGeneric("TwoStageDesign", function(n1, ...) standardGeneric("TwoStageDesign")
 #' @rdname TwoStageDesign-class
 #' @export
 setMethod("TwoStageDesign", signature = "numeric",
-    function(n1, c1f, c1e, n2_pivots, c2_pivots, order = NULL, ...) {
+    function(n1, c1f, c1e, n2_pivots, c2_pivots, order = NULL, event_rate=0,...) {
 
         if (length(n2_pivots) != length(c2_pivots))
             stop("n2_pivots and c2_pivots must be of same length!")
@@ -94,7 +95,7 @@ setMethod("TwoStageDesign", signature = "numeric",
 
         new("TwoStageDesign", n1 = n1, c1f = c1f, c1e = c1e, n2_pivots = n2_pivots,
             c2_pivots = c2_pivots, x1_norm_pivots = rule$nodes, weights = rule$weights,
-            tunable = tunable)
+            tunable = tunable, event_rate=event_rate)
 
     })
 
@@ -529,7 +530,8 @@ setMethod("summary", signature("TwoStageDesign"),
                   c1f           = object@c1f,
                   c1e           = object@c1e,
                   n2_pivots     = object@n2_pivots,
-                  c2_pivots     = object@c2_pivots
+                  c2_pivots     = object@c2_pivots,
+                  event_rate    = object@event_rate
               )
               names(res$uncond_scores) <- names(uncond_scores)
               names(res$cond_scores)   <- names(cond_scores)
@@ -542,11 +544,21 @@ setMethod("summary", signature("TwoStageDesign"),
 #' @rawNamespace S3method(print, TwoStageDesignSummary)
 print.TwoStageDesignSummary <- function(x, ..., rounded = TRUE) {
     space <- 3
-    cat(glue::glue(
-        '{class(x$design)}: ',
-        'n1 = {sprintf("%3i", n1(x$design))} ',
-        '\n\r'
-    ))
+    if(x$design@event_rate==0){
+        cat(glue::glue(
+            '{class(x$design)}: ',
+            'n1 = {sprintf("%3i", n1(x$design))}',
+            '\n\r'
+        ))}
+    else{
+        events1 <- ceiling(n1(x$design)*x$design@event_rate)
+        cat(glue::glue(
+            '{class(x$design)}: ',
+            'n1 = {sprintf("%3i", n1(x$design))}',
+            ', number of necessary events = {events1}',
+            '\n\r'
+        ))
+    }
     x1 <- c(x$c1f - sqrt(.Machine$double.eps), scaled_integration_pivots(x$design), x$c1e + sqrt(.Machine$double.eps))
     n2 <- sapply(x1, function(y) n2(x$design, y))
     c2 <- sapply(x1, function(y) c2(x$design, y))
@@ -596,6 +608,16 @@ print.TwoStageDesignSummary <- function(x, ..., rounded = TRUE) {
                            collapse = " ")}',
                    ' | {sprintf("%5i", n2[length(n2)])}',
                    '\n\r'))
+
+    if(x$design@event_rate!=0){
+        cat(glue::glue(' ','{strrep(" ", len)}','events:', '{strrep(" ", space)}',
+                       ' {sprintf("%5i", ceiling(x$design@event_rate*n2[1]))} | ',
+                       '{paste0(
+                           sprintf("%5i", ceiling(x$design@event_rate*n2[- c(1, length(n2))])),
+                           collapse = " ")}',
+                       ' | {sprintf("%5i", ceiling(x$design@event_rate*n2[length(n2)]))}',
+                       '\n\r'))
+    }
 
     if (length(x$cond_scores) > 0) {
         for (i in 1:length(x$cond_scores)) {
