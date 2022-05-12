@@ -40,7 +40,7 @@ setMethod("probability_density_function",
           signature("Survival","numeric","numeric","numeric"),
           function(dist,x,n,theta, ...){
               if(dist@two_armed) n <- n/2
-              return(stats::dnorm(x,mean = sqrt(n*dist@event_rate)*log(theta),sd = 1) )
+              return(stats::dnorm(x,mean = sqrt(n)*log(theta),sd = 1) )
 })
 
 #' @examples
@@ -52,7 +52,7 @@ setMethod("cumulative_distribution_function",
           signature("Survival","numeric","numeric","numeric"),
           function(dist, x, n, theta, ...){
               if(dist@two_armed) n <- n/2
-              return(stats::pnorm(x,mean=sqrt(n*dist@event_rate)*log(theta),sd=1))
+              return(stats::pnorm(x,mean=sqrt(n)*log(theta),sd=1))
 })
 
 #' @param probs vector of probabilities
@@ -60,7 +60,7 @@ setMethod("cumulative_distribution_function",
 #' @export
 setMethod("quantile", signature("Survival"),
           function(x, probs, n, theta, ...) { # must be x to conform with generic
-              return(stats::qnorm(probs, mean=sqrt(n*x@event_rate)*log(theta),sd=1))
+              return(stats::qnorm(probs, mean=sqrt(n)*log(theta),sd=1))
 })
 
 #' @rdname SurvivalDataDistribution-class
@@ -72,8 +72,8 @@ setMethod("quantile", signature("Survival"),
 #' @export
 setMethod("simulate", signature("Survival", "numeric"),
           function(object, nsim, n, theta, seed = NULL, ...) {
-              if(object@two_armed) n <- n/2
+              if(object@two_armed) events <- events/2
               if (!is.null(seed)) set.seed(seed)
-              return(stats::rnorm(nsim, mean=sqrt(n*object@event_rate)*log(theta), sd = 1))
+              return(stats::rnorm(nsim, mean=sqrt(n)*log(theta), sd = 1))
           })
 

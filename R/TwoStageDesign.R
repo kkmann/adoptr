@@ -55,9 +55,13 @@ setClass("TwoStageDesign", representation(
         c2_pivots = "numeric",
         x1_norm_pivots = "numeric",
         weights   = "numeric",
-        tunable   = "logical",
-        event_rate = "numeric"
+        tunable   = "logical"
     ))
+
+#' @export
+setClass("TwoStageDesignSurvival", representation(
+    event_rate="numeric"),
+    contains = "TwoStageDesign")
 
 #' @param n1 stage-one sample size
 #'
@@ -77,7 +81,7 @@ setGeneric("TwoStageDesign", function(n1, ...) standardGeneric("TwoStageDesign")
 #' @rdname TwoStageDesign-class
 #' @export
 setMethod("TwoStageDesign", signature = "numeric",
-    function(n1, c1f, c1e, n2_pivots, c2_pivots, order = NULL, event_rate=0,...) {
+    function(n1, c1f, c1e, n2_pivots, c2_pivots, order = NULL, event_rate=0, ...) {
 
         if (length(n2_pivots) != length(c2_pivots))
             stop("n2_pivots and c2_pivots must be of same length!")
@@ -93,14 +97,17 @@ setMethod("TwoStageDesign", signature = "numeric",
         tunable[1:5]   <- TRUE
         names(tunable) <- c("n1", "c1f", "c1e", "n2_pivots", "c2_pivots", "x1_norm_pivots", "weights", "tunable")
 
-        new("TwoStageDesign", n1 = n1, c1f = c1f, c1e = c1e, n2_pivots = n2_pivots,
-            c2_pivots = c2_pivots, x1_norm_pivots = rule$nodes, weights = rule$weights,
-            tunable = tunable, event_rate=event_rate)
-
+        if(event_rate==0){
+            new("TwoStageDesign", n1 = n1, c1f = c1f, c1e = c1e, n2_pivots = n2_pivots,
+                c2_pivots = c2_pivots, x1_norm_pivots = rule$nodes, weights = rule$weights,
+                tunable = tunable)
+        }
+        else if(event_rate!=0){
+            new("TwoStageDesignSurvival",n1 = n1, c1f = c1f, c1e = c1e, n2_pivots = n2_pivots,
+                c2_pivots = c2_pivots, x1_norm_pivots = rule$nodes, weights = rule$weights,
+                tunable = tunable,event_rate=event_rate)
+        }
     })
-
-
-
 
 #' Switch between numeric and S4 class representation of a design
 #'
@@ -227,13 +234,6 @@ setMethod("make_fixed", signature("TwoStageDesign"),
               }
               return(res)
           })
-
-
-
-
-
-
-
 
 
 #' @rdname n
@@ -530,9 +530,11 @@ setMethod("summary", signature("TwoStageDesign"),
                   c1f           = object@c1f,
                   c1e           = object@c1e,
                   n2_pivots     = object@n2_pivots,
-                  c2_pivots     = object@c2_pivots,
-                  event_rate    = object@event_rate
+                  c2_pivots     = object@c2_pivots
               )
+              if(class(object)[[1]]=="TwoStageDesignSurvival"){
+                  res <- c(res,event_rate=object@event_rate)
+              }
               names(res$uncond_scores) <- names(uncond_scores)
               names(res$cond_scores)   <- names(cond_scores)
               class(res)               <- c("TwoStageDesignSummary", "list")
@@ -544,21 +546,21 @@ setMethod("summary", signature("TwoStageDesign"),
 #' @rawNamespace S3method(print, TwoStageDesignSummary)
 print.TwoStageDesignSummary <- function(x, ..., rounded = TRUE) {
     space <- 3
-    if(x$design@event_rate==0){
+    if(class(x$design)[[1]]=="TwoStageDesignSurvival"){
         cat(glue::glue(
             '{class(x$design)}: ',
-            'n1 = {sprintf("%3i", n1(x$design))}',
-            '\n\r'
-        ))}
-    else{
-        events1 <- ceiling(n1(x$design)*x$design@event_rate)
-        cat(glue::glue(
-            '{class(x$design)}: ',
-            'n1 = {sprintf("%3i", n1(x$design))}',
-            ', number of necessary events = {events1}',
-            '\n\r'
-        ))
+            'ev1={sprintf("%3i", n1(x$design))} --> ',
+            'n1={sprintf("%3i", ceiling(n1(x$design)/x$design@event_rate))}',
+            '\n\r'))
     }
+
+    else{
+        cat(glue::glue(
+                '{class(x$design)}: ',
+                'n1 = {sprintf("%3i", n1(x$design))}',
+                '\n\r'
+        ))}
+
     x1 <- c(x$c1f - sqrt(.Machine$double.eps), scaled_integration_pivots(x$design), x$c1e + sqrt(.Machine$double.eps))
     n2 <- sapply(x1, function(y) n2(x$design, y))
     c2 <- sapply(x1, function(y) c2(x$design, y))
@@ -583,7 +585,7 @@ print.TwoStageDesignSummary <- function(x, ..., rounded = TRUE) {
 
     # start with design characteristics
     len <- maxlength - nchar('x1')
-    cat(glue::glue(' ','{strrep(" ", len)}','x1:', '{strrep(" ", space)}',
+    cat(glue::glue(' ', '{strrep(" ", len)}','x1:', '{strrep(" ", space)}',
                    ' {sprintf("%5.2f", x1[1])} | ',
                    '{paste0(
                            sprintf("%5.2f", x1[- c(1, length(x1))]),
@@ -601,23 +603,31 @@ print.TwoStageDesignSummary <- function(x, ..., rounded = TRUE) {
                    '\n\r'))
 
     len <- maxlength - nchar('n2(x1)')
-    cat(glue::glue(' ','{strrep(" ", len)}','n2(x1):', '{strrep(" ", space)}',
-                   ' {sprintf("%5i", n2[1])} | ',
-                   '{paste0(
-                           sprintf("%5i", n2[- c(1, length(n2))]),
-                           collapse = " ")}',
-                   ' | {sprintf("%5i", n2[length(n2)])}',
-                   '\n\r'))
-
-    if(x$design@event_rate!=0){
-        cat(glue::glue(' ','{strrep(" ", len)}','events:', '{strrep(" ", space)}',
-                       ' {sprintf("%5i", ceiling(x$design@event_rate*n2[1]))} | ',
+    if(class(x$design)[[1]]=="TwoStageDesignSurvival"){
+        cat(glue::glue(' ','{strrep(" ", len)}','e2(x1):', '{strrep(" ", space)}',
+                       ' {sprintf("%5i", n2[1])} | ',
                        '{paste0(
-                           sprintf("%5i", ceiling(x$design@event_rate*n2[- c(1, length(n2))])),
-                           collapse = " ")}',
-                       ' | {sprintf("%5i", ceiling(x$design@event_rate*n2[length(n2)]))}',
+                               sprintf("%5i", n2[- c(1, length(n2))]),
+                               collapse = " ")}',
+                       ' | {sprintf("%5i", n2[length(n2)])}',
+                       '\n\r'))
+
+        cat(glue::glue(' ','{strrep(" ", len)}','n2(x1):', '{strrep(" ", space)}',
+                       ' {sprintf("%5i", n2[1]/x$design@event_rate)} | ',
+                       '{paste0(
+                               sprintf("%5i", ceiling(n2[- c(1, length(n2))]/x$design@event_rate)),
+                               collapse = " ")}',
+                       ' | {sprintf("%5i", n2[length(n2)]/x$design@event_rate)}',
                        '\n\r'))
     }
+    else{
+        cat(glue::glue(' ','{strrep(" ", len)}','n2(x1):', '{strrep(" ", space)}',
+                       ' {sprintf("%5i", n2[1])} | ',
+                       '{paste0(
+                               sprintf("%5i", n2[- c(1, length(n2))]),
+                               collapse = " ")}',
+                       ' | {sprintf("%5i", n2[length(n2)])}',
+                       '\n\r'))}
 
     if (length(x$cond_scores) > 0) {
         for (i in 1:length(x$cond_scores)) {
