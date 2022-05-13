@@ -59,7 +59,7 @@ setMethod("cumulative_distribution_function",
 #' @rdname SurvivalDataDistribution-class
 #' @export
 setMethod("quantile", signature("Survival"),
-          function(x, probs, n, theta, ...) { # must be x to conform with generic
+          function(x, probs, n, theta, ...) {
               return(stats::qnorm(probs, mean=sqrt(n)*log(theta),sd=1))
 })
 
@@ -72,7 +72,7 @@ setMethod("quantile", signature("Survival"),
 #' @export
 setMethod("simulate", signature("Survival", "numeric"),
           function(object, nsim, n, theta, seed = NULL, ...) {
-              if(object@two_armed) events <- events/2
+              if(object@two_armed) n <- n/2
               if (!is.null(seed)) set.seed(seed)
               return(stats::rnorm(nsim, mean=sqrt(n)*log(theta), sd = 1))
           })

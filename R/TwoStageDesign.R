@@ -58,7 +58,7 @@ setClass("TwoStageDesign", representation(
         tunable   = "logical"
     ))
 
-#' @export
+#' @exportClass TwoStageDesignSurvival
 setClass("TwoStageDesignSurvival", representation(
     event_rate="numeric"),
     contains = "TwoStageDesign")
@@ -81,7 +81,7 @@ setGeneric("TwoStageDesign", function(n1, ...) standardGeneric("TwoStageDesign")
 #' @rdname TwoStageDesign-class
 #' @export
 setMethod("TwoStageDesign", signature = "numeric",
-    function(n1, c1f, c1e, n2_pivots, c2_pivots, order = NULL, event_rate=0, ...) {
+    function(n1, c1f, c1e, n2_pivots, c2_pivots, order = NULL, event_rate, ...) {
 
         if (length(n2_pivots) != length(c2_pivots))
             stop("n2_pivots and c2_pivots must be of same length!")
@@ -97,12 +97,12 @@ setMethod("TwoStageDesign", signature = "numeric",
         tunable[1:5]   <- TRUE
         names(tunable) <- c("n1", "c1f", "c1e", "n2_pivots", "c2_pivots", "x1_norm_pivots", "weights", "tunable")
 
-        if(event_rate==0){
+        if(missing(event_rate)){
             new("TwoStageDesign", n1 = n1, c1f = c1f, c1e = c1e, n2_pivots = n2_pivots,
                 c2_pivots = c2_pivots, x1_norm_pivots = rule$nodes, weights = rule$weights,
                 tunable = tunable)
         }
-        else if(event_rate!=0){
+        else{
             new("TwoStageDesignSurvival",n1 = n1, c1f = c1f, c1e = c1e, n2_pivots = n2_pivots,
                 c2_pivots = c2_pivots, x1_norm_pivots = rule$nodes, weights = rule$weights,
                 tunable = tunable,event_rate=event_rate)
@@ -324,9 +324,6 @@ setMethod("n", signature("TwoStageDesign", "numeric"),
           function(d, x1, round = TRUE, ...) n2(d, x1, round, ...) + n1(d, round, ...))
 
 
-
-
-
 #' Query critical values of a design
 #'
 #' Methods to access the stage-two critical values of a
@@ -387,10 +384,6 @@ setMethod("c2", signature("TwoStageDesign", "numeric"),
           )
 )
 
-
-
-
-
 # internal, get integration pivots scales to [c1f, c1e]
 setGeneric("scaled_integration_pivots", function(d, ...) standardGeneric("scaled_integration_pivots"))
 
@@ -402,6 +395,16 @@ setMethod("scaled_integration_pivots", signature("TwoStageDesign"),
 
 
 design2str <- function(design, optimized = FALSE) {
+    if (is(design, 'TwoStageDesignSurvival')){
+        if (is(design, 'OneStageDesign')) return(sprintf("OneStageDesignSurvival<%sn_events=%i;c=%.2f>", if (optimized) "optimized;" else "", n1(design), design@c1f))
+        else{n2range <- round(range(design@n2_pivots))
+        return(sprintf(
+            "%s<%sn_events1=%i;%.1f<=x1<=%.1f;n_events2=%s>",
+            class(design)[1], if (optimized) "optimized;" else "", n1(design),
+            design@c1f, design@c1e,
+            if (diff(n2range) == 0) sprintf("%i", n2range[1]) else paste(n2range, collapse = '-')
+        ))}
+    }
     if (is(design, 'OneStageDesign')) return(sprintf("OneStageDesign<%sn=%i;c=%.2f>", if (optimized) "optimized;" else "", n1(design), design@c1f))
     n2range <- round(range(design@n2_pivots))
     sprintf(
@@ -532,7 +535,7 @@ setMethod("summary", signature("TwoStageDesign"),
                   n2_pivots     = object@n2_pivots,
                   c2_pivots     = object@c2_pivots
               )
-              if(class(object)[[1]]=="TwoStageDesignSurvival"){
+              if(is(object,"TwoStageDesignSurvival")){
                   res <- c(res,event_rate=object@event_rate)
               }
               names(res$uncond_scores) <- names(uncond_scores)
@@ -546,11 +549,11 @@ setMethod("summary", signature("TwoStageDesign"),
 #' @rawNamespace S3method(print, TwoStageDesignSummary)
 print.TwoStageDesignSummary <- function(x, ..., rounded = TRUE) {
     space <- 3
-    if(class(x$design)[[1]]=="TwoStageDesignSurvival"){
+    if(is(x$design,"TwoStageDesignSurvival")){
         cat(glue::glue(
             '{class(x$design)}: ',
-            'ev1={sprintf("%3i", n1(x$design))} --> ',
-            'n1={sprintf("%3i", ceiling(n1(x$design)/x$design@event_rate))}',
+            'nevs1={sprintf("%3i", n1(x$design))} --> ',
+            'nrec1={sprintf("%3i", round(n1(x$design)/x$design@event_rate))}',
             '\n\r'))
     }
 
@@ -562,6 +565,7 @@ print.TwoStageDesignSummary <- function(x, ..., rounded = TRUE) {
         ))}
 
     x1 <- c(x$c1f - sqrt(.Machine$double.eps), scaled_integration_pivots(x$design), x$c1e + sqrt(.Machine$double.eps))
+    n2_nr <- sapply(x1,function(y) n2(x$design,y,round=FALSE))
     n2 <- sapply(x1, function(y) n2(x$design, y))
     c2 <- sapply(x1, function(y) c2(x$design, y))
 
@@ -603,8 +607,8 @@ print.TwoStageDesignSummary <- function(x, ..., rounded = TRUE) {
                    '\n\r'))
 
     len <- maxlength - nchar('n2(x1)')
-    if(class(x$design)[[1]]=="TwoStageDesignSurvival"){
-        cat(glue::glue(' ','{strrep(" ", len)}','e2(x1):', '{strrep(" ", space)}',
+    if(is(x$design,"TwoStageDesignSurvival")){
+        cat(glue::glue(' ','{strrep(" ", len)}','nevs2(x1):',
                        ' {sprintf("%5i", n2[1])} | ',
                        '{paste0(
                                sprintf("%5i", n2[- c(1, length(n2))]),
@@ -612,12 +616,12 @@ print.TwoStageDesignSummary <- function(x, ..., rounded = TRUE) {
                        ' | {sprintf("%5i", n2[length(n2)])}',
                        '\n\r'))
 
-        cat(glue::glue(' ','{strrep(" ", len)}','n2(x1):', '{strrep(" ", space)}',
-                       ' {sprintf("%5i", n2[1]/x$design@event_rate)} | ',
+        cat(glue::glue(' ','{strrep(" ", len)}','nrec2(x1):',
+                       ' {sprintf("%5i", round(n2_nr[1]/x$design@event_rate))} | ',
                        '{paste0(
-                               sprintf("%5i", ceiling(n2[- c(1, length(n2))]/x$design@event_rate)),
+                               sprintf("%5i", round(n2_nr[- c(1, length(n2))]/x$design@event_rate)),
                                collapse = " ")}',
-                       ' | {sprintf("%5i", n2[length(n2)]/x$design@event_rate)}',
+                       ' | {sprintf("%5i", round(n2_nr[length(n2)]/x$design@event_rate))}',
                        '\n\r'))
     }
     else{

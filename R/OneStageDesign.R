@@ -15,6 +15,9 @@
 #' @exportClass OneStageDesign
 setClass("OneStageDesign",  contains = "TwoStageDesign")
 
+#' @exportClass OneStageDesignSurvival
+setClass("OneStageDesignSurvival", contains = c("OneStageDesign","TwoStageDesignSurvival"))
+
 #' @param n sample size (stage-one sample size)
 #' @param c rejection boundary (\ifelse{html}{\out{c = c<sub>1</sub><sup>f</sup> = c<sub>1</sub><sup>e</sup>}}{\eqn{c = c_1^f = c_1^e}})
 #'
@@ -28,17 +31,20 @@ setClass("OneStageDesign",  contains = "TwoStageDesign")
 #'
 #' @rdname OneStageDesign-class
 #' @export
-OneStageDesign <- function(n, c) {
+OneStageDesign <- function(n, c,event_rate) {
     tunable <- logical(8)
     tunable[1:2] <- TRUE
     names(tunable) <- c("n1", "c1f", "c1e", "n2_pivots", "c2_pivots", "x1_norm_pivots", "weights", "tunable")
-    new("OneStageDesign", n1 = n, c1f = c, c1e = c, n2_pivots = 0,
-    c2_pivots = NaN, x1_norm_pivots = NaN, weights = NaN,
-    tunable = tunable)
+    if(missing(event_rate)){
+        new("OneStageDesign", n1 = n, c1f = c, c1e = c, n2_pivots = 0,
+        c2_pivots = NaN, x1_norm_pivots = NaN, weights = NaN,
+        tunable = tunable)}
+    else{
+        new("OneStageDesignSurvival", n1 = n, c1f = c, c1e = c, n2_pivots = 0,
+            c2_pivots = NaN, x1_norm_pivots = NaN, weights = NaN,
+            tunable = tunable, event_rate=event_rate)
+    }
 }
-
-
-
 
 
 #' @rdname tunable_parameters
