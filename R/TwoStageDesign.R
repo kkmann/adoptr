@@ -62,7 +62,7 @@ setClass("TwoStageDesign", representation(
 #' Two-stage design for time-to-event-endpoints
 #'
 #' When conducting a study with time-to-event endpoints, the main interest is not the
-#' sample size, but the number of necessary events. Thus, \pkd{\link{adoptr}} does not use
+#' sample size, but the number of necessary events. Thus, \pkg{\link{adoptr}} does not use
 #' the sample size for calculating the design. Instead,
 #' it uses directly the number of events. This leads to a different look of the
 #' \code{summary} and \code{show} functions. The sample size is implicitly determined

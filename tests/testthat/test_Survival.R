@@ -19,4 +19,5 @@ test_that("pdf is defined correctly" , {
 
     dist <- Survival(0.7)
 
+
 })

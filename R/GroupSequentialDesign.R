@@ -17,7 +17,7 @@ setClass("GroupSequentialDesign",  contains = "TwoStageDesign")
 #' Group-sequential designs for time-to-event-endpoints are a subclass of both
 #' \code{TwoStageDesignSurvival} and \code{GroupSequentialDesign}.
 #'
-#' @seealso \code{\link{TwoStageDesignSurvival}} and \code{\link{GroupSequentialDesign}}
+#' @seealso \code{\link{TwoStageDesignSurvival-class}} and \code{\link{GroupSequentialDesign}}
 #' for superclasses and inherited methods.
 #'
 #' @exportClass GroupSequentialDesignSurvival

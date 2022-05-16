@@ -20,7 +20,7 @@ setClass("OneStageDesign",  contains = "TwoStageDesign")
 #' \code{OneStageDesignSurvival} is a subclass of both \code{OneStageDesign} and
 #' \code{TwoStageDesignSurvival}.
 #'
-#' @seealso \code{\link{TwoStageDesignSurvival}} and \code{\link{GroupSequentialDesign}}
+#' @seealso \code{\link{TwoStageDesignSurvival-class}} and \code{\link{OneStageDesign}}
 #' for superclasses and inherited methods.
 #'
 #' @exportClass OneStageDesignSurvival
