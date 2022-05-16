@@ -43,6 +43,8 @@ Methods to access the stage-one, stage-two, or overall sample size of a
 \code{n1} returns the first-stage sample size of a design,
 \code{n2} the stage-two sample size conditional on the stage-one test
 statistic and \code{n} the overall sample size \code{n1 + n2}.
+When dealing with time-to-event endpoints, the functions \code{n1}, \code{n2} and
+\code{n} return the number of events instead of the sample size.
 Internally, objects of the class \code{TwoStageDesign} allow non-natural,
 real sample sizes to allow smooth optimization (cf. \code{\link{minimize}} for
 details).

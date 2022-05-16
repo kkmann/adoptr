@@ -29,7 +29,7 @@ Survival(event_rate, two_armed = TRUE)
 
 \item{...}{further optional arguments}
 
-\item{object}{object of class \code{Binomial}}
+\item{object}{object of class \code{Survival}}
 
 \item{nsim}{number of simulation runs}
 

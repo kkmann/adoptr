@@ -26,8 +26,8 @@ setClass("Survival", representation (
 #' @rdname SurvivalDataDistribution-class
 #' @export
 Survival <- function(event_rate,two_armed=TRUE){
-    if(any(event_rate>=1,event_rate<=0))
-    stop("The assumed event rate must be in (0,1)!")
+    if(any(event_rate>=1,event_rate<=0)){
+    stop("The assumed event rate must be in (0,1)!")}
     new("Survival",event_rate = event_rate,two_armed = two_armed)
 }
 
@@ -65,7 +65,7 @@ setMethod("quantile", signature("Survival"),
 
 #' @rdname SurvivalDataDistribution-class
 #'
-#' @param object object of class \code{Binomial}
+#' @param object object of class \code{Survival}
 #' @param nsim number of simulation runs
 #' @param seed random seed
 #'

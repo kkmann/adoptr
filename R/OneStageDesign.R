@@ -15,12 +15,22 @@
 #' @exportClass OneStageDesign
 setClass("OneStageDesign",  contains = "TwoStageDesign")
 
+#' One-stage designs for time-to-event endpoints
+#'
+#' \code{OneStageDesignSurvival} is a subclass of both \code{OneStageDesign} and
+#' \code{TwoStageDesignSurvival}.
+#'
+#' @seealso \code{\link{TwoStageDesignSurvival}} and \code{\link{GroupSequentialDesign}}
+#' for superclasses and inherited methods.
+#'
 #' @exportClass OneStageDesignSurvival
 setClass("OneStageDesignSurvival", contains = c("OneStageDesign","TwoStageDesignSurvival"))
 
+
 #' @param n sample size (stage-one sample size)
 #' @param c rejection boundary (\ifelse{html}{\out{c = c<sub>1</sub><sup>f</sup> = c<sub>1</sub><sup>e</sup>}}{\eqn{c = c_1^f = c_1^e}})
-#'
+#' @param event_rate probability that a subject in either group will eventually have an event,
+#' only needs to be specified for time-to-event endpoints.
 #' @examples
 #' design <- OneStageDesign(30, 1.96)
 #' summary(design)
@@ -115,7 +125,26 @@ setMethod("TwoStageDesign", signature("OneStageDesign"),
 
 })
 
+#' @export
+setMethod("TwoStageDesign", signature("OneStageDesignSurvival"),
+          function(n1, order = 5L, eps = .01, ...){
 
+              c2 <- numeric(order)
+              c2[1:floor(order / 2)] <- rep(3, floor(order / 2))
+              c2[(ceiling(order / 2) + 1):order] <- rep(-3, floor(order / 2))
+
+              return(
+                  TwoStageDesign(
+                      n1             = n1@n1,
+                      c1f            = n1@c1f - eps, # needs to be done for interpolation
+                      c1e            = n1@c1f + eps, # needs to be done for interpolation
+                      n2_pivots      = rep(0, order),
+                      c2_pivots      = c2, # acceptance left/rejection right from c
+                      event_rate     = n1@event_rate
+                  )
+              )
+
+          })
 
 #' plot() is not defined for one stage designs
 #'

@@ -8,7 +8,7 @@
 \alias{plot,OneStageDesign-method}
 \title{One-stage designs}
 \usage{
-OneStageDesign(n, c)
+OneStageDesign(n, c, event_rate)
 
 \S4method{TwoStageDesign}{OneStageDesign}(n1, order = 5L, eps = 0.01, ...)
 
@@ -18,6 +18,9 @@ OneStageDesign(n, c)
 \item{n}{sample size (stage-one sample size)}
 
 \item{c}{rejection boundary (\ifelse{html}{\out{c = c<sub>1</sub><sup>f</sup> = c<sub>1</sub><sup>e</sup>}}{\eqn{c = c_1^f = c_1^e}})}
+
+\item{event_rate}{probability that a subject in either group will eventually have an event,
+only needs to be specified for time-to-event endpoints.}
 
 \item{n1}{\code{OneStageDesign} object to convert, overloaded from
 \code{\link{TwoStageDesign}}}

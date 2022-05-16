@@ -7,7 +7,16 @@
 \alias{TwoStageDesign,GroupSequentialDesign-method}
 \title{Group-sequential two-stage designs}
 \usage{
-GroupSequentialDesign(n1, c1f, c1e, n2_pivots, c2_pivots, order = NULL, ...)
+GroupSequentialDesign(
+  n1,
+  c1f,
+  c1e,
+  n2_pivots,
+  c2_pivots,
+  order = NULL,
+  event_rate,
+  ...
+)
 
 \S4method{TwoStageDesign}{GroupSequentialDesign}(n1, ...)
 }
@@ -27,6 +36,9 @@ pivot points}
 \item{order}{of the Gaussian uadrature rule to use for integration, set to
 length(c2_pivots) if NULL, otherwise first value of c2_pivots is repeated
 'order'-times.}
+
+\item{event_rate}{probability that a subject in either group will eventually have an event,
+only needs to be specified for time-to-event endpoints.}
 
 \item{...}{further optional arguments}
 }

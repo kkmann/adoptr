@@ -11,6 +11,15 @@
 #' @exportClass GroupSequentialDesign
 setClass("GroupSequentialDesign",  contains = "TwoStageDesign")
 
+
+#' Group-sequential two-stage designs for time-to-event-endpoints
+#'
+#' Group-sequential designs for time-to-event-endpoints are a subclass of both
+#' \code{TwoStageDesignSurvival} and \code{GroupSequentialDesign}.
+#'
+#' @seealso \code{\link{TwoStageDesignSurvival}} and \code{\link{GroupSequentialDesign}}
+#' for superclasses and inherited methods.
+#'
 #' @exportClass GroupSequentialDesignSurvival
 setClass("GroupSequentialDesignSurvival", contains = c("GroupSequentialDesign","TwoStageDesignSurvival"))
 
@@ -23,6 +32,8 @@ setClass("GroupSequentialDesignSurvival", contains = c("GroupSequentialDesign","
 #' length(c2_pivots) if NULL, otherwise first value of c2_pivots is repeated
 #' 'order'-times.
 #' @template dotdotdot
+#' @param event_rate probability that a subject in either group will eventually have an event,
+#' only needs to be specified for time-to-event endpoints.
 #'
 #' @examples
 #' design <- GroupSequentialDesign(25, 0, 2, 25, c(1, 1.5, 2.5))
@@ -54,7 +65,6 @@ GroupSequentialDesign <- function(n1, c1f, c1e, n2_pivots, c2_pivots, order = NU
      }
 
 }
-
 
 
 #' @rdname n

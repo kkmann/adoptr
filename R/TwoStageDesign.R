@@ -58,6 +58,20 @@ setClass("TwoStageDesign", representation(
         tunable   = "logical"
     ))
 
+
+#' Two-stage design for time-to-event-endpoints
+#'
+#' When conducting a study with time-to-event endpoints, the main interest is not the
+#' sample size, but the number of necessary events. Thus, \pkd{\link{adoptr}} does not use
+#' the sample size for calculating the design. Instead,
+#' it uses directly the number of events. This leads to a different look of the
+#' \code{summary} and \code{show} functions. The sample size is implicitly determined
+#' by dividing the number of events by the event rate. Survival objects are only
+#' created, when the argument \code{event_rate} is not missing.
+#'
+#' @slot event_rate probability that a subject in either group will eventually have an event
+#'
+#' @seealso \code{\link{TwoStageDesign}} for superclass and inherited methods
 #' @exportClass TwoStageDesignSurvival
 setClass("TwoStageDesignSurvival", representation(
     event_rate="numeric"),
@@ -77,6 +91,8 @@ setGeneric("TwoStageDesign", function(n1, ...) standardGeneric("TwoStageDesign")
 #' pivot points
 #' @template order
 #' @template dotdotdot
+#' @param event_rate probability that a subject in either group will eventually have an event,
+#' only needs to be specified for time-to-event endpoints.
 #'
 #' @rdname TwoStageDesign-class
 #' @export
@@ -283,6 +299,8 @@ setMethod("n2", signature("TwoStageDesign", "numeric"),
 #' \code{n1} returns the first-stage sample size of a design,
 #' \code{n2} the stage-two sample size conditional on the stage-one test
 #' statistic and \code{n} the overall sample size \code{n1 + n2}.
+#' When dealing with time-to-event endpoints, the functions \code{n1}, \code{n2} and
+#' \code{n} return the number of events instead of the sample size.
 #' Internally, objects of the class \code{TwoStageDesign} allow non-natural,
 #' real sample sizes to allow smooth optimization (cf. \code{\link{minimize}} for
 #' details).
