@@ -60,6 +60,7 @@ setMethod("cumulative_distribution_function",
 #' @export
 setMethod("quantile", signature("Survival"),
           function(x, probs, n, theta, ...) {
+              if(x@two_armed) n <- n/2
               return(stats::qnorm(probs, mean=sqrt(n)*log(theta),sd=1))
 })
 
@@ -77,3 +78,10 @@ setMethod("simulate", signature("Survival", "numeric"),
               return(stats::rnorm(nsim, mean=sqrt(n)*log(theta), sd = 1))
           })
 
+setMethod("print", signature('Survival'), function(x, ...) {
+    glue::glue(
+        "{class(x)[1]}<{if (x@two_armed) 'two-armed' else 'single-armed'}>",
+        "event rate: {x@event_rate}",
+        .sep=", "
+    )
+})
