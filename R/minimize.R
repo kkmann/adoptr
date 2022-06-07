@@ -121,16 +121,21 @@ print.adoptrOptimizationResult <- function(x, ...) {
 #' fixed design that fulfills constraints on type I error rate and power.
 #' For group-sequential or two-stage designs, the function uses the inverse normal combination test and Pocock-boundaries
 #' to determine the critical values and the stage-wise sample sizes.
-#' Note that a situation-specific initial design may be much more efficient.
+#' Note that this function is designed for the classical scenario: minimizing the sample size under the alternative
+#' while fulfilling the constraints on type I error rate and power.
+#' In a lot of other scenarios, a situation-specific initial design is much more efficient. Set `general_design=TRUE`
+#' to get a more universal design, which may lead to worse optimization results in classical scenarios, but may perform better
+#' in general.
 #'
 #' @param theta the alternative effect size in the normal case, the
 #' rate difference under the alternative in the binomial case
 #' @param alpha maximal type I error rate
 #' @param beta maximale type II error rate
-#' @param type is a two-stage, group-sequential, or one-stage design requried?
+#' @param type is a two-stage, group-sequential, or one-stage design required?
 #' @param dist distribution of the test statistic
 #' @param order desired integration order
 #' @param cf first-stage futility boundary
+#' @param general_design returns a design fulfilling the constraints on the error rates
 #' @template dotdotdot
 #'
 #' @details
@@ -150,11 +155,28 @@ print.adoptrOptimizationResult <- function(x, ...) {
 #' @export
 get_initial_design <- function(theta, alpha, beta,
                                 type = c("two-stage","group-sequential","one-stage"),
-                                dist = Normal(), order = 7L, cf=0, ...){
+                                dist = Normal(), order = 7L, cf=0, general_design=FALSE, ...){
     power <- 1-beta
     type <- match.arg(type)
+
     if (alpha <= 0 || alpha >= 1 || beta <= 0 || beta >= 1){
         stop("alpha and beta must be in (0, 1)!")}
+
+    if(general_design){
+        if (is(dist, "Binomial")) {
+            p_0   <- dist@rate_control + theta / 2
+            theta <- theta / sqrt(p_0 * (1 - p_0))
+        }
+        c     <- quantile(dist, 1 - alpha, 1, 0)
+        n     <- floor(2 * (c + quantile(dist, 1 - beta, 1, 0))^2 / theta^2)
+        if (type == "one-stage")
+            return(OneStageDesign(n, c))
+        else if (type == "group-sequential")
+            return(GroupSequentialDesign(n/2, 0, quantile(dist, 1 - alpha/2, 1, 0), n/2, c, order))
+        else if (type == "two-stage")
+            return(TwoStageDesign(n/2, 0, quantile(dist, 1 - alpha/2, 1, 0), n/2, c, order))
+    }
+
     if(type=="one-stage"){
         if (is(dist, "Binomial")) {
             p_0   <- dist@rate_control + theta / 2
