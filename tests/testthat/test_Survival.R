@@ -68,7 +68,7 @@ test_that("simulate respects seed", {
         all(simulate(Survival(0.7), 10, 12, 1.1) != simulate(Survival(0.7), 10, 12, 1.1)))
 })
 
-test_that("Survival and Normal equal under null hypothesis", {
+test_that("Survival and Normal equal under various point hypotheses", {
     dist1 <- Survival(0.7)
     dist2 <- Normal()
     x <- seq(-3,3,by=0.1)
@@ -76,6 +76,11 @@ test_that("Survival and Normal equal under null hypothesis", {
     expect_equal(
         probability_density_function(dist1,x,n,1),
         probability_density_function(dist2,x,n,0),
+        tolerance = 1e-6, scale = 1
+    )
+    expect_equal(
+        probability_density_function(dist1,x,n,exp(0.4)),
+        probability_density_function(dist2,x,n,log(exp(0.4))),
         tolerance = 1e-6, scale = 1
     )
 })

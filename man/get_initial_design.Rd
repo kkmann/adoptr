@@ -11,6 +11,7 @@ get_initial_design(
   type = c("two-stage", "group-sequential", "one-stage"),
   dist = Normal(),
   order = 7L,
+  cf = 0,
   ...
 )
 }
@@ -28,13 +29,17 @@ rate difference under the alternative in the binomial case}
 
 \item{order}{desired integration order}
 
+\item{cf}{first-stage futility boundary}
+
 \item{...}{further optional arguments}
 }
 \description{
 The optimization method \code{\link{minimize}} requires an initial
 design for optimization.
-The function \code{get_initial_design} provides an initial guess based on a
+For one-stage designs, the function \code{get_initial_design} provides an initial guess based on a simple
 fixed design that fulfills constraints on type I error rate and power.
+For group-sequential or two-stage designs, the function uses the inverse normal combination test and Pocock-boundaries
+to determine the critical values and the stage-wise sample sizes.
 Note that a situation-specific initial design may be much more efficient.
 }
 \details{

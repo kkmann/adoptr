@@ -117,8 +117,10 @@ print.adoptrOptimizationResult <- function(x, ...) {
 #'
 #' The optimization method \code{\link{minimize}} requires an initial
 #' design for optimization.
-#' The function \code{get_initial_design} provides an initial guess based on a
+#' For one-stage designs, the function \code{get_initial_design} provides an initial guess based on a simple
 #' fixed design that fulfills constraints on type I error rate and power.
+#' For group-sequential or two-stage designs, the function uses the inverse normal combination test and Pocock-boundaries
+#' to determine the critical values and the stage-wise sample sizes.
 #' Note that a situation-specific initial design may be much more efficient.
 #'
 #' @param theta the alternative effect size in the normal case, the
@@ -128,6 +130,7 @@ print.adoptrOptimizationResult <- function(x, ...) {
 #' @param type is a two-stage, group-sequential, or one-stage design requried?
 #' @param dist distribution of the test statistic
 #' @param order desired integration order
+#' @param cf first-stage futility boundary
 #' @template dotdotdot
 #'
 #' @details
@@ -146,26 +149,79 @@ print.adoptrOptimizationResult <- function(x, ...) {
 #'
 #' @export
 get_initial_design <- function(theta, alpha, beta,
-                               type = c("two-stage", "group-sequential", "one-stage"),
-                               dist = Normal(), order = 7L, ...) {
+                                type = c("two-stage","group-sequential","one-stage"),
+                                dist = Normal(), order = 7L, cf=0, ...){
+    power <- 1-beta
     type <- match.arg(type)
-    if (alpha <= 0 || alpha >= 1 || beta <= 0 || beta >= 1)
-        stop("alpha and beta must be in (0, 1)!")
-    if (is(dist, "Binomial")) {
-        p_0   <- dist@rate_control + theta / 2
-        theta <- theta / sqrt(p_0 * (1 - p_0))
+    if (alpha <= 0 || alpha >= 1 || beta <= 0 || beta >= 1){
+        stop("alpha and beta must be in (0, 1)!")}
+    if(type=="one-stage"){
+        if (is(dist, "Binomial")) {
+            p_0   <- dist@rate_control + theta / 2
+            theta <- theta / sqrt(p_0 * (1 - p_0))
+        }
+        c <- ifelse(is(dist,"Survival"), quantile(dist, 1 - alpha, 1, 1),quantile(dist, 1 - alpha, 1, 0))
+        n <- ifelse(is(dist,"Survival"), floor(2 * (c + quantile(dist, 1 - beta, 1, 1))^2 / (log(theta))^2),
+                    floor(2 * (c + quantile(dist, 1 - beta, 1, 0))^2 / theta^2))
+        ifelse(is(dist,"Survival"),return(OneStageDesign(n,c,event_rate=dist@event_rate)),
+               return(OneStageDesign(n,c)))
     }
-    c     <- quantile(dist, 1 - alpha, 1, 0)
-    n     <- floor(2 * (c + quantile(dist, 1 - beta, 1, 0))^2 / theta^2)
-    if (type == "one-stage")
-        return(OneStageDesign(n, c))
-    else if (type == "group-sequential")
-        return(GroupSequentialDesign(n/2, 0, quantile(dist, 1 - alpha/2, 1, 0), n/2, c, order))
-    else if (type == "two-stage")
-        return(TwoStageDesign(n/2, 0, quantile(dist, 1 - alpha/2, 1, 0), n/2, c, order))
+
+    if(type=="group-sequential"||type=="two-stage"){
+        min_prob_c <- function(x){
+            integrandc <- function(z){
+                (1-stats::pnorm(sqrt(2)*x-z))*stats::dnorm(z)
+            }
+            (1-stats::pnorm(x))+stats::integrate(integrandc,lower=cf,upper=x)$value-alpha
+        }
+        ce <- stats::uniroot(min_prob_c,interval=c(0,3))$root
+
+        critical_values <- function(z){
+            sqrt(2)*ce-z
+        }
+
+        min_prob_n <- function(n){
+            integrandn <- function(z){
+                (1-cumulative_distribution_function(dist,sqrt(2)*ce-z,2*n,theta))*
+                    probability_density_function(dist,z,2*n,theta)
+            }
+            (1-cumulative_distribution_function(dist,ce,n,theta))+
+                stats::integrate(integrandn,lower=cf,upper=ce)$value-power
+        }
+        n1 <- stats::uniroot(min_prob_n,interval=c(0,2000))$root
+
+        n1 <- n1/2
+
+        oldnodes <- adoptr:::GaussLegendreRule(as.integer(order))$nodes
+        h <- (ce - cf) / 2
+        newnodes <- h * oldnodes + (h + cf)
+        c2pivots <- sapply(newnodes, critical_values)
+
+        if(type=="group-sequential"){
+            n2 <- 2*n1
+            if(is(dist,"Survival")) design <- GroupSequentialDesign(n1,cf,ce,n2,c2pivots, event_rate=dist@event_rate)
+            else design <-  GroupSequentialDesign(n1,cf,ce,n2,c2pivots)
+            return(design)}
+
+        else{
+            min_prob_n2 <- function(n2,pivot){
+                integrandn2 <- function(z){
+                    (1-cumulative_distribution_function(dist,pivot,n2,theta))*
+                        probability_density_function(dist,z,n1,theta)
+                }
+                (1-cumulative_distribution_function(dist,ce,n1,theta))+
+                    stats::integrate(integrandn2,cf,ce)$value-power
+            }
+            n2pivots <- rep(0.0,order)
+            for(i in (1:order)){
+                n2pivots[i] <- stats::uniroot(f=min_prob_n2,interval=c(0,2000),pivot=c2pivots[i])$root
+            }
+            if(is(dist,"Survival")) design <- TwoStageDesign(n1,cf,ce,n2pivots,c2pivots, event_rate=dist@event_rate)
+            else design <-  TwoStageDesign(n1,cf,ce,n2pivots,c2pivots)
+            return(design)
+        }
+    }
 }
-
-
 
 
 

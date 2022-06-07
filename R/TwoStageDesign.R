@@ -413,20 +413,24 @@ setMethod("scaled_integration_pivots", signature("TwoStageDesign"),
 
 
 design2str <- function(design, optimized = FALSE) {
+    no_pivots <- 100
+    piv_n2 <- seq(design@c1f,design@c1e,length.out=no_pivots)
+    piv_n2 <- piv_n2[-no_pivots]
     if (is(design, 'TwoStageDesignSurvival')){
         if (is(design, 'OneStageDesign')) return(sprintf("OneStageDesignSurvival<%sn_events=%i;c=%.2f>", if (optimized) "optimized;" else "", n1(design), design@c1f))
-        else{n2range <- round(range(design@n2_pivots))
-        return(sprintf(
-            "%s<%sn_events1=%i;%.1f<=x1<=%.1f;n_events2=%s>",
-            class(design)[1], if (optimized) "optimized;" else "", n1(design),
-            design@c1f, design@c1e,
-            if (diff(n2range) == 0) sprintf("%i", n2range[1]) else paste(n2range, collapse = '-')
+        else{
+            n2range <- round(range(n2(design,piv_n2)))
+            return(sprintf(
+                "%s<%sn_events1=%i;%.1f<=x1<=%.1f;n_events2=%s>",
+                class(design)[1], if (optimized) "optimized;" else "", n1(design),
+                design@c1f, design@c1e,
+                if (diff(n2range) == 0) sprintf("%i", n2range[1]) else paste(n2range, collapse = '-')
         ))}
     }
     if (is(design, 'OneStageDesign')) return(sprintf("OneStageDesign<%sn=%i;c=%.2f>", if (optimized) "optimized;" else "", n1(design), design@c1f))
-    n2range <- round(range(design@n2_pivots))
+    n2range <- round(range(n2(design,piv_n2)))
     sprintf(
-        "%s<%sn1=%i;%.1f<=x1<=%.1f:n2=%s>",
+        "%s<%sn1=%i;%.1f<=x1<=%.1f;n2=%s>",
         class(design)[1], if (optimized) "optimized;" else "", n1(design),
         design@c1f, design@c1e,
         if (diff(n2range) == 0) sprintf("%i", n2range[1]) else paste(n2range, collapse = '-')
