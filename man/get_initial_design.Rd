@@ -8,10 +8,16 @@ get_initial_design(
   theta,
   alpha,
   beta,
-  type = c("two-stage", "group-sequential", "one-stage"),
+  type_design = c("two-stage", "group-sequential", "one-stage"),
+  type_c2 = c("linear_decreasing", "constant"),
+  type_n2 = c("optimal", "constant", "linear_decreasing", "linear_increasing"),
   dist = Normal(),
-  order = 7L,
   cf = 0,
+  ce,
+  info_ratio = 0.5,
+  slope,
+  weight = 1/sqrt(2),
+  order = 7L,
   ...
 )
 }
@@ -21,39 +27,41 @@ rate difference under the alternative in the binomial case}
 
 \item{alpha}{maximal type I error rate}
 
-\item{beta}{maximale type II error rate}
+\item{beta}{maximal type II error rate}
 
-\item{type}{is a two-stage, group-sequential, or one-stage design requried?}
+\item{type_design}{is a two-stage, group-sequential, or one-stage design required?}
+
+\item{type_c2}{either linear-decreasing c2-function according to inverse normal combination test or constant c2}
+
+\item{type_n2}{design of n2-function}
 
 \item{dist}{distribution of the test statistic}
 
-\item{order}{desired integration order}
-
 \item{cf}{first-stage futility boundary}
+
+\item{ce}{first-stage efficacy boundary. Note that specifying this boundary implies that the type I error constraint might not be fulfilled anymore}
+
+\item{info_ratio}{the ratio between first and second stage sample size}
+
+\item{slope}{slope of n2 function}
+
+\item{weight}{weight of first stage test statistics in inverse normal combination test}
+
+\item{order}{desired integration order}
 
 \item{...}{further optional arguments}
 }
 \description{
 The optimization method \code{\link{minimize}} requires an initial
 design for optimization.
-For one-stage designs, the function \code{get_initial_design} provides an initial guess based on a simple
-fixed design that fulfills constraints on type I error rate and power.
-For group-sequential or two-stage designs, the function uses the inverse normal combination test and Pocock-boundaries
-to determine the critical values and the stage-wise sample sizes.
-Note that a situation-specific initial design may be much more efficient.
+This function provides a variety of possibilities to hand-craft designs that fulfill type I error and type II
+error constraints which may be used as initial designs.
 }
 \details{
 The distribution of the test statistic is specified by \code{dist}.
 The default assumes a two-armed z-test.
-}
-\examples{
-init <- get_initial_design(
-   theta = 0.3,
-   alpha = 0.025,
-   beta  = 0.2,
-   type  = "two-stage",
-   dist  = Normal(two_armed = FALSE),
-   order = 7L
-)
-
+The first stage efficacy boundary and the c2 boundary are chosen as Pocock-boundaries, so either ce=c2
+if c2 is constant or ce=c, where the null hypothesis is rejected if w1 Z1+w2 Z2>c.
+By specifying ce, it's clear that the boundaries are not Pocock-boundaries anymore, so the type I error
+constraint may not be fulfilled anymore.
 }
