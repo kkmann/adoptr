@@ -18,7 +18,7 @@ toer  <- Power(datadist, null)
 alpha <- 0.05
 beta  <- 0.2
 
-initial_design <- get_initial_design(.4, alpha, beta, "two-stage", datadist, order)
+initial_design <- get_initial_design(.4, alpha, beta, "two-stage", dist=datadist, order=order)
 
 
 
@@ -80,7 +80,7 @@ test_that("Optimal one-stage design can be computed", {
             pow  >= 1 - beta,
             toer <= alpha
         ),
-        initial_design = get_initial_design(.4, alpha, beta, "one-stage", datadist, order)
+        initial_design = get_initial_design(.4, alpha, beta, "one-stage", dist=datadist, order=order)
     )
 
     expect_equal(
@@ -91,7 +91,7 @@ test_that("Optimal one-stage design can be computed", {
     expect_equal(
         opt_os$design@n1,
         ((qnorm(1 - beta) + qnorm(1 - alpha)) / 0.4)^2,
-        tolerance = sqrt(.Machine$double.eps), scale = 1)
+        tolerance = 1e-4, scale = 1)
 
 }) # end 'optimal one-stage design can be computed'
 
@@ -99,7 +99,7 @@ test_that("Optimal one-stage design can be computed", {
 
 test_that("Optimal group-sequential design is computable", {
 
-    initial_design_gs <- get_initial_design(.4, alpha, beta, "group-sequential", datadist, order)
+    initial_design_gs <- get_initial_design(.4, alpha, beta, "group-sequential", dist=datadist, order=order)
 
     opt_gs <<- minimize(
         ess,
@@ -331,23 +331,23 @@ test_that("conditional constraints work", {
 
 test_that("heuristical initial design works", {
     expect_error(
-        get_initial_design(.4, .025, .2, "adaptive", Normal(), 6L)
+        get_initial_design(.4, .025, .2, "adaptive", dist=Normal(), order=6L)
     )
 
     expect_error(
-        get_initial_design(.4, 1.025, .2, "two-stage", Normal(), 6L)
+        get_initial_design(.4, 1.025, .2, "two-stage", dist=Normal(), order=6L)
     )
 
     expect_true(
-        is(get_initial_design(.4, .025, .2, "two-stage", Normal(F), 6L), "TwoStageDesign")
+        is(get_initial_design(.4, .025, .2, "two-stage", dist=Normal(F), order=6L), "TwoStageDesign")
     )
 
     expect_true(
-        is(get_initial_design(.4, .025, .2, "group-sequential", Normal(), 6L), "GroupSequentialDesign")
+        is(get_initial_design(.4, .025, .2, "group-sequential", dist=Normal(), order=6L), "GroupSequentialDesign")
     )
 
     expect_true(
-        is(get_initial_design(.4, .025, .2, "one-stage", Normal(), 6L), "OneStageDesign")
+        is(get_initial_design(.4, .025, .2, "one-stage", dist=Normal(), order=6L), "OneStageDesign")
     )
 
 }) # end 'heuristical initial design works'

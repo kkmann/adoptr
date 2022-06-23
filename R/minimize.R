@@ -271,10 +271,10 @@ get_initial_design <- function(theta,
             }
         }
         #choose n1 and n2 according to information ratio
-        n <- stats ::uniroot(find_n,interval = c(0,1000),extendInt = "yes")$root
+        n <- stats ::uniroot(find_n,interval = c(0,1000),extendInt = "upX")$root
         n1 <- info_ratio*n
         n2 <- (1-info_ratio)*n
-        if(length(c2)!=1) n2 <- rep(n2,order)
+        #if(length(c2)!=1) n2 <- rep(n2,order)
 
         if(is(dist,"Survival")) design <- GroupSequentialDesign(n1,cf,ce,n2,c2,order=order, event_rate=dist@event_rate)
         else design <-  GroupSequentialDesign(n1,cf,ce,n2,c2,order=order)
