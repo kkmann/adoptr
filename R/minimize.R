@@ -244,7 +244,9 @@ get_initial_design <- function(theta,
                 }
                 c2 <- stats::uniroot(find_c, interval=c(cf,5),extendInt="yes")$root
             }
-            else c2 <- stats::uniroot(find_c2, interval=c(cf,5),extendInt="yes")$root
+            else{
+                c2 <- stats::uniroot(find_c2, interval=c(cf,5),extendInt="yes")$root
+            }
         }
     }
 
@@ -359,13 +361,25 @@ get_initial_design <- function(theta,
         if(type_n2=="optimal" || type_n2=="linear_increasing" || type_n2=="linear_decreasing"){
             if(length(c2)==1) c2 <- rep(c2,order)
 
-            #first, find the n1 sample size. We use the same sample size as we have under constant n2-function
-            find_n <- function(n){
-                integrand_n <- function(z){
-                    (1-cumulative_distribution_function(dist,(ce-w1*z)/sqrt(1-w1**2),(1-info_ratio)*n,theta))*
-                        probability_density_function(dist,z,(info_ratio)*n,theta)
+            if(type_c2=="constant"){
+                find_n <- function(n){
+                    integrand_n <- function(z){
+                        (1-cumulative_distribution_function(dist,c2,(1-info_ratio)*n,theta))*
+                            probability_density_function(dist,z,(info_ratio)*n,theta)
+                    }
+                    (1-cumulative_distribution_function(dist,ce,info_ratio*n,theta))+stats::integrate(integrand_n,cf,ce)$value-power
                 }
-                (1-cumulative_distribution_function(dist,ce,info_ratio*n,theta))+stats::integrate(integrand_n,cf,ce)$value-power
+            }
+
+            if(type_c2=="linear_decreasing"){
+                #first, find the n1 sample size. We use the same sample size as we have under constant n2-function
+                find_n <- function(n){
+                    integrand_n <- function(z){
+                        (1-cumulative_distribution_function(dist,(c-w1*z)/sqrt(1-w1**2),(1-info_ratio)*n,theta))*
+                            probability_density_function(dist,z,(info_ratio)*n,theta)
+                    }
+                    (1-cumulative_distribution_function(dist,ce,info_ratio*n,theta))+stats::integrate(integrand_n,cf,ce)$value-power
+                }
             }
             n <- stats ::uniroot(find_n,interval = c(0,1000),extendInt = "upX")$root
             n1 <- info_ratio*n
@@ -381,8 +395,21 @@ get_initial_design <- function(theta,
             }
             n2 <- rep(0.0,order)
             for(i in (1:order)){
-                n2[i] <- stats::uniroot(f=find_n2,interval=c(0,1000),extendInt="upX",
-                                        pivot=c2[i])$root
+                n_try <- suppressWarnings(try(stats::uniroot(f=find_n2,interval=c(0,1000),extendInt="upX",
+                                                             pivot=c2[i])$root,silent=TRUE))
+                if("try-error" %in% class(n_try) & type_n2 == "optimal"){
+                    stop("Optimal n2 function cannot be calculated. Please reduce efficacy boundary or the information ratio.")
+                }
+                if("try-error" %in% class(n_try) & (type_n2 == "linear_decreasing" || type_n2 == "linear_increasing") & missing(slope)){
+                    stop("Please specify a slope or reduce efficacy boundary or the information ratio.")
+                }
+                if("try-error" %in% class(n_try) & (type_n2 == "linear_decreasing" || type_n2 == "linear_increasing") & !missing(slope)){
+                    n2[i] <- 0.1
+                }
+                else{
+                    n2[i] <- stats::uniroot(f=find_n2,interval=c(0,1000),extendInt="upX",
+                                            pivot=c2[i])$root
+                }
             }
 
             if(type_n2=="optimal"){
@@ -429,7 +456,7 @@ get_initial_design <- function(theta,
                     start_value <- -slope*ce+.1
                     t <- suppressWarnings(try(stats::uniroot(find_y_intercept,interval=c(start_value,1000),extendInt = "upX",slope=slope)$root,silent=TRUE))
                 }
-                if(slope>=0){
+                if(slope>0){
                     if(is(dist,"Survival")) design <- TwoStageDesign(n1,cf,ce,n2,c2, event_rate=dist@event_rate)
                     else design <-  TwoStageDesign(n1,cf,ce,n2,c2)
                     return(design)
@@ -497,7 +524,7 @@ get_initial_design <- function(theta,
                     t <- suppressWarnings(try(stats::uniroot(find_y_intercept,interval=c(start_value,1000),extendInt = "upX",slope=slope)$root,silent=TRUE))
                 }
 
-                if(slope<=0){
+                if(slope<0){
                     if(is(dist,"Survival")) design <- TwoStageDesign(n1,cf,ce,n2,c2, event_rate=dist@event_rate)
                     else design <-  TwoStageDesign(n1,cf,ce,n2,c2)
                     return(design)
@@ -523,8 +550,6 @@ get_initial_design <- function(theta,
         }
     }
 }
-
-
 
 
 
