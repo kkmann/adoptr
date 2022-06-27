@@ -303,7 +303,7 @@ get_initial_design <- function(theta,
         if(type_c2=="linear_decreasing"){
             find_n <- function(n){
                 integrand_n <- function(z){
-                    (1-cumulative_distribution_function(dist,(ce-w1*z)/sqrt(1-w1**2),(1-info_ratio)*n,theta))*
+                    (1-cumulative_distribution_function(dist,(c-w1*z)/sqrt(1-w1**2),(1-info_ratio)*n,theta))*
                         probability_density_function(dist,z,(info_ratio)*n,theta)
                 }
                 (1-cumulative_distribution_function(dist,ce,info_ratio*n,theta))+stats::integrate(integrand_n,cf,ce)$value-power
@@ -336,7 +336,7 @@ get_initial_design <- function(theta,
             if(type_c2=="linear_decreasing"){
                 find_n <- function(n){
                     integrand_n <- function(z){
-                        (1-cumulative_distribution_function(dist,(ce-w1*z)/sqrt(1-w1**2),(1-info_ratio)*n,theta))*
+                        (1-cumulative_distribution_function(dist,(c-w1*z)/sqrt(1-w1**2),(1-info_ratio)*n,theta))*
                             probability_density_function(dist,z,(info_ratio)*n,theta)
                     }
                     (1-cumulative_distribution_function(dist,ce,info_ratio*n,theta))+stats::integrate(integrand_n,cf,ce)$value-power
