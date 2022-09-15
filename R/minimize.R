@@ -14,6 +14,7 @@
 #' @param initial_design initial guess (x0 for nloptr)
 #' @param lower_boundary_design design specifying the lower boundary.
 #' @param upper_boundary_design design specifying the upper boundary
+#' @param check_constraints boolean whether constraints should be checked to be fulfilled
 #' @param opts options list passed to nloptr
 #' @param ... further optional arguments passed to \code{\link{nloptr}}
 #'
@@ -55,6 +56,7 @@ minimize <- function(
     initial_design,
     lower_boundary_design = get_lower_boundary_design(initial_design),
     upper_boundary_design = get_upper_boundary_design(initial_design),
+    check_constraints = FALSE,
     opts         =  list(
         algorithm   = "NLOPT_LN_COBYLA",
         xtol_rel    = 1e-5,
@@ -93,6 +95,36 @@ minimize <- function(
     )
     if (res$status == 5 | res$status == 6)
         warning(res$message)
+
+    if(check_constraints){
+        new_des <- update(initial_design, res$solution)
+        for(constr in subject_to@unconditional_constraints){
+            if(constr@rhs==0){
+                if(evaluate(constr@score,new_des)-constr@rhs>=0.001){
+                    warning(sprintf("The following constraint could not be fulfilled: %s (absolute tolerance: %s)", capture.output(show(constr)), format(0.001)))
+                }
+            }
+            else{
+                if(evaluate(constr@score,new_des)-constr@rhs>=min(0.01*constr@rhs,0.49)){
+                    warning(sprintf("The following constraint could not be fulfilled: %s (relative tolerance: %s)", capture.output(show(constr)), format(0.01)))
+                }
+            }
+
+        }
+        for(constr in subject_to@conditional_constraints){
+            if(constr@rhs==0){
+                if(evaluate(constr@score,new_des)-constr@rhs>=0.001){
+                    warning(sprintf("The following constraint could not be fulfilled: %s (absolute tolerance: %s)", capture.output(show(constr)), format(0.001)))
+                }
+            }
+            else{
+                if(evaluate(constr@score,new_des)-constr@rhs>=min(0.01*constr@rhs,0.49)){
+                    warning(sprintf("The following constraint could not be fulfilled: %s (relative tolerance: %s)", capture.output(show(constr)), format(0.01)))
+                }
+            }
+
+        }
+    }
 
     res <- list(
         design        = update(initial_design, res$solution),

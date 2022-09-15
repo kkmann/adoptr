@@ -16,7 +16,7 @@ get_initial_design(
   ce,
   info_ratio = 0.5,
   slope,
-  weight = 1/sqrt(2),
+  weight = sqrt(info_ratio),
   order = 7L,
   ...
 )
@@ -63,5 +63,5 @@ The default assumes a two-armed z-test.
 The first stage efficacy boundary and the c2 boundary are chosen as Pocock-boundaries, so either ce=c2
 if c2 is constant or ce=c, where the null hypothesis is rejected if w1 Z1+w2 Z2>c.
 By specifying ce, it's clear that the boundaries are not Pocock-boundaries anymore, so the type I error
-constraint may not be fulfilled anymore.
+constraint may not be fulfilled.
 }
