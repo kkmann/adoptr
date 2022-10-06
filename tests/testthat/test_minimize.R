@@ -350,27 +350,34 @@ test_that("initial design works", {
         is(get_initial_design(.4, .025, .2, "one-stage", dist=Normal(), order=6L), "OneStageDesign")
     )
 
+
     init <- get_initial_design(.4, .025, .2, "two-stage", dist=Normal(F), cf=0.5,
                           type_c2="constant", ce=2.5)
+
+    #check values futility boundary
     expect_true(
         init@c1f == 0.5
     )
 
-
+    # check that c2 is constant
     expect_true(
         all(init@c2_pivots-init@c2_pivots[1]==rep(0,7))
     )
 
+    #check efficacy boundary
     expect_true(
         init@c1e==2.5
     )
 
     init2 <- get_initial_design(.4, .025, .2, "two-stage", dist=Normal(T),
                                 type_n2="linear_increasing",slope=20)
+
+    #check that n2 is increasing
     expect_false(
         is.unsorted(init2@n2_pivots)
     )
 
+    #check the slope
     expect_true(
         n2(init2,1.5)-n2(init2,0.5) == 20
     )
@@ -378,6 +385,7 @@ test_that("initial design works", {
     init3 <- get_initial_design(.4, .025, .2, "two-stage", dist=Normal(T),
                                 type_c2="constant", info_ratio = 0.2)
 
+    #check information ratio
     expect_equal(4*rep(init3@n1,7),init3@n2_pivots)
 
 }) # end 'initial design works'
@@ -390,10 +398,17 @@ test_that("constraint checks are working", {
     toer <- Power(dist,H_0)
     pow <- Power(dist,H_1)
     ess <- ExpectedSampleSize(dist,H_1)
-    init <- get_initial_design(0.4,0.025,0.2,type_design = "two-stage")
+    cp <- ConditionalPower(dist,H_1)
+
+
+    init <- TwoStageDesign(25,0.2,2.5,c(80,77,70,61,50,36,25),c(2.2,2.1,1.8,1.4,0.9,0.3,-0.1),order=7L)
 
     expect_warning(
-        opt_design <- minimize(ess,subject_to(toer<=0.025,pow>=0.8, MaximumSampleSize()<=80),
-                            initial_design = init, check_constraints = TRUE)
+        opt_design <- minimize(ess,subject_to(toer<=0.025,pow>=0.8,cp>=0.9, MaximumSampleSize()<=30),
+                               initial_design = init,
+                               opts=list(algorithm = "NLOPT_LN_COBYLA", xtol_rel = 1e-05, maxeval = 1))
+
     )
+
+
 }) # end 'constraint checks are working'
