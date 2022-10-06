@@ -329,7 +329,7 @@ test_that("conditional constraints work", {
 
 
 
-test_that("heuristical initial design works", {
+test_that("initial design works", {
     expect_error(
         get_initial_design(.4, .025, .2, "adaptive", dist=Normal(), order=6L)
     )
@@ -350,4 +350,50 @@ test_that("heuristical initial design works", {
         is(get_initial_design(.4, .025, .2, "one-stage", dist=Normal(), order=6L), "OneStageDesign")
     )
 
-}) # end 'heuristical initial design works'
+    init <- get_initial_design(.4, .025, .2, "two-stage", dist=Normal(F), cf=0.5,
+                          type_c2="constant", ce=2.5)
+    expect_true(
+        init@c1f == 0.5
+    )
+
+
+    expect_true(
+        all(init@c2_pivots-init@c2_pivots[1]==rep(0,7))
+    )
+
+    expect_true(
+        init@c1e==2.5
+    )
+
+    init2 <- get_initial_design(.4, .025, .2, "two-stage", dist=Normal(T),
+                                type_n2="linear_increasing",slope=20)
+    expect_false(
+        is.unsorted(init2@n2_pivots)
+    )
+
+    expect_true(
+        n2(init2,1.5)-n2(init2,0.5) == 20
+    )
+
+    init3 <- get_initial_design(.4, .025, .2, "two-stage", dist=Normal(T),
+                                type_c2="constant", info_ratio = 0.2)
+
+    expect_equal(4*rep(init3@n1,6),init3@n2_pivots)
+
+}) # end 'initial design works'
+
+
+test_that("constraint checks are working", {
+    dist <- Normal()
+    H_0 <- PointMassPrior(0,1)
+    H_1 <- PointMassPrior(.4,1)
+    toer <- Power(dist,H_0)
+    pow <- Power(dist,H_1)
+    ess <- ExpectedSampleSize(dist,H_1)
+    init <- get_initial_design(0.4,0.025,0.2,type_design = "two-stage")
+
+    expect_warning(
+        opt_design <- minimize(ess,subject_to(toer<=0.025,pow>=0.8, MaximumSampleSize()<=80),
+                            initial_design = init, check_constraints = TRUE)
+    )
+}) # end 'constraint checks are working'
