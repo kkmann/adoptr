@@ -378,7 +378,7 @@ test_that("initial design works", {
     init3 <- get_initial_design(.4, .025, .2, "two-stage", dist=Normal(T),
                                 type_c2="constant", info_ratio = 0.2)
 
-    expect_equal(4*rep(init3@n1,6),init3@n2_pivots)
+    expect_equal(4*rep(init3@n1,7),init3@n2_pivots)
 
 }) # end 'initial design works'
 
