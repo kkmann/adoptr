@@ -105,20 +105,21 @@ minimize <- function(
                 }
             }
             else{
-                if(evaluate(constr@score,new_des)-constr@rhs>=min(0.01*constr@rhs,0.49)){
+                if(evaluate(constr@score,new_des)-constr@rhs>=min(0.01*abs(constr@rhs),0.49)){
                     warning(sprintf("The following constraint could not be fulfilled: %s (relative tolerance: %s)", capture.output(show(constr)), format(0.01)))
                 }
             }
 
         }
         for(constr in subject_to@conditional_constraints){
+            grid <- seq(new_des@c1f,new_des@c1e,length.out=10)
             if(constr@rhs==0){
-                if(evaluate(constr@score,new_des)-constr@rhs>=0.001){
+                if(any(evaluate(constr@score,new_des,grid)-constr@rhs>=0.001)){
                     warning(sprintf("The following constraint could not be fulfilled: %s (absolute tolerance: %s)", capture.output(show(constr)), format(0.001)))
                 }
             }
             else{
-                if(evaluate(constr@score,new_des)-constr@rhs>=min(0.01*constr@rhs,0.49)){
+                if(any(evaluate(constr@score,new_des,grid)-constr@rhs>=min(0.01*abs(constr@rhs),0.49))){
                     warning(sprintf("The following constraint could not be fulfilled: %s (relative tolerance: %s)", capture.output(show(constr)), format(0.01)))
                 }
             }
