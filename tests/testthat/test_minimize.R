@@ -392,22 +392,18 @@ test_that("initial design works", {
 
 
 test_that("constraint checks are working", {
-    dist <- Normal()
-    H_0 <- PointMassPrior(0,1)
-    H_1 <- PointMassPrior(.4,1)
-    toer <- Power(dist,H_0)
-    pow <- Power(dist,H_1)
-    ess <- ExpectedSampleSize(dist,H_1)
-    cp <- ConditionalPower(dist,H_1)
-    cp_cnstr <- cp>=0.7
-
-
     init <- TwoStageDesign(25,0.2,2.5,c(80,77,70,61,50,36,25),c(2.2,2.1,1.8,1.4,0.9,0.3,-0.1),order=7L)
 
     expect_warning(
-        opt_design <- minimize(ess,subject_to(toer<=0.025,pow>=0.8,cp_cnstr,MaximumSampleSize()<=30),
+        opt_design <- minimize(ess,subject_to(toer<=0.01,pow>=0.95,cp>=0.95,MaximumSampleSize()<=70),
                                initial_design = init, check_constraints=TRUE,
                                opts=list(algorithm = "NLOPT_LN_COBYLA", xtol_rel = 1e-05, maxeval = 1))
 
+    )
+
+    expect_warning(
+        opt_design <- minimize(ess,subject_to(toer<=0.025,pow>=0.8,MaximumSampleSize()<=pow,cp>=ConditionalSampleSize()),
+                               initial_design = init, check_constraints = TRUE,
+                               opts=list(algorithm = "NLOPT_LN_COBYLA", xtol_rel = 1e-05, maxeval = 1))
     )
 }) # end 'constraint checks are working'
