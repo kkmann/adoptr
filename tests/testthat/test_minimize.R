@@ -388,6 +388,9 @@ test_that("initial design works", {
     #check information ratio
     expect_equal(4*rep(init3@n1,7),init3@n2_pivots)
 
+    #check that student distribution uses normal distribution
+
+
 }) # end 'initial design works'
 
 
