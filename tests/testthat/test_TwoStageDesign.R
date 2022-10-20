@@ -65,8 +65,15 @@ test_that("TwoStageDesignSurvival can be constructed",{
         rep(100, length(x1)),
         tolerance = sqrt(.Machine$double.eps), scale = 1)
 
-    expect_error(
-        summary(design, rounded = TRUE, "Alternative" = PointMassPrior(.4, 1)))
+    #summary uses one extra parameter for event rate
+
+    des <- TwoStageDesign(n1, c1f, c1e, n2_piv, c2_piv, number_knots, 0.8)
+
+    expect_equal(
+        length(summary(des)),
+        9
+    )
+
 })# end 'TwoStageDesignSurvival can be constructed"
 
 test_that("simulate works (as last time)", {
@@ -99,13 +106,6 @@ test_that("errors are returned correctly", {
     # only scores can be summarized
     expect_error(
         summary(design, rounded = TRUE, "Alternative" = PointMassPrior(.4, 1)))
-
-    des2 <- TwoStageDesign(n1, c1f, c1e, n2_piv, c2_piv, number_knots, 0.8)
-
-    # only scores can be summarized
-
-    expect_error(
-        summary(des2, rounded = TRUE, "Alternative" = PointMassPrior(.4, 1)))
 
 }) # end 'errors are returned correctly'
 

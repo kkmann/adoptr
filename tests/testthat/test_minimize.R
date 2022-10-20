@@ -408,7 +408,6 @@ test_that("initial design works", {
     )
 
     #check warnings are raised when unnecessarily specifying n2 or c2 type
-
     expect_warning(
         get_initial_design(0.4,0.025,0.2,"one-stage",type_c2 = "constant")
     )
@@ -432,6 +431,21 @@ test_that("initial design works", {
     expect_equal(
         get_initial_design(0.3,0.025,0.2,type_c2="linear_decreasing",ce=3)@c1e,
         3
+    )
+
+    init5 <- get_initial_design(.4, .025, .2, "two-stage", dist=Normal(F), cf=0.5, type_n2 = "constant",
+                       type_c2="constant", ce=2.5)
+
+    #check that c2 is constant
+    expect_true(
+            all(init@c2_pivots-init@c2_pivots[1]==rep(0,7))
+        )
+
+    init6 <- get_initial_design(1.4, .025, .2, "two-stage", dist=Survival(0.7), cf=0.5, type_n2 = "constant",
+                                type_c2="linear_decreasing", )
+
+    expect_false(
+        is.unsorted(rev(init6@n2_pivots))
     )
 
 }) # end 'initial design works'
