@@ -91,7 +91,7 @@ test_that("Optimal one-stage design with point prior is computable", {
         d2@c1e,
         tolerance = sqrt(.Machine$double.eps), scale = 1)
 
-})
+}) # 'Optimal one-stage design with point prior is computable'
 
 test_that("OneStageDesignSurvival works correctly",{
     dist <- Survival(0.7)
@@ -122,7 +122,7 @@ test_that("OneStageDesignSurvival works correctly",{
 
     expect_true(
         c2(design, 3.0) == -Inf)
-})
+}) # end 'OneStageDesignSurvival works correctly'
 
 test_that("error definition works", {
 
@@ -176,7 +176,7 @@ test_that("Survival Design is converted to TwoStageSurvival design",{
         evaluate(pow, design1),
         evaluate(pow, design2),
         tolerance = 1e-6, scale = 1)
-})
+}) # end 'Survival Design is converted to TwoStageSurvival design'
 
 
 test_that("show method returns design name", {

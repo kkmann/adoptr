@@ -89,7 +89,7 @@ test_that("GS survival design works",{
         evaluate(toer, design),
         0.03468,
         tolerance = 1e-3, scale = 1)
-})
+})# end 'GS survival design works'
 
 
 test_that("GSDesign can be converted to TwoStageDesign", {
@@ -111,7 +111,22 @@ test_that("GSDesign can be converted to TwoStageDesign", {
 
 }) # end 'GSDesign can be converted to TwoStageDesign'
 
+test_that("GSDesign Survival can be converted to TSDesign Survival",{
+    design1 <- GroupSequentialDesign(50, 0, 2, 50, rep(2, 5),event_rate = 0.7)
+    design2 <- TwoStageDesign(design1)
+    pow     <- Power(Normal(), PointMassPrior(1.4, 1))
+    ess     <- ExpectedSampleSize(Normal(), PointMassPrior(1.4, 1))
 
+    expect_equal(
+        evaluate(pow, design1),
+        evaluate(pow, design2),
+        tolerance = 1e-3, scale = 1)
+
+    expect_equal(
+        evaluate(ess, design1),
+        evaluate(ess, design2),
+        tolerance = 1e-3, scale = 1)
+}) # end 'GSDesign can be converted to TwoStageDesign'
 
 test_that("Rounding works", {
 
