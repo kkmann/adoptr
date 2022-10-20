@@ -461,7 +461,7 @@ get_initial_design <- function(theta,
                     #compute the slope of n2 function
                     slope <- (n2_min-n2_max)/(ce-cf)
                     if(slope==0){
-                        slope <- -n2_max/(ce-cf)
+                        slope <- -n2_max/(ce-cf) # nocov
                     }
                 }
 
@@ -489,10 +489,10 @@ get_initial_design <- function(theta,
                     start_value <- -slope*ce+.1
                     t <- suppressWarnings(try(stats::uniroot(find_y_intercept,interval=c(start_value,1000),extendInt = "upX",slope=slope)$root,silent=TRUE))
                 }
-                if(slope>0){
+                if(slope>0){# nocov start
                     if(is(dist,"Survival")) design <- TwoStageDesign(n1,cf,ce,n2,c2, event_rate=dist@event_rate)
                     else design <-  TwoStageDesign(n1,cf,ce,n2,c2)
-                    return(design)
+                    return(design)# nocov end
                 }
 
                 y_intercept <- stats::uniroot(find_y_intercept,interval=c(start_value,1000),extendInt = "upX",slope=slope)$root
@@ -557,10 +557,10 @@ get_initial_design <- function(theta,
                     t <- suppressWarnings(try(stats::uniroot(find_y_intercept,interval=c(start_value,1000),extendInt = "upX",slope=slope)$root,silent=TRUE))
                 }
 
-                if(slope<0){
+                if(slope<0){# nocov start
                     if(is(dist,"Survival")) design <- TwoStageDesign(n1,cf,ce,n2,c2, event_rate=dist@event_rate)
                     else design <-  TwoStageDesign(n1,cf,ce,n2,c2)
-                    return(design)
+                    return(design)# nocov end
                 }
 
                 y_intercept <- stats::uniroot(find_y_intercept,interval=c(start_value,1000),extendInt = "upX",slope=slope)$root

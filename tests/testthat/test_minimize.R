@@ -343,7 +343,17 @@ test_that("initial design works", {
     )
 
     expect_true(
+        is(get_initial_design(1.4, .025, .2, "two-stage", type_n2="linear_decreasing",dist=Survival(0.7), order=6L,slope=-10),
+           "TwoStageDesignSurvival")
+    )
+
+    expect_true(
         is(get_initial_design(1.4, .025, .2, "two-stage", dist=Survival(0.7), order=6L),
+           "TwoStageDesignSurvival")
+    )
+
+    expect_true(
+        is(get_initial_design(1.4, .025, .2, "two-stage", type_n2 = "linear_increasing",dist=Survival(0.7), order=6L,slope=10),
            "TwoStageDesignSurvival")
     )
 
@@ -391,6 +401,15 @@ test_that("initial design works", {
     expect_false(
         is.unsorted(init2@n2_pivots)
     )
+
+    init2new <- get_initial_design(.4, .025, .2, "two-stage", dist=Normal(T),
+                                type_n2="linear_increasing", info_ratio = 0.3)
+
+    #check that n2 is increasing
+    expect_false(
+        is.unsorted(init2new@n2_pivots)
+    )
+
 
     #check the slope
     expect_true(
@@ -466,6 +485,22 @@ test_that("initial design works", {
         get_initial_design(0.4, .025, .2, "two-stage", cf=0.5,
                            type_n2="linear_decreasing", slope=10)
     )
+
+    expect_error(
+        get_initial_design(0.4, .025, .2, "two-stage", cf=0.5,
+                           type_n2="linear_increasing", slope=-10)
+    )
+
+
+    #check that slope is automatically adjusted
+    expect_warning(
+        get_initial_design(0.4, .025, .2, "two-stage", cf=0.5,
+                                 type_n2="linear_decreasing",slope=-100))
+
+    expect_warning(
+        get_initial_design(0.4, .025, .2, "two-stage", cf=0.5,
+                           type_n2="linear_increasing",slope=100))
+
 
 
 }) # end 'initial design works'
