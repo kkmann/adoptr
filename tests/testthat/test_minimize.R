@@ -347,6 +347,16 @@ test_that("initial design works", {
     )
 
     expect_true(
+        is(get_initial_design(.4, .025, .2, "group-sequential", dist=Normal(), type_c2 = "constant",
+                              order=6L), "GroupSequentialDesign")
+    )
+
+    expect_true(
+        is(get_initial_design(1.4, .025, .2, "group-sequential", dist=Survival(0.7), order=6L),
+           "GroupSequentialDesignSurvival")
+    )
+
+    expect_true(
         is(get_initial_design(.4, .025, .2, "one-stage", dist=Normal(), order=6L), "OneStageDesign")
     )
 
@@ -383,13 +393,46 @@ test_that("initial design works", {
     )
 
     init3 <- get_initial_design(.4, .025, .2, "two-stage", dist=Normal(T),
-                                type_c2="constant", info_ratio = 0.2)
+                                type_c2="constant", info_ratio = 0.2,ce=2)
 
     #check information ratio
     expect_equal(4*rep(init3@n1,7),init3@n2_pivots)
 
-    #check that student distribution uses normal distribution
 
+    #check that student distribution uses normal distribution
+    init4 <- get_initial_design(0.4,0.025,0.1,"one-stage",dist=Student())
+    expect_equal(
+        init4@c1e,
+        1.96,
+        tolerance=1e-3
+    )
+
+    #check warnings are raised when unnecessarily specifying n2 or c2 type
+
+    expect_warning(
+        get_initial_design(0.4,0.025,0.2,"one-stage",type_c2 = "constant")
+    )
+
+    expect_warning(
+        get_initial_design(0.4,0.025,0.2,"one-stage",type_n2 = "constant")
+    )
+
+    #check warning when ce is chosen too small
+
+    expect_warning(
+        get_initial_design(0.4,0.025,0.2,"two-stage",type_c2="constant",ce=1)
+    )
+
+    expect_warning(
+        get_initial_design(0.4,0.025,0.2,"two-stage",type_c2="linear_decreasing",ce=1)
+    )
+
+    #check that ce can be chosen
+
+    expect_equal(
+        get_initial_design(0.3,0.025,0.2,type_c2="linear_decreasing",ce=3)@c1e,
+        3
+    )
 
 }) # end 'initial design works'
 

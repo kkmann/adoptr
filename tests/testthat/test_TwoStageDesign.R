@@ -100,6 +100,13 @@ test_that("errors are returned correctly", {
     expect_error(
         summary(design, rounded = TRUE, "Alternative" = PointMassPrior(.4, 1)))
 
+    des2 <- TwoStageDesign(n1, c1f, c1e, n2_piv, c2_piv, number_knots, 0.8)
+
+    # only scores can be summarized
+
+    expect_error(
+        summary(des2, rounded = TRUE, "Alternative" = PointMassPrior(.4, 1)))
+
 }) # end 'errors are returned correctly'
 
 
