@@ -524,7 +524,7 @@ get_initial_design <- function(theta,
                     #compute the slope of n2 function
                     slope <- (n2_max-n2_min)/(ce-cf)
                     if(slope==0){
-                        slope <- n2_max/(ce-cf)
+                        slope <- n2_max/(ce-cf) # nocov
                     }
                 }
                 if(slope<0){
