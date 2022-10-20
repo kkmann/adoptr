@@ -431,13 +431,13 @@ get_initial_design <- function(theta,
                 n_try <- suppressWarnings(try(stats::uniroot(f=find_n2,interval=c(0,1000),extendInt="upX",
                                                              pivot=c2[i])$root,silent=TRUE))
                 if("try-error" %in% class(n_try) & type_n2 == "optimal"){
-                    stop("Optimal n2 function cannot be calculated. Please reduce efficacy boundary or the information ratio.")
+                    stop("Optimal n2 function cannot be calculated. Please reduce efficacy boundary or the information ratio.") # nocov
                 }
                 if("try-error" %in% class(n_try) & (type_n2 == "linear_decreasing" || type_n2 == "linear_increasing") & missing(slope)){
-                    stop("Please specify a slope or reduce efficacy boundary or the information ratio.")
+                    stop("Please specify a slope or reduce efficacy boundary or the information ratio.") # nocov
                 }
                 if("try-error" %in% class(n_try) & (type_n2 == "linear_decreasing" || type_n2 == "linear_increasing") & !missing(slope)){
-                    n2[i] <- 0.1
+                    n2[i] <- 0.1 # nocov
                 }
                 else{
                     n2[i] <- stats::uniroot(f=find_n2,interval=c(0,1000),extendInt="upX",

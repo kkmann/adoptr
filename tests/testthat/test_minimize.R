@@ -343,6 +343,11 @@ test_that("initial design works", {
     )
 
     expect_true(
+        is(get_initial_design(1.4, .025, .2, "two-stage", dist=Survival(0.7), order=6L),
+           "TwoStageDesignSurvival")
+    )
+
+    expect_true(
         is(get_initial_design(.4, .025, .2, "group-sequential", dist=Normal(), order=6L), "GroupSequentialDesign")
     )
 
@@ -441,12 +446,27 @@ test_that("initial design works", {
             all(init@c2_pivots-init@c2_pivots[1]==rep(0,7))
         )
 
+    #check that c2 is linear decreasing
     init6 <- get_initial_design(1.4, .025, .2, "two-stage", dist=Survival(0.7), cf=0.5, type_n2 = "constant",
-                                type_c2="linear_decreasing", )
+                                type_c2="linear_decreasing")
 
     expect_false(
-        is.unsorted(rev(init6@n2_pivots))
+        is.unsorted(rev(init6@c2_pivots))
     )
+
+    #check linear decreasing n2 design
+    init7 <- get_initial_design(0.4, .025, .2, "two-stage", cf=0.5,
+                                type_n2="linear_decreasing")
+
+    expect_false(
+        is.unsorted(rev(init7@n2_pivots))
+    )
+
+    expect_error(
+        get_initial_design(0.4, .025, .2, "two-stage", cf=0.5,
+                           type_n2="linear_decreasing", slope=10)
+    )
+
 
 }) # end 'initial design works'
 
