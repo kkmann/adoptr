@@ -23,6 +23,8 @@
 #'
 #' @template DataDistributionTemplate
 #'
+#' @include DataDistribution.R
+#'
 #' @rdname BinomialDataDistribution-class
 #' @exportClass Binomial
 setClass("Binomial", representation(

@@ -1,3 +1,5 @@
+
+
 #' Scores
 #'
 #' In \code{adoptr} scores are used to assess the performance of a design.
@@ -47,6 +49,11 @@
 #' power <- Power(Normal(), prior)
 #' evaluate(power, design)
 #' evaluate(power, design, optimization = TRUE) # use non-adaptive quadrature
+#'
+#' @include util.R
+#' @include TwoStageDesign.R
+#' @include OneStageDesign.R
+#' @include Prior.R
 #'
 #' @name Scores
 NULL

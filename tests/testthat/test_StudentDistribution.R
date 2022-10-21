@@ -1,4 +1,4 @@
-context("Student data distribution")
+ context("Student data distribution")
 
 library(adoptr)
 library(testthat)
