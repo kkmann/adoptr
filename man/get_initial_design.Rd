@@ -65,3 +65,19 @@ if c2 is constant or ce=c, where the null hypothesis is rejected if w1 Z1+w2 Z2>
 By specifying ce, it's clear that the boundaries are not Pocock-boundaries anymore, so the type I error
 constraint may not be fulfilled.
 }
+\examples{
+init <- get_initial_design(
+   theta = 0.3,
+   alpha = 0.025,
+   beta  = 0.2,
+   type_design="two-stage",
+   type_c2="linear_decreasing",
+   type_n2="linear_increasing",
+   dist=Normal(),
+   cf=0.7,
+   info_ratio=0.5,
+   slope=23,
+   weight = 1/sqrt(3)
+)
+
+}

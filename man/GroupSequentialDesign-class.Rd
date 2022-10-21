@@ -5,6 +5,7 @@
 \alias{GroupSequentialDesign-class}
 \alias{GroupSequentialDesign}
 \alias{TwoStageDesign,GroupSequentialDesign-method}
+\alias{TwoStageDesign,GroupSequentialDesignSurvival-method}
 \title{Group-sequential two-stage designs}
 \usage{
 GroupSequentialDesign(
@@ -19,6 +20,8 @@ GroupSequentialDesign(
 )
 
 \S4method{TwoStageDesign}{GroupSequentialDesign}(n1, ...)
+
+\S4method{TwoStageDesign}{GroupSequentialDesignSurvival}(n1, ...)
 }
 \arguments{
 \item{n1}{stage one sample size or \code{GroupSequentialDesign} object to convert
@@ -53,7 +56,11 @@ Any group-sequential design can be converted to a fully flexible
 design <- GroupSequentialDesign(25, 0, 2, 25, c(1, 1.5, 2.5))
 summary(design)
 
+design_survival <- GroupSequentialDesign(25, 0, 2, 25, c(1, 1.5, 2.5),event_rate=0.7)
+
 TwoStageDesign(design)
+
+TwoStageDesign(design_survival)
 
 }
 \seealso{

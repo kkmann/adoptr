@@ -39,6 +39,8 @@ setClass("GroupSequentialDesignSurvival", contains = c("GroupSequentialDesign","
 #' design <- GroupSequentialDesign(25, 0, 2, 25, c(1, 1.5, 2.5))
 #' summary(design)
 #'
+#' design_survival <- GroupSequentialDesign(25, 0, 2, 25, c(1, 1.5, 2.5),event_rate=0.7)
+#'
 #' @rdname GroupSequentialDesign-class
 #' @export
 GroupSequentialDesign <- function(n1, c1f, c1e, n2_pivots, c2_pivots, order = NULL, event_rate, ...) {
@@ -98,6 +100,15 @@ setMethod("TwoStageDesign", signature("GroupSequentialDesign"),
                         tunable = tunable)
 })
 
+
+
+#' @param n1 stage one sample size or \code{GroupSequentialDesign} object to convert
+#'   (overloaded from \code{\link{TwoStageDesign}})
+#'
+#' @examples
+#' TwoStageDesign(design_survival)
+#'
+#' @rdname GroupSequentialDesign-class
 #' @export
 setMethod("TwoStageDesign", signature("GroupSequentialDesignSurvival"),
       function(n1, ...){

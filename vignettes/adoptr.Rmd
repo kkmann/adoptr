@@ -136,7 +136,7 @@ initial_design <- get_initial_design(
   theta = .4,
   alpha = .025,
   beta  = .2,
-  type  = "two-stage",
+  type_design  = "two-stage",
   dist  = datadist,
   order = 7L
 )

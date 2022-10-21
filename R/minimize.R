@@ -184,7 +184,7 @@ print.adoptrOptimizationResult <- function(x, ...) {
 #'    beta  = 0.2,
 #'    type_design="two-stage",
 #'    type_c2="linear_decreasing",
-#'    type_n2="linear_increasing,
+#'    type_n2="linear_increasing",
 #'    dist=Normal(),
 #'    cf=0.7,
 #'    info_ratio=0.5,

@@ -5,12 +5,15 @@
 \alias{OneStageDesign-class}
 \alias{OneStageDesign}
 \alias{TwoStageDesign,OneStageDesign-method}
+\alias{TwoStageDesign,OneStageDesignSurvival-method}
 \alias{plot,OneStageDesign-method}
 \title{One-stage designs}
 \usage{
 OneStageDesign(n, c, event_rate)
 
 \S4method{TwoStageDesign}{OneStageDesign}(n1, order = 5L, eps = 0.01, ...)
+
+\S4method{TwoStageDesign}{OneStageDesignSurvival}(n1, order = 5L, eps = 0.01, ...)
 
 \S4method{plot}{OneStageDesign}(x, y, ...)
 }
@@ -54,7 +57,9 @@ design <- OneStageDesign(30, 1.96)
 summary(design)
 design <- TwoStageDesign(design)
 summary(design)
+design_survival <- OneStageDesign(30,1.96,0.7)
 
+TwoStageDesign(design_survival)
 }
 \seealso{
 \code{\link{TwoStageDesign}}, \code{\link{GroupSequentialDesign}}
