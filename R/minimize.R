@@ -101,12 +101,12 @@ minimize <- function(
         for(constr in subject_to@unconditional_constraints){
             if(constr@rhs==0){
                 if(evaluate(constr@score,new_des)-constr@rhs>=0.001){
-                    warning(sprintf("The following constraint could not be fulfilled: %s (absolute tolerance: %s)", capture.output(show(constr)), format(0.001)))
+                    warning(sprintf("The following constraint could not be fulfilled: %s (absolute tolerance: %s)", utils::capture.output(show(constr)), format(0.001)))
                 }
             }
             else{
                 if(evaluate(constr@score,new_des)-constr@rhs>=min(0.01*abs(constr@rhs),0.49)){
-                    warning(sprintf("The following constraint could not be fulfilled: %s (relative tolerance: %s)", capture.output(show(constr)), format(0.01)))
+                    warning(sprintf("The following constraint could not be fulfilled: %s (relative tolerance: %s)", utils::capture.output(show(constr)), format(0.01)))
                 }
             }
 
@@ -115,12 +115,12 @@ minimize <- function(
             grid <- seq(new_des@c1f,new_des@c1e,length.out=10)
             if(constr@rhs==0){
                 if(any(evaluate(constr@score,new_des,grid)-constr@rhs>=0.001)){
-                    warning(sprintf("The following constraint could not be fulfilled: %s (absolute tolerance: %s)", capture.output(show(constr)), format(0.001)))
+                    warning(sprintf("The following constraint could not be fulfilled: %s (absolute tolerance: %s)", utils::capture.output(show(constr)), format(0.001)))
                 }
             }
             else{
                 if(any(evaluate(constr@score,new_des,grid)-constr@rhs>=min(0.01*abs(constr@rhs),0.49))){
-                    warning(sprintf("The following constraint could not be fulfilled: %s (relative tolerance: %s)", capture.output(show(constr)), format(0.01)))
+                    warning(sprintf("The following constraint could not be fulfilled: %s (relative tolerance: %s)", utils::capture.output(show(constr)), format(0.01)))
                 }
             }
 
@@ -287,11 +287,11 @@ get_initial_design <- function(theta,
     if(type_c2=="linear_decreasing"){
         #we assume ce=c*, where c* is the boundary for Z*=w_1*Z_1+w_2*Z_2
         if(missing(ce)){
-            find_ce <- function(ce){
+            find_ce <- function(c){
                 integrand_ce <- function(z){
-                    (1-stats::pnorm((ce-w1*z)/sqrt(1-w1**2)))*stats::dnorm(z)
+                    (1-stats::pnorm((c-w1*z)/sqrt(1-w1**2)))*stats::dnorm(z)
                 }
-                (1-stats::pnorm(ce))+stats::integrate(integrand_ce,lower=cf,upper=ce)$value-alpha
+                (1-stats::pnorm(c))+stats::integrate(integrand_ce,lower=cf,upper=c)$value-alpha
             }
             c <- stats::uniroot(find_ce,interval=c(cf,5),extendInt="yes")$root
             ce <- c
@@ -316,7 +316,7 @@ get_initial_design <- function(theta,
         critical_values <- function(z){
             (c-w1*z)/sqrt(1-w1**2)
         }
-        oldnodes <- adoptr:::GaussLegendreRule(as.integer(order))$nodes
+        oldnodes <- GaussLegendreRule(as.integer(order))$nodes
         h <- (ce - cf) / 2
         newnodes <- h * oldnodes + (h + cf)
         c2 <- sapply(newnodes, critical_values)
@@ -501,7 +501,7 @@ get_initial_design <- function(theta,
                     slope*z+y_intercept
                 }
 
-                oldnodes <- adoptr:::GaussLegendreRule(as.integer(order))$nodes
+                oldnodes <- GaussLegendreRule(as.integer(order))$nodes
                 h <- (ce - cf) / 2
                 newnodes <- h * oldnodes + (h + cf)
 
@@ -569,7 +569,7 @@ get_initial_design <- function(theta,
                     slope*z+y_intercept
                 }
 
-                oldnodes <- adoptr:::GaussLegendreRule(as.integer(order))$nodes
+                oldnodes <- GaussLegendreRule(as.integer(order))$nodes
                 h <- (ce - cf) / 2
                 newnodes <- h * oldnodes + (h + cf)
 
