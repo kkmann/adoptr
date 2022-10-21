@@ -589,7 +589,7 @@ In practice, order 7 turned out to be
 sufficiently flexible to obtain valid results (data not shown).
 ```{r}
 initial_design <- get_initial_design(theta = 0.3, alpha = 0.025,
-                                     beta = 0.1, type = "two-stage",
+                                     beta = 0.1, type_design = "two-stage",
                                      dist = datadist, order = 7)
 ```
 It is easy to check that the initial design does not fulfill any of the
