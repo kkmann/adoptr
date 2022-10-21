@@ -58,6 +58,25 @@ setClass("TwoStageDesign", representation(
         tunable   = "logical"
     ))
 
+
+#' Two-stage design for time-to-event-endpoints
+#'
+#' When conducting a study with time-to-event endpoints, the main interest is not the
+#' sample size, but the number of necessary events. Thus, \pkg{\link{adoptr}} does not use
+#' the sample size for calculating the design. Instead,
+#' it uses directly the number of events. This leads to a different look of the
+#' \code{summary} and \code{show} functions. The sample size is implicitly determined
+#' by dividing the number of events by the event rate. Survival objects are only
+#' created, when the argument \code{event_rate} is not missing.
+#'
+#' @slot event_rate probability that a subject in either group will eventually have an event
+#'
+#' @seealso \code{\link{TwoStageDesign}} for superclass and inherited methods
+#' @exportClass TwoStageDesignSurvival
+setClass("TwoStageDesignSurvival", representation(
+    event_rate="numeric"),
+    contains = "TwoStageDesign")
+
 #' @param n1 stage-one sample size
 #'
 #' @rdname TwoStageDesign-class
@@ -72,11 +91,13 @@ setGeneric("TwoStageDesign", function(n1, ...) standardGeneric("TwoStageDesign")
 #' pivot points
 #' @template order
 #' @template dotdotdot
+#' @param event_rate probability that a subject in either group will eventually have an event,
+#' only needs to be specified for time-to-event endpoints.
 #'
 #' @rdname TwoStageDesign-class
 #' @export
 setMethod("TwoStageDesign", signature = "numeric",
-    function(n1, c1f, c1e, n2_pivots, c2_pivots, order = NULL, ...) {
+    function(n1, c1f, c1e, n2_pivots, c2_pivots, order = NULL, event_rate, ...) {
 
         if (length(n2_pivots) != length(c2_pivots))
             stop("n2_pivots and c2_pivots must be of same length!")
@@ -92,14 +113,17 @@ setMethod("TwoStageDesign", signature = "numeric",
         tunable[1:5]   <- TRUE
         names(tunable) <- c("n1", "c1f", "c1e", "n2_pivots", "c2_pivots", "x1_norm_pivots", "weights", "tunable")
 
-        new("TwoStageDesign", n1 = n1, c1f = c1f, c1e = c1e, n2_pivots = n2_pivots,
-            c2_pivots = c2_pivots, x1_norm_pivots = rule$nodes, weights = rule$weights,
-            tunable = tunable)
-
+        if(missing(event_rate)){
+            new("TwoStageDesign", n1 = n1, c1f = c1f, c1e = c1e, n2_pivots = n2_pivots,
+                c2_pivots = c2_pivots, x1_norm_pivots = rule$nodes, weights = rule$weights,
+                tunable = tunable)
+        }
+        else{
+            new("TwoStageDesignSurvival",n1 = n1, c1f = c1f, c1e = c1e, n2_pivots = n2_pivots,
+                c2_pivots = c2_pivots, x1_norm_pivots = rule$nodes, weights = rule$weights,
+                tunable = tunable,event_rate=event_rate)
+        }
     })
-
-
-
 
 #' Switch between numeric and S4 class representation of a design
 #'
@@ -228,13 +252,6 @@ setMethod("make_fixed", signature("TwoStageDesign"),
           })
 
 
-
-
-
-
-
-
-
 #' @rdname n
 #' @export
 setGeneric("n1", function(d, ...) standardGeneric("n1"))
@@ -282,6 +299,8 @@ setMethod("n2", signature("TwoStageDesign", "numeric"),
 #' \code{n1} returns the first-stage sample size of a design,
 #' \code{n2} the stage-two sample size conditional on the stage-one test
 #' statistic and \code{n} the overall sample size \code{n1 + n2}.
+#' When dealing with time-to-event endpoints, the functions \code{n1}, \code{n2} and
+#' \code{n} return the number of events instead of the sample size.
 #' Internally, objects of the class \code{TwoStageDesign} allow non-natural,
 #' real sample sizes to allow smooth optimization (cf. \code{\link{minimize}} for
 #' details).
@@ -321,9 +340,6 @@ setGeneric("n", function(d, x1, ...) standardGeneric("n"))
 #' @export
 setMethod("n", signature("TwoStageDesign", "numeric"),
           function(d, x1, round = TRUE, ...) n2(d, x1, round, ...) + n1(d, round, ...))
-
-
-
 
 
 #' Query critical values of a design
@@ -386,10 +402,6 @@ setMethod("c2", signature("TwoStageDesign", "numeric"),
           )
 )
 
-
-
-
-
 # internal, get integration pivots scales to [c1f, c1e]
 setGeneric("scaled_integration_pivots", function(d, ...) standardGeneric("scaled_integration_pivots"))
 
@@ -401,10 +413,24 @@ setMethod("scaled_integration_pivots", signature("TwoStageDesign"),
 
 
 design2str <- function(design, optimized = FALSE) {
+    no_pivots <- 100
+    piv_n2 <- seq(design@c1f,design@c1e,length.out=no_pivots)
+    piv_n2 <- piv_n2[-no_pivots]
+    if (is(design, 'TwoStageDesignSurvival')){
+        if (is(design, 'OneStageDesign')) return(sprintf("OneStageDesignSurvival<%sn_events=%i;c=%.2f>", if (optimized) "optimized;" else "", n1(design), design@c1f))
+        else{
+            n2range <- round(range(n2(design,piv_n2)))
+            return(sprintf(
+                "%s<%sn_events1=%i;%.1f<=x1<=%.1f;n_events2=%s>",
+                class(design)[1], if (optimized) "optimized;" else "", n1(design),
+                design@c1f, design@c1e,
+                if (diff(n2range) == 0) sprintf("%i", n2range[1]) else paste(n2range, collapse = '-')
+        ))}
+    }
     if (is(design, 'OneStageDesign')) return(sprintf("OneStageDesign<%sn=%i;c=%.2f>", if (optimized) "optimized;" else "", n1(design), design@c1f))
-    n2range <- round(range(design@n2_pivots))
+    n2range <- round(range(n2(design,piv_n2)))
     sprintf(
-        "%s<%sn1=%i;%.1f<=x1<=%.1f:n2=%s>",
+        "%s<%sn1=%i;%.1f<=x1<=%.1f;n2=%s>",
         class(design)[1], if (optimized) "optimized;" else "", n1(design),
         design@c1f, design@c1e,
         if (diff(n2range) == 0) sprintf("%i", n2range[1]) else paste(n2range, collapse = '-')
@@ -531,6 +557,9 @@ setMethod("summary", signature("TwoStageDesign"),
                   n2_pivots     = object@n2_pivots,
                   c2_pivots     = object@c2_pivots
               )
+              if(is(object,"TwoStageDesignSurvival")){
+                  res <- c(res,event_rate=object@event_rate)
+              }
               names(res$uncond_scores) <- names(uncond_scores)
               names(res$cond_scores)   <- names(cond_scores)
               class(res)               <- c("TwoStageDesignSummary", "list")
@@ -542,12 +571,23 @@ setMethod("summary", signature("TwoStageDesign"),
 #' @rawNamespace S3method(print, TwoStageDesignSummary)
 print.TwoStageDesignSummary <- function(x, ..., rounded = TRUE) {
     space <- 3
-    cat(glue::glue(
-        '{class(x$design)}: ',
-        'n1 = {sprintf("%3i", n1(x$design))} ',
-        '\n\r'
-    ))
+    if(is(x$design,"TwoStageDesignSurvival")){
+        cat(glue::glue(
+            '{class(x$design)}: ',
+            'nevs1={sprintf("%3i", n1(x$design))} --> ',
+            'nrec1={sprintf("%3i", round(n1(x$design)/x$design@event_rate))}',
+            '\n\r'))
+    }
+
+    else{
+        cat(glue::glue(
+                '{class(x$design)}: ',
+                'n1 = {sprintf("%3i", n1(x$design))}',
+                '\n\r'
+        ))}
+
     x1 <- c(x$c1f - sqrt(.Machine$double.eps), scaled_integration_pivots(x$design), x$c1e + sqrt(.Machine$double.eps))
+    n2_nr <- sapply(x1,function(y) n2(x$design,y,round=FALSE))
     n2 <- sapply(x1, function(y) n2(x$design, y))
     c2 <- sapply(x1, function(y) c2(x$design, y))
 
@@ -571,7 +611,7 @@ print.TwoStageDesignSummary <- function(x, ..., rounded = TRUE) {
 
     # start with design characteristics
     len <- maxlength - nchar('x1')
-    cat(glue::glue(' ','{strrep(" ", len)}','x1:', '{strrep(" ", space)}',
+    cat(glue::glue(' ', '{strrep(" ", len)}','x1:', '{strrep(" ", space)}',
                    ' {sprintf("%5.2f", x1[1])} | ',
                    '{paste0(
                            sprintf("%5.2f", x1[- c(1, length(x1))]),
@@ -589,13 +629,31 @@ print.TwoStageDesignSummary <- function(x, ..., rounded = TRUE) {
                    '\n\r'))
 
     len <- maxlength - nchar('n2(x1)')
-    cat(glue::glue(' ','{strrep(" ", len)}','n2(x1):', '{strrep(" ", space)}',
-                   ' {sprintf("%5i", n2[1])} | ',
-                   '{paste0(
-                           sprintf("%5i", n2[- c(1, length(n2))]),
-                           collapse = " ")}',
-                   ' | {sprintf("%5i", n2[length(n2)])}',
-                   '\n\r'))
+    if(is(x$design,"TwoStageDesignSurvival")){
+        cat(glue::glue(' ','{strrep(" ", len)}','nevs2(x1):',
+                       ' {sprintf("%5i", n2[1])} | ',
+                       '{paste0(
+                               sprintf("%5i", n2[- c(1, length(n2))]),
+                               collapse = " ")}',
+                       ' | {sprintf("%5i", n2[length(n2)])}',
+                       '\n\r'))
+
+        cat(glue::glue(' ','{strrep(" ", len)}','nrec2(x1):',
+                       ' {sprintf("%5i", round(n2_nr[1]/x$design@event_rate))} | ',
+                       '{paste0(
+                               sprintf("%5i", round(n2_nr[- c(1, length(n2))]/x$design@event_rate)),
+                               collapse = " ")}',
+                       ' | {sprintf("%5i", round(n2_nr[length(n2)]/x$design@event_rate))}',
+                       '\n\r'))
+    }
+    else{
+        cat(glue::glue(' ','{strrep(" ", len)}','n2(x1):', '{strrep(" ", space)}',
+                       ' {sprintf("%5i", n2[1])} | ',
+                       '{paste0(
+                               sprintf("%5i", n2[- c(1, length(n2))]),
+                               collapse = " ")}',
+                       ' | {sprintf("%5i", n2[length(n2)])}',
+                       '\n\r'))}
 
     if (length(x$cond_scores) > 0) {
         for (i in 1:length(x$cond_scores)) {

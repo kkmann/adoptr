@@ -5,12 +5,15 @@
 \alias{OneStageDesign-class}
 \alias{OneStageDesign}
 \alias{TwoStageDesign,OneStageDesign-method}
+\alias{TwoStageDesign,OneStageDesignSurvival-method}
 \alias{plot,OneStageDesign-method}
 \title{One-stage designs}
 \usage{
-OneStageDesign(n, c)
+OneStageDesign(n, c, event_rate)
 
 \S4method{TwoStageDesign}{OneStageDesign}(n1, order = 5L, eps = 0.01, ...)
+
+\S4method{TwoStageDesign}{OneStageDesignSurvival}(n1, order = 5L, eps = 0.01, ...)
 
 \S4method{plot}{OneStageDesign}(x, y, ...)
 }
@@ -18,6 +21,9 @@ OneStageDesign(n, c)
 \item{n}{sample size (stage-one sample size)}
 
 \item{c}{rejection boundary (\ifelse{html}{\out{c = c<sub>1</sub><sup>f</sup> = c<sub>1</sub><sup>e</sup>}}{\eqn{c = c_1^f = c_1^e}})}
+
+\item{event_rate}{probability that a subject in either group will eventually have an event,
+only needs to be specified for time-to-event endpoints.}
 
 \item{n1}{\code{OneStageDesign} object to convert, overloaded from
 \code{\link{TwoStageDesign}}}
@@ -51,7 +57,9 @@ design <- OneStageDesign(30, 1.96)
 summary(design)
 design <- TwoStageDesign(design)
 summary(design)
+design_survival <- OneStageDesign(30,1.96,0.7)
 
+TwoStageDesign(design_survival)
 }
 \seealso{
 \code{\link{TwoStageDesign}}, \code{\link{GroupSequentialDesign}}

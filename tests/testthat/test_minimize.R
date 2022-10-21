@@ -18,7 +18,7 @@ toer  <- Power(datadist, null)
 alpha <- 0.05
 beta  <- 0.2
 
-initial_design <- get_initial_design(.4, alpha, beta, "two-stage", datadist, order)
+initial_design <- get_initial_design(.4, alpha, beta, "two-stage", dist=datadist, order=order)
 
 
 
@@ -80,7 +80,7 @@ test_that("Optimal one-stage design can be computed", {
             pow  >= 1 - beta,
             toer <= alpha
         ),
-        initial_design = get_initial_design(.4, alpha, beta, "one-stage", datadist, order)
+        initial_design = get_initial_design(.4, alpha, beta, "one-stage", dist=datadist, order=order)
     )
 
     expect_equal(
@@ -91,7 +91,7 @@ test_that("Optimal one-stage design can be computed", {
     expect_equal(
         opt_os$design@n1,
         ((qnorm(1 - beta) + qnorm(1 - alpha)) / 0.4)^2,
-        tolerance = sqrt(.Machine$double.eps), scale = 1)
+        tolerance = 1e-4, scale = 1)
 
 }) # end 'optimal one-stage design can be computed'
 
@@ -99,7 +99,7 @@ test_that("Optimal one-stage design can be computed", {
 
 test_that("Optimal group-sequential design is computable", {
 
-    initial_design_gs <- get_initial_design(.4, alpha, beta, "group-sequential", datadist, order)
+    initial_design_gs <- get_initial_design(.4, alpha, beta, "group-sequential", dist=datadist, order=order)
 
     opt_gs <<- minimize(
         ess,
@@ -329,25 +329,196 @@ test_that("conditional constraints work", {
 
 
 
-test_that("heuristical initial design works", {
+test_that("initial design works", {
     expect_error(
-        get_initial_design(.4, .025, .2, "adaptive", Normal(), 6L)
+        get_initial_design(.4, .025, .2, "adaptive", dist=Normal(), order=6L)
     )
 
     expect_error(
-        get_initial_design(.4, 1.025, .2, "two-stage", Normal(), 6L)
+        get_initial_design(.4, 1.025, .2, "two-stage", dist=Normal(), order=6L)
     )
 
     expect_true(
-        is(get_initial_design(.4, .025, .2, "two-stage", Normal(F), 6L), "TwoStageDesign")
+        is(get_initial_design(.4, .025, .2, "two-stage", dist=Normal(F), order=6L), "TwoStageDesign")
     )
 
     expect_true(
-        is(get_initial_design(.4, .025, .2, "group-sequential", Normal(), 6L), "GroupSequentialDesign")
+        is(get_initial_design(1.4, .025, .2, "two-stage", type_n2="linear_decreasing",dist=Survival(0.7), order=6L,slope=-10),
+           "TwoStageDesignSurvival")
     )
 
     expect_true(
-        is(get_initial_design(.4, .025, .2, "one-stage", Normal(), 6L), "OneStageDesign")
+        is(get_initial_design(1.4, .025, .2, "two-stage", dist=Survival(0.7), order=6L),
+           "TwoStageDesignSurvival")
     )
 
-}) # end 'heuristical initial design works'
+    expect_true(
+        is(get_initial_design(1.4, .025, .2, "two-stage", type_n2 = "linear_increasing",dist=Survival(0.7), order=6L,slope=10),
+           "TwoStageDesignSurvival")
+    )
+
+    expect_true(
+        is(get_initial_design(.4, .025, .2, "group-sequential", dist=Normal(), order=6L), "GroupSequentialDesign")
+    )
+
+    expect_true(
+        is(get_initial_design(.4, .025, .2, "group-sequential", dist=Normal(), type_c2 = "constant",
+                              order=6L), "GroupSequentialDesign")
+    )
+
+    expect_true(
+        is(get_initial_design(1.4, .025, .2, "group-sequential", dist=Survival(0.7), order=6L),
+           "GroupSequentialDesignSurvival")
+    )
+
+    expect_true(
+        is(get_initial_design(.4, .025, .2, "one-stage", dist=Normal(), order=6L), "OneStageDesign")
+    )
+
+
+    init <- get_initial_design(.4, .025, .2, "two-stage", dist=Normal(F), cf=0.5,
+                          type_c2="constant", ce=2.5)
+
+    #check values futility boundary
+    expect_true(
+        init@c1f == 0.5
+    )
+
+    # check that c2 is constant
+    expect_true(
+        all(init@c2_pivots-init@c2_pivots[1]==rep(0,7))
+    )
+
+    #check efficacy boundary
+    expect_true(
+        init@c1e==2.5
+    )
+
+    init2 <- get_initial_design(.4, .025, .2, "two-stage", dist=Normal(T),
+                                type_n2="linear_increasing",slope=20)
+
+    #check that n2 is increasing
+    expect_false(
+        is.unsorted(init2@n2_pivots)
+    )
+
+    init2new <- get_initial_design(.4, .025, .2, "two-stage", dist=Normal(T),
+                                type_n2="linear_increasing", info_ratio = 0.3)
+
+    #check that n2 is increasing
+    expect_false(
+        is.unsorted(init2new@n2_pivots)
+    )
+
+
+    #check the slope
+    expect_true(
+        n2(init2,1.5)-n2(init2,0.5) == 20
+    )
+
+    init3 <- get_initial_design(.4, .025, .2, "two-stage", dist=Normal(T),
+                                type_c2="constant", info_ratio = 0.2,ce=2)
+
+    #check information ratio
+    expect_equal(4*rep(init3@n1,7),init3@n2_pivots)
+
+
+    #check that student distribution uses normal distribution
+    init4 <- get_initial_design(0.4,0.025,0.1,"one-stage",dist=Student())
+    expect_equal(
+        init4@c1e,
+        1.96,
+        tolerance=1e-3
+    )
+
+    #check warnings are raised when unnecessarily specifying n2 or c2 type
+    expect_warning(
+        get_initial_design(0.4,0.025,0.2,"one-stage",type_c2 = "constant")
+    )
+
+    expect_warning(
+        get_initial_design(0.4,0.025,0.2,"one-stage",type_n2 = "constant")
+    )
+
+    #check warning when ce is chosen too small
+
+    expect_warning(
+        get_initial_design(0.4,0.025,0.2,"two-stage",type_c2="constant",ce=1)
+    )
+
+    expect_warning(
+        get_initial_design(0.4,0.025,0.2,"two-stage",type_c2="linear_decreasing",ce=1)
+    )
+
+    #check that ce can be chosen
+
+    expect_equal(
+        get_initial_design(0.3,0.025,0.2,type_c2="linear_decreasing",ce=3)@c1e,
+        3
+    )
+
+    init5 <- get_initial_design(.4, .025, .2, "two-stage", dist=Normal(F), cf=0.5, type_n2 = "constant",
+                       type_c2="constant", ce=2.5)
+
+    #check that c2 is constant
+    expect_true(
+            all(init@c2_pivots-init@c2_pivots[1]==rep(0,7))
+        )
+
+    #check that c2 is linear decreasing
+    init6 <- get_initial_design(1.4, .025, .2, "two-stage", dist=Survival(0.7), cf=0.5, type_n2 = "constant",
+                                type_c2="linear_decreasing")
+
+    expect_false(
+        is.unsorted(rev(init6@c2_pivots))
+    )
+
+    #check linear decreasing n2 design
+    init7 <- get_initial_design(0.4, .025, .2, "two-stage", cf=0.5,
+                                type_n2="linear_decreasing")
+
+    expect_false(
+        is.unsorted(rev(init7@n2_pivots))
+    )
+
+    expect_error(
+        get_initial_design(0.4, .025, .2, "two-stage", cf=0.5,
+                           type_n2="linear_decreasing", slope=10)
+    )
+
+    expect_error(
+        get_initial_design(0.4, .025, .2, "two-stage", cf=0.5,
+                           type_n2="linear_increasing", slope=-10)
+    )
+
+
+    #check that slope is automatically adjusted
+    expect_warning(
+        get_initial_design(0.4, .025, .2, "two-stage", cf=0.5,
+                                 type_n2="linear_decreasing",slope=-100))
+
+    expect_warning(
+        get_initial_design(0.4, .025, .2, "two-stage", cf=0.5,
+                           type_n2="linear_increasing",slope=100))
+
+
+
+}) # end 'initial design works'
+
+
+test_that("constraint checks are working", {
+    init <- TwoStageDesign(25,0.2,2.5,c(80,77,70,61,50,36,25),c(2.2,2.1,1.8,1.4,0.9,0.3,-0.1),order=7L)
+
+    expect_warning(
+        opt_design <- minimize(ess,subject_to(toer<=0.01,pow>=0.95,cp>=0.95,MaximumSampleSize()<=70),
+                               initial_design = init, check_constraints=TRUE,
+                               opts=list(algorithm = "NLOPT_LN_COBYLA", xtol_rel = 1e-05, maxeval = 1))
+
+    )
+
+    expect_warning(
+        opt_design <- minimize(ess,subject_to(toer<=0.025,pow>=0.8,MaximumSampleSize()<=pow,cp>=ConditionalSampleSize()),
+                               initial_design = init, check_constraints = TRUE,
+                               opts=list(algorithm = "NLOPT_LN_COBYLA", xtol_rel = 1e-05, maxeval = 1))
+    )
+}) # end 'constraint checks are working'

@@ -10,7 +10,16 @@
 \usage{
 TwoStageDesign(n1, ...)
 
-\S4method{TwoStageDesign}{numeric}(n1, c1f, c1e, n2_pivots, c2_pivots, order = NULL, ...)
+\S4method{TwoStageDesign}{numeric}(
+  n1,
+  c1f,
+  c1e,
+  n2_pivots,
+  c2_pivots,
+  order = NULL,
+  event_rate,
+  ...
+)
 
 \S4method{summary}{TwoStageDesign}(object, ..., rounded = TRUE)
 }
@@ -34,6 +43,9 @@ integration rule to evaluate scores. Automatically set to \code{length(n2_pivots
 \code{length(n2_pivots) == length(c2_pivots) > 1}, otherwise c2 and n2
 are taken to be constant in stage-two and replicated to match the number of
 pivots specified by \code{order}}
+
+\item{event_rate}{probability that a subject in either group will eventually have an event,
+only needs to be specified for time-to-event endpoints.}
 
 \item{object}{object to show}
 

@@ -5,11 +5,23 @@
 \alias{GroupSequentialDesign-class}
 \alias{GroupSequentialDesign}
 \alias{TwoStageDesign,GroupSequentialDesign-method}
+\alias{TwoStageDesign,GroupSequentialDesignSurvival-method}
 \title{Group-sequential two-stage designs}
 \usage{
-GroupSequentialDesign(n1, c1f, c1e, n2_pivots, c2_pivots, order = NULL, ...)
+GroupSequentialDesign(
+  n1,
+  c1f,
+  c1e,
+  n2_pivots,
+  c2_pivots,
+  order = NULL,
+  event_rate,
+  ...
+)
 
 \S4method{TwoStageDesign}{GroupSequentialDesign}(n1, ...)
+
+\S4method{TwoStageDesign}{GroupSequentialDesignSurvival}(n1, ...)
 }
 \arguments{
 \item{n1}{stage one sample size or \code{GroupSequentialDesign} object to convert
@@ -28,6 +40,9 @@ pivot points}
 length(c2_pivots) if NULL, otherwise first value of c2_pivots is repeated
 'order'-times.}
 
+\item{event_rate}{probability that a subject in either group will eventually have an event,
+only needs to be specified for time-to-event endpoints.}
+
 \item{...}{further optional arguments}
 }
 \description{
@@ -41,7 +56,11 @@ Any group-sequential design can be converted to a fully flexible
 design <- GroupSequentialDesign(25, 0, 2, 25, c(1, 1.5, 2.5))
 summary(design)
 
+design_survival <- GroupSequentialDesign(25, 0, 2, 25, c(1, 1.5, 2.5),event_rate=0.7)
+
 TwoStageDesign(design)
+
+TwoStageDesign(design_survival)
 
 }
 \seealso{
