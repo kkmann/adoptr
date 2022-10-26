@@ -484,10 +484,12 @@ setMethod("plot", signature(x = "TwoStageDesign"),
               x2   <- seq(x@c1f - (x@c1e - x@c1f)/5, x@c1f - .01*(x@c1e - x@c1f)/5, length.out = k)
               x3   <- seq(x@c1e + .01*(x@c1e - x@c1f)/5, x@c1e + (x@c1e - x@c1f)/5, length.out = k)
               x4   <- seq(x@c1f - (x@c1e - x@c1f)/5, x@c1e + (x@c1e - x@c1f)/5, length.out = k)
+              if(is(x,"TwoStageDesignSurvival")) caption <- "Overall number of events" # nocov
+              else caption <- "Overall sample size" # nocov
               graphics::plot(x1, sapply(x1, function(z) n(x, z, round = rounded)), type = 'l',
                              xlim = c(min(x4), max(x4)),
                              ylim = c(0, 1.05 * max(sapply(x1, function(z) n(x, z, round = rounded)))),
-                             main = "Overall sample size", ylab = "" , xlab = expression("x"[1]))
+                             main = caption, ylab = "" , xlab = expression("x"[1]))
               graphics::lines(x2, sapply(x2, function(z) n(x, z, round = rounded)))
               graphics::lines(x3, sapply(x3, function(z) n(x, z, round = rounded)))
               graphics::plot(x4, c2(x, x4), type = 'l', main = "Stage-two critical value",

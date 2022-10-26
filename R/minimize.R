@@ -214,6 +214,11 @@ get_initial_design <- function(theta,
         dist <- Normal(two_armed = dist@two_armed)
     }
 
+    #check that theta is correct in survival analysis
+    if(is(dist,"Survival")&theta<1){
+        stop("When handling time-to-event endpoints, theta is the hazard ratio which is assumed to be greater than 1 under the alternative.")
+    }
+
     #raise warnings if c2 or n2 are mistakenly specified
     if(type_design=="group-sequential" || type_design == "one-stage"){
         if(type_design == "one-stage"){

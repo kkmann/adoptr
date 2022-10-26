@@ -335,6 +335,10 @@ test_that("initial design works", {
     )
 
     expect_error(
+        get_initial_design(0.4,0.025,0.2, dist=Survival(0.8))
+    )
+
+    expect_error(
         get_initial_design(.4, 1.025, .2, "two-stage", dist=Normal(), order=6L)
     )
 
