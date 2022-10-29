@@ -62,6 +62,6 @@ Collate:
     'constraints.R'
     'minimize.R'
     'regularization.R'
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.1
 BugReports: https://github.com/kkmann/adoptr/issues
 URL: https://github.com/kkmann/adoptr

@@ -125,6 +125,30 @@ setMethod("TwoStageDesign", signature = "numeric",
         }
     })
 
+#' @export
+setMethod("TwoStageDesign", signature("TwoStageDesign"),
+          function(n1,event_rate){
+              if(!missing(event_rate)) SurvivalDesign(n1,event_rate)
+              else n1
+          })
+
+#' @export
+setGeneric("SurvivalDesign", function(design, ...) standardGeneric("SurvivalDesign"))
+
+#' @export
+setMethod("SurvivalDesign", signature("TwoStageDesign"),
+          function(design,event_rate){
+              tunable <- logical(8) # initialize to all false
+              tunable[1:5] <- TRUE
+              names(tunable) <- c("n1", "c1f", "c1e", "n2_pivots", "c2_pivots", "x1_norm_pivots", "weights", "tunable")
+              new("TwoStageDesignSurvival",
+                  n1=design@n1,c1f=design@c1f,c1e=design@c1e,n2_pivots=design@n2_pivots,
+                  c2_pivots=design@c2_pivots,
+                  x1_norm_pivots = design@x1_norm_pivots, weights = design@weights,
+                  tunable = tunable, event_rate=event_rate)
+          })
+
+
 #' Switch between numeric and S4 class representation of a design
 #'
 #' Get tunable parameters of a design as numeric vector via

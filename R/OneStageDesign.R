@@ -26,6 +26,8 @@ setClass("OneStageDesign",  contains = "TwoStageDesign")
 #' @exportClass OneStageDesignSurvival
 setClass("OneStageDesignSurvival", contains = c("OneStageDesign","TwoStageDesignSurvival"))
 
+#' @export
+setGeneric("OneStageDesign", function(n, ...) standardGeneric("OneStageDesign"))
 
 #' @param n sample size (stage-one sample size)
 #' @param c rejection boundary (\ifelse{html}{\out{c = c<sub>1</sub><sup>f</sup> = c<sub>1</sub><sup>e</sup>}}{\eqn{c = c_1^f = c_1^e}})
@@ -42,20 +44,28 @@ setClass("OneStageDesignSurvival", contains = c("OneStageDesign","TwoStageDesign
 #'
 #' @rdname OneStageDesign-class
 #' @export
-OneStageDesign <- function(n, c,event_rate) {
-    tunable <- logical(8)
-    tunable[1:2] <- TRUE
-    names(tunable) <- c("n1", "c1f", "c1e", "n2_pivots", "c2_pivots", "x1_norm_pivots", "weights", "tunable")
-    if(missing(event_rate)){
-        new("OneStageDesign", n1 = n, c1f = c, c1e = c, n2_pivots = 0,
-        c2_pivots = NaN, x1_norm_pivots = NaN, weights = NaN,
-        tunable = tunable)}
-    else{
-        new("OneStageDesignSurvival", n1 = n, c1f = c, c1e = c, n2_pivots = 0,
+setMethod("OneStageDesign", signature = "numeric",
+    function(n, c,event_rate) {
+        tunable <- logical(8)
+        tunable[1:2] <- TRUE
+        names(tunable) <- c("n1", "c1f", "c1e", "n2_pivots", "c2_pivots", "x1_norm_pivots", "weights", "tunable")
+        if(missing(event_rate)){
+            new("OneStageDesign", n1 = n, c1f = c, c1e = c, n2_pivots = 0,
             c2_pivots = NaN, x1_norm_pivots = NaN, weights = NaN,
-            tunable = tunable, event_rate=event_rate)
-    }
-}
+            tunable = tunable)}
+        else{
+            new("OneStageDesignSurvival", n1 = n, c1f = c, c1e = c, n2_pivots = 0,
+                c2_pivots = NaN, x1_norm_pivots = NaN, weights = NaN,
+                tunable = tunable, event_rate=event_rate)
+        }
+})
+
+#' @export
+setMethod("OneStageDesign", signature("OneStageDesign"),
+          function(n,event_rate){
+              if(!missing(event_rate)) SurvivalDesign(n,event_rate)
+              else n
+          })
 
 
 #' @rdname tunable_parameters
@@ -108,21 +118,32 @@ setMethod("c2", signature("OneStageDesign", "numeric"),
 #' @rdname OneStageDesign-class
 #' @export
 setMethod("TwoStageDesign", signature("OneStageDesign"),
-     function(n1, order = 5L, eps = .01, ...){
+     function(n1, event_rate,order = 5L, eps = .01, ...){
 
          c2 <- numeric(order)
          c2[1:floor(order / 2)] <- rep(3, floor(order / 2))
          c2[(ceiling(order / 2) + 1):order] <- rep(-3, floor(order / 2))
+         if(!missing(event_rate)){
+             return(
+                 TwoStageDesign(
+                     n1             = n1@n1,
+                     c1f            = n1@c1f - eps, # needs to be done for interpolation
+                     c1e            = n1@c1f + eps, # needs to be done for interpolation
+                     n2_pivots      = rep(0, order),
+                     c2_pivots      = c2, # acceptance left/rejection right from c
+                     event_rate     = event_rate
+                )
+             )}
+         else{
+             return(
+                 TwoStageDesign(
+                     n1             = n1@n1,
+                     c1f            = n1@c1f - eps, # needs to be done for interpolation
+                     c1e            = n1@c1f + eps, # needs to be done for interpolation
+                     n2_pivots      = rep(0, order),
+                     c2_pivots      = c2 # acceptance left/rejection right from c
 
-         return(
-             TwoStageDesign(
-                 n1             = n1@n1,
-                 c1f            = n1@c1f - eps, # needs to be done for interpolation
-                 c1e            = n1@c1f + eps, # needs to be done for interpolation
-                 n2_pivots      = rep(0, order),
-                 c2_pivots      = c2 # acceptance left/rejection right from c
-            )
-         )
+         ))}
 
 })
 
@@ -168,3 +189,16 @@ setMethod("plot", signature("OneStageDesign"),
           function(x, y, ...)
               stop("plot method is only defined for two-stage designs!")
           )
+
+#' @export
+setMethod("SurvivalDesign", signature("OneStageDesign"),
+          function(design, event_rate){
+              tunable <- logical(8) # initialize to all false
+              tunable[1:5] <- TRUE
+              names(tunable) <- c("n1", "c1f", "c1e", "n2_pivots", "c2_pivots", "x1_norm_pivots", "weights", "tunable")
+              new("OneStageDesignSurvival",
+                  n1=design@n1,c1f=design@c1f,c1e=design@c1e,n2_pivots=design@n2_pivots,
+                  c2_pivots=design@c2_pivots,
+                  x1_norm_pivots = design@x1_norm_pivots, weights = design@weights,
+                  tunable = tunable, event_rate=event_rate)
+          })
