@@ -128,6 +128,12 @@ test_that("GSDesign Survival can be converted to TSDesign Survival",{
     )
 
     design2 <- TwoStageDesign(design1)
+    design3 <- TwoStageDesign(design,event_rate=0.7)
+
+    expect_equal(
+        design2,design3
+    )
+
     pow     <- Power(Normal(), PointMassPrior(1.4, 1))
     ess     <- ExpectedSampleSize(Normal(), PointMassPrior(1.4, 1))
 

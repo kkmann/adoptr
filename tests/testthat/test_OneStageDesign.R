@@ -180,7 +180,13 @@ test_that("Conversion to survival design successful",{
         OneStageDesign(design),design
     )
 
-    design2 <- TwoStageDesign(design1, order = 7)
+    design2 <- TwoStageDesign(design, order = 7, event_rate=0.7)
+    design3 <- TwoStageDesign(design1)
+    design4 <- TwoStageDesign(design, event_rate=0.7)
+
+    expect_equal(
+        design4,design3
+    )
 
     pow     <- Power(Normal(two_armed = TRUE), PointMassPrior(1.4, 1))
 
