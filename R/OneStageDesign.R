@@ -60,6 +60,11 @@ setMethod("OneStageDesign", signature = "numeric",
         }
 })
 
+#' @rdname OneStageDesign-class
+#'
+#' @examples
+#' OneStageDesign(design,0.7)
+#'
 #' @export
 setMethod("OneStageDesign", signature("OneStageDesign"),
           function(n,event_rate){
@@ -189,12 +194,12 @@ setMethod("plot", signature("OneStageDesign"),
           function(x, y, ...)
               stop("plot method is only defined for two-stage designs!")
           )
-
+#' @rdname SurvivalDesign
 #' @export
 setMethod("SurvivalDesign", signature("OneStageDesign"),
           function(design, event_rate){
               tunable <- logical(8) # initialize to all false
-              tunable[1:5] <- TRUE
+              tunable[1:2] <- TRUE
               names(tunable) <- c("n1", "c1f", "c1e", "n2_pivots", "c2_pivots", "x1_norm_pivots", "weights", "tunable")
               new("OneStageDesignSurvival",
                   n1=design@n1,c1f=design@c1f,c1e=design@c1e,n2_pivots=design@n2_pivots,

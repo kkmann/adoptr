@@ -73,6 +73,11 @@ setMethod("GroupSequentialDesign", signature="numeric",
 
 })
 
+#' @rdname GroupSequentialDesign-class
+#'
+#' @examples
+#' GroupSequentialDesign(design,0.8)
+#'
 #' @export
 setMethod("GroupSequentialDesign", signature("GroupSequentialDesign"),
     function(n1,event_rate){
@@ -139,6 +144,7 @@ setMethod("TwoStageDesign", signature("GroupSequentialDesignSurvival"),
               x1_norm_pivots = n1@x1_norm_pivots, weights = n1@weights,
               tunable = tunable,event_rate=n1@event_rate))})
 
+#' @rdname SurvivalDesign
 #' @export
 setMethod("SurvivalDesign", signature("GroupSequentialDesign"),
           function(design,event_rate){

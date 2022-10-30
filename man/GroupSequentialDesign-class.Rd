@@ -3,12 +3,13 @@
 \docType{class}
 \name{GroupSequentialDesign-class}
 \alias{GroupSequentialDesign-class}
-\alias{GroupSequentialDesign}
+\alias{GroupSequentialDesign,numeric-method}
+\alias{GroupSequentialDesign,GroupSequentialDesign-method}
 \alias{TwoStageDesign,GroupSequentialDesign-method}
 \alias{TwoStageDesign,GroupSequentialDesignSurvival-method}
 \title{Group-sequential two-stage designs}
 \usage{
-GroupSequentialDesign(
+\S4method{GroupSequentialDesign}{numeric}(
   n1,
   c1f,
   c1e,
@@ -19,7 +20,9 @@ GroupSequentialDesign(
   ...
 )
 
-\S4method{TwoStageDesign}{GroupSequentialDesign}(n1, ...)
+\S4method{GroupSequentialDesign}{GroupSequentialDesign}(n1, event_rate)
+
+\S4method{TwoStageDesign}{GroupSequentialDesign}(n1, event_rate, ...)
 
 \S4method{TwoStageDesign}{GroupSequentialDesignSurvival}(n1, ...)
 }
@@ -57,6 +60,8 @@ design <- GroupSequentialDesign(25, 0, 2, 25, c(1, 1.5, 2.5))
 summary(design)
 
 design_survival <- GroupSequentialDesign(25, 0, 2, 25, c(1, 1.5, 2.5),event_rate=0.7)
+
+GroupSequentialDesign(design,0.8)
 
 TwoStageDesign(design)
 

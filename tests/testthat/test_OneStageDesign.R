@@ -164,9 +164,24 @@ test_that("OneStageDesign can be converted to TwoStageDesign", {
 
 }) # end 'OneStageDesign can be converted to TwoStageDesign'
 
-test_that("Survival Design is converted to TwoStageSurvival design",{
-    design1 <- OneStageDesign(80, 2, 0.7)
+test_that("Conversion to survival design successful",{
+    design <- OneStageDesign(80, 2)
+    design1 <- OneStageDesign(80,2,0.7)
+
+    expect_equal(
+        SurvivalDesign(design,0.7),design1
+    )
+
+    expect_equal(
+        OneStageDesign(design,0.7),design1
+    )
+
+    expect_equal(
+        OneStageDesign(design),design
+    )
+
     design2 <- TwoStageDesign(design1, order = 7)
+
     pow     <- Power(Normal(two_armed = TRUE), PointMassPrior(1.4, 1))
 
     expect_true(length(design2@x1_norm_pivots) == 7)
@@ -192,3 +207,4 @@ test_that("show method returns design name", {
     )
 
 })
+

@@ -125,6 +125,14 @@ setMethod("TwoStageDesign", signature = "numeric",
         }
     })
 
+#' @param n1 stage one sample size or \code{GroupSequentialDesign} object to convert
+#'   (overloaded from \code{\link{TwoStageDesign}})
+#'
+#' @rdname TwoStageDesign-class
+#'
+#' @examples
+#' TwoStageDesign(design,0.7)
+#'
 #' @export
 setMethod("TwoStageDesign", signature("TwoStageDesign"),
           function(n1,event_rate){
@@ -132,9 +140,20 @@ setMethod("TwoStageDesign", signature("TwoStageDesign"),
               else n1
           })
 
+#' SurvivalDesign
+#'
+#' \code{SurvivalDesign} is a function that converts an arbitrary design to a survival design.
+#' @param design design that should be converted to a survival design
+#' @param event_rate probability that a subject in either group will eventually have an event
+#' @examples
+#' design <- get_initial_design(0.4,0.025,0.1)
+#' SurvivalDesign(design,0.8)
+#'
 #' @export
 setGeneric("SurvivalDesign", function(design, ...) standardGeneric("SurvivalDesign"))
 
+
+#' @rdname SurvivalDesign
 #' @export
 setMethod("SurvivalDesign", signature("TwoStageDesign"),
           function(design,event_rate){

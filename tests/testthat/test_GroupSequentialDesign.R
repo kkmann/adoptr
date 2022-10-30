@@ -112,7 +112,21 @@ test_that("GSDesign can be converted to TwoStageDesign", {
 }) # end 'GSDesign can be converted to TwoStageDesign'
 
 test_that("GSDesign Survival can be converted to TSDesign Survival",{
+    design <- GroupSequentialDesign(50, 0, 2, 50, rep(2, 5))
     design1 <- GroupSequentialDesign(50, 0, 2, 50, rep(2, 5),event_rate = 0.7)
+
+    expect_equal(
+        SurvivalDesign(design,0.7),design1
+    )
+
+    expect_equal(
+        GroupSequentialDesign(design,0.7),design1
+    )
+
+    expect_equal(
+        GroupSequentialDesign(design),design
+    )
+
     design2 <- TwoStageDesign(design1)
     pow     <- Power(Normal(), PointMassPrior(1.4, 1))
     ess     <- ExpectedSampleSize(Normal(), PointMassPrior(1.4, 1))

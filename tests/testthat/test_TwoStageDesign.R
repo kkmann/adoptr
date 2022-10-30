@@ -182,3 +182,42 @@ test_that("boundary designs keep monotonicity", {
         sign(diff(d_ub@c2_pivots)) == sign(diff(d@c2_pivots))))
 
 }) # end 'boundary designs keep monotonicity'
+
+test_that("design is correctly converted",{
+    des_survival <- TwoStageDesign(design,0.7)
+
+    expect_true(
+        is(des_survival,"TwoStageDesignSurvival")
+    )
+
+    expect_equal(
+        c(n1, c1f, c1e),
+        c(des_survival@n1, des_survival@c1f, des_survival@c1e),
+        tolerance = sqrt(.Machine$double.eps), scale = 1)
+
+    x1 <- seq(c1f, c1e, length.out = 11)
+
+    expect_equal(
+        n2(des_survival, x1, round = FALSE),
+        rep(49.6, length(x1)),
+        tolerance = sqrt(.Machine$double.eps), scale = 1)
+
+    expect_equal(
+        n2(des_survival, x1),
+        rep(50, length(x1)),
+        tolerance = sqrt(.Machine$double.eps), scale = 1)
+
+    expect_equal(
+        n(des_survival, x1),
+        rep(100, length(x1)),
+        tolerance = sqrt(.Machine$double.eps), scale = 1)
+
+    expect_equal(
+        des_survival,SurvivalDesign(design,0.7)
+    )
+
+    expect_equal(
+        design,TwoStageDesign(design)
+    )
+
+})

@@ -5,6 +5,7 @@
 \alias{TwoStageDesign-class}
 \alias{TwoStageDesign}
 \alias{TwoStageDesign,numeric-method}
+\alias{TwoStageDesign,TwoStageDesign-method}
 \alias{summary,TwoStageDesign-method}
 \title{Two-stage designs}
 \usage{
@@ -21,10 +22,13 @@ TwoStageDesign(n1, ...)
   ...
 )
 
+\S4method{TwoStageDesign}{TwoStageDesign}(n1, event_rate)
+
 \S4method{summary}{TwoStageDesign}(object, ..., rounded = TRUE)
 }
 \arguments{
-\item{n1}{stage-one sample size}
+\item{n1}{stage one sample size or \code{GroupSequentialDesign} object to convert
+(overloaded from \code{\link{TwoStageDesign}})}
 
 \item{...}{further optional arguments}
 
@@ -107,6 +111,8 @@ optimization via \code{\link{minimize}} or not; cf. \cr
 }}
 
 \examples{
+TwoStageDesign(design,0.7)
+
 design <- TwoStageDesign(50, 0, 2, 50.0, 2.0, 5)
 pow    <- Power(Normal(), PointMassPrior(.4, 1))
 summary(design, "Power" = pow)
