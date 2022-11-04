@@ -27,7 +27,7 @@
 #' @section Designs:
 #'
 #' \pkg{adoptr} currently supports \code{\link{TwoStageDesign}},
-#' \code{\link{GroupSequentialDesign}}, and \code{\link{OneStageDesign}}.
+#' \code{\link{GroupSequentialDesign-class}}, and \code{\link{OneStageDesign-class}}.
 #'
 #'
 #'

@@ -9,6 +9,6 @@
 \code{TwoStageDesignSurvival}.
 }
 \seealso{
-\code{\link{TwoStageDesignSurvival-class}} and \code{\link{OneStageDesign}}
+\code{\link{TwoStageDesignSurvival-class}} and \code{\link{OneStageDesign-class}}
 for superclasses and inherited methods.
 }

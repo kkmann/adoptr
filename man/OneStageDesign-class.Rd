@@ -3,16 +3,16 @@
 \docType{class}
 \name{OneStageDesign-class}
 \alias{OneStageDesign-class}
+\alias{OneStageDesign}
 \alias{OneStageDesign,numeric-method}
-\alias{OneStageDesign,OneStageDesign-method}
 \alias{TwoStageDesign,OneStageDesign-method}
 \alias{TwoStageDesign,OneStageDesignSurvival-method}
 \alias{plot,OneStageDesign-method}
 \title{One-stage designs}
 \usage{
-\S4method{OneStageDesign}{numeric}(n, c, event_rate)
+OneStageDesign(n, ...)
 
-\S4method{OneStageDesign}{OneStageDesign}(n, event_rate)
+\S4method{OneStageDesign}{numeric}(n, c, event_rate)
 
 \S4method{TwoStageDesign}{OneStageDesign}(n1, event_rate, order = 5L, eps = 0.01, ...)
 
@@ -22,6 +22,8 @@
 }
 \arguments{
 \item{n}{sample size (stage-one sample size)}
+
+\item{...}{further optional arguments}
 
 \item{c}{rejection boundary (\ifelse{html}{\out{c = c<sub>1</sub><sup>f</sup> = c<sub>1</sub><sup>e</sup>}}{\eqn{c = c_1^f = c_1^e}})}
 
@@ -36,8 +38,6 @@ integration rule to use for new TwoStageDesign.}
 
 \item{eps}{numeric > 0, default = .01; the single critical value c must be
 split in a continuation interval [c1f, c1e]; this is given by c +/- eps.}
-
-\item{...}{further optional arguments}
 
 \item{x}{design to plot}
 
@@ -58,14 +58,12 @@ is not supported for \code{OneStageDesign} objects.
 \examples{
 design <- OneStageDesign(30, 1.96)
 summary(design)
-design <- TwoStageDesign(design)
-summary(design)
+design_twostage <- TwoStageDesign(design)
+summary(design_twostage)
 design_survival <- OneStageDesign(30,1.96,0.7)
-
-OneStageDesign(design,0.7)
 
 TwoStageDesign(design_survival)
 }
 \seealso{
-\code{\link{TwoStageDesign}}, \code{\link{GroupSequentialDesign}}
+\code{\link{TwoStageDesign}}, \code{\link{GroupSequentialDesign-class}}
 }

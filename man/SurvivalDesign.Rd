@@ -4,15 +4,24 @@
 \name{SurvivalDesign}
 \alias{SurvivalDesign}
 \alias{SurvivalDesign,TwoStageDesign-method}
+\alias{TwoStageDesign,TwoStageDesign-method}
+\alias{OneStageDesign,OneStageDesign-method}
 \alias{SurvivalDesign,OneStageDesign-method}
+\alias{GroupSequentialDesign,GroupSequentialDesign-method}
 \alias{SurvivalDesign,GroupSequentialDesign-method}
 \title{SurvivalDesign}
 \usage{
-SurvivalDesign(design, ...)
+SurvivalDesign(design, event_rate)
 
 \S4method{SurvivalDesign}{TwoStageDesign}(design, event_rate)
 
+\S4method{TwoStageDesign}{TwoStageDesign}(n1, event_rate)
+
+\S4method{OneStageDesign}{OneStageDesign}(n, event_rate)
+
 \S4method{SurvivalDesign}{OneStageDesign}(design, event_rate)
+
+\S4method{GroupSequentialDesign}{GroupSequentialDesign}(n1, event_rate)
 
 \S4method{SurvivalDesign}{GroupSequentialDesign}(design, event_rate)
 }
@@ -20,6 +29,10 @@ SurvivalDesign(design, ...)
 \item{design}{design that should be converted to a survival design}
 
 \item{event_rate}{probability that a subject in either group will eventually have an event}
+
+\item{n1}{design object to convert (overloaded from \code{TwoStageDesign})}
+
+\item{n}{design object to convert (overloaded from \code{TwoStageDesign})}
 }
 \description{
 \code{SurvivalDesign} is a function that converts an arbitrary design to a survival design.
@@ -27,5 +40,12 @@ SurvivalDesign(design, ...)
 \examples{
 design <- get_initial_design(0.4,0.025,0.1)
 SurvivalDesign(design,0.8)
+
+design_os <- get_initial_design(0.4,0.025,0.1,type_design="one-stage")
+design_gs <- get_initial_design(0.4,0.025,0.1,type_design="group-sequential")
+
+OneStageDesign(design_os,0.7)
+
+GroupSequentialDesign(design_gs,0.8)
 
 }

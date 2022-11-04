@@ -10,7 +10,7 @@
 #' Note that the default \code{\link{plot,TwoStageDesign-method}} method
 #' is not supported for \code{OneStageDesign} objects.
 #'
-#' @seealso \code{\link{TwoStageDesign}}, \code{\link{GroupSequentialDesign}}
+#' @seealso \code{\link{TwoStageDesign}}, \code{\link{GroupSequentialDesign-class}}
 #'
 #' @exportClass OneStageDesign
 setClass("OneStageDesign",  contains = "TwoStageDesign")
@@ -20,13 +20,14 @@ setClass("OneStageDesign",  contains = "TwoStageDesign")
 #' \code{OneStageDesignSurvival} is a subclass of both \code{OneStageDesign} and
 #' \code{TwoStageDesignSurvival}.
 #'
-#' @seealso \code{\link{TwoStageDesignSurvival-class}} and \code{\link{OneStageDesign}}
+#' @seealso \code{\link{TwoStageDesignSurvival-class}} and \code{\link{OneStageDesign-class}}
 #' for superclasses and inherited methods.
 #'
 #' @exportClass OneStageDesignSurvival
 setClass("OneStageDesignSurvival", contains = c("OneStageDesign","TwoStageDesignSurvival"))
 
 #' @export
+#' @rdname OneStageDesign-class
 setGeneric("OneStageDesign", function(n, ...) standardGeneric("OneStageDesign"))
 
 #' @param n sample size (stage-one sample size)
@@ -36,8 +37,8 @@ setGeneric("OneStageDesign", function(n, ...) standardGeneric("OneStageDesign"))
 #' @examples
 #' design <- OneStageDesign(30, 1.96)
 #' summary(design)
-#' design <- TwoStageDesign(design)
-#' summary(design)
+#' design_twostage <- TwoStageDesign(design)
+#' summary(design_twostage)
 #' design_survival <- OneStageDesign(30,1.96,0.7)
 #'
 #' @include TwoStageDesign.R
@@ -60,10 +61,12 @@ setMethod("OneStageDesign", signature = "numeric",
         }
 })
 
-#' @rdname OneStageDesign-class
+#' @param n design object to convert (overloaded from \code{TwoStageDesign})
+#'
+#' @rdname SurvivalDesign
 #'
 #' @examples
-#' OneStageDesign(design,0.7)
+#' OneStageDesign(design_os,0.7)
 #'
 #' @export
 setMethod("OneStageDesign", signature("OneStageDesign"),

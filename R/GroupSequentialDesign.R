@@ -17,13 +17,14 @@ setClass("GroupSequentialDesign",  contains = "TwoStageDesign")
 #' Group-sequential designs for time-to-event-endpoints are a subclass of both
 #' \code{TwoStageDesignSurvival} and \code{GroupSequentialDesign}.
 #'
-#' @seealso \code{\link{TwoStageDesignSurvival-class}} and \code{\link{GroupSequentialDesign}}
+#' @seealso \code{\link{TwoStageDesignSurvival-class}} and \code{\link{GroupSequentialDesign-class}}
 #' for superclasses and inherited methods.
 #'
 #' @exportClass GroupSequentialDesignSurvival
 setClass("GroupSequentialDesignSurvival", contains = c("GroupSequentialDesign","TwoStageDesignSurvival"))
 
 #' @export
+#' @rdname GroupSequentialDesign-class
 setGeneric("GroupSequentialDesign", function(n1,...) standardGeneric("GroupSequentialDesign"))
 
 
@@ -73,10 +74,12 @@ setMethod("GroupSequentialDesign", signature="numeric",
 
 })
 
-#' @rdname GroupSequentialDesign-class
+
+#' @param n1 design object to convert (overloaded from \code{TwoStageDesign})
+#' @rdname SurvivalDesign
 #'
 #' @examples
-#' GroupSequentialDesign(design,0.8)
+#' GroupSequentialDesign(design_gs,0.8)
 #'
 #' @export
 setMethod("GroupSequentialDesign", signature("GroupSequentialDesign"),

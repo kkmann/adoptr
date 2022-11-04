@@ -3,12 +3,14 @@
 \docType{class}
 \name{GroupSequentialDesign-class}
 \alias{GroupSequentialDesign-class}
+\alias{GroupSequentialDesign}
 \alias{GroupSequentialDesign,numeric-method}
-\alias{GroupSequentialDesign,GroupSequentialDesign-method}
 \alias{TwoStageDesign,GroupSequentialDesign-method}
 \alias{TwoStageDesign,GroupSequentialDesignSurvival-method}
 \title{Group-sequential two-stage designs}
 \usage{
+GroupSequentialDesign(n1, ...)
+
 \S4method{GroupSequentialDesign}{numeric}(
   n1,
   c1f,
@@ -20,8 +22,6 @@
   ...
 )
 
-\S4method{GroupSequentialDesign}{GroupSequentialDesign}(n1, event_rate)
-
 \S4method{TwoStageDesign}{GroupSequentialDesign}(n1, event_rate, ...)
 
 \S4method{TwoStageDesign}{GroupSequentialDesignSurvival}(n1, ...)
@@ -29,6 +29,8 @@
 \arguments{
 \item{n1}{stage one sample size or \code{GroupSequentialDesign} object to convert
 (overloaded from \code{\link{TwoStageDesign}})}
+
+\item{...}{further optional arguments}
 
 \item{c1f}{early futility stopping boundary}
 
@@ -45,8 +47,6 @@ length(c2_pivots) if NULL, otherwise first value of c2_pivots is repeated
 
 \item{event_rate}{probability that a subject in either group will eventually have an event,
 only needs to be specified for time-to-event endpoints.}
-
-\item{...}{further optional arguments}
 }
 \description{
 Group-sequential designs are a sub-class of the \code{TwoStageDesign}
@@ -60,8 +60,6 @@ design <- GroupSequentialDesign(25, 0, 2, 25, c(1, 1.5, 2.5))
 summary(design)
 
 design_survival <- GroupSequentialDesign(25, 0, 2, 25, c(1, 1.5, 2.5),event_rate=0.7)
-
-GroupSequentialDesign(design,0.8)
 
 TwoStageDesign(design)
 

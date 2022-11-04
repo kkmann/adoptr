@@ -43,7 +43,7 @@
 #' design, see \code{\link[=simulate,TwoStageDesign,numeric-method]{simulate}};
 #' for plotting see \code{\link{plot,TwoStageDesign-method}}.
 #' Both \link[=GroupSequentialDesign-class]{group-sequential} and
-#' \link[=OneStageDesign]{one-stage designs} (!) are implemented as subclasses of
+#' \link[=OneStageDesign-class]{one-stage designs} (!) are implemented as subclasses of
 #' \code{TwoStageDesign}.
 #'
 #' @exportClass TwoStageDesign
@@ -125,20 +125,7 @@ setMethod("TwoStageDesign", signature = "numeric",
         }
     })
 
-#' @param n1 stage one sample size or \code{GroupSequentialDesign} object to convert
-#'   (overloaded from \code{\link{TwoStageDesign}})
-#'
-#' @rdname TwoStageDesign-class
-#'
-#' @examples
-#' TwoStageDesign(design,0.7)
-#'
-#' @export
-setMethod("TwoStageDesign", signature("TwoStageDesign"),
-          function(n1,event_rate){
-              if(!missing(event_rate)) SurvivalDesign(n1,event_rate)
-              else n1
-          })
+
 
 #' SurvivalDesign
 #'
@@ -149,8 +136,11 @@ setMethod("TwoStageDesign", signature("TwoStageDesign"),
 #' design <- get_initial_design(0.4,0.025,0.1)
 #' SurvivalDesign(design,0.8)
 #'
+#' design_os <- get_initial_design(0.4,0.025,0.1,type_design="one-stage")
+#' design_gs <- get_initial_design(0.4,0.025,0.1,type_design="group-sequential")
+#'
 #' @export
-setGeneric("SurvivalDesign", function(design, ...) standardGeneric("SurvivalDesign"))
+setGeneric("SurvivalDesign", function(design, event_rate) standardGeneric("SurvivalDesign"))
 
 
 #' @rdname SurvivalDesign
@@ -165,6 +155,20 @@ setMethod("SurvivalDesign", signature("TwoStageDesign"),
                   c2_pivots=design@c2_pivots,
                   x1_norm_pivots = design@x1_norm_pivots, weights = design@weights,
                   tunable = tunable, event_rate=event_rate)
+          })
+
+
+#' @param event_rate probability that a subject in either group will eventually have an event
+#' @param n1 design object to convert (overloaded from \code{TwoStageDesign})
+#'
+#' @rdname SurvivalDesign
+#'
+#'
+#' @export
+setMethod("TwoStageDesign", signature("TwoStageDesign"),
+          function(n1,event_rate){
+              if(!missing(event_rate)) SurvivalDesign(n1,event_rate)
+              else n1
           })
 
 
