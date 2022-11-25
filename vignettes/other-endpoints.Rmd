@@ -20,4 +20,101 @@ knitr::opts_chunk$set(
 library(adoptr)
 ```
 
-In the simplest cases, 
+We use the following notation:
+
+- $X_i^T$ denotes the endpoint of recruit $i$ in the treatment arm
+- $X_i^C$ denotes the endpoint of recruit $i$ in the control arm
+- $n$ denotes the group-wise sample size
+
+
+
+In the simplest cases, only normal-distributed endpoints are considered and depending on the sample size, either a z-test or a t-test can be conducted. 
+However, a lot of trials require binary endpoints, e.g. when it is only important to know whether a recruit is alive. Of course, binary endpoints are not necessarily connected to deaths in general, so in the following, we only say that an "event happened". 
+
+# Binary endpoints
+
+When dealing with binary endpoints, we want to compare the probability of an event in the treatment group $p_T$ with a fixed value (single-arm trial) or with the probability of an event in the control group $p_C$ (two-armed trial). Under the assumption that larger probabilites are favorable, we get the hypotheses:
+
+$$
+H_0: p_T \leq p_C\quad \text{vs.} \quad H_1:p_C\leq p_T
+$$
+By the law of large numbers, suitable estimators for these probabilities are given by $\hat{p}_T=\frac{1}{n}\sum_i^{n}X_i^T$, $\hat{p}_C=\frac{1}{n}\sum_i^{n}X_i^C$ and $\hat{p}_0=\frac{\frac{1}{n}\sum_i^{n}X_i^T+\frac{1}{n}\sum_i^{n}X_i^C}{2n}$, where $p_0=\frac{p_T+p_C}{2}$ is the pooled rate and $X_i^T \sim Bin(1,p_T), X_i^C\sim Bin(1,p_C)$.
+
+The test statistic is then given by
+$$
+U=\sqrt{\frac{n}{2}}\frac{\hat{p}_T-\hat{p}_C}{\sqrt{\hat{p}_0(1-\hat{p}_0)}}
+$$
+
+## Asymptotic distribution of the test statistic
+
+We begin with the difference $\hat{p}_T-\hat{p}_C$. Using the de Moivre-Laplace theorem, we get that 
+$$
+\frac{n\hat{p}_T-np_T}{\sqrt{n}} \overset{d}{\to} \mathcal{N}(0,p_T(1-p_T)).
+$$
+After defining $\sigma_A^2=p_T(1-p_T)+p_C(1-p_C)$, we obtain
+$$
+\frac{n\hat{p}_T-np_T}{\sqrt{n}}-\frac{n\hat{p}_C-np_C}{\sqrt{n}}=\sqrt{n}(\hat{p}_T-\hat{p}_C-(p_T-p_C))\overset{d}{\to}\mathcal{N}(0,\sigma_A^2),
+$$
+so it follows
+$$
+\sqrt{n}(\hat{p}_T-\hat{p}_C)\overset{d}{\to}\mathcal{N}(\sqrt{n}(p_T-p_c),\sigma_A^2).
+$$
+Applying the continuous mapping theorem, it results that $\hat{\sigma}_0:=\sqrt{2\hat{p}_0(1-\hat{p}_0)} \overset{P}{\to}\sqrt{2p_0(1-p_0)}:=\sigma_0$, so by Slutzky's theorem, we get
+$$
+\frac{\sqrt{n}(\hat{p}_T-\hat{p}_C)}{\sigma_0}=\sqrt{\frac{n}{2}}\frac{\hat{p}_T-\hat{p}_C}{\sqrt{\hat{p}_0(1-\hat{p}_0)}}\overset{d}{\to}\mathcal{N}(\sqrt{n}\frac{p_T-p_C}{\sigma_0},\frac{\sigma_A^2}{\sigma_0^2}).
+$$
+Hence, the following statement approximately holds:
+$$
+U \sim \mathcal{N}(\sqrt{n}\frac{p_T-p_C}{\sigma_0},\frac{\sigma_A^2}{\sigma_0^2}).
+$$
+
+Note that under the null hypothesis, $\sigma_A^2=\sigma_0^2$ and $p_T=p_C$. Thus, $U\sim \mathcal{N}(0,1)$ under $H_0$.
+
+## **adoptr** and binomial endpoints
+
+### Implementation details
+
+Due to the fact that the test statistic $U$ explicitly depends on the outcome of $p_T$ and $p_C$ and not only their difference $\theta=p_T-p_C$, it is necessary to fix the rate in the control group $p_C$. Thus, by knowing $\theta$, **adoptr** implicitly computes $p_T=p_C+\theta$. 
+Unfortunately, this means that $p_C$ is the same under the null as well as the alternative. This aspect could lead to limitations, but if the control group is assumed to be a placebo group, it makes sense to assume that $p_C$ is constant under $H_0$ and $H_1$.
+
+### Example
+
+Let $p_C=0.3$ be fixed. Furthermore, we assume to have  two-armed trial.
+
+```{r}
+datadist <- Binomial(0.3, two_armed = TRUE)
+```
+
+Let us furthermore assume that the we have a continuous prior on $\theta \sim \mathbb{1}_{(-0.29,0.69)}\mathcal{N}(0.2,0.2)$. It is necessary to use the indicator function to ensure that $p_T \in (0,1)$. 
+
+```{r}
+H_0        <- PointMassPrior(.0, 1)
+prior      <- ContinuousPrior(function(x) 1/(pnorm(0.69,0.2,0.2)-pnorm(-0.29,0.2,0.2))*dnorm(x,0.2,0.2),
+                              support = c(-0.29,0.69),
+                              tighten_support = TRUE)
+```
+
+We require a maximal type one error of $\alpha\leq 0.025$ and a minimum expected power of $\mathbb{E}[1-\beta]\geq 0.8$. 
+
+```{r}
+alpha      <- 0.025
+min_epower <- 0.8
+toer_cnstr <- Power(datadist, H_0) <= alpha
+epow_cnstr <- Power(datadist, condition(prior, c(0.0,0.69))) >= min_epower
+
+```
+
+We choose our design parameters such that the expected sample size is minimized. In order to find an initial design, we use the in-built function \texttt{get_initial_design}.
+
+```{r}
+ess <- ExpectedSampleSize(datadist,prior)
+
+init <- get_initial_design(0.2,0.025,0.2)
+
+opt_design <- minimize(ess,subject_to(toer_cnstr,epow_cnstr),initial_design = init, check_constraints = TRUE)
+
+plot(opt_design$design)
+```
+
+# Time-to-event endpoints
+
