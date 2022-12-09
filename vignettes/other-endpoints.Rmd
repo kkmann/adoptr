@@ -121,3 +121,16 @@ plot(opt_design$design)
 
 # Time-to-event endpoints
 
+Another quite common endpoint are so called time-to-event endpoints occurring in survival analysis. In the following, let $\theta := \frac{\lambda_C(t)}{\lambda_T(t)}$ be the ratio of the hazard functions in either group. We assume that $\theta$ is constant.
+Assuming that a lower hazard function is favorable, the resulting hypotheses are
+
+$$
+H_0: \theta\leq 1 \quad \text{vs.} \quad H_1: \theta >1.
+$$
+
+Let $1,\dots,J$ be the distinct times of observed events in either group and let $n_{T,j}, n_{C,j}$ be the number of subjects, who neither had an event nor have been censored. Additionally, $O_{T,j},O_{C,j}$ are the observed number of events at time $j$. Define $n_j:=n_{T,j}+n_{C,j}$ and $O_j:= O_{T,j}+O_{C,j}$. Under the null, the hazard functions of the groups are equal. Thus, for $i \in \{T,C\}$, $O_{j}$ can be regarded as the number of events in a draw of size $n_{i,j}$, where the population has size $n_j$. This is exactly the definition of the hypergeometric distribution, so we know that $O_{i,j}\sim h(n_j,O_j,n_{i,j})$. This distribution has an expected value of $E_{i,j}:=\mathbb{E}[O_{i,j}]=n_{i,j}\frac{O_j}{n_j}$ and variance $V_{i,j}:=\text{Var}(O_{i,j})=E_{i,j}(\frac{n_j-O_j}{n_j})(\frac{n_j-n_{i,j}}{n_j-1})$. The log-rank test statistic is given by
+
+$$
+L_T:=\frac{\sum_{j=1}^J O_{T,j}-E_{T,j}}{\sqrt{\sum_{j=1}^J V_{T,j}}}
+$$
+Note that $L_T=L_C$, so it does not matter which statistic to use.
