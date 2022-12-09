@@ -29,21 +29,24 @@ We use the following notation:
 
 
 In the simplest cases, only normal-distributed endpoints are considered and depending on the sample size, either a z-test or a t-test can be conducted. 
-However, a lot of trials require binary endpoints, e.g. when it is only important to know whether a recruit is alive. Of course, binary endpoints are not necessarily connected to deaths in general, so in the following, we only say that an "event happened". 
+However, a lot of trials require binary or time-to-event endpoints, e.g. when it is only important to know whether a recruit is alive or how long a patient lived. Of course, binary endpoints or time-to-event data are not necessarily connected to deaths in general, so in the following, we only say that an "event occurred". 
 
 # Binary endpoints
 
-When dealing with binary endpoints, we want to compare the probability of an event in the treatment group $p_T$ with a fixed value (single-arm trial) or with the probability of an event in the control group $p_C$ (two-armed trial). Under the assumption that larger probabilites are favorable, we get the hypotheses:
+When dealing with binary endpoints, we know that the endpoints follow a Bernoulli distribution, so $X_i^T \sim Bin(1,p_T)$ and $X_i^C\sim Bin(1,p_C)$. We now want to compare the probability of an event in the treatment group $p_T$ with a fixed value (single-arm trial) or with the probability of an event in the control group $p_C$ (two-armed trial).  Thus, assuming that larger probabilities are favorable, we have
 
 $$
-H_0: p_T \leq p_C\quad \text{vs.} \quad H_1:p_C\leq p_T
+H_0: p_T \leq p_C\quad \text{vs.} \quad H_1:p_C\leq p_T.
 $$
-By the law of large numbers, suitable estimators for these probabilities are given by $\hat{p}_T=\frac{1}{n}\sum_i^{n}X_i^T$, $\hat{p}_C=\frac{1}{n}\sum_i^{n}X_i^C$ and $\hat{p}_0=\frac{\frac{1}{n}\sum_i^{n}X_i^T+\frac{1}{n}\sum_i^{n}X_i^C}{2n}$, where $p_0=\frac{p_T+p_C}{2}$ is the pooled rate and $X_i^T \sim Bin(1,p_T), X_i^C\sim Bin(1,p_C)$.
 
-The test statistic is then given by
+We want to have a test statistic that asymptotically follows a normal distribution, so we use 
 $$
-U=\sqrt{\frac{n}{2}}\frac{\hat{p}_T-\hat{p}_C}{\sqrt{\hat{p}_0(1-\hat{p}_0)}}
+U=\sqrt{\frac{n}{2}}\frac{\hat{p}_T-\hat{p}_C}{\sqrt{\hat{p}_0(1-\hat{p}_0)}},
 $$
+
+where $\hat{p}_T=\frac{1}{n}\sum_i^{n}X_i^T$, $\hat{p}_C=\frac{1}{n}\sum_i^{n}X_i^C$ are estimators for $p_T$ and $p_C$. Furthermore, $\hat{p}_0=\frac{\frac{1}{n}\sum_i^{n}X_i^T+\frac{1}{n}\sum_i^{n}X_i^C}{2n}$ is the estimator for the pooled rate $p_0=\frac{p_T+p_C}{2}$. 
+
+The outcome of $U$ is then compared to $c_f$ and $c_e$, the first stage boundaries. If $U\in [c_f,c_e]$, we continue the trial and compute a new value for $U_2$ in the second stage, where we reject the null if $U_2>c_2$.
 
 ## Asymptotic distribution of the test statistic
 
@@ -85,7 +88,7 @@ Let $p_C=0.3$ be fixed. Furthermore, we assume to have  two-armed trial.
 datadist <- Binomial(0.3, two_armed = TRUE)
 ```
 
-Let us furthermore assume that the we have a continuous prior on $\theta \sim \mathbb{1}_{(-0.29,0.69)}\mathcal{N}(0.2,0.2)$. It is necessary to use the indicator function to ensure that $p_T \in (0,1)$. 
+Let us furthermore assume that the we have a normal prior on $\theta$ with expectation $\mu=0.2$ and standard deviation $\sigma=0.2$, which was truncated to the interval $(-.029,0.69)$. It is necessary to use a truncation to ensure that $p_T \in (0,1)$. 
 
 ```{r}
 H_0        <- PointMassPrior(.0, 1)
