@@ -128,20 +128,20 @@ $$
 H_0: \theta\leq 1 \quad \text{vs.} \quad H_1: \theta >1.
 $$
 
-Let $1,\dots,J$ be the distinct times of observed events in either group and let $n_{T,j}, n_{C,j}$ be the number of subjects, who neither had an event nor have been censored. Additionally, $O_{T,j},O_{C,j}$ are the observed number of events at time $j$. Define $n_j:=n_{T,j}+n_{C,j}$ and $O_j:= O_{T,j}+O_{C,j}$. Under the null, the hazard functions of the groups are equal. Thus, for $i \in \{T,C\}$, $O_{j}$ can be regarded as the number of events in a draw of size $n_{i,j}$, where the population has size $n_j$. This is exactly the definition of the hypergeometric distribution, so we know that $O_{i,j}\sim h(n_j,O_j,n_{i,j})$. This distribution has an expected value of $E_{i,j}:=\mathbb{E}[O_{i,j}]=n_{i,j}\frac{O_j}{n_j}$ and variance $V_{i,j}:=\text{Var}(O_{i,j})=E_{i,j}(\frac{n_j-O_j}{n_j})(\frac{n_j-n_{i,j}}{n_j-1})$. The log-rank test statistic is given by
+Let $1,\dots,J$ be the distinct times of observed events in either group and let $n_{T,j}, n_{C,j}$ be the number of subjects, who neither had an event nor have been censored. Additionally, $O_{T,j},O_{C,j}$ are the observed number of events at time $j$. In the following we assume that there are not ties, so $O_{T,j},O_{C,j}\in \{0,1\}$. Define $n_j:=n_{T,j}+n_{C,j}$ and $O_j:= O_{T,j}+O_{C,j}$. Under the null, the hazard functions of the groups are equal. Thus, for $i \in \{T,C\}$, $O_{j}$ can be regarded as the number of events in a draw of size $n_{i,j}$, where the population has size $n_j$. This is exactly the definition of the hypergeometric distribution, so we know that $O_{i,j}\sim h(n_j,O_j,n_{i,j})$. This distribution has an expected value of $E_{i,j}:=\mathbb{E}[O_{i,j}]=n_{i,j}\frac{O_j}{n_j}$ and variance $V_{i,j}:=\text{Var}(O_{i,j})=E_{i,j}(\frac{n_j-O_j}{n_j})(\frac{n_j-n_{i,j}}{n_j-1})$. The log-rank test statistic is given by
 
 $$
 L=L_T:=\frac{\sum_{j=1}^J O_{T,j}-E_{T,j}}{\sqrt{\sum_{j=1}^J V_{T,j}}}
 $$
 Note that it does not matter whether we consider $L_T$ or $L_C$, both of them yield the same results, so we abbreviate $L_T$ to $L$.
-By the central limit theorem, it is easy to see that $L \overset{d}{\to} \mathcal{N}(0,1)$. Under the alternative, it can be shown that $L \sim \mathcal{N}(\text{log}(\theta)\frac{1}{2}\sqrt{n_E},1)$ approximately, where $n_E$ is the number of events in either group. If $d$ is the combined probability of events (also known as event rate) in both arms, $n_E$ can be replaced by $2nd$ (where $n$ is, like in the whole chapter, the number of recruits per group). Thus, by estimating $d$ via a suitable estimator $\hat{d}$, we get an estimation of the total number of recruits for the study. 
+By the central limit theorem, it is easy to see that $L \overset{d}{\to} \mathcal{N}(0,1)$. Under the alternative, it can be shown that $L \sim \mathcal{N}(\text{log}(\theta)\frac{1}{2}\sqrt{J},1)$ approximately. If $d$ is the combined probability of events (also known as event rate) in both arms, $J$ can be replaced by $2nd$ (where $n$ is, like in the whole chapter, the number of recruits per group). Thus, by estimating $d$ via a suitable estimator $\hat{d}$, we get an estimation of the total number of recruits for the study. 
 In **adoptr**, the parameter $d$ needs to be pre-specified in order to obtain a one-parametric distribution (the other parameter is $\theta$), so $d$ is assumed to be fixed during the trial. This is similar to the case of binary endpoints, where the response rate in the control group $r_C$ had to be a constant value. Since the number of events is the main interest during a survival study, the need of a constant $d$ is not a strong limitation.
 
-## Survival analysis and adapitve designs
+## Survival analysis and adaptive designs
 
 ### Notation
 
-We expand the previous notation by an index $k\in \{1,2\}$, denoting the current stage. We observe $J_1$ events until the interim analysis, and we observe $J_2$ events until the final analysis. Note that $J_2$ is meant to be cumulative. Furthermore, let $O_{i,j,k}$ be the number of observed events in arm $i\in \{T,C\}$ at time $j \in \{1,\dots,J_k\}$ in stage $k \in \{1,2\}$. Like in the previous section, let, $E_{i,j,k}= \mathbb{E}[O_{i,j,k}]=n_{i,j,k}\frac{O_{j,k}}{n_{j,k}}$, where $n_{i,j,k}$ is the number of patients that have not had an event until the end of stage $k$, $O_{j,k}=O_{T,j,k}+O_{C,j,k}$ and $n_{j,k}=n_{T,j,k}+n_{C,j,k}$. In the same way, we can define $V_{i,j,k}$ like in the previous section. In this setting, we now have two test statistics $L_k$, $k \in \{1,2\}$, that can be calculated the same way like described above:
+We expand the previous notation by an index $k\in \{1,2\}$, denoting the current stage. We observe $J_1$ events until the interim analysis, and we observe $J_2$ events until the final analysis. Note that $J_2$ is meant to be cumulative. Furthermore, let $O_{i,j,k}$ be the number of observed events in arm $i\in \{T,C\}$ at time $j \in \{1,\dots,J_k\}$ in stage $k \in \{1,2\}$. Like in the previous section, let $E_{i,j,k}= \mathbb{E}[O_{i,j,k}]=n_{i,j,k}\frac{O_{j,k}}{n_{j,k}}$, where $n_{i,j,k}$ is the number of patients that have not had an event until the end of stage $k$, $O_{j,k}=O_{T,j,k}+O_{C,j,k}$ and $n_{j,k}=n_{T,j,k}+n_{C,j,k}$. In the same way, we can define $V_{i,j,k}$ like in the previous section. In this setting, we now have two test statistics $L_k$, $k \in \{1,2\}$, that can be calculated the same way like described above:
 
 $$
 L_k=\frac{\sum_{j=1}^{J_k} O_{T,j,k}-E_{T,j,k}}{\sqrt{\sum_{j=1}^{J_k} V_{T,j,k}}}
@@ -149,13 +149,61 @@ $$
 
 ### Over-running and solutions
 
-In survival analysis, it is usual to have a certain follow-up time after the accrual period in order to evaluate the number of events and when they occurred. Thus, when conducting the interim analysis in an adaptive design, some patients may not have had an event yet, even though those could lead to an opposite decision than the patients available at interim do. This issue is known as "over-running". Additionally, these recruits that have not had an event till the interim analysis provide information for both stages: in the first stage, we know that these subjects survived, and in the second stage, they may die (or even survive until the end of the trial). Thus, the test statistics $L_{T,1}$ from the interim analysis and $L_{T,2}$ from the final analysis are not independent, even though this is an important assumption in **adoptr** in order to calculate optimal designs. 
+In survival analysis, it is usual to have a certain follow-up time after the accrual period in order to evaluate the number of events and when they occurred. Thus, when conducting the interim analysis in an adaptive design, some patients may not have had an event yet, even though those could lead to an opposite decision than the patients available at interim do. This issue is known as "over-running". Additionally, these recruits that have not had an event till the interim analysis provide information for both stages: in the first stage, we know that these subjects survived, and in the second stage, they may die (or even survive until the end of the trial). Thus, the test statistics $L_{1}$ from the interim analysis and $L_{2}$ from the final analysis are not independent, even though this is an important assumption in **adoptr** in order to calculate optimal designs. 
 
 #### Solution 1: Independent Increments
 
-It is easy to verify that 
+It can be shown that the following statistic
 
 $$
 Z_2:= \frac{\sqrt{J_2}L_2-\sqrt{J_1}L_1}{\sqrt{J_2-J_1}}
 $$
-is still approximately standard normal under the null. 
+is approximately standard normal under the null, $Z_2\sim \mathcal{N}(\text{log}(\theta)\frac{1}{2}\sqrt{J_2-J_1},1)$ and $L_1$ and $Z_$ are approximately independent. Thus, $Z_2$ has the same distribution as the stage-wise (non-accumulative) test statistic of the second stage $L_{\Delta}$ and as **adoptr** assumes independence between the stage-wise test statistics, we can use $Z_2$ as a replacement of $L_{\Delta}$. 
+
+#### Example
+
+Assume, we estimate the event rate $\hat{d}=0.7$. We assume to have a two-armed design.
+
+```{r}
+datadist <- Survival(0.7,two_armed = TRUE)
+```
+
+As $\theta$ denotes the hazard ratio, we have $\theta=1$ under the null.
+Under the alternative, we assume to have $\theta=1.7$ without a prior distribution.
+
+```{r}
+H_0 <- PointMassPrior(1,1)
+H_1 <- PointMassPrior(1.7,1)
+```
+
+Our desired design should have a maximal type I error $\alpha\leq 0.025$ and a minimum power of $(1-\beta)\geq 0.8$.
+
+```{r}
+alpha <- 0.025
+min_power <- 0.8
+toer_con <- Power(datadist,H_0)<=alpha
+pow_con <- Power(datadist,H_1)>=min_power
+```
+
+Our optimized design should minimize the number of required events.
+
+```{r}
+exp_no_events <- ExpectedSampleSize(datadist,H_1)
+init <- get_initial_design(1.7,0.025,0.2,dist=datadist)
+opt_survival <- minimize(exp_no_events,subject_to(toer_con,pow_con),initial_design = init,check_constraints=TRUE)
+
+summary(opt_survival$design)
+```
+
+The procedure is now as follows:
+
+During the accrual time, recruit approximately 46 patients (per group; the exact number does not matter as only the number of events is important) and conduct the interim analysis after $2 \cdot 32= 64$ events have been observed overall. Assume, $r$ patients have not had an event until the interim analysis. These patients are censored for the computation of $L_1$. 
+
+After the interim analysis, we have $2\cdot \texttt{n2(L_1)}$ ($\texttt{n_2}$ denotes the **adoptr** function) events that should be observed during the second stage. But of course, $r$ patients are still in the trial, so we only need to recruit $2\cdot \texttt{n2(L_1)}\hat{d}-r$ new people. 
+
+When the required number of events have been observed, we now conduct the final analysis using $Z_2$ instead of $L_{\Delta}$.
+
+
+#### Solution 2: Left Truncation at the Second Stage
+
+
