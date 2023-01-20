@@ -167,7 +167,17 @@ $$
 
 ### Over-running and solutions
 
-In survival analysis, it is usual to have a certain follow-up time after the accrual period in order to evaluate the number of events and when they occurred. Thus, when conducting the interim analysis in an adaptive design, some patients may not have had an event yet, even though those could lead to an opposite decision than the patients available at interim do. This issue is known as "over-running". Additionally, these recruits that have not had an event till the interim analysis provide information for both stages: in the first stage, we know that these subjects survived, and in the second stage, they may die or even survive until the end of the trial. Thus, the test statistics $L_{1}$ from the interim analysis and $L_{2}$ from the final analysis are not independent, even though this is an important assumption in **adoptr** in order to calculate optimal designs. 
+In survival analysis, it is usual to have a certain follow-up time after the
+accrual period in order to evaluate the number of events and when they occurred.
+Thus, when conducting the interim analysis in an adaptive design, some patients
+may not have had an event yet, even though those could lead to an opposite decision
+than the patients available at interim do. This issue is known as "over-running".
+Additionally, these recruits that have not had an event till the interim analysis
+provide information for both stages: in the first stage, we know that these
+subjects survived, and in the second stage, they may die or even survive until
+the end of the trial. Thus, the test statistics $L_{1}$ from the interim analysis
+and $L_{2}$ from the final analysis are not independent, even though this is an
+important assumption in **adoptr** in order to calculate optimal designs.
 
 #### Solution 1: Independent Increments
 
