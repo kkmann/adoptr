@@ -16,40 +16,61 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
+
+```{r setup, include=FALSE}
 library(adoptr)
 ```
 
-We use the following notation:
+Currently, `adoptr` supports the optimization of adaptive two-stage designs with
+either normally or t-distributed test statistics. More specifically,
+it is required that the first stage test statistic, and the
+distribution of the second stage test-statistic
+conditional on the first-stage test statistic, is either normal or t-distributed.
 
-- $X_i^T$ denotes the endpoint of recruit $i$ in the treatment arm
-- $X_i^C$ denotes the endpoint of recruit $i$ in the control arm
-- $n$ denotes the group-wise sample size
+When individual observations are normally distributed, stage-wise
+Z- or T-test statistics fulfill these criteria.
+In practice, however, there are many situations where one cannot reasonably
+assume that individual observations are sampled from a normal distribution.
+It is common for trials to be conducted for binary or time-to-event
+endpoints, e.g. if one is interested in investigating the impact of a drug
+on mortality. One way to deal with this situation is by transforming the
+data to a test-statistic which is approximately. In the following, we will
+explain how to do so for binary and for time-to-event endpoints.
 
+We will be using the following notation:
 
-
-In the simplest cases, only normal-distributed endpoints are considered and depending on the sample size, either a z-test or a t-test can be conducted. 
-However, a lot of trials require binary or time-to-event endpoints, e.g. when it is only important to know whether a recruit is alive or how long a patient lived. Of course, binary endpoints or time-to-event data are not necessarily connected to deaths in general, so in the following, we only say that an "event occurred". 
+- $X_i^T$ will denote an observation of recruit $i$ in the treatment arm
+- $X_i^C$ will denotes the observation of recruit $i$ in the control arm
+- $n$ will denote the group-wise sample size.
 
 # Binary endpoints
-
-When dealing with binary endpoints, we know that the endpoints follow a Bernoulli distribution, so $X_i^T \sim Bin(1,p_T)$ and $X_i^C\sim Bin(1,p_C)$. We now want to compare the probability of an event in the treatment group $p_T$ with a fixed value (single-arm trial) or with the probability of an event in the control group $p_C$ (two-armed trial).  Thus, assuming that larger probabilities are favorable, we have
+Binary endpoints are endpoints where individual observations follow a Bernoulli
+distribution, i.e. $X_i^T \sim Bin(1,p_T)$ and $X_i^C\sim Bin(1,p_C)$. Our goal
+is to compare the probability $p_T$ of an event in the treatment group
+with a fixed value (single-arm trial) or with the probability $p_C$ of an event in the
+control group (two-armed trial). Thus, assuming that larger probabilities are favorable, we have
 
 $$
-H_0: p_T \leq p_C\quad \text{vs.} \quad H_1:p_C\leq p_T.
+H_0: p_T \leq p_C\quad \text{vs.} \quad H_1:p_T > p_C.
 $$
 
-We want to have a test statistic that asymptotically follows a normal distribution, so we use 
+To test this hypothesis, one could use the test statistic 
 $$
 U=\sqrt{\frac{n}{2}}\frac{\hat{p}_T-\hat{p}_C}{\sqrt{\hat{p}_0(1-\hat{p}_0)}},
 $$
 
-where $\hat{p}_T=\frac{1}{n}\sum_i^{n}X_i^T$, $\hat{p}_C=\frac{1}{n}\sum_i^{n}X_i^C$ are estimators for $p_T$ and $p_C$. Furthermore, $\hat{p}_0=\frac{\frac{1}{n}\sum_i^{n}X_i^T+\frac{1}{n}\sum_i^{n}X_i^C}{2n}$ is the estimator for the pooled rate $p_0=\frac{p_T+p_C}{2}$. 
+where $\hat{p}_T=\frac{1}{n}\sum_i^{n}X_i^T$ and $\hat{p}_C=\frac{1}{n}\sum_i^{n}X_i^C$ are the
+maximum likelihood estimators of $p_T$ and $p_C$ and where
+$\hat{p}_0=\frac{\frac{1}{n}\sum_i^{n}X_i^T+\frac{1}{n}\sum_i^{n}X_i^C}{2n}$.
 
-The outcome of $U$ is then compared to $c_f$ and $c_e$, the first stage boundaries. If $U\in [c_f,c_e]$, we continue the trial and compute a new value for $U_2$ in the second stage, where we reject the null if $U_2>c_2$.
+The outcome of $U$ is then compared to $c_f$ and $c_e$, the first stage boundaries.
+If $U\in [c_f,c_e]$, we continue the trial and compute a new value for $U_2$ in
+the second stage, where we reject the null if $U_2>c_2$.
+
+It is a well-known that this test statistic is asymptotically normal, and we will
+give a proof of this in the next section.
 
 ## Asymptotic distribution of the test statistic
-
 We begin with the difference $\hat{p}_T-\hat{p}_C$. Using the de Moivre-Laplace theorem, we get that 
 $$
 \frac{n\hat{p}_T-np_T}{\sqrt{n}} \overset{d}{\to} \mathcal{N}(0,p_T(1-p_T)).
@@ -64,25 +85,22 @@ $$
 $$
 Applying the continuous mapping theorem, it results that $\hat{\sigma}_0:=\sqrt{2\hat{p}_0(1-\hat{p}_0)} \overset{P}{\to}\sqrt{2p_0(1-p_0)}:=\sigma_0$, so by Slutzky's theorem, we get
 $$
-\frac{\sqrt{n}(\hat{p}_T-\hat{p}_C)}{\sigma_0}=\sqrt{\frac{n}{2}}\frac{\hat{p}_T-\hat{p}_C}{\sqrt{\hat{p}_0(1-\hat{p}_0)}}\overset{d}{\to}\mathcal{N}(\sqrt{n}\frac{p_T-p_C}{\sigma_0},\frac{\sigma_A^2}{\sigma_0^2}).
+\frac{\sqrt{n}(\hat{p}_T-\hat{p}_C)}{\sigma_0}=\sqrt{\frac{n}{2}}\frac{\hat{p}_T-\hat{p}_C}{\sqrt{\hat{p}_0(1-\hat{p}_0)}}\overset{d}{\to}\mathcal{N}\left(\sqrt{n}\frac{p_T-p_C}{\sigma_0},\frac{\sigma_A^2}{\sigma_0^2}\right).
 $$
-Hence, the following statement approximately holds:
-$$
-U \sim \mathcal{N}(\sqrt{n}\frac{p_T-p_C}{\sigma_0},\frac{\sigma_A^2}{\sigma_0^2}).
-$$
+Hence, for sufficiently large $n$, $U$ is approximately normal.
 
-Note that under the null hypothesis, $\sigma_A^2=\sigma_0^2$ and $p_T=p_C$. Thus, $U\sim \mathcal{N}(0,1)$ under $H_0$.
+Note that under the null hypothesis, $\sigma_A^2=\sigma_0^2$ and $p_T=p_C$.
+Thus, approximately, $U\sim \mathcal{N}(0,1)$ under $H_0$.
 
 ## **adoptr** and binomial endpoints
 
 ### Implementation details
-
 Due to the fact that the test statistic $U$ explicitly depends on the outcome of $p_T$ and $p_C$ and not only their difference $\theta=p_T-p_C$, it is necessary to fix the rate in the control group $p_C$. Thus, by knowing $\theta$, **adoptr** implicitly computes $p_T=p_C+\theta$. 
 Unfortunately, this means that $p_C$ is the same under the null as well as the alternative. This aspect could lead to limitations, but if the control group is assumed to be a placebo group, it makes sense to assume that $p_C$ is constant under $H_0$ and $H_1$.
 
 ### Example
 
-Let $p_C=0.3$ be fixed. Furthermore, we assume to have  two-armed trial.
+Let $p_C=0.3$ be fixed. Furthermore, we assume to have two-armed trial.
 
 ```{r}
 datadist <- Binomial(0.3, two_armed = TRUE)
