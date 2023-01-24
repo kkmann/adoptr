@@ -1,5 +1,5 @@
 ---
-title: "Using other endpoints"
+title: "Adaptations to the testing procedure for non-normal endpoints"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Using other endpoints}
@@ -34,7 +34,7 @@ assume that individual observations are sampled from a normal distribution.
 It is common for trials to be conducted for binary or time-to-event
 endpoints, e.g. if one is interested in investigating the impact of a drug
 on mortality. One way to deal with this situation is by transforming the
-data to a test-statistic which is approximately. In the following, we will
+data to a test-statistic which is approximately normal. In the following, we will
 explain how to do so for binary and for time-to-event endpoints.
 
 We will be using the following notation:
@@ -144,9 +144,15 @@ plot(opt_design$design)
 ```
 
 # Time-to-event endpoints
+Time-to-event endpoints are another common type of endpoint used in clinical trials. Time-to-event data is two
+dimensional and consists an indicator denoting the occurrence of an event or censoring, and a time of the event or
+censoring.
 
-Time-to-event endpoints are another common type of endpoints used in clinical trials. In the following, let $\theta := \frac{\lambda_C(t)}{\lambda_T(t)}$ be the ratio of the hazard functions in either group. We assume that $\theta$ is constant over time.
-Assuming that a larger hazard function is favorable, the resulting hypotheses are
+A common effect measure for time-to-event endpoints is the so called hazard-ratio, which is the ratio of
+hazard functions between two groups or the ratio of the hazard of one group and a postulated baseline hazard.
+
+In the following, the hazard ratio will be denoted by $\theta := \frac{\lambda_C(t)}{\lambda_T(t)}$, and we will assume that $\theta$ is constant over time.
+Assuming that less hazard is favorable, the resulting hypotheses to be tested are
 
 $$
 H_0: \theta\leq 1 \quad \text{vs.} \quad H_1: \theta >1.
@@ -278,9 +284,9 @@ summary(opt_survival$design)
 
 
 It should be noted that the number of required events $n_1$ and $n_2$ are the
-important information thresholds to adhere testing purposes, while $N_1$ and
+important information thresholds to be adhered to for testing purposes, while $N_1$ and
 $N_2$ just serve as rough estimates for the required number of subjects to reach
 these milestones. If additional information about e.g. time-dependence of
 baseline hazards is available, it may be worthwhile to use a more sophisticated
-approach than the $N_2 = n_2 / d$ formula.
+approach than the $N_2 = n_2 / d$ formula to estimate the number of required subjects.
 
