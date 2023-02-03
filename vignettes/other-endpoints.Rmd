@@ -43,7 +43,7 @@ We will be using the following notation:
 - $X_i^C$ will denote the observation of recruit $i$ in the control arm
 - $n$ will denote the group-wise sample size.
 
-# Binary endpoints
+# Binary Endpoints
 Binary endpoints are endpoints where individual observations follow a Bernoulli
 distribution, i.e. $X_i^T \sim Bin(1,p_T)$ and $X_i^C\sim Bin(1,p_C)$. Our goal
 is to compare the probability $p_T$ of an event in the treatment group
@@ -70,7 +70,7 @@ the second stage, where we reject the null if $U_2>c_2$.
 It is a well-known fact that this test statistic is asymptotically normal, and we will
 give a proof of this in the next section.
 
-## Asymptotic distribution of the test statistic
+## Asymptotic Distribution of the Test Statistic
 We begin with the difference $\hat{p}_T-\hat{p}_C$. Using the de Moivre-Laplace theorem, we get that 
 $$
 \frac{n\hat{p}_T-np_T}{\sqrt{n}} \overset{d}{\to} \mathcal{N}(0,p_T(1-p_T)).
@@ -92,9 +92,9 @@ Hence, for sufficiently large $n$, $U$ is approximately normal.
 Note that under the null hypothesis, $\sigma_A^2=\sigma_0^2$ and $p_T=p_C$.
 Thus, approximately, $U\sim \mathcal{N}(0,1)$ under $H_0$.
 
-## `adoptr` and binomial endpoints
+## `adoptr` and Binomial Endpoints
 
-### Implementation details
+### Implementation Details
 Currently, `adoptr` only supports the specification of a single fixed reference value fo $p_C$,
 while general prior distributions are supported for the effect size $\theta$. 
 
@@ -143,7 +143,7 @@ opt_design <- minimize(ess,subject_to(toer_cnstr,epow_cnstr),initial_design = in
 plot(opt_design$design)
 ```
 
-# Time-to-event endpoints
+# Time-to-Event Endpoints
 Time-to-event endpoints are another common type of endpoint used in clinical trials. Time-to-event data is two
 dimensional and consists of an indicator denoting the occurrence of an event or censoring, and a time of the event or
 censoring.
@@ -175,7 +175,7 @@ In `adoptr`, the parameter $d$ needs to be pre-specified in order to obtain a on
 and $d$ is assumed to be fixed over time. This is similar to the case of binary endpoints, where the response rate in the control group
 $p_C$ had to be a constant value. 
 
-## Survival analysis and adaptive designs
+## Survival Analysis and Adaptive Designs
 
 ### Notation
 
@@ -191,23 +191,22 @@ $$
 L_k=\frac{\sum_{j=1}^{J_k} O_{T,j,k}-E_{T,j,k}}{\sqrt{\sum_{j=1}^{J_k} V_{T,j,k}}}.
 $$
 
-### Dependency issues and solutions
+### Dependency Issues and Solutions
 
-In survival analysis, it is usual to have a certain follow-up time after the
-accrual period in order to evaluate the number of events and when they occurred.
-The recruits that have not had an event until the interim analysis
-provide information for both stages: in the first stage, we know that these
-subjects survived, and in the second stage, they might die or they might survive
-until the end of the trial. Therefore, the construction of stage-wise test
-statistics which use all available information, but do not contain the
+For normal distributed endpoints, the stage-wise test statistics come from independent cohorts,
+which makes the calculation of their joint distributions straightforward.
+
+In survival analysis, it is possible to have patients that have been recruited during the first stage,
+but have not had an event at the point of the interim analysis.
+Those provide information for both stages: in the first stage, we know that they survived, 
+and in the second stage, they might die or even survive until the end of the trial. 
+This makes the construction of a pair of suitable test statistics more challenging. 
+
+Therefore, the construction of stage-wise test
+statistics which use all available, but no double-counted information contain the
 same inform
 
-`adoptr`
-
-
-Thus, the test statistics $L_{1}$ from the interim analysis
-and $L_{2}$ from the final analysis are not independent, even though this is an
-important assumption in `adoptr` in order to calculate optimal designs.
+In the following, we will present two methods to avoid these issues.
 
 #### Solution 1: Independent Increments
 
@@ -250,7 +249,8 @@ After the interim analysis, we have $2\cdot \texttt{n2}(L_1)$ events that should
 The test statistic of the final analysis $L_{Trunc}$ is not computed in the usual way, but $n_{j,k}$ now depends on whether a subject has had an event at the interim analysis, so recruit $i$ is in the risk set if $t_{Int}-r_i < j \leq y_{i,2}$. After having calculated $L_{Trunc}$ this way, we can now use this test statistic instead of $L_\Delta$ for the final analysis.
 
 
-#### Example
+### `adoptr`and Time-to-event endpoints
+
 In `adoptr`, trial designs to investigate time-to-event endpoints can be
 represented in objects of the class `SurvivalDesign`.
 These designs consist of first stage futility and efficacy boundary
