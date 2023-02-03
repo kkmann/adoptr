@@ -210,35 +210,38 @@ In the following, we will present two methods to avoid these issues.
 
 #### Solution 1: Independent Increments
 
-It can be shown that the following statistic
-
+It can be shown that the statistic
 $$
 Z_2:= \frac{\sqrt{J_2}L_2-\sqrt{J_1}L_1}{\sqrt{J_2-J_1}}
 $$
-is approximately standard normal under the null, $Z_2\sim \mathcal{N}(\text{log}(\theta)\frac{1}{2}\sqrt{J_2-J_1},1)$ and $L_1$ and $Z_2$ are approximately independent. Thus, $Z_2$ has the same distribution as the stage-wise (non-accumulative) test statistic of the second stage $L_{\Delta}$ and as `adoptr` assumes independence between the stage-wise test statistics, we can use $Z_2$ as a replacement of $L_{\Delta}$. 
+is approximately distributed according to $\mathcal{N}(\text{log}(\theta)\frac{1}{2}\sqrt{J_2-J_1},1)$,
+and that $L_1$ and $Z_2$ are approximately independent.
 
-In the following, we denote the in-built `adoptr`functions to get the sample sizes by $\texttt{n1}$ and $\texttt{n2}$.
 
-The procedure is now as follows:
+The recruitment and testing procedure is now as follows:
+During the accrual time, recruit approximately $\frac{J_1}{d}$ patients per group
+and conduct the interim analysis after having observed $J_1$ events overall.
 
-During the accrual time, recruit approximately $\frac{\texttt{n1}}{d}$ patients per group and conduct the interim analysis after $2\cdot \texttt{n_1}$ events have been observed overall. Assume, $q$ patients have not had an event until the interim analysis. These patients are censored for the computation of $L_1$. 
+Assume, $q$ patients have not had an event until the interim analysis.
+These patients are censored for the computation of $L_1$. $L_1$ is then compared
+to the futility and efficacy boundaries $c_f$ and $c_e$, and recruited is stopped
+if $L_1 < c_f$ or $L_1 > c_e$. If $c_f \leq L_1 \leq c_e$, recruitment of patients
+for the second stage will continue.
 
-After the interim analysis, we have $2\cdot \texttt{n2}(L_1)$ events that should be ovserved during the second stage. But of course, $q$ patients are still in the trial, so we only need to recruit $\frac{2\cdot \texttt{n2}(L_1)}{d}-q$ new people.
-
-When the required number of events have been observed in the second stage, we now conduct the final analysis using $Z_2$ instead of $L_{\Delta}$.
-
+The number of patients to be recruited in the second stage is calculated so that
+$J_2(L_1)$ events are expected to be observed in the second stage. Similarily
+to the normal case, the required number of events is a function of the first-stage
+test statistic. The observation of these $J_2(L_1)$ events will trigger the conduct of the final analysis,
+where $Z_2$ is compared to $c_2(L_1)$.
 
 #### Solution 2: Left Truncation at the Second Stage
 
-Another approach uses left truncation and right censoring. In the following, $R_i$ stands for the calendar time of entry for individual $i$. Furthermore, let $T_i$ be its time from entry to the event and $C_i$ its time from entry to censoring. Assume that these values are independent and let $r_i,t_i,c_i$ be realizations of $R_i,T_i$ and $C_i$. Additionally, we denote the calendar time of the interim analysis by $t_{Int}$ and the calender time of the final analysis by $t_{Fin}$. 
+Another approach uses left truncation and right censoring. In the following, $R_i$ stands for the calendar time of entry for individual $i$. Furthermore, let $T_i$ be their time from entry to the event and $C_i$ their time from entry to censoring. Assume that these values are independent and let $r_i,t_i,c_i$ be realizations of $R_i,T_i$ and $C_i$. Additionally, we denote the calendar time of the interim analysis by $t_{Int}$ and the calender time of the final analysis by $t_{Fin}$. 
 
-In the following, it is important to remember $n_{j,k}$ which was defined to be the cardinality of the risk set, which is the number of patients at risk at time $j$ in stage $k$. This value is important for the calculation of the log-rank test statistics. 
-
-Let $i$ be recruited before the interim analysis. Now define $y_{i,1}:=\min \{t_i,c_i,t_{Int}\}$, so $y_{i,1}$ can be interpreted as the minimum time until "something" happens to individual $i$ in the first stage (either the interim analysis is conducted, $i$ had an event or it was censored). The risk interval is now defined to be $(0,y_{i,1})$, which means that that individual $i$ belongs to the risk set at the event time $t_j$ if $\min \{c_i,t_{Int}-r_i\}\geq x_j$. Therefore, the first stage analysis is done in the usual way.
+Let individual $i$ be recruited before the interim analysis. Define $y_{i,1}:=\min \{t_i,c_i,t_{Int}\}$, i.e. $y_{i,1}$ can be interpreted as the minimum time until "something" happens to individual $i$ in the first stage (either the interim analysis is conducted, $i$ had an event or it was censored). The risk interval is now defined to be $(0,y_{i,1})$, which means that that individual $i$ belongs to the risk set at the event time $t_j$ if $\min \{c_i,t_{Int}-r_i\}\geq x_j$. The first-stage test statistic then consists of the
 
 If $i$ has not had an event yet or was recruited in the second stage, we define $y_{i,2}:=\min\{t_i,c_i,t_{Fin}\}$. As before, $y_{i,2}$ can be interpreted as the minimum time until something happens to individual $i$ in the second stage: Either the final analysis is conducted, $i$ had an event or it was censored. As the second test statistic is cumulative, one should expect the risk interval to be $(0,y_{i,2})$, but actually, it is defined as $(t_{Int}-r_i,y_{i,2})$. This is due to the fact that a patient $j$ which was recruited in the first stage, but had no event until the interim analysis, has already provided the information of "no event" in the time span $(t_{Int}-r_i,t_{Int})$ for the interim. To avoid double-counting in the second analysis, we say that this patient is not in the risk set until this time span is over. 
 
-Actually, it can be shown that the resulting test statistics $L_1$ and $L_{Trunc}$ (the statistic of the final analysis) are independent, so methods from `adoptr` can be applied.
 
 One may conduct the trial according to the following instructions:
 
@@ -249,16 +252,27 @@ After the interim analysis, we have $2\cdot \texttt{n2}(L_1)$ events that should
 The test statistic of the final analysis $L_{Trunc}$ is not computed in the usual way, but $n_{j,k}$ now depends on whether a subject has had an event at the interim analysis, so recruit $i$ is in the risk set if $t_{Int}-r_i < j \leq y_{i,2}$. After having calculated $L_{Trunc}$ this way, we can now use this test statistic instead of $L_\Delta$ for the final analysis.
 
 
-### `adoptr`and Time-to-event endpoints
-
+#### Example
 In `adoptr`, trial designs to investigate time-to-event endpoints can be
 represented in objects of the class `SurvivalDesign`.
-These designs consist of first stage futility and efficacy boundary
-$c_f$ and $c_e$, the number of events to observe until the conduction of
-the interim analysis $n_1$ (or $2\cdot n_1}$ for two-armed trials), the
-second stage efficacy boundary $c_2$, the number of events to be observed
-in the second stage $n_2$ (or $2 \cdot n_2$ for two-armed trials),
-and the postulated rate of events $d$.
+These designs consist of slots for the first stage efficacy and futility
+boundaries `cf` and `ce`, a slot for the required number of events in the
+first stage `n1`, slots for the spline interpolation points for the
+`n2` and `c2` functions, and a postulated event rate `d`.
+
+Two things are important to note here: First, for the functions `n1` and
+`n2` will return the number of required events, not the number of
+required recruits that would be required to achieve this number of
+events in expectation. Information on the latter is instead provided in the
+`summary` output of a design. Second, for one-armed trials, `n1` and `n2`
+are the overall number of required events, while for two-armed trials,
+`n1` and `n2` return half of the overall number of required events.
+This is analogous to the case with normally distributed outcomes, where
+`n1` and `n2` return the group-wise sample sizes. However, calling `n1` and
+`n2` the group-wise number of events would be a misnomer, as the timings
+of the interim analyses are based on the overall number of events, and the
+number of events are unlikely to be exactly equal across the two groups.
+
 
 Let us say we want to plan a two-armed trial trial, where we assume
 an average rate of events of $d=0.7$.
@@ -269,8 +283,8 @@ datadist <- Survival(0.7, two_armed = TRUE)
 
 The postulated rate of events $d$ is saved in the `DataDistribution` object and
 will be handed down to any design optimized with respect to this distribution.
-It will be used to convert the required number of events $n_2$ to the estimated
-number of required recruits $N_2$ via $N_2 = n_2 / d$, but it has no other uses.
+It will be used to convert the required number of events $J$ to the estimated
+number of required recruits via $J / d$, but it has no other uses.
 All other design parameters are invariant with respect to the choice of $d$.
 
 Effect sizes for time-to-event trials are formulated with respect to a
@@ -301,10 +315,14 @@ summary(opt_survival$design)
 ```
 
 
-It should be noted that the number of required events $n_1$ and $n_2$ are the
-important information thresholds to be adhered to for testing purposes, while $N_1$ and
-$N_2$ just serve as rough estimates for the required number of subjects to reach
-these milestones. If additional information about e.g. time-dependence of
+It should be noted that the number of required events `2 * nevs1` and
+`2 * nevs2(x1)` are the
+important information thresholds to be adhered to for testing purposes.
+`nrec1` and and `nrec2(x1)` only serve as rough estimates for the required
+number of recruits to achieve the target number of events.
+If additional information about e.g. time-dependence of
 baseline hazards is available, it may be worthwhile to use a more sophisticated
-approach than the $N_2 = n_2 / d$ formula to estimate the number of required subjects.
+approach than the $J / d$ formula to estimate the number of required subjects.
+
+
 
