@@ -5,12 +5,15 @@
 \alias{ConditionalSampleSize-class}
 \alias{ConditionalSampleSize}
 \alias{ExpectedSampleSize}
+\alias{ExpectedNumberOfEvents}
 \alias{evaluate,ConditionalSampleSize,TwoStageDesign-method}
 \title{(Conditional) Sample Size of a Design}
 \usage{
 ConditionalSampleSize(label = "n(x1)")
 
 ExpectedSampleSize(dist, prior, label = "E[n(x1)]")
+
+ExpectedNumberOfEvents(dist, prior, label = "E[n(x1)]")
 
 \S4method{evaluate}{ConditionalSampleSize,TwoStageDesign}(s, design, x1, optimization = FALSE, ...)
 }
@@ -45,6 +48,8 @@ css   <- ConditionalSampleSize()
 evaluate(css, design, c(0, .5, 3))
 
 ess   <- ExpectedSampleSize(Normal(), prior)
+
+ene <- ExpectedNumberOfEvents(Survival(0.7),PointMassPrior(1.7,1))
 
 # those two are equivalent
 evaluate(ess, design)

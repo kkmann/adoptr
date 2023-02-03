@@ -112,7 +112,7 @@ control group of $p_C=0.3$. These parameters are encoded in the
 datadist <- Binomial(0.3, two_armed = TRUE)
 ```
 
-Let us furthermore postulate a normal prior distribution for $\theta$ with expectation $\mu=0.2$ and standard deviation $\sigma=0.2$, which was truncated to the interval $(-.29,0.69)$. It is necessary to use a truncation to ensure that $p_T \in (0,1)$. Aft
+Let us furthermore postulate a normal prior distribution for $\theta$ with expectation $\mu=0.2$ and standard deviation $\sigma=0.2$, which was truncated to the interval $(-.29,0.69)$. It is necessary to use a truncation to ensure that $p_T \in (0,1)$.
 ```{r}
 H_0        <- PointMassPrior(.0, 1)
 prior      <- ContinuousPrior(function(x) 1/(pnorm(0.69,0.2,0.2)-pnorm(-0.29,0.2,0.2))*dnorm(x,0.2,0.2),
@@ -197,12 +197,13 @@ Z_2:= \frac{\sqrt{J_2}L_2-\sqrt{J_1}L_1}{\sqrt{J_2-J_1}}
 $$
 is approximately standard normal under the null, $Z_2\sim \mathcal{N}(\text{log}(\theta)\frac{1}{2}\sqrt{J_2-J_1},1)$ and $L_1$ and $Z_2$ are approximately independent. Thus, $Z_2$ has the same distribution as the stage-wise (non-accumulative) test statistic of the second stage $L_{\Delta}$ and as `adoptr` assumes independence between the stage-wise test statistics, we can use $Z_2$ as a replacement of $L_{\Delta}$. 
 
+In the following, we denote the in-built `adoptr`functions to get the sample sizes by $\texttt{n1}$ and $\texttt{n2}$.
 
 The procedure is now as follows:
 
-During the accrual time, recruit approximately $\frac{32}{0.7}\approx 46$ patients (per group; the exact number does not really matter as the number of events is the important value) and conduct the interim analysis after $2 \cdot 32= 64$ events have been observed overall. Assume, $q$ patients have not had an event until the interim analysis. These patients are censored for the computation of $L_1$. 
+During the accrual time, recruit approximately $\frac{\texttt{n1}}{d}$ patients per group and conduct the interim analysis after $2\cdot \texttt{n_1}$ events have been observed overall. Assume, $q$ patients have not had an event until the interim analysis. These patients are censored for the computation of $L_1$. 
 
-After the interim analysis, we have $2\cdot \texttt{n2(L_1)}$ ($\texttt{n_2}$ denotes the `adoptr` function) events that should be observed during the second stage. But of course, $q$ patients are still in the trial, so we only need to recruit $\frac{2\cdot \texttt{n2(L_1)}}{\hat{d}}-q$ new people. 
+After the interim analysis, we have $2\cdot \texttt{n2}(L_1)$ events that should be ovserved during the second stage. But of course, $q$ patients are still in the trial, so we only need to recruit $\frac{2\cdot \texttt{n2}(L_1)}{d}-q$ new people.
 
 When the required number of events have been observed in the second stage, we now conduct the final analysis using $Z_2$ instead of $L_{\Delta}$.
 
@@ -219,12 +220,11 @@ If $i$ has not had an event yet or was recruited in the second stage, we define 
 
 Actually, it can be shown that the resulting test statistics $L_1$ and $L_{Trunc}$ (the statistic of the final analysis) are independent, so methods from `adoptr` can be applied.
 
-#### Das hier mit dem vorherigen Kapitel integrieren
+One may conduct the trial according to the following instructions:
 
+For the interim, the procedure is the same as for the independent increment solution, but it is important to know the time span the subjects have been in the trial until the analysis is conducted.
 
-During the accrual time, recruit approximately 46 patients (per group; the exact number does not matter as only the number of events is important) and conduct the interim analysis after $2 \cdot 32= 64$ events have been observed overall. Assume, $q$ patients have not had an event until the interim analysis. These patients are censored for the computation of $L_1$. It is important to know the time span these subjects have been in the trial until the analysis is conducted.
-
-After the interim analysis, we have $2\cdot \texttt{n2(L_1)}$ ($\texttt{n_2}$ denotes the `adoptr` function) events that should be observed during the second stage. But of course, $q$ patients are still in the trial, so we only need to recruit $\frac{2\cdot \texttt{n2(L_1)}}{\hat{d}}-q$ new people. 
+After the interim analysis, we have $2\cdot \texttt{n2}(L_1)$ events that should be observed during the second stage. But under the assumption that $q$ patients have not had an event yet, we only need to recruit $\frac{2\cdot \texttt{n2}(L_1)}{d}-q$ new people. 
 
 The test statistic of the final analysis $L_{Trunc}$ is not computed in the usual way, but $n_{j,k}$ now depends on whether a subject has had an event at the interim analysis, so recruit $i$ is in the risk set if $t_{Int}-r_i < j \leq y_{i,2}$. After having calculated $L_{Trunc}$ this way, we can now use this test statistic instead of $L_\Delta$ for the final analysis.
 
@@ -233,13 +233,13 @@ The test statistic of the final analysis $L_{Trunc}$ is not computed in the usua
 In `adoptr`, trial designs to investigate time-to-event endpoints can be
 represented in objects of the class `SurvivalDesign`.
 These designs consist of first stage futility and efficacy boundary
-$c_f$ and $c_e$, the number of events to observe until the conduct of
-the interim analysis $n_1$ (or $2\cdot n_1$ for two-armed trials), the
+$c_f$ and $c_e$, the number of events to observe until the conduction of
+the interim analysis $n_1$ (or $2\cdot n_1}$ for two-armed trials), the
 second stage efficacy boundary $c_2$, the number of events to be observed
 in the second stage $n_2$ (or $2 \cdot n_2$ for two-armed trials),
-and the expected rate of events $d$.
+and the postulated rate of events $d$.
 
-Let us say we want to plan a two-armed trial trial, where we postulate
+Let us say we want to plan a two-armed trial trial, where we assume
 an average rate of events of $d=0.7$.
 
 ```{r}
@@ -270,12 +270,9 @@ toer_con <- Power(datadist,H_0)<=alpha
 pow_con <- Power(datadist,H_1)>=min_power
 ```
 
-Our optimized design should minimize the number of required events.
-(Nico, kannst du einen Wrapper namens "ExpectedNumberOfEvents" bauen, der
-genau das gleiche macht wie ExpectedSampelSize?)
 
 ```{r}
-exp_no_events <- ExpectedSampleSize(datadist,H_1)
+exp_no_events <- ExpectedNumberOfEvents(datadist,H_1)
 init <- get_initial_design(1.7,0.025,0.2,dist=datadist)
 opt_survival <- minimize(exp_no_events,subject_to(toer_con,pow_con),initial_design = init,check_constraints=TRUE)
 
