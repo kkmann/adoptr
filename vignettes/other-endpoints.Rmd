@@ -144,8 +144,7 @@ plot(opt_design$design)
 ```
 
 # Time-to-Event Endpoints
-Time-to-event endpoints are another common type of endpoint used in clinical trials. Time-to-event data is two
-dimensional and consists of an indicator denoting the occurrence of an event or censoring, and a time of the event or
+Time-to-event endpoints are another common type of endpoint used in clinical trials. Time-to-event data is two-dimensional and consists of an indicator denoting the occurrence of an event or censoring, and a time of the event or
 censoring.
 
 A common effect measure for time-to-event endpoints is the so called hazard-ratio, which is the ratio of
@@ -158,7 +157,7 @@ $$
 H_0: \theta\leq 1 \quad \text{vs.} \quad H_1: \theta >1.
 $$
 
-Let $1,\dots,J$ be the distinct times of observed events in either group and let $n_{T,j}, n_{C,j}$ be the number of subjects, who neither had an event nor have been censored. Additionally, let $O_{T,j},O_{C,j}$ denote the observed number of events at time $j$. In the following we assume that there are no ties, so $O_{T,j},O_{C,j}\in \{0,1\}$. Define $n_j:=n_{T,j}+n_{C,j}$ and $O_j:= O_{T,j}+O_{C,j}$. Under the null, the hazard functions of the groups are equal. Thus, for $i \in \{T,C\}$, $O_{j}$ can be regarded as the number of events in a draw of size $n_{i,j}$, where the population has size $n_j$. Therefore, $O_{i,j}$ follows a hypergeometric distribution, i.e. $O_{i,j}\sim h(n_j,O_j,n_{i,j})$. This distribution has an expected value of $E_{i,j}:=\mathbb{E}[O_{i,j}]=n_{i,j}\frac{O_j}{n_j}$ and variance $V_{i,j}:=\text{Var}(O_{i,j})=E_{i,j}(\frac{n_j-O_j}{n_j})(\frac{n_j-n_{i,j}}{n_j-1})$. Using these definitions, we can define the so-called \emph{log-rank} test statistc as
+Let $1,\dots,J$ be the distinct times of observed events in either group and let $n_{T,j}, n_{C,j}$ be the number of subjects, who neither had an event nor have been censored. Additionally, let $O_{T,j},O_{C,j}$ denote the observed number of events at time $j$. In the following we assume that there are no ties, so $O_{T,j},O_{C,j}\in \{0,1\}$. Define $n_j:=n_{T,j}+n_{C,j}$ and $O_j:= O_{T,j}+O_{C,j}$. Under the null, the hazard functions of the groups are equal. Thus, for $i \in \{T,C\}$, $O_{i,j}$ can be regarded as the number of events in a draw of size $n_{i,j}$, where the population has size $n_j$. Therefore, $O_{i,j}$ follows a hypergeometric distribution, i.e. $O_{i,j}\sim h(n_j,O_j,n_{i,j})$. This distribution has an expected value of $E_{i,j}:=\mathbb{E}[O_{i,j}]=n_{i,j}\frac{O_j}{n_j}$ and variance $V_{i,j}:=\text{Var}(O_{i,j})=E_{i,j}(\frac{n_j-O_j}{n_j})(\frac{n_j-n_{i,j}}{n_j-1})$. Using these definitions, we can define the so-called log-rank test statistic as
 
 $$
 L=L_T:=\frac{\sum_{j=1}^J O_{T,j}-E_{T,j}}{\sqrt{\sum_{j=1}^J V_{T,j}}}.
@@ -166,13 +165,13 @@ $$
 Note that it does not matter whether we consider $L_T$ or the analogously defined statistic $L_C$,
 both of them yield the same results, so we abbreviate $L_T$ to $L$.
 By the central limit theorem, it is easy to see that $L \overset{d}{\to} \mathcal{N}(0,1)$. Under the alternative, it can be shown that, approximately,
-$L \sim \mathcal{N}(\text{log}(\theta)\frac{1}{2}\sqrt{J},1)$. If $d$ is the average probability of and event per recruit in both arms
+$L \sim \mathcal{N}(\text{log}(\theta)\frac{1}{2}\sqrt{J},1)$. If $\psi$ is the average probability of an event per recruit in both arms
 (also known as the event rate),
-$J$ can be replaced by $2 \cdot n \cdot d$ (where $n$ denotes, like in the previous sections, the number of recruits per group). Thus, by
+$J$ can be replaced by $2 \cdot n \cdot \psi$ (where $n$ denotes, like in the previous sections, the number of recruits per group). Thus, by
 by postulating an event probability, we can calculate the number of recruits per groups that would be required to achieve a specific number
 of events, and by extensions, a specific power.
-In `adoptr`, the parameter $d$ needs to be pre-specified in order to obtain a one-parametric distribution (the other parameter being $\theta$),
-and $d$ is assumed to be fixed over time. This is similar to the case of binary endpoints, where the response rate in the control group
+In `adoptr`, the parameter $\psi$ needs to be pre-specified in order to obtain a one-parametric distribution (the other parameter being $\theta$),
+and $\psi$ is assumed to be fixed over time. This is similar to the case of binary endpoints, where the response rate in the control group
 $p_C$ had to be a constant value. 
 
 ## Survival Analysis and Adaptive Designs
@@ -180,8 +179,8 @@ $p_C$ had to be a constant value.
 ### Notation
 
 We expand the previous notation by an index $k\in \{1,2\}$ denoting the current stage.
-We observe $J_1$ events until the interim analysis, and we observe $J_2$ events in total until the final analysis.
-We stress that, in this notation, $J_2$ denotes the cumulative number of events in both stages.
+We observe $d_1$ events until the interim analysis at times $\{1,\dots,J_1\}$, and we observe $d_2$ events in total until the final analysis at times $\{1,\dots,J_2\}$. 
+We stress that, in this notation, $d_2$ denotes the cumulative number of events in both stages.
 Furthermore, let $O_{i,j,k}$ be the number of observed events in arm $i\in \{T,C\}$ at time $j \in \{1,\dots,J_k\}$ in
 stage $k \in \{1,2\}$. Like in the previous section, let $E_{i,j,k}= \mathbb{E}[O_{i,j,k}]=n_{i,j,k}\frac{O_{j,k}}{n_{j,k}}$, where
 $n_{i,j,k}$ is the number of patients that have not had an event until the end of stage $k$, and let $O_{j,k}=O_{T,j,k}+O_{C,j,k}$
@@ -212,33 +211,33 @@ In the following, we will present two methods to avoid these issues.
 
 It can be shown that the statistic
 $$
-Z_2:= \frac{\sqrt{J_2}L_2-\sqrt{J_1}L_1}{\sqrt{J_2-J_1}}
+Z_2:= \frac{\sqrt{d_2}L_2-\sqrt{d_1}L_1}{\sqrt{d_2-d_1}}
 $$
-is approximately distributed according to $\mathcal{N}(\text{log}(\theta)\frac{1}{2}\sqrt{J_2-J_1},1)$,
+is approximately distributed according to $\mathcal{N}(\text{log}(\theta)\frac{1}{2}\sqrt{d_2-d_1},1)$,
 and that $L_1$ and $Z_2$ are approximately independent.
 
 
 The recruitment and testing procedure is now as follows:
-During the accrual time, recruit approximately $\frac{J_1}{d}$ patients per group
-and conduct the interim analysis after having observed $J_1$ events overall.
+During the accrual time, recruit approximately $\frac{d_1}{2\psi}$ patients per group
+and conduct the interim analysis after having observed $d_1$ events overall.
 
 Assume, $q$ patients have not had an event until the interim analysis.
 These patients are censored for the computation of $L_1$. $L_1$ is then compared
-to the futility and efficacy boundaries $c_f$ and $c_e$, and recruited is stopped
+to the futility and efficacy boundaries $c_f$ and $c_e$, and recruitment is stopped
 if $L_1 < c_f$ or $L_1 > c_e$. If $c_f \leq L_1 \leq c_e$, recruitment of patients
 for the second stage will continue.
 
 The number of patients to be recruited in the second stage is calculated so that
-$J_2(L_1)$ events are expected to be observed in the second stage. Similarily
+$d_2(L_1)$ events are expected to be observed in the second stage. Similarly
 to the normal case, the required number of events is a function of the first-stage
-test statistic. The observation of these $J_2(L_1)$ events will trigger the conduct of the final analysis,
+test statistic. The observation of these $d_2(L_1)$ events will trigger the conduct of the final analysis,
 where $Z_2$ is compared to $c_2(L_1)$.
 
 #### Solution 2: Left Truncation at the Second Stage
 
 Another approach uses left truncation and right censoring. In the following, $R_i$ stands for the calendar time of entry for individual $i$. Furthermore, let $T_i$ be their time from entry to the event and $C_i$ their time from entry to censoring. Assume that these values are independent and let $r_i,t_i,c_i$ be realizations of $R_i,T_i$ and $C_i$. Additionally, we denote the calendar time of the interim analysis by $t_{Int}$ and the calender time of the final analysis by $t_{Fin}$. 
 
-Let individual $i$ be recruited before the interim analysis. Define $y_{i,1}:=\min \{t_i,c_i,t_{Int}\}$, i.e. $y_{i,1}$ can be interpreted as the minimum time until "something" happens to individual $i$ in the first stage (either the interim analysis is conducted, $i$ had an event or it was censored). The risk interval is now defined to be $(0,y_{i,1})$, which means that that individual $i$ belongs to the risk set at the event time $t_j$ if $\min \{c_i,t_{Int}-r_i\}\geq x_j$. The first-stage test statistic then consists of the
+Let individual $i$ be recruited before the interim analysis. Define $y_{i,1}:=\min \{t_i,c_i,t_{Int}\}$, i.e. $y_{i,1}$ can be interpreted as the minimum time until "something" happens to individual $i$ in the first stage (either the interim analysis is conducted, $i$ had an event or it was censored). The risk interval is now defined to be $(0,y_{i,1})$, which means that individual $i$ belongs to the risk set at the event time $t_j$ if $\min \{c_i,t_{Int}-r_i\}\geq x_j$. 
 
 If $i$ has not had an event yet or was recruited in the second stage, we define $y_{i,2}:=\min\{t_i,c_i,t_{Fin}\}$. As before, $y_{i,2}$ can be interpreted as the minimum time until something happens to individual $i$ in the second stage: Either the final analysis is conducted, $i$ had an event or it was censored. As the second test statistic is cumulative, one should expect the risk interval to be $(0,y_{i,2})$, but actually, it is defined as $(t_{Int}-r_i,y_{i,2})$. This is due to the fact that a patient $j$ which was recruited in the first stage, but had no event until the interim analysis, has already provided the information of "no event" in the time span $(t_{Int}-r_i,t_{Int})$ for the interim. To avoid double-counting in the second analysis, we say that this patient is not in the risk set until this time span is over. 
 
@@ -247,22 +246,21 @@ One may conduct the trial according to the following instructions:
 
 For the interim, the procedure is the same as for the independent increment solution, but it is important to know the time span the subjects have been in the trial until the analysis is conducted.
 
-After the interim analysis, we have $2\cdot \texttt{n2}(L_1)$ events that should be observed during the second stage. But under the assumption that $q$ patients have not had an event yet, we only need to recruit $\frac{2\cdot \texttt{n2}(L_1)}{d}-q$ new people. 
+If $L_1 \in [c_e,c_f]$, we continue the trial and recruit new patients, such that $d_2(L_1)$ events are expected to be observed in the second stage. 
 
-The test statistic of the final analysis $L_{Trunc}$ is not computed in the usual way, but $n_{j,k}$ now depends on whether a subject has had an event at the interim analysis, so recruit $i$ is in the risk set if $t_{Int}-r_i < j \leq y_{i,2}$. After having calculated $L_{Trunc}$ this way, we can now use this test statistic instead of $L_\Delta$ for the final analysis.
-
+The test statistic of the final analysis $L_{Trunc}$ is not computed in the usual way, but $n_{j,k}$ now depends on whether a subject has had an event at the interim analysis, so recruit $i$ is only in the risk set if $t_{Int}-r_i < t_j \leq y_{i,2}$. Thus, we get a different test statistic $L_{Trunc}$. For the final analysis, we compare the value of $L_{Trunc}$ to $c_2(L_1)$.
 
 #### Example
 In `adoptr`, trial designs to investigate time-to-event endpoints can be
-represented in objects of the class `SurvivalDesign`.
+represented in objects of the class `TwoStageDesignSurvival`.
 These designs consist of slots for the first stage efficacy and futility
 boundaries `cf` and `ce`, a slot for the required number of events in the
 first stage `n1`, slots for the spline interpolation points for the
-`n2` and `c2` functions, and a postulated event rate `d`.
+`n2` and `c2` functions, and a postulated event rate $\psi$.
 
 Two things are important to note here: First, for the functions `n1` and
-`n2` will return the number of required events, not the number of
-required recruits that would be required to achieve this number of
+`n2` will return the number of required events, not the number of recruits that would be
+required to achieve this number of
 events in expectation. Information on the latter is instead provided in the
 `summary` output of a design. Second, for one-armed trials, `n1` and `n2`
 are the overall number of required events, while for two-armed trials,
@@ -275,17 +273,17 @@ number of events are unlikely to be exactly equal across the two groups.
 
 
 Let us say we want to plan a two-armed trial trial, where we assume
-an average rate of events of $d=0.7$.
+an average rate of events of $\psi=0.7$.
 
 ```{r}
 datadist <- Survival(0.7, two_armed = TRUE)
 ```
 
-The postulated rate of events $d$ is saved in the `DataDistribution` object and
+The postulated rate of events $\psi$ is saved in the `DataDistribution` object and
 will be handed down to any design optimized with respect to this distribution.
-It will be used to convert the required number of events $J$ to the estimated
-number of required recruits via $J / d$, but it has no other uses.
-All other design parameters are invariant with respect to the choice of $d$.
+It will be used to convert the required number of events $d$ to the estimated
+number of required recruits via $\frac{d}{\psi}$, but it has no other uses.
+All other design parameters are invariant with respect to the choice of $\psi$.
 
 Effect sizes for time-to-event trials are formulated with respect to a
 hazard ratio. For our example, we assume $\theta=1$ for the null hypothesis,
@@ -315,14 +313,14 @@ summary(opt_survival$design)
 ```
 
 
-It should be noted that the number of required events `2 * nevs1` and
-`2 * nevs2(x1)` are the
+It should be noted that the number of required events $2\cdot$`nevs1` and
+$2\cdot$ `nevs2(x1)` are the
 important information thresholds to be adhered to for testing purposes.
 `nrec1` and and `nrec2(x1)` only serve as rough estimates for the required
 number of recruits to achieve the target number of events.
 If additional information about e.g. time-dependence of
 baseline hazards is available, it may be worthwhile to use a more sophisticated
-approach than the $J / d$ formula to estimate the number of required subjects.
+approach than the $\frac{d}{\psi}$ formula to estimate the number of required subjects.
 
 
 
