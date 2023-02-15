@@ -43,7 +43,7 @@ We will be using the following notation:
 - $X_i^C$ will denote the observation of recruit $i$ in the control arm
 - $n$ will denote the group-wise sample size.
 
-# Binary Endpoints
+# Binary endpoints
 Binary endpoints are endpoints where individual observations follow a Bernoulli
 distribution, i.e. $X_i^T \sim Bin(1,p_T)$ and $X_i^C\sim Bin(1,p_C)$. Our goal
 is to compare the probability $p_T$ of an event in the treatment group
@@ -70,7 +70,7 @@ the second stage, where we reject the null if $U_2>c_2$.
 It is a well-known fact that this test statistic is asymptotically normal, and we will
 give a proof of this in the next section.
 
-## Asymptotic Distribution of the Test Statistic
+## Asymptotic distribution of the test statistic
 We begin with the difference $\hat{p}_T-\hat{p}_C$. Using the de Moivre-Laplace theorem, we get that 
 $$
 \frac{n\hat{p}_T-np_T}{\sqrt{n}} \overset{d}{\to} \mathcal{N}(0,p_T(1-p_T)).
@@ -92,9 +92,9 @@ Hence, for sufficiently large $n$, $U$ is approximately normal.
 Note that under the null hypothesis, $\sigma_A^2=\sigma_0^2$ and $p_T=p_C$.
 Thus, approximately, $U\sim \mathcal{N}(0,1)$ under $H_0$.
 
-## `adoptr` and Binomial Endpoints
+## `adoptr` and binomial endpoints
 
-### Implementation Details
+### Implementation details
 Currently, `adoptr` only supports the specification of a single fixed reference value fo $p_C$,
 while general prior distributions are supported for the effect size $\theta$. 
 
@@ -143,7 +143,7 @@ opt_design <- minimize(ess,subject_to(toer_cnstr,epow_cnstr),initial_design = in
 plot(opt_design$design)
 ```
 
-# Time-to-Event Endpoints
+# Time-to-event endpoints
 Time-to-event endpoints are another common type of endpoint used in clinical trials. Time-to-event data is two-dimensional and consists of an indicator denoting the occurrence of an event or censoring, and a time of the event or
 censoring.
 
@@ -157,7 +157,7 @@ $$
 H_0: \theta\leq 1 \quad \text{vs.} \quad H_1: \theta >1.
 $$
 
-Let $1,\dots,J$ be the distinct times of observed events in either group and let $n_{T,j}, n_{C,j}$ be the number of subjects, who neither had an event nor have been censored. Additionally, let $O_{T,j},O_{C,j}$ denote the observed number of events at time $j$. In the following we assume that there are no ties, so $O_{T,j},O_{C,j}\in \{0,1\}$. Define $n_j:=n_{T,j}+n_{C,j}$ and $O_j:= O_{T,j}+O_{C,j}$. Under the null, the hazard functions of the groups are equal. Thus, for $i \in \{T,C\}$, $O_{i,j}$ can be regarded as the number of events in a draw of size $n_{i,j}$, where the population has size $n_j$. Therefore, $O_{i,j}$ follows a hypergeometric distribution, i.e. $O_{i,j}\sim h(n_j,O_j,n_{i,j})$. This distribution has an expected value of $E_{i,j}:=\mathbb{E}[O_{i,j}]=n_{i,j}\frac{O_j}{n_j}$ and variance $V_{i,j}:=\text{Var}(O_{i,j})=E_{i,j}(\frac{n_j-O_j}{n_j})(\frac{n_j-n_{i,j}}{n_j-1})$. Using these definitions, we can define the so-called log-rank test statistic as
+Let $1,\dots,J$ be the distinct times of observed events in either group and let $n_{T,j}, n_{C,j}$ be the number of subjects, who neither had an event nor have been censored. Additionally, let $O_{T,j},O_{C,j}$ denote the observed number of events at time $j$. In the following we assume that there are no ties, so $O_{T,j},O_{C,j}\in \{0,1\}$. Define $n_j:=n_{T,j}+n_{C,j}$ and $O_j:= O_{T,j}+O_{C,j}$. Under the null, the hazard functions of the groups are equal. Thus, for $i \in \{T,C\}$, $O_{i,j}$ can be regarded as the number of events in a draw of size $n_{i,j}$, where the population has size $n_j$. Therefore, $O_{i,j}$ follows a hypergeometric distribution, i.e. $O_{i,j}\sim h(n_j,O_j,n_{i,j})$. This distribution has an expected value of $E_{i,j}:=\mathbb{E}[O_{i,j}]=n_{i,j}\frac{O_j}{n_j}$ and variance $V_{i,j}:=\text{Var}(O_{i,j})=E_{i,j}\left(\frac{n_j-O_j}{n_j}\right)\left(\frac{n_j-n_{i,j}}{n_j-1}\right)$. Using these definitions, we can define the so-called log-rank test statistic as
 
 $$
 L=L_T:=\frac{\sum_{j=1}^J O_{T,j}-E_{T,j}}{\sqrt{\sum_{j=1}^J V_{T,j}}}.
@@ -174,7 +174,7 @@ In `adoptr`, the parameter $\psi$ needs to be pre-specified in order to obtain a
 and $\psi$ is assumed to be fixed over time. This is similar to the case of binary endpoints, where the response rate in the control group
 $p_C$ had to be a constant value. 
 
-## Survival Analysis and Adaptive Designs
+## Survival analysis and adaptive designs
 
 ### Notation
 
@@ -190,7 +190,7 @@ $$
 L_k=\frac{\sum_{j=1}^{J_k} O_{T,j,k}-E_{T,j,k}}{\sqrt{\sum_{j=1}^{J_k} V_{T,j,k}}}.
 $$
 
-### Dependency Issues and Solutions
+### Dependency issues and solutions
 
 For normal distributed endpoints, the stage-wise test statistics come from independent cohorts,
 which makes the calculation of their joint distributions straightforward.
@@ -201,13 +201,9 @@ Those provide information for both stages: in the first stage, we know that they
 and in the second stage, they might die or even survive until the end of the trial. 
 This makes the construction of a pair of suitable test statistics more challenging. 
 
-Therefore, the construction of stage-wise test
-statistics which use all available, but no double-counted information contain the
-same inform
-
 In the following, we will present two methods to avoid these issues.
 
-#### Solution 1: Independent Increments
+#### Solution 1: Independent increments
 
 It can be shown that the statistic
 $$
@@ -233,22 +229,56 @@ to the normal case, the required number of events is a function of the first-sta
 test statistic. The observation of these $d_2(L_1)$ events will trigger the conduct of the final analysis,
 where $Z_2$ is compared to $c_2(L_1)$.
 
-#### Solution 2: Left Truncation at the Second Stage
+#### Solution 2: Left truncation at the second stage
 
-Another approach uses left truncation and right censoring. In the following, $R_i$ stands for the calendar time of entry for individual $i$. Furthermore, let $T_i$ be their time from entry to the event and $C_i$ their time from entry to censoring. Assume that these values are independent and let $r_i,t_i,c_i$ be realizations of $R_i,T_i$ and $C_i$. Additionally, we denote the calendar time of the interim analysis by $t_{Int}$ and the calender time of the final analysis by $t_{Fin}$. 
+Another approach uses left truncation and right censoring.
+In the following, $R_i$ stands for the calendar time of entry
+for individual $i$. Furthermore, let $T_i$ be their time from
+entry to the event and $C_i$ their time from entry to censoring.
+Assume that these values are independent and let $r_i,t_i,c_i$ be
+realizations of $R_i,T_i$ and $C_i$. Additionally, we denote the
+calendar time of the interim analysis by $t_{Int}$ and the calender
+time of the final analysis by $t_{Fin}$. 
 
-Let individual $i$ be recruited before the interim analysis. Define $y_{i,1}:=\min \{t_i,c_i,t_{Int}\}$, i.e. $y_{i,1}$ can be interpreted as the minimum time until "something" happens to individual $i$ in the first stage (either the interim analysis is conducted, $i$ had an event or it was censored). The risk interval is now defined to be $(0,y_{i,1})$, which means that individual $i$ belongs to the risk set at the event time $t_j$ if $\min \{c_i,t_{Int}-r_i\}\geq x_j$. 
+Let individual $i$ be recruited before the interim analysis.
+Define $y_{i,1}:=\min \{t_i,c_i,t_{Int}\}$, i.e. $y_{i,1}$ can be
+interpreted as the minimum time until "something" happens to individual $i$
+in the first stage (either the interim analysis is conducted, $i$ had an event
+or they were censored). The risk interval for the first-stage test statistic
+is now defined to be $(0,y_{i,1})$,
+which means that individual $i$ belongs to the risk set at the event time $t_j$
+if $\min \{c_i,t_{Int}-r_i\}\geq x_j$. 
 
-If $i$ has not had an event yet or was recruited in the second stage, we define $y_{i,2}:=\min\{t_i,c_i,t_{Fin}\}$. As before, $y_{i,2}$ can be interpreted as the minimum time until something happens to individual $i$ in the second stage: Either the final analysis is conducted, $i$ had an event or it was censored. As the second test statistic is cumulative, one should expect the risk interval to be $(0,y_{i,2})$, but actually, it is defined as $(t_{Int}-r_i,y_{i,2})$. This is due to the fact that a patient $j$ which was recruited in the first stage, but had no event until the interim analysis, has already provided the information of "no event" in the time span $(t_{Int}-r_i,t_{Int})$ for the interim. To avoid double-counting in the second analysis, we say that this patient is not in the risk set until this time span is over. 
+If $i$ has not had an event yet in the first stage,
+was not lost to follow-up yet in the first stage,
+or if they were recruited in the second stage,
+we define $y_{i,2}:=\min\{t_i,c_i,t_{Fin}\}$. As before, $y_{i,2}$ can be
+interpreted as the minimum time until something happens to individual $i$ in the second stage:
+Either the final analysis is conducted, $i$ had an event or they was censored.
+The risk interval for an individual $i$ for the second stage test-statistic is
+then defined as $(\max(t_{Int}-r_i, 0),y_{i,2})$. This definition takes into account that
+that a patient $j$ who was recruited in the first stage, but had no event
+until the interim analysis, has already provided the information of "no event"
+in the time span $(0, t_{Int}-r_i)$ for the interim analysis.
+To avoid double-counting in the second analysis, we say that this patient is not
+in the risk set until this time span is over.
 
+Using this idea, one can conduct the analyses of the trial according to the following instructions:
+For the interim analysis, the procedure is the same as for the independent increment solution,
+i.e. $L_1$ is computed in the usual way and compared to the futility and efficacy boundaries
+$c_f$ and $c_e$.
+If $L_1 \in [c_e,c_f]$ (i.e. the trial is not stopped for early efficacy or futility),
+we continue the observation and recruit new patients, such that $d_2(L_1)$ events are expected to be observed in the second stage.
 
-One may conduct the trial according to the following instructions:
+The second-stage test statistic is where the two methods differ. Here, the idea
+is to construct a log-rank test statistic $L_{Trunc}$ comprised of the data of the
+patients who were recruited after the interim analysis, who contribute to the test statistic in the usual way,
+and the patients recruited before the interim analysis who have not had an event yet,
+who contribute as left (and possibly right) truncated datapoints. In theory, this is
+can be achieved by appropriately adjusting $n_j$ for the respective event timings $j$ in the definition of the
+log-rank statistic,
+and in practice, the `surival::coxph` method can handle datasets of the aforementioned structure.
 
-For the interim, the procedure is the same as for the independent increment solution, but it is important to know the time span the subjects have been in the trial until the analysis is conducted.
-
-If $L_1 \in [c_e,c_f]$, we continue the trial and recruit new patients, such that $d_2(L_1)$ events are expected to be observed in the second stage. 
-
-The test statistic of the final analysis $L_{Trunc}$ is not computed in the usual way, but $n_{j,k}$ now depends on whether a subject has had an event at the interim analysis, so recruit $i$ is only in the risk set if $t_{Int}-r_i < t_j \leq y_{i,2}$. Thus, we get a different test statistic $L_{Trunc}$. For the final analysis, we compare the value of $L_{Trunc}$ to $c_2(L_1)$.
 
 #### Example
 In `adoptr`, trial designs to investigate time-to-event endpoints can be
