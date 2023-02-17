@@ -1,5 +1,5 @@
 ---
-title: "Adaptations to the testing procedure for non-normal endpoints"
+title: "Designs for non-normal Endpoints with approximately normal test statistics"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Using other endpoints}
