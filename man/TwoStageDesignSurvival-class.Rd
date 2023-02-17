@@ -6,10 +6,14 @@
 \title{Two-stage design for time-to-event-endpoints}
 \description{
 When conducting a study with time-to-event endpoints, the main interest is not the
-sample size, but the number of necessary events. Thus, \pkg{\link{adoptr}} does not use
+sample size, but the number of overall necessary events. Thus, \pkg{\link{adoptr}} does not use
 the sample size for calculating the design. Instead,
-it uses directly the number of events. This leads to a different look of the
-\code{summary} and \code{show} functions. The sample size is implicitly determined
+it uses the number of events directly.
+In the framework of \pkg{\link{adoptr}}, all the calculations are done group-wise, where both of the groups are equal-sized.
+This means, that the number of events \pkg{\link{adoptr}} has computed is only half of the overall number of necessary events.
+In order to facilitate this issue, the look of the
+\code{summary} and \code{show} functions have been changed in the survival analysis setting.
+The sample size is implicitly determined
 by dividing the number of events by the event rate. Survival objects are only
 created, when the argument \code{event_rate} is not missing.
 }
