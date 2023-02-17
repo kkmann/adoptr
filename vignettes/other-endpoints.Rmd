@@ -254,7 +254,7 @@ was not lost to follow-up yet in the first stage,
 or if they were recruited in the second stage,
 we define $y_{i,2}:=\min\{t_i,c_i,t_{Fin}\}$. As before, $y_{i,2}$ can be
 interpreted as the minimum time until something happens to individual $i$ in the second stage:
-Either the final analysis is conducted, $i$ had an event or they was censored.
+Either the final analysis is conducted, $i$ had an event or was censored.
 The risk interval for an individual $i$ for the second stage test-statistic is
 then defined as $(\max(t_{Int}-r_i, 0),y_{i,2})$. This definition takes into account that
 that a patient $j$ who was recruited in the first stage, but had no event
@@ -277,7 +277,7 @@ and the patients recruited before the interim analysis who have not had an event
 who contribute as left (and possibly right) truncated datapoints. In theory, this is
 can be achieved by appropriately adjusting $n_j$ for the respective event timings $j$ in the definition of the
 log-rank statistic,
-and in practice, the `surival::coxph` method can handle datasets of the aforementioned structure.
+and in practice, the `survival::coxph` method can handle datasets of the aforementioned structure.
 
 
 #### Example
@@ -288,7 +288,7 @@ boundaries `cf` and `ce`, a slot for the required number of events in the
 first stage `n1`, slots for the spline interpolation points for the
 `n2` and `c2` functions, and a postulated event rate $\psi$.
 
-Two things are important to note here: First, for the functions `n1` and
+Two things are important to note here: First, the functions `n1` and
 `n2` will return the number of required events, not the number of recruits that would be
 required to achieve this number of
 events in expectation. Information on the latter is instead provided in the
