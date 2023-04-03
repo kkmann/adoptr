@@ -400,10 +400,10 @@ setMethod("scaled_integration_pivots", signature("TwoStageDesign"),
           })
 
 
-design2str <- function(design, optimized = FALSE) {
+design2str <- function(design, optimized = FALSE, no_pivots = 100) {
     if (is(design, 'OneStageDesign')) return(sprintf("OneStageDesign<%sn=%i;c=%.2f>", if (optimized) "optimized;" else "", n1(design), design@c1f))
-    n2_piv <- seq(design@c1f,design@c1e,length.out=100)
-    n2range <- range(n2(design,n2_piv))
+    n2_piv <- seq(design@c1f, design@c1e, length.out = no_pivots)
+    n2range <- range(n2(design, n2_piv))
     sprintf(
         "%s<%sn1=%i;%.1f<=x1<=%.1f:n2=%s>",
         class(design)[1], if (optimized) "optimized;" else "", n1(design),
