@@ -1,7 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://kkmann.github.io/adoptr/404.html</loc>
+  </url>
+  <url>
+    <loc>https://kkmann.github.io/adoptr/LICENSE-text.html</loc>
+  </url>
+  <url>
+    <loc>https://kkmann.github.io/adoptr/LICENSE.html</loc>
+  </url>
+  <url>
+    <loc>https://kkmann.github.io/adoptr/articles/adoptr.html</loc>
+  </url>
+  <url>
+    <loc>https://kkmann.github.io/adoptr/articles/adoptr_jss.html</loc>
+  </url>
+  <url>
+    <loc>https://kkmann.github.io/adoptr/articles/composite-scores.html</loc>
+  </url>
+  <url>
+    <loc>https://kkmann.github.io/adoptr/articles/conditional-scores.html</loc>
+  </url>
+  <url>
+    <loc>https://kkmann.github.io/adoptr/articles/defining-new-scores.html</loc>
+  </url>
+  <url>
+    <loc>https://kkmann.github.io/adoptr/articles/index.html</loc>
+  </url>
+  <url>
+    <loc>https://kkmann.github.io/adoptr/articles/working-with-priors.html</loc>
+  </url>
+  <url>
+    <loc>https://kkmann.github.io/adoptr/authors.html</loc>
+  </url>
+  <url>
     <loc>https://kkmann.github.io/adoptr/index.html</loc>
+  </url>
+  <url>
+    <loc>https://kkmann.github.io/adoptr/news/index.html</loc>
   </url>
   <url>
     <loc>https://kkmann.github.io/adoptr/reference/AverageN2-class.html</loc>
@@ -82,6 +118,9 @@
     <loc>https://kkmann.github.io/adoptr/reference/get_initial_design.html</loc>
   </url>
   <url>
+    <loc>https://kkmann.github.io/adoptr/reference/index.html</loc>
+  </url>
+  <url>
     <loc>https://kkmann.github.io/adoptr/reference/make_tunable.html</loc>
   </url>
   <url>
@@ -116,23 +155,5 @@
   </url>
   <url>
     <loc>https://kkmann.github.io/adoptr/reference/tunable_parameters.html</loc>
-  </url>
-  <url>
-    <loc>https://kkmann.github.io/adoptr/articles/adoptr.html</loc>
-  </url>
-  <url>
-    <loc>https://kkmann.github.io/adoptr/articles/adoptr_jss.html</loc>
-  </url>
-  <url>
-    <loc>https://kkmann.github.io/adoptr/articles/composite-scores.html</loc>
-  </url>
-  <url>
-    <loc>https://kkmann.github.io/adoptr/articles/conditional-scores.html</loc>
-  </url>
-  <url>
-    <loc>https://kkmann.github.io/adoptr/articles/defining-new-scores.html</loc>
-  </url>
-  <url>
-    <loc>https://kkmann.github.io/adoptr/articles/working-with-priors.html</loc>
   </url>
 </urlset>
