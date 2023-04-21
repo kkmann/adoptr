@@ -14,6 +14,7 @@
 #' @param initial_design initial guess (x0 for nloptr)
 #' @param lower_boundary_design design specifying the lower boundary.
 #' @param upper_boundary_design design specifying the upper boundary
+#' @param check_constraints boolean whether constraints should be checked
 #' @param opts options list passed to nloptr
 #' @param ... further optional arguments passed to \code{\link{nloptr}}
 #'
@@ -55,6 +56,7 @@ minimize <- function(
     initial_design,
     lower_boundary_design = get_lower_boundary_design(initial_design),
     upper_boundary_design = get_upper_boundary_design(initial_design),
+    check_constraints = TRUE,
     opts         =  list(
         algorithm   = "NLOPT_LN_COBYLA",
         xtol_rel    = 1e-5,
@@ -95,6 +97,61 @@ minimize <- function(
 
     if (res$status == 5 | res$status == 6)
         warning(res$message)
+
+    if (check_constraints) {
+        new_des <- update(initial_design, res$solution)
+        for (constr in subject_to@unconditional_constraints) {
+
+            # if right-hand side of constraint is zero, we cannot compute a relative error
+            if (constr@rhs == 0) {
+                if (evaluate(constr@score, new_des) - constr@rhs >= 0.001) {
+                    warning(warningCondition(sprintf(
+                        paste("The following constraint could not be",
+                              "fulfilled: %s (absolute tolerance: %s)"),
+                        utils::capture.output(show(constr)),
+                        format(0.001)),
+                        class = "uncond_abs_error"))
+                }
+            } else {
+                if (evaluate(constr@score, new_des) - constr@rhs
+                    >= min(0.01 * abs(constr@rhs), 0.49)) {
+                    warning(warningCondition(sprintf(
+                        paste("The following constraint could not be",
+                              "fulfilled: %s (relative tolerance: %s)"),
+                        utils::capture.output(show(constr)),
+                        format(0.01)),
+                        class = "uncond_rel_error"))
+                }
+            }
+
+        }
+
+        # need to evaluate conditional constraints on a grid
+        for (constr in subject_to@conditional_constraints) {
+            grid <- seq(new_des@c1f, new_des@c1e, length.out = 10)
+            if (constr@rhs == 0) {
+                if (any(evaluate(constr@score, new_des, grid) - constr@rhs >= 0.001)) {
+                    warning(warningCondition(sprintf(
+                        paste("The following constraint could not be",
+                              "fulfilled: %s (absolute tolerance: %s)"),
+                        utils::capture.output(show(constr)),
+                        format(0.001)),
+                        class = "cond_abs_error"))
+                }
+            } else {
+                if (any(evaluate(constr@score, new_des, grid) - constr@rhs
+                        >= min(0.01 * abs(constr@rhs), 0.49))) {
+                    warning(warningCondition(sprintf(
+                        paste("The following constraint could not be",
+                              "fulfilled: %s (relative tolerance: %s)"),
+                        utils::capture.output(show(constr)),
+                        format(0.01)),
+                        class = "cond_rel_error"))
+                }
+            }
+
+        }
+    }
 
     res <- list(
         design        = update(initial_design, res$solution),
