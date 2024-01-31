@@ -51,11 +51,10 @@
 #' scores.
 #' Available scores are \code{\link{ConditionalPower}},
 #' \code{\link{ConditionalSampleSize}}, \code{\link{Power}}, and
-#' \code{\link{ExpectedSampleSize}}..
+#' \code{\link{ExpectedSampleSize}}.
 #'
 #'
 #'
 #' @import methods
-#' @docType package
 #' @name adoptr
-NULL
+"_PACKAGE"

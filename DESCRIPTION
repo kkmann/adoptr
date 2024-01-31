@@ -1,11 +1,11 @@
 Package: adoptr
 Type: Package
 Title: Adaptive Optimal Two-Stage Designs in R
-Version: 1.0.0
+Version: 1.0.1
 Authors@R: c(
         person("Kevin", "Kunzmann", 
                 role = c("aut", "cre"), 
-                email = "kevin.kunzmann@mrc-bsu.cam.ac.uk",
+                email = "kevin.kunzmann@boehringer-ingelheim.com",
                 comment = c(ORCID = "0000-0002-1140-7143")
         ),
         person("Maximilian", "Pilz", 
@@ -61,6 +61,6 @@ Collate:
     regularization.R
     CompositeScore.R
     MaximumSampleSize.R
-RoxygenNote: 7.1.1
+RoxygenNote: 7.3.0
 BugReports: https://github.com/kkmann/adoptr/issues
 URL: https://github.com/kkmann/adoptr
