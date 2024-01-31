@@ -1,3 +1,8 @@
+# adoptr 1.0.1
+
+* updated maintainer email
+* updated roxygen version
+
 # adoptr 1.0.0
 
 * added references to article in journal of statistical software
