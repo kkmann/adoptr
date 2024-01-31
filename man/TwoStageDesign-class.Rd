@@ -80,8 +80,8 @@ pivot points of the numeric integration rule}
 \item{\code{c2_pivots}}{vector of length order giving the values of c2 at the
 pivot points of the numeric integration rule}
 
-\item{\code{x1_norm_pivots}}{normalized pivots for integration rule (in \link{-1, 1})
-the actual pivots are scaled to the interval \link{c1f, c1e} and can be
+\item{\code{x1_norm_pivots}}{normalized pivots for integration rule (in [-1, 1])
+the actual pivots are scaled to the interval [c1f, c1e] and can be
 obtained by the internal method \cr
 \code{adoptr:::scaled_integration_pivots(design)}}
 

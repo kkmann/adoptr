@@ -6,7 +6,7 @@
 #'
 #' @slot pdf     cf. parameter 'pdf'
 #' @slot support cf. parameter 'support'
-#' @slot pivots normalized pivots for integration rule (in [-1, 1])
+#' @slot pivots normalized pivots for integration rule (in \[-1, 1\])
 #'     the actual pivots are scaled to the support of the prior
 #' @slot weights weights of of integration rule at \code{pivots} for
 #'     approximating integrals over \code{delta}

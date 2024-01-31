@@ -83,7 +83,7 @@ setMethod("c2", signature("OneStageDesign", "numeric"),
 #' @param order integer >= 2, default is 5; order of Gaussian quadrature
 #'   integration rule to use for new TwoStageDesign.
 #' @param eps numeric > 0, default = .01; the single critical value c must be
-#'   split in a continuation interval [c1f, c1e]; this is given by c +/- eps.
+#'   split in a continuation interval \[c1f, c1e\]; this is given by c +/- eps.
 #' @template dotdotdot
 #'
 #' @rdname OneStageDesign-class
