@@ -31,9 +31,9 @@ minimize(
 }
 \value{
 a list with elements:
-    \item{design}{ The resulting optimal design}
-    \item{nloptr_return}{ Output of the corresponding nloptr call}
-    \item{call_args}{ The arguments given to the optimization call}
+\item{design}{ The resulting optimal design}
+\item{nloptr_return}{ Output of the corresponding nloptr call}
+\item{call_args}{ The arguments given to the optimization call}
 }
 \description{
 \code{minimize} takes an unconditional score and

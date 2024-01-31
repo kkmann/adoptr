@@ -1,7 +1,7 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.2616951.svg)](https://doi.org/10.5281/zenodo.2616951)
 
 [![R-CMD-check](https://github.com/kkmann/adoptr/actions/workflows/check-package.yaml/badge.svg)](https://github.com/kkmann/adoptr/actions/workflows/check-package.yaml)
-[![Codecov test coverage](https://codecov.io/gh/kkmann/adoptr/branch/master/graph/badge.svg)](https://codecov.io/gh/kkmann/adoptr?branch=master)
+[![Codecov test coverage](https://codecov.io/gh/kkmann/adoptr/branch/master/graph/badge.svg)](https://app.codecov.io/gh/kkmann/adoptr?branch=master)
 [![CRAN status](https://www.r-pkg.org/badges/version/adoptr)](https://cran.r-project.org/package=adoptr)
 [![](http://cranlogs.r-pkg.org/badges/last-month/adoptr?color=green)](https://cran.r-project.org/package=adoptr)
 [![](http://cranlogs.r-pkg.org/badges/grand-total/adoptr?color=green)](https://cran.r-project.org/package=adoptr)

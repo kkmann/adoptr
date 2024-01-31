@@ -26,7 +26,7 @@ OneStageDesign(n, c)
 integration rule to use for new TwoStageDesign.}
 
 \item{eps}{numeric > 0, default = .01; the single critical value c must be
-split in a continuation interval [c1f, c1e]; this is given by c +/- eps.}
+split in a continuation interval \link{c1f, c1e}; this is given by c +/- eps.}
 
 \item{...}{further optional arguments}
 

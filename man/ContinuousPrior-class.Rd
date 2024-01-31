@@ -46,7 +46,7 @@ interval on the real line.
 
 \item{\code{support}}{cf. parameter 'support'}
 
-\item{\code{pivots}}{normalized pivots for integration rule (in [-1, 1])
+\item{\code{pivots}}{normalized pivots for integration rule (in \link{-1, 1})
 the actual pivots are scaled to the support of the prior}
 
 \item{\code{weights}}{weights of of integration rule at \code{pivots} for

@@ -33,14 +33,14 @@ function of a specific distribution \code{dist} at a point \code{x}.
 }
 \details{
 If the distribution is \code{\link{Binomial}},
-  \ifelse{html}{\out{theta}}{\eqn{theta}} denotes the rate difference between
-  intervention and control group.
-  Then, the mean is assumed to be
-  \ifelse{html}{\out{&radic; n  theta}}{\eqn{\sqrt{n} theta}}.
+\ifelse{html}{\out{theta}}{\eqn{theta}} denotes the rate difference between
+intervention and control group.
+Then, the mean is assumed to be
+\ifelse{html}{\out{&radic; n  theta}}{\eqn{\sqrt{n} theta}}.
 
 If the distribution is \code{\link{Normal}}, then
-  the mean is assumed to be
-  \ifelse{html}{\out{&radic; n  theta}}{\eqn{\sqrt{n} theta}}.
+the mean is assumed to be
+\ifelse{html}{\out{&radic; n  theta}}{\eqn{\sqrt{n} theta}}.
 }
 \examples{
 cumulative_distribution_function(Binomial(.1, TRUE), 1, 50, .3)

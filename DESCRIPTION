@@ -62,5 +62,6 @@ Collate:
     CompositeScore.R
     MaximumSampleSize.R
 RoxygenNote: 7.3.0
+Roxygen: list(markdown = TRUE)
 BugReports: https://github.com/kkmann/adoptr/issues
 URL: https://github.com/kkmann/adoptr

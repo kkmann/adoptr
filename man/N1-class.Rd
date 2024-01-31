@@ -41,5 +41,5 @@ evaluate(
 }
 \seealso{
 See \code{\link{AverageN2}} for a regularization of
- the second-stage sample size.
+the second-stage sample size.
 }
