@@ -2,6 +2,7 @@
 % Please edit documentation in R/adoptr.R
 \docType{package}
 \name{adoptr}
+\alias{adoptr-package}
 \alias{adoptr}
 \title{Adaptive Optimal Two-Stage Designs}
 \description{
@@ -55,6 +56,23 @@ See \code{\link{Scores}} for information on the basic system of representing
 scores.
 Available scores are \code{\link{ConditionalPower}},
 \code{\link{ConditionalSampleSize}}, \code{\link{Power}}, and
-\code{\link{ExpectedSampleSize}}..
+\code{\link{ExpectedSampleSize}}.
 }
 
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/kkmann/adoptr}
+  \item Report bugs at \url{https://github.com/kkmann/adoptr/issues}
+}
+
+}
+\author{
+\strong{Maintainer}: Kevin Kunzmann \email{kevin.kunzmann@boehringer-ingelheim.com} (\href{https://orcid.org/0000-0002-1140-7143}{ORCID})
+
+Authors:
+\itemize{
+  \item Maximilian Pilz \email{pilz@imbi.uni-heidelberg.de} (\href{https://orcid.org/0000-0002-9685-1613}{ORCID})
+}
+
+}

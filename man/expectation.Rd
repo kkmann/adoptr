@@ -9,9 +9,9 @@
 \usage{
 expectation(dist, f, ...)
 
-\S4method{expectation}{PointMassPrior,`function`}(dist, f, ...)
+\S4method{expectation}{PointMassPrior,function}(dist, f, ...)
 
-\S4method{expectation}{ContinuousPrior,`function`}(dist, f, ...)
+\S4method{expectation}{ContinuousPrior,function}(dist, f, ...)
 }
 \arguments{
 \item{dist}{a univariate \code{\link[=DataDistribution-class]{distribution}} object}
