@@ -351,3 +351,79 @@ test_that("heuristical initial design works", {
     )
 
 }) # end 'heuristical initial design works'
+
+test_that("constraint checks are working", {
+
+    #need to use edition 3 of testthat in order to check for specific warnings
+    local_edition(3)
+
+    #setup a design that does not fulfill constraints
+    init <- TwoStageDesign(25, 0.2, 2.5, c(80, 77, 70, 61, 50, 36, 25),
+                           c(2.2, 2.1, 1.8, 1.4, 0.9, 0.3, -0.1), order = 7L)
+
+    #check unconditional constraint with relative tolerance
+    expect_warning(
+        expect_warning(
+            minimize(ess,
+                     subject_to(toer <= 0.01),
+                     initial_design = init,
+                     check_constraints = TRUE,
+                     opts = list(algorithm = "NLOPT_LN_COBYLA",
+                               xtol_rel = 1e-05,
+                               maxeval = 1))),
+        class = "uncond_rel_error"
+    )
+
+    #check unconditional constraint with relative tolerance, but absolute error >= 0.49
+    expect_warning(
+        expect_warning(
+            minimize(ess,
+                     subject_to(MaximumSampleSize() <= 70),
+                     initial_design = init,
+                     check_constraints = TRUE,
+                     opts = list(algorithm = "NLOPT_LN_COBYLA",
+                               xtol_rel = 1e-05,
+                               maxeval = 1))),
+        class = "uncond_rel_error"
+    )
+
+    #check conditional constraint with relative tolerance
+    expect_warning(
+        expect_warning(
+            minimize(ess,
+                     subject_to(cp >= 0.99),
+                     initial_design = init,
+                     check_constraints = TRUE,
+                     opts = list(algorithm = "NLOPT_LN_COBYLA",
+                               xtol_rel = 1e-05,
+                               maxeval = 1))),
+        class = "cond_rel_error"
+    )
+
+    #check unconditional constraint with absolute tolerance
+    expect_warning(
+        expect_warning(
+            minimize(ess,
+                     subject_to(MaximumSampleSize()<=pow),
+                     initial_design = init,
+                     check_constraints = TRUE,
+                     opts = list(algorithm = "NLOPT_LN_COBYLA",
+                               xtol_rel = 1e-05,
+                               maxeval = 1))),
+        class = "uncond_abs_error"
+    )
+
+    #check conditional constraint with absolute tolerance
+    expect_warning(
+        expect_warning(
+            minimize(ess,
+                     subject_to(cp>=ConditionalSampleSize()),
+                     initial_design = init,
+                     check_constraints = TRUE,
+                     opts = list(algorithm = "NLOPT_LN_COBYLA",
+                               xtol_rel = 1e-05,
+                               maxeval = 1))),
+        class = "cond_abs_error"
+    )
+
+}) # end 'constraint checks are working'
