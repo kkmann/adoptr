@@ -45,7 +45,8 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-This manuscript was accepted for publication in the Journal of Statistical Software.
+This manuscript is published in the Journal of Statistical Software
+under \url{https://doi.org/10.18637/jss.v098.i09}.
 
 
 ```{r setup, include=FALSE}
@@ -63,6 +64,7 @@ knitr::opts_chunk$set(
     tidy=FALSE,
     eval=buildvignette
 )
+backup_options <- options()
 options(prompt = "R> ", continue = "+  ", width = 70, useFancyQuotes = FALSE)
 ```
 
@@ -1194,7 +1196,9 @@ capabilities, is able to provide fast and precise (second-order) gradient
 information for user-defined objective functions.
 
 
-
+```{r reset-options, include=FALSE}
+options(backup_options)
+```
 
 # Acknowledgments
 
