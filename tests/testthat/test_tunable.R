@@ -41,7 +41,7 @@ test_that("boundary designs respect tunable", {
 test_that("fixing parameters works", {
 
     # can change tunability of relevant parameters
-    tmp <<- make_fixed(initial_design, n1, c1f, c1e, n2_pivots, c2_pivots)
+    tmp <- make_fixed(initial_design, n1, c1f, c1e, n2_pivots, c2_pivots)
     for (name in c("n1", "c1f", "c1e", "n2_pivots", "c2_pivots")) {
         expect_true(
             !tmp@tunable[name])
@@ -60,7 +60,7 @@ test_that("fixing parameters works", {
 test_that("fixed params can be made tunable again",{
 
     # can we make params 'tunable' again?
-    tmp <<- make_tunable(initial_design, n1, c2_pivots)
+    tmp <- make_tunable(initial_design, n1, c2_pivots)
     for (name in c("n1", "c1f", "c1e")) {
         expect_true(
             tmp@tunable[name])
