@@ -19,6 +19,9 @@ c2(d, x1, ...)
 
 \item{...}{further optional arguments}
 }
+\value{
+the critical value function \code{c2} of design \code{d} at position \code{x1}
+}
 \description{
 Methods to access the stage-two critical values of a
 \code{\link{TwoStageDesign}}.

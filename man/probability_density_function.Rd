@@ -27,6 +27,9 @@ probability_density_function(dist, x, n, theta, ...)
 
 \item{...}{further optional arguments}
 }
+\value{
+value of the probability density function at point \code{x}.
+}
 \description{
 \code{probability_density_function} evaluates the probability density
 function of a specific distribution \code{dist} at a point \code{x}.

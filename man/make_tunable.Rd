@@ -21,6 +21,9 @@ make_fixed(x, ...)
 \item{...}{unquoted names of slots for which the tunability status should be
 changed.}
 }
+\value{
+an updated object of class \code{\link{TwoStageDesign}}
+}
 \description{
 The methods \code{make_fixed} and \code{make_tunable} can be used to modify
 the 'tunability' status of parameters in a \code{\link{TwoStageDesign}}

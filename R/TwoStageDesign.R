@@ -117,10 +117,14 @@ setMethod("TwoStageDesign", signature = "numeric",
 #' For details on how to fix certain parameters or how to make them tunable
 #' again, see \code{\link{make_fixed}} and \code{\link{make_tunable}}.
 #'
+#' @return \code{tunable_parameters} returns the numerical values of all
+#' tunable parameters as a vector.
+#' \code{update} returns the updated design.
+#'
 #' @examples
 #' design  <- TwoStageDesign(25, 0, 2, 25, 2, order = 5)
 #' tunable_parameters(design)
-#' design2 <-update(design, tunable_parameters(design) + 1)
+#' design2 <- update(design, tunable_parameters(design) + 1)
 #' tunable_parameters(design2)
 #'
 #' @seealso \code{\link{TwoStageDesign}}
@@ -173,6 +177,8 @@ setMethod("update", signature("TwoStageDesign"),
 #' @param x \code{TwoStageDesign} object
 #' @param ... unquoted names of slots for which the tunability status should be
 #' changed.
+#'
+#' @return an updated object of class \code{\link{TwoStageDesign}}
 #'
 #' @examples
 #' design <- TwoStageDesign(25, 0, 2, 25, 2, order = 5)
@@ -310,6 +316,8 @@ setMethod("n2", signature("TwoStageDesign", "numeric"),
 #' @template round
 #' @template dotdotdot
 #'
+#' @return sample size value of design \code{d} at point \code{x1}
+#'
 #' @seealso \code{\link{TwoStageDesign}}, see \code{\link{c2}} for accessing
 #' the critical values
 #'
@@ -353,6 +361,8 @@ setMethod("n", signature("TwoStageDesign", "numeric"),
 #'
 #' @seealso \code{\link{TwoStageDesign}}, see \code{\link{n}} for accessing
 #' the sample size of a design
+#'
+#' @return the critical value function \code{c2} of design \code{d} at position \code{x1}
 #'
 #' @examples
 #' design <- TwoStageDesign(
@@ -435,6 +445,8 @@ setMethod("show", signature(object = "TwoStageDesign"), function(object) {
 #' and/or further graphic parameters
 #'
 #' @seealso \code{\link{TwoStageDesign}}
+#'
+#' @return a plot of the two-stage design
 #'
 #' @examples
 #' design <- TwoStageDesign(50, 0, 2, 50, 2, 5)

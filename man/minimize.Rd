@@ -56,7 +56,7 @@ pow <- Power(Normal(), PointMassPrior(0.4, 1))
 ess <- ExpectedSampleSize(Normal(), PointMassPrior(0.4, 1))
 
 # Compute design minimizing ess subject to power and toer constraints
-\dontrun{
+\donttest{
 minimize(
 
    ess,

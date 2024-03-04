@@ -37,6 +37,8 @@ setClass("DataDistribution", representation(
 #' @template dist
 #' @template DataDistributionTemplate
 #'
+#' @return value of the probability density function at point \code{x}.
+#'
 #' @export
 setGeneric("probability_density_function", function(dist, x, n, theta, ...) standardGeneric("probability_density_function"))
 
@@ -48,6 +50,8 @@ setGeneric("probability_density_function", function(dist, x, n, theta, ...) stan
 #'
 #' @template dist
 #' @template DataDistributionTemplate
+#'
+#' @return value of the cumulative distribution function at point \code{x}.
 #'
 #' @export
 setGeneric("cumulative_distribution_function", function(dist, x, n, theta, ...) standardGeneric("cumulative_distribution_function"))

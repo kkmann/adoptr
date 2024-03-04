@@ -18,6 +18,9 @@ and/or further graphic parameters}
 
 \item{k}{number of points to use for plotting}
 }
+\value{
+a plot of the two-stage design
+}
 \description{
 This method allows to plot the stage-two sample size and decision boundary
 functions of a chosen design.

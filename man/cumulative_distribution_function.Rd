@@ -27,6 +27,9 @@ cumulative_distribution_function(dist, x, n, theta, ...)
 
 \item{...}{further optional arguments}
 }
+\value{
+value of the cumulative distribution function at point \code{x}.
+}
 \description{
 \code{cumulative_distribution_function} evaluates the cumulative distribution
 function of a specific distribution \code{dist} at a point \code{x}.

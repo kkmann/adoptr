@@ -30,6 +30,9 @@ rate difference under the alternative in the binomial case}
 
 \item{...}{further optional arguments}
 }
+\value{
+An object of class \code{\link{TwoStageDesign}}.
+}
 \description{
 The optimization method \code{\link{minimize}} requires an initial
 design for optimization.
