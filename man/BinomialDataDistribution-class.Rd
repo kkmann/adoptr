@@ -57,7 +57,7 @@ All priors have to be defined for the rate difference
 }
 \details{
 Note that \code{simulate} for class \code{Binomial} simulates the
-   normal approximation of the test statistic.
+normal approximation of the test statistic.
 }
 \section{Slots}{
 
@@ -71,6 +71,6 @@ datadist <- Binomial(rate_control = 0.2, two_armed = FALSE)
 }
 \seealso{
 see \code{\link{probability_density_function}} and
-   \code{\link{cumulative_distribution_function}} to evaluate the pdf
-   and the cdf, respectively.
+\code{\link{cumulative_distribution_function}} to evaluate the pdf
+and the cdf, respectively.
 }

@@ -35,6 +35,9 @@ parameters of the underlying design; used for smooth optimization.}
 \item{subdivisions}{maximal number of subdivisions when evaluating an integral
 score using adaptive quadrature (optimization = FALSE)}
 }
+\value{
+No return value. Generic description of class \code{Score}.
+}
 \description{
 In \code{adoptr} scores are used to assess the performance of a design.
 This can be done either conditionally on the observed stage-one outcome

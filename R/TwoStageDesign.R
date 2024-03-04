@@ -25,8 +25,8 @@
 #'     pivot points of the numeric integration rule
 #' @slot c2_pivots vector of length order giving the values of c2 at the
 #'     pivot points of the numeric integration rule
-#' @slot x1_norm_pivots normalized pivots for integration rule (in [-1, 1])
-#'     the actual pivots are scaled to the interval [c1f, c1e] and can be
+#' @slot x1_norm_pivots normalized pivots for integration rule (in \[-1, 1\])
+#'     the actual pivots are scaled to the interval \[c1f, c1e\] and can be
 #'     obtained by the internal method \cr
 #'     \code{adoptr:::scaled_integration_pivots(design)}
 #' @slot weights weights of of integration rule at \code{x1_norm_pivots} for
@@ -117,10 +117,14 @@ setMethod("TwoStageDesign", signature = "numeric",
 #' For details on how to fix certain parameters or how to make them tunable
 #' again, see \code{\link{make_fixed}} and \code{\link{make_tunable}}.
 #'
+#' @return \code{tunable_parameters} returns the numerical values of all
+#' tunable parameters as a vector.
+#' \code{update} returns the updated design.
+#'
 #' @examples
 #' design  <- TwoStageDesign(25, 0, 2, 25, 2, order = 5)
 #' tunable_parameters(design)
-#' design2 <-update(design, tunable_parameters(design) + 1)
+#' design2 <- update(design, tunable_parameters(design) + 1)
 #' tunable_parameters(design2)
 #'
 #' @seealso \code{\link{TwoStageDesign}}
@@ -173,6 +177,8 @@ setMethod("update", signature("TwoStageDesign"),
 #' @param x \code{TwoStageDesign} object
 #' @param ... unquoted names of slots for which the tunability status should be
 #' changed.
+#'
+#' @return an updated object of class \code{\link{TwoStageDesign}}
 #'
 #' @examples
 #' design <- TwoStageDesign(25, 0, 2, 25, 2, order = 5)
@@ -310,6 +316,8 @@ setMethod("n2", signature("TwoStageDesign", "numeric"),
 #' @template round
 #' @template dotdotdot
 #'
+#' @return sample size value of design \code{d} at point \code{x1}
+#'
 #' @seealso \code{\link{TwoStageDesign}}, see \code{\link{c2}} for accessing
 #' the critical values
 #'
@@ -353,6 +361,8 @@ setMethod("n", signature("TwoStageDesign", "numeric"),
 #'
 #' @seealso \code{\link{TwoStageDesign}}, see \code{\link{n}} for accessing
 #' the sample size of a design
+#'
+#' @return the critical value function \code{c2} of design \code{d} at position \code{x1}
 #'
 #' @examples
 #' design <- TwoStageDesign(
@@ -436,6 +446,8 @@ setMethod("show", signature(object = "TwoStageDesign"), function(object) {
 #'
 #' @seealso \code{\link{TwoStageDesign}}
 #'
+#' @return a plot of the two-stage design
+#'
 #' @examples
 #' design <- TwoStageDesign(50, 0, 2, 50, 2, 5)
 #' cp     <- ConditionalPower(dist = Normal(), prior = PointMassPrior(.4, 1))
@@ -445,15 +457,17 @@ setMethod("show", signature(object = "TwoStageDesign"), function(object) {
 setMethod("plot", signature(x = "TwoStageDesign"),
           function(x, y = NULL, ..., rounded = TRUE, k = 100) {
               args   <- list(...)
-            if(length(args) > 0) {
-              scores <- args[which(sapply(args, function(s) is (s, "Score")))]
-              if (!all(sapply(scores, function(s) is(s, "ConditionalScore"))))
-                 stop("additional scores must be ConditionalScores")
-              plot_opts <- args[which(sapply(args, function(s) !is(s, "Score")))]
-            } else {
-                scores    <- NULL
-                plot_opts <- NULL
-            }
+              if(length(args) > 0) {
+                  scores <- args[which(sapply(args, function(s) is (s, "Score")))]
+                  if (!all(sapply(scores, function(s) is(s, "ConditionalScore"))))
+                     stop("additional scores must be ConditionalScores")
+                  plot_opts <- args[which(sapply(args, function(s) !is(s, "Score")))]
+              } else {
+                  scores    <- NULL
+                  plot_opts <- NULL
+              }
+              oldpar <- graphics::par(no.readonly = TRUE)
+              on.exit(graphics::par(oldpar))
               opts <- graphics::par(c(list(mfrow = c(1, length(scores) + 2)), plot_opts))
               x1   <- seq(x@c1f, x@c1e, length.out = k)
               x2   <- seq(x@c1f - (x@c1e - x@c1f)/5, x@c1f - .01*(x@c1e - x@c1f)/5, length.out = k)
@@ -634,17 +648,17 @@ print.TwoStageDesignSummary <- function(x, ..., rounded = TRUE) {
 #' @template dotdotdot
 #'
 #' @return \code{simulate()} returns a \code{data.frame} with \code{nsim}
-#' rows and for each row (each simulation run) the following columns \itemize{
-#' \item{theta }{The effect size}
-#' \item{n1 }{First-stage sample size}
-#' \item{c1f }{Stopping for futility boundary}
-#' \item{c1e }{Stopping for efficacy boundary}
-#' \item{x1 }{First-stage outcome}
-#' \item{n2 }{Resulting second-stage sample size after observing x1}
-#' \item{c2 }{Resulting second-stage decision-boundary after observing x1}
-#' \item{x2 }{Second-stage outcome}
-#' \item{reject }{Decision whether the null hypothesis is rejected or not}
-#' }
+#' rows and for each row (each simulation run) the following columns
+#'
+#' * theta: The effect size
+#' * n1: First-stage sample size
+#' * c1f: Stopping for futility boundary
+#' * c1e: Stopping for efficacy boundary
+#' * x1: First-stage outcome
+#' * n2: Resulting second-stage sample size after observing x1
+#' * c2: Resulting second-stage decision-boundary after observing x1
+#' * x2: Second-stage outcome
+#' * reject: Decision whether the null hypothesis is rejected or not
 #'
 #' @examples
 #' design <- TwoStageDesign(25, 0, 2, 25, 2, order = 5)

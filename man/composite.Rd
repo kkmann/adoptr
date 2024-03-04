@@ -24,8 +24,8 @@ or unconditional. Currently, no non-score variables are supported}
 }
 \value{
 an object of class \code{CompositeConditionalScore} or
-  \code{CompositeUnconditionalScore} depending on the class of the scores used
-  in \code{expr}
+\code{CompositeUnconditionalScore} depending on the class of the scores used
+in \code{expr}
 }
 \description{
 \code{composite} defines new composite scores by point-wise evaluation of

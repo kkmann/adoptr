@@ -50,6 +50,6 @@ datadist <- Normal(two_armed = TRUE)
 }
 \seealso{
 see \code{\link{probability_density_function}} and
-   \code{\link{cumulative_distribution_function}} to evaluate the pdf
-   and the cdf, respectively.
+\code{\link{cumulative_distribution_function}} to evaluate the pdf
+and the cdf, respectively.
 }

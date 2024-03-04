@@ -37,6 +37,9 @@ n(d, x1, ...)
 
 \item{x1}{stage-one test statistic}
 }
+\value{
+sample size value of design \code{d} at point \code{x1}
+}
 \description{
 Methods to access the stage-one, stage-two, or overall sample size of a
 \code{\link{TwoStageDesign}}.

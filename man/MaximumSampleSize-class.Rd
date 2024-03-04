@@ -34,5 +34,5 @@ evaluate(mss, design)
 }
 \seealso{
 \link{Scores} for general scores and \link{ConditionalSampleSize}
- for evaluating the sample size point-wise.
+for evaluating the sample size point-wise.
 }

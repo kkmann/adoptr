@@ -27,6 +27,8 @@
 #' @seealso \code{\link{ConditionalPower}}, \code{\link{ConditionalSampleSize}},
 #' \code{\link{composite}}
 #'
+#' @return No return value. Generic description of class \code{Score}.
+#'
 #' @examples
 #' design <- TwoStageDesign(
 #'   n1    = 25,

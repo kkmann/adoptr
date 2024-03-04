@@ -33,7 +33,7 @@
 #' ess <- ExpectedSampleSize(Normal(), PointMassPrior(0.4, 1))
 #'
 #' # Compute design minimizing ess subject to power and toer constraints
-#' \dontrun{
+#' \donttest{
 #' minimize(
 #'
 #'    ess,
@@ -106,7 +106,6 @@ minimize <- function(
 }
 
 
-
 #' @rawNamespace S3method(print, adoptrOptimizationResult)
 print.adoptrOptimizationResult <- function(x, ...) {
     cat(design2str(x$design, TRUE), "\n")
@@ -135,6 +134,8 @@ print.adoptrOptimizationResult <- function(x, ...) {
 #' @details
 #' The distribution of the test statistic is specified by \code{dist}.
 #' The default assumes a two-armed z-test.
+#'
+#' @return An object of class \code{\link{TwoStageDesign}}.
 #'
 #' @examples
 #' init <- get_initial_design(
@@ -194,6 +195,8 @@ get_initial_design <- function(theta, alpha, beta,
 #' \code{c1f + c1_buffer} and \code{c1e + c1_buffer} in
 #' \code{get_upper_boundary_design}.
 #' This is handled analogously with \code{c2_pivots} and \code{c2_buffer}.
+#'
+#' @return An object of class \code{\link{TwoStageDesign}}.
 #'
 #' @examples
 #' initial_design <- TwoStageDesign(

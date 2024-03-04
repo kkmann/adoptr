@@ -2,6 +2,7 @@
 
 * updated maintainer email
 * updated roxygen version
+* fulfill current CRAN requirements
 
 # adoptr 1.0.0
 

@@ -1,14 +1,14 @@
 context("TwoStageDesign")
 
-test_that("gaussian quadrature constructor", {
+n1           <-  49.6
+c1f          <-   0.7
+c1e          <-   2.5
+number_knots <-   5L
+n2_piv       <- rep(49.6, number_knots)
+c2_piv       <- rep(1.96, number_knots)
+design       <- TwoStageDesign(n1, c1f, c1e, n2_piv, c2_piv, number_knots)
 
-    n1           <<-  49.6
-    c1f          <<-   0.7
-    c1e          <<-   2.5
-    number_knots <<-   5L
-    n2_piv       <<- rep(49.6, number_knots)
-    c2_piv       <<- rep(1.96, number_knots)
-    design       <<- TwoStageDesign(n1, c1f, c1e, n2_piv, c2_piv, number_knots)
+test_that("gaussian quadrature constructor", {
 
     expect_equal(
         c(n1, c1f, c1e),

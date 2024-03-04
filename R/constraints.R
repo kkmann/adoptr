@@ -14,6 +14,8 @@
 #'
 #' @seealso \code{\link{minimize}}
 #'
+#' @return an object of class \code{Constraint}
+#'
 #' @examples
 #' design <- OneStageDesign(50, 1.96)
 #'

@@ -24,6 +24,11 @@ tunable_parameters(object, ...)
 by \cr
 \code{tunable_parameters}}
 }
+\value{
+\code{tunable_parameters} returns the numerical values of all
+tunable parameters as a vector.
+\code{update} returns the updated design.
+}
 \description{
 Get tunable parameters of a design as numeric vector via
 \code{tunable_parameters} or \code{update} a design object with a suitable
@@ -39,7 +44,7 @@ again, see \code{\link{make_fixed}} and \code{\link{make_tunable}}.
 \examples{
 design  <- TwoStageDesign(25, 0, 2, 25, 2, order = 5)
 tunable_parameters(design)
-design2 <-update(design, tunable_parameters(design) + 1)
+design2 <- update(design, tunable_parameters(design) + 1)
 tunable_parameters(design2)
 
 }

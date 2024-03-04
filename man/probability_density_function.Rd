@@ -27,20 +27,23 @@ probability_density_function(dist, x, n, theta, ...)
 
 \item{...}{further optional arguments}
 }
+\value{
+value of the probability density function at point \code{x}.
+}
 \description{
 \code{probability_density_function} evaluates the probability density
 function of a specific distribution \code{dist} at a point \code{x}.
 }
 \details{
 If the distribution is \code{\link{Binomial}},
-  \ifelse{html}{\out{theta}}{\eqn{theta}} denotes the rate difference between
-  intervention and control group.
-  Then, the mean is assumed to be
-  \ifelse{html}{\out{&radic; n  theta}}{\eqn{\sqrt{n} theta}}.
+\ifelse{html}{\out{theta}}{\eqn{theta}} denotes the rate difference between
+intervention and control group.
+Then, the mean is assumed to be
+\ifelse{html}{\out{&radic; n  theta}}{\eqn{\sqrt{n} theta}}.
 
 If the distribution is \code{\link{Normal}}, then
-  the mean is assumed to be
-  \ifelse{html}{\out{&radic; n  theta}}{\eqn{\sqrt{n} theta}}.
+the mean is assumed to be
+\ifelse{html}{\out{&radic; n  theta}}{\eqn{\sqrt{n} theta}}.
 }
 \examples{
 probability_density_function(Binomial(.2, FALSE), 1, 50, .3)

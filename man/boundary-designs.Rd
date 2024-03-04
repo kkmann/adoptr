@@ -80,6 +80,9 @@ This is handled analogously with \code{c2_pivots} and \code{c2_buffer}.}
 
 \item{c2_buffer}{shift of the final decision boundary from the initial one}
 }
+\value{
+An object of class \code{\link{TwoStageDesign}}.
+}
 \description{
 The optimization method \code{\link{minimize}} is based on the package
 \code{nloptr}. This requires upper and lower boundaries for optimization.

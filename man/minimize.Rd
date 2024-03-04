@@ -31,9 +31,9 @@ minimize(
 }
 \value{
 a list with elements:
-    \item{design}{ The resulting optimal design}
-    \item{nloptr_return}{ Output of the corresponding nloptr call}
-    \item{call_args}{ The arguments given to the optimization call}
+\item{design}{ The resulting optimal design}
+\item{nloptr_return}{ Output of the corresponding nloptr call}
+\item{call_args}{ The arguments given to the optimization call}
 }
 \description{
 \code{minimize} takes an unconditional score and
@@ -56,7 +56,7 @@ pow <- Power(Normal(), PointMassPrior(0.4, 1))
 ess <- ExpectedSampleSize(Normal(), PointMassPrior(0.4, 1))
 
 # Compute design minimizing ess subject to power and toer constraints
-\dontrun{
+\donttest{
 minimize(
 
    ess,

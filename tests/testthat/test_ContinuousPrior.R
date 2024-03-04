@@ -1,11 +1,16 @@
 context("ContinuousPrior")
 
-
+# preliminaries
+support    <- c(0, 1)
+prior      <- ContinuousPrior(function(x) 2*x, support)
+normal     <- Normal()
+n1         <- 20
+prior_cond <- condition(prior, c(.0, .5))
+delta      <- .5
+x1         <- delta * sqrt(n1)
+post       <- posterior(normal, prior, x1, n1)
 
 test_that("Constructor works", {
-
-    support <- c(0, 1)
-    prior   <<- ContinuousPrior(function(x) 2*x, support) # define for later use
 
     expect_equal(
         support,
@@ -50,8 +55,6 @@ test_that("expectation() works", {
 
 test_that("predictive_pdf integrates to 1", {
 
-    normal <<- Normal() # define for later reuse
-    n1     <<- 20
     expect_equal(
         stats::integrate(
             function(x1) predictive_pdf(normal, prior, x1, n1),
@@ -96,7 +99,6 @@ test_that("predictive expectation under prior is larger than 0", {
 
 test_that("conditioning works", {
 
-    prior_cond <<- condition(prior, c(.0, .5))
     expect_equal(
         c(.0, .5),
         bounds(prior_cond)
@@ -178,10 +180,6 @@ test_that("conditional prior on c(0, .5) has lower expected value than unconditi
 
 
 test_that("posterior pdf integrates to 1", {
-
-    delta <- .5
-    x1    <- delta * sqrt(n1)
-    post  <<- posterior(normal, prior, x1, n1)
 
     expect_equal(
         stats::integrate(

@@ -42,5 +42,5 @@ subject_to(
 }
 \seealso{
 \code{subject_to} is intended to be used for constraint
-  specification the constraints in \code{\link{minimize}}.
+specification the constraints in \code{\link{minimize}}.
 }
