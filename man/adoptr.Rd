@@ -72,7 +72,8 @@ Useful links:
 
 Authors:
 \itemize{
-  \item Maximilian Pilz \email{pilz@imbi.uni-heidelberg.de} (\href{https://orcid.org/0000-0002-9685-1613}{ORCID})
+  \item Maximilian Pilz \email{maximilian.pilz@itwm.fraunhofer.de} (\href{https://orcid.org/0000-0002-9685-1613}{ORCID})
+  \item Jan Meis \email{meis@imbi.uni-heidelberg.de} (\href{https://orcid.org/0000-0001-5407-7220}{ORCID})
 }
 
 }
